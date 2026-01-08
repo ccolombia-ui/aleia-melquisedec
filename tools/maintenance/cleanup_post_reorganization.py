@@ -59,6 +59,20 @@ class CleanupValidator:
         r'Thumbs\.db$',  # Windows
     ]
 
+    # Legacy references que no deberían existir
+    LEGACY_PATTERNS = [
+        (r'nucleo-investigacion', 'Use daath-toolkit instead'),
+        (r'nucleo_investigacion', 'Use daath_toolkit instead'),
+        (r'from\s+nucleo_investigacion', 'Update import to daath_toolkit'),
+    ]
+
+    # Naming conventions
+    VALID_FOLDER_PREFIXES = [
+        r'^\d{2}-',  # numbered folders (01-foundation, etc)
+        r'^_',  # private/meta folders (_daath, _templates)
+        r'^[a-z][a-z0-9-]*$',  # kebab-case (packages, tools, docs)
+    ]
+
     def __init__(self, root: Path):
         self.root = root.resolve()
         self.issues: List[Issue] = []
@@ -186,6 +200,161 @@ class CleanupValidator:
 
         print(f"  Found {len(pycache_dirs)} __pycache__ directories")
 
+    def check_empty_directories(self):
+        """Detecta directorios vacíos (excepto los deliberadamente vacíos)"""
+        print("🔍 Checking for empty directories...")
+        count = 0
+
+        for path in self.root.rglob('*'):
+            if not path.is_dir() or self._should_ignore(path):
+                continue
+
+            # Verificar si está vacío (sin archivos ni subdirectorios no-ignorados)
+            try:
+                contents = list(path.iterdir())
+                if not contents:
+                    # Completamente vacío
+                    self.issues.append(Issue(
+                        category='empty_dir',
+                        severity='MODERATE',
+                        path=path,
+                        description="Empty directory - no files or subdirectories",
+                        suggested_fix="Remove if not needed, or add README.md explaining purpose"
+                    ))
+                    count += 1
+                elif all(self._should_ignore(item) for item in contents):
+                    # Solo contiene archivos ignorados (.git, etc)
+                    self.issues.append(Issue(
+                        category='empty_dir',
+                        severity='MODERATE',
+                        path=path,
+                        description="Directory with only ignored files",
+                        suggested_fix="Add content or remove directory"
+                    ))
+                    count += 1
+            except PermissionError:
+                pass
+
+        print(f"  Found {count} empty directories")
+
+    def check_naming_violations(self):
+        """Detecta violaciones de convenciones de nombrado"""
+        print("🔍 Checking for naming violations...")
+        count = 0
+
+        # Verificar carpetas de primer nivel (excepto .git, etc)
+        for path in self.root.iterdir():
+            if not path.is_dir() or self._should_ignore(path):
+                continue
+
+            folder_name = path.name
+
+            # Verificar contra patrones válidos
+            valid = False
+            for pattern in self.VALID_FOLDER_PREFIXES:
+                if re.match(pattern, folder_name):
+                    valid = True
+                    break
+
+            if not valid:
+                self.issues.append(Issue(
+                    category='naming',
+                    severity='MODERATE',
+                    path=path,
+                    description=f"Naming violation: '{folder_name}' doesn't follow conventions",
+                    suggested_fix="Rename to kebab-case (e.g., my-folder) or numbered (01-folder)"
+                ))
+                count += 1
+
+        print(f"  Found {count} naming violations")
+
+    def check_legacy_references(self):
+        """Detecta referencias a código legacy que ya no existe"""
+        print("🔍 Checking for legacy references...")
+        count = 0
+
+        # Buscar en archivos de texto
+        text_files = []
+        for ext in ['.py', '.md', '.yml', '.yaml', '.json', '.sh', '.ps1', '.txt']:
+            text_files.extend(self.root.rglob(f'*{ext}'))
+
+        for file_path in text_files:
+            if self._should_ignore(file_path) or not file_path.is_file():
+                continue
+
+            try:
+                content = file_path.read_text(encoding='utf-8')
+
+                for pattern, fix in self.LEGACY_PATTERNS:
+                    matches = list(re.finditer(pattern, content, re.IGNORECASE))
+                    if matches:
+                        self.issues.append(Issue(
+                            category='legacy',
+                            severity='MODERATE',
+                            path=file_path,
+                            description=f"Legacy reference found: '{pattern}' ({len(matches)} occurrences)",
+                            suggested_fix=fix
+                        ))
+                        count += 1
+                        break  # Solo reportar una vez por archivo
+            except (UnicodeDecodeError, PermissionError):
+                pass
+
+        print(f"  Found {count} files with legacy references")
+
+    def check_broken_imports(self):
+        """Detecta imports Python que fallan"""
+        print("🔍 Checking for broken imports...")
+        count = 0
+
+        py_files = [f for f in self.root.rglob('*.py')
+                   if f.is_file() and not self._should_ignore(f)]
+
+        for py_file in py_files:
+            try:
+                content = py_file.read_text(encoding='utf-8')
+
+                # Extraer imports
+                import_lines = []
+                for line in content.split('\n'):
+                    line = line.strip()
+                    if line.startswith('import ') or line.startswith('from '):
+                        import_lines.append(line)
+
+                # Verificar si los imports son válidos (heurística simple)
+                for import_line in import_lines:
+                    # Detectar imports relativos que podrían estar rotos
+                    if 'from . import' in import_line or 'from .. import' in import_line:
+                        # Verificar estructura de carpetas
+                        parent_dir = py_file.parent
+                        if not (parent_dir / '__init__.py').exists():
+                            self.issues.append(Issue(
+                                category='broken_import',
+                                severity='CRITICAL',
+                                path=py_file,
+                                description=f"Relative import in non-package: '{import_line}'",
+                                suggested_fix="Add __init__.py or use absolute import"
+                            ))
+                            count += 1
+                            break
+
+                    # Detectar imports de módulos que ya no existen
+                    if 'nucleo_investigacion' in import_line:
+                        self.issues.append(Issue(
+                            category='broken_import',
+                            severity='CRITICAL',
+                            path=py_file,
+                            description=f"Import from deprecated module: '{import_line}'",
+                            suggested_fix="Update to import from daath_toolkit"
+                        ))
+                        count += 1
+                        break
+
+            except (UnicodeDecodeError, PermissionError):
+                pass
+
+        print(f"  Found {count} files with broken imports")
+
     def generate_report(self) -> str:
         """Genera reporte de issues encontrados"""
         if not self.issues:
@@ -223,13 +392,22 @@ class CleanupValidator:
         return "\n".join(report)
 
     def execute_cleanup(self, categories: Set[str] = None):
-        """Ejecuta limpieza para las categorías especificadas"""
+        """
+        Ejecuta limpieza para las categorías especificadas.
+
+        IMPORTANTE: Solo se ejecuta automáticamente para MINOR severity.
+        CRITICAL/MODERATE requieren revisión manual.
+        """
         if categories is None:
             categories = {'temp', 'pycache'}  # Default: solo minor severity
 
         removed_count = 0
 
         for issue in self.issues:
+            # Prevenir eliminación de CRITICAL/MODERATE sin confirmación explícita
+            if issue.severity in ['CRITICAL', 'MODERATE'] and issue.category not in ['empty_dir']:
+                continue
+
             if issue.category not in categories:
                 continue
 
@@ -293,6 +471,26 @@ Examples:
         action='store_true',
         help='Check for __pycache__ directories'
     )
+    parser.add_argument(
+        '--empty-dirs',
+        action='store_true',
+        help='Check for empty directories'
+    )
+    parser.add_argument(
+        '--naming',
+        action='store_true',
+        help='Check for naming convention violations'
+    )
+    parser.add_argument(
+        '--legacy-refs',
+        action='store_true',
+        help='Check for legacy references (nucleo-investigacion, etc)'
+    )
+    parser.add_argument(
+        '--broken-imports',
+        action='store_true',
+        help='Check for broken Python imports'
+    )
 
     # Execution flag
     parser.add_argument(
@@ -305,7 +503,8 @@ Examples:
 
     # Si no se especifica nada, mostrar help
     if not any([args.all, args.broken_symlinks, args.orphans,
-               args.temp_files, args.pycache]):
+               args.temp_files, args.pycache, args.empty_dirs,
+               args.naming, args.legacy_refs, args.broken_imports]):
         parser.print_help()
         return 1
 
@@ -331,6 +530,18 @@ Examples:
 
     if args.all or args.pycache:
         validator.check_pycache()
+
+    if args.all or args.empty_dirs:
+        validator.check_empty_directories()
+
+    if args.all or args.naming:
+        validator.check_naming_violations()
+
+    if args.all or args.legacy_refs:
+        validator.check_legacy_references()
+
+    if args.all or args.broken_imports:
+        validator.check_broken_imports()
 
     # Generar reporte
     report = validator.generate_report()
