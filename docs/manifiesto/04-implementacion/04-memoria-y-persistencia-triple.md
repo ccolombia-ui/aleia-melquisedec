@@ -823,6 +823,503 @@ Al finalizar spec completo:
 
 ---
 
+## Arquitectura Técnica Completa
+
+### Diagrama de Contenedores y Servicios
+
+```mermaid
+graph TB
+    subgraph "VS Code + Claude Desktop"
+        VSC[VS Code<br/>Editor + Extensions]
+        CD[Claude Desktop<br/>AI Agent]
+        VSC <--> CD
+    end
+    
+    subgraph "MCP Servers (Model Context Protocol)"
+        MCP_NEO[neo4j-mcp<br/>bolt://localhost:7687]
+        MCP_MEM[memory-mcp<br/>Vector Queries]
+        MCP_FS[filesystem-mcp<br/>File Operations]
+        MCP_SPEC[spec-workflow-mcp<br/>Spec Management]
+    end
+    
+    subgraph "Docker Containers"
+        NEO_DOCKER[Neo4j Container<br/>:7687 :7474]
+        REDIS[Redis Container<br/>:6379<br/>Vector Store]
+        RECONCILER[Reconciler Service<br/>Python Background]
+    end
+    
+    subgraph "Local Filesystem"
+        MD_FILES[Markdown Files<br/>c:/proyectos/aleia-melquisedec]
+        GIT[Git Repository<br/>GitHub]
+    end
+    
+    subgraph "Visualization Tools"
+        NEO_BROWSER[Neo4j Browser<br/>http://localhost:7474]
+        OBSIDIAN[Obsidian<br/>Local Vault Viewer]
+        VS_GRAPH[VS Code Graph Extensions<br/>Neo4j/Markdown]
+    end
+    
+    CD --> MCP_NEO
+    CD --> MCP_MEM
+    CD --> MCP_FS
+    CD --> MCP_SPEC
+    
+    MCP_NEO --> NEO_DOCKER
+    MCP_MEM --> REDIS
+    MCP_FS --> MD_FILES
+    MCP_SPEC --> MD_FILES
+    
+    MD_FILES --> GIT
+    RECONCILER --> NEO_DOCKER
+    RECONCILER --> REDIS
+    RECONCILER --> MD_FILES
+    
+    NEO_DOCKER -.->|View| NEO_BROWSER
+    MD_FILES -.->|View| OBSIDIAN
+    NEO_DOCKER -.->|View| VS_GRAPH
+    
+    style CD fill:#FFD700
+    style NEO_DOCKER fill:#FF6347
+    style REDIS fill:#32CD32
+    style RECONCILER fill:#FFA500
+    style NEO_BROWSER fill:#9370DB
+    style OBSIDIAN fill:#4682B4
+```
+
+### Diagrama de Secuencia: Activación y Flujo Completo
+
+```mermaid
+sequenceDiagram
+    actor User as Usuario
+    participant VSCode as VS Code
+    participant Claude as Claude Agent
+    participant MCP_Neo as neo4j-mcp
+    participant Neo4j as Neo4j Container
+    participant MCP_FS as filesystem-mcp
+    participant FS as Filesystem
+    participant MCP_Mem as memory-mcp
+    participant Redis as Redis Vector Store
+    participant Reconciler as Reconciler Service
+    
+    Note over User,Reconciler: FASE 0: Inicialización
+    User->>VSCode: Abre workspace
+    VSCode->>Claude: Activa Claude
+    Claude->>MCP_Neo: Conecta (bolt://localhost:7687)
+    Claude->>MCP_FS: Conecta (filesystem)
+    Claude->>MCP_Mem: Conecta (Redis embeddings)
+    
+    Note over User,Reconciler: FASE 1: PREPARACIÓN
+    User->>Claude: "Continúa con monorepo-improvements-v1.1.0"
+    Claude->>MCP_Neo: activate_neo4j_tools()
+    MCP_Neo->>Neo4j: Verifica conexión
+    Neo4j-->>MCP_Neo: ✅ Connected
+    
+    Claude->>MCP_Neo: query("MATCH (s:Spec {...})-[:HAS_TASK]->(t:Task) ...")
+    MCP_Neo->>Neo4j: Execute Cypher
+    Neo4j-->>MCP_Neo: [task-1.1: completed, task-1.2: completed, task-1.3: in_progress]
+    MCP_Neo-->>Claude: Query results
+    
+    Claude->>MCP_Neo: query("MATCH (t:Task {id: 'task-1.3'})-[:HAS_LOG]->...")
+    Neo4j-->>Claude: Implementation logs
+    
+    Claude->>MCP_Mem: search_similar("task-1.3 context")
+    MCP_Mem->>Redis: Vector similarity search
+    Redis-->>Claude: Related embeddings + metadata
+    
+    Claude-->>User: "✅ Task 1.3 quedó en refactorización. ¿Continúo?"
+    
+    Note over User,Reconciler: FASE 2-4: WORKFLOW (Ejecutar Task)
+    User->>Claude: "Sí, continúa"
+    Claude->>MCP_FS: read_file("setup_neo4j_mcp.py")
+    MCP_FS->>FS: Read file
+    FS-->>Claude: File content
+    
+    Claude->>Claude: Ejecuta refactorización (SALOMON)
+    
+    Note over User,Reconciler: FASE 5: PERSISTENCIA TRIPLE
+    Claude->>MCP_FS: write_file("setup_neo4j_mcp.py", new_content)
+    MCP_FS->>FS: Write to disk
+    FS-->>MCP_FS: ✅ Written
+    
+    par Triple Write
+        Claude->>MCP_Neo: write_cypher("CREATE (t:Task {...})")
+        MCP_Neo->>Neo4j: Execute write
+        Neo4j-->>Claude: ✅ Node created
+    and
+        Claude->>MCP_Mem: upsert_embedding(task_summary)
+        MCP_Mem->>Redis: Store vector
+        Redis-->>Claude: ✅ Vector stored
+    end
+    
+    Note over User,Reconciler: Background Reconciliation
+    Reconciler->>FS: Scan markdown files
+    Reconciler->>Neo4j: Query nodes
+    Reconciler->>Redis: Query vectors
+    Reconciler->>Reconciler: Detect inconsistencies
+    
+    alt Inconsistency Found
+        Reconciler->>Neo4j: Repair from markdown (SSoT)
+        Reconciler->>Redis: Regenerate embedding
+    end
+    
+    Note over User,Reconciler: Checkpoint Validation
+    Claude->>MCP_Neo: validate_checkpoint(task_id)
+    MCP_Neo->>Neo4j: Query validation
+    Neo4j-->>Claude: ✅ Checkpoint PASSED
+    
+    Claude-->>User: "✅ Task completada + Output Triple sincronizado"
+```
+
+### Stack Tecnológico Detallado
+
+#### Capa 1: Interfaz de Usuario
+
+| Herramienta | Puerto/URL | Propósito | Plugins Recomendados |
+|-------------|-----------|-----------|---------------------|
+| **VS Code** | Local | Editor principal | - Neo4j Extension<br/>- Markdown Preview Enhanced<br/>- Mermaid Preview |
+| **Claude Desktop** | Local | AI Agent | N/A (standalone app) |
+| **Obsidian** | Local | Visualizador de vault | - Dataview<br/>- Graph Analysis<br/>- Neo4j Graph View<br/>- Excalidraw |
+
+#### Capa 2: Model Context Protocol (MCP)
+
+| MCP Server | Puerto | Protocolo | Función |
+|------------|--------|-----------|---------|
+| **neo4j-mcp** | 7687 (bolt) | Cypher | Query/Write graph database |
+| **memory-mcp** | 6379 (Redis) | RedisJSON | Vector embeddings + semantic search |
+| **filesystem-mcp** | Local | stdio | Read/write markdown files |
+| **spec-workflow-mcp** | Local | stdio | Spec lifecycle management |
+
+#### Capa 3: Persistencia (Docker Containers)
+
+| Contenedor | Puerto Externo | Puerto Interno | Volumen | Imagen |
+|------------|---------------|---------------|---------|--------|
+| **neo4j** | 7474 (HTTP)<br/>7687 (Bolt) | 7474, 7687 | `./data/neo4j` | `neo4j:5.x` |
+| **redis** | 6379 | 6379 | `./data/redis` | `redis/redis-stack:latest` |
+
+**docker-compose.yml** (ubicación: `infrastructure/docker/docker-compose.yml`):
+
+```yaml
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:5.15.0
+    container_name: melquisedec-neo4j
+    ports:
+      - "7474:7474"  # HTTP Browser
+      - "7687:7687"  # Bolt Protocol
+    environment:
+      NEO4J_AUTH: neo4j/melquisedec2024
+      NEO4J_PLUGINS: '["apoc", "graph-data-science"]'
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./data/neo4j/plugins:/plugins
+    networks:
+      - melquisedec-net
+    restart: unless-stopped
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: melquisedec-redis
+    ports:
+      - "6379:6379"   # Redis
+      - "8001:8001"   # RedisInsight (UI)
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - melquisedec-net
+    restart: unless-stopped
+
+  reconciler:
+    build:
+      context: ../../packages/core-mcp
+      dockerfile: Dockerfile.reconciler
+    container_name: melquisedec-reconciler
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_AUTH: neo4j/melquisedec2024
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FS_ROOT: /workspace
+    volumes:
+      - ../../:/workspace
+    depends_on:
+      - neo4j
+      - redis
+    networks:
+      - melquisedec-net
+    restart: unless-stopped
+
+networks:
+  melquisedec-net:
+    driver: bridge
+```
+
+#### Capa 4: Servicios Background
+
+| Servicio | Lenguaje | Frecuencia | Función |
+|----------|----------|-----------|---------|
+| **Reconciler** | Python 3.11 | Cada 5 min (cron) | Detecta y repara inconsistencias |
+| **Backup Service** | Bash/Python | Diario (2 AM) | Backup Neo4j + Redis + Git |
+
+---
+
+## Visualización: Dashboards y Herramientas
+
+### 1. Neo4j Browser (Grafo de Conocimiento)
+
+**URL**: http://localhost:7474
+
+**Qué puedes visualizar**:
+- 🔗 Grafo completo de relaciones (Specs → Tasks → Commits → Lessons)
+- 🔍 Consultas Cypher interactivas
+- 📊 Estadísticas de nodos y relaciones
+- 🎨 Estilos personalizados por tipo de nodo
+
+**Queries útiles**:
+
+```cypher
+// 1. Ver todos los specs y sus tasks
+MATCH (s:Spec)-[:HAS_TASK]->(t:Task)
+RETURN s, t
+LIMIT 50
+
+// 2. Ver roadmap de un spec
+MATCH path = (s:Spec {id: 'monorepo-improvements-v1.1.0'})-[:HAS_TASK]->(t:Task)
+RETURN path
+ORDER BY t.task_number
+
+// 3. Ver lessons learned por rostro
+MATCH (t:Task)-[:GENERATED_LESSON]->(l:Lesson)
+WHERE l.rostro = 'SALOMON'
+RETURN t.id, l.pattern, l.anti_pattern
+```
+
+**Estilos personalizados** (Neo4j Browser > Settings > Stylesheet):
+
+```css
+node.Spec {
+  background-color: #FFD700;
+  border-color: #FFA500;
+  color: #000;
+  diameter: 80px;
+  caption: "{id}";
+}
+
+node.Task {
+  background-color: #4682B4;
+  color: #FFF;
+  diameter: 60px;
+  caption: "{id}";
+}
+
+node.Lesson {
+  background-color: #32CD32;
+  color: #000;
+  diameter: 50px;
+  caption: "{pattern}";
+}
+
+relationship {
+  shaft-width: 2px;
+  color: #999;
+  caption: "{type}";
+}
+```
+
+### 2. RedisInsight (Embeddings y Vectors)
+
+**URL**: http://localhost:8001
+
+**Qué puedes visualizar**:
+- 🔍 Todos los vectores almacenados
+- 📊 Metadata de cada embedding
+- 🧮 Resultados de búsquedas de similitud
+- 💾 Memoria utilizada por tipo de dato
+
+**Comandos útiles**:
+
+```bash
+# 1. Listar todos los embeddings
+FT.SEARCH idx:embeddings "*" LIMIT 0 100
+
+# 2. Buscar embeddings similares
+FT.SEARCH idx:embeddings "@vector:[VECTOR_BLOB]" KNN 10
+
+# 3. Ver metadata de un embedding
+HGETALL "embedding:issue-001-crisp-dm-question"
+```
+
+### 3. Obsidian (Vista de Archivos Markdown)
+
+**Plugins recomendados**:
+
+#### Plugin 1: **Dataview** (Consultas SQL-like)
+
+```dataview
+TABLE rostro, status, output_file
+FROM "Implementation Logs"
+WHERE spec = "monorepo-improvements-v1.1.0"
+SORT task_number ASC
+```
+
+#### Plugin 2: **Graph Analysis** (Visualización de wikilinks)
+
+- Vista de grafo local de un documento
+- Vista de grafo global del vault
+- Filtros por carpeta, tag, tipo
+
+#### Plugin 3: **Neo4j Graph View** (Integración Neo4j)
+
+**Instalación**:
+```bash
+# Community plugin (buscar en Obsidian Community Plugins)
+# Config: Settings > Neo4j Graph View
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=melquisedec2024
+```
+
+**Uso**:
+- Abre comando: `Neo4j: Open Graph View`
+- Ejecuta Cypher desde Obsidian
+- Visualiza resultados en panel lateral
+
+#### Plugin 4: **Excalidraw** (Diagramas manuales)
+
+- Dibujar arquitectura manualmente
+- Exportar a SVG/PNG
+- Embedear en notas
+
+### 4. VS Code Extensions
+
+#### Extension 1: **Neo4j** (by Neo4j)
+
+**Instalación**: `ext install neo4j.neo4j-vscode`
+
+**Funcionalidades**:
+- Explorador de base de datos Neo4j
+- Ejecutar queries Cypher desde VS Code
+- Autocompletado de nodos y relaciones
+- Visualización de resultados en panel
+
+**Configuración** (`.vscode/settings.json`):
+
+```json
+{
+  "neo4j.connections": [
+    {
+      "name": "MELQUISEDEC Local",
+      "url": "neo4j://localhost:7687",
+      "username": "neo4j",
+      "password": "melquisedec2024"
+    }
+  ]
+}
+```
+
+#### Extension 2: **Markdown Preview Mermaid** (Mermaid diagrams)
+
+**Instalación**: `ext install bierner.markdown-mermaid`
+
+**Uso**: Preview automático de diagramas Mermaid en markdown files.
+
+#### Extension 3: **Markdown Links** (Navegación wikilinks)
+
+**Instalación**: `ext install tchayen.markdown-links`
+
+**Funcionalidades**:
+- Go to definition para wikilinks
+- Find all references
+- Rename wikilink en todos los archivos
+
+### 5. Dashboard Personalizado (Futuro)
+
+**Propuesta**: `spec-workflow-mcp` Dashboard (semanas 7-8 del roadmap)
+
+**Tecnologías**:
+- **Frontend**: React + D3.js (visualización de grafos)
+- **Backend**: FastAPI (Python)
+- **WebSocket**: Real-time updates desde Reconciler
+
+**Vistas**:
+
+1. **Vista Spec**:
+   - Roadmap visual (tasks como nodos)
+   - Estado de cada task (color: pending, in-progress, completed)
+   - Línea de tiempo (commits por fecha)
+
+2. **Vista Triple**:
+   - 3 columnas: Markdown | Neo4j | Embeddings
+   - Estado de sincronización (✅ ⚠️ ❌)
+   - Inconsistencias detectadas + botón "Repair"
+
+3. **Vista Memoria**:
+   - Búsqueda semántica interactiva
+   - Resultados con score de similitud
+   - Preview de markdown + metadata
+
+**Acceso**: http://localhost:3000
+
+---
+
+## Resumen: ¿Dónde Visualizar Qué?
+
+| Necesito Ver | Herramienta | Puerto/URL | Observaciones |
+|--------------|-------------|-----------|---------------|
+| **Grafo de conocimiento** | Neo4j Browser | http://localhost:7474 | ✅ Mejor opción para relaciones |
+| **Embeddings y vectores** | RedisInsight | http://localhost:8001 | ✅ Único con vista de vectores |
+| **Archivos markdown** | Obsidian | Local vault | ✅ Mejor para lectura humana |
+| **Archivos markdown** | VS Code | Local workspace | ✅ Mejor para edición |
+| **Grafo en VS Code** | Neo4j Extension | Sidebar | ⚠️ Limitado vs Browser |
+| **Grafo en Obsidian** | Neo4j Graph View | Plugin panel | ⚠️ Requiere plugin community |
+| **Wikilinks en Obsidian** | Graph Analysis | Native | ✅ Perfecto para wikilinks |
+| **Dashboard unificado** | spec-workflow-mcp | http://localhost:3000 | 🚧 Futuro (Fase 4) |
+
+### Arquitectura de Servicios HTTPS
+
+**Estado actual**:
+- ❌ **No hay servicios HTTPS** en local (solo HTTP + Bolt)
+- ✅ Cada servicio tiene **puerto independiente** (Neo4j: 7474/7687, Redis: 6379/8001)
+- ✅ Comunicación entre contenedores via **Docker network** (bridge)
+
+**Producción (futuro)**:
+```
+https://melquisedec.aleia.io
+├── /api         → FastAPI (spec-workflow-mcp backend)
+├── /neo4j       → Neo4j Browser (proxy reverso)
+├── /redis       → RedisInsight (proxy reverso)
+└── /dashboard   → React App (frontend)
+```
+
+**Configuración nginx** (futuro):
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name melquisedec.aleia.io;
+
+    location /neo4j {
+        proxy_pass http://neo4j:7474;
+    }
+
+    location /redis {
+        proxy_pass http://redis:8001;
+    }
+
+    location /api {
+        proxy_pass http://spec-workflow-mcp:8000;
+    }
+
+    location / {
+        proxy_pass http://dashboard:3000;
+    }
+}
+```
+
+---
+
 ## Referencias
 
 - **Sincronización Knowledge**: [02-arquitectura/04-sincronizacion-knowledge.md](../02-arquitectura/04-sincronizacion-knowledge.md)

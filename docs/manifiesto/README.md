@@ -149,32 +149,30 @@ docs/manifiesto/
 ```mermaid
 graph TB
     subgraph "FASE 1: PREPARACIÓN"
-        Neo[(Neo4j<br/>Memoria)]
+        Neo[("Neo4j<br/>Memoria")]
         Query["🧠 Consultar:<br/>¿Qué tasks completadas?<br/>¿Cuál es la siguiente?<br/>¿Hay logs previos?"]
         Neo --> Query
     end
-
+    
     subgraph "FASE 2-4: WORKFLOW"
         M[MELQUISEDEC<br/>Clasifica]
         H[HYPATIA<br/>Investiga]
         S[SALOMON<br/>Analiza]
         Mo[MORPHEUS<br/>Diseña]
         A[ALMA<br/>Manifiesta]
-
-        M --> H --> S --> Mo --> A
+        
+        M --> H
+        H --> S
+        S --> Mo
+        Mo --> A
     end
-
+    
     subgraph "FASE 5: PERSISTENCIA TRIPLE"
-        FS[📁 Archivos<br/>Markdown]
-        Graph[🔗 Grafo<br/>Neo4j]
-        Vec[🔍 Embeddings<br/>Vector Store]
-
-        FS -.-> Sync[🔄 Reconciliador<br/>Background]
-        Graph -.-> Sync
-        Vec -.-> Sync
-    end
-
-    Query --> M
+        FS["📁 Archivos<br/>Markdown"]
+        Graph["🔗 Grafo<br/>Neo4j"]
+        Vec["🔍 Embeddings<br/>Vector Store"]
+        
+        FS -.-> Sync["🔄 Reconciliador<br/>Background"]
     A --> FS
     A --> Graph
     A --> Vec
