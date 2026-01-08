@@ -453,7 +453,43 @@ Antes de considerar un spec completo, verificar:
 
 ---
 
-## 📚 Referencias
+## � Compatibilidad con spec-workflow-mcp
+
+Este spec folder es 100% compatible con [spec-workflow-mcp](https://github.com/pimzino/spec-workflow-mcp) v1.1.2+. Los siguientes artefactos son gestionados por las **tools MCP**:
+
+| Artefacto | Tool MCP | Propósito | Ejemplo |
+|-----------|----------|-----------|----------|
+| `requirements.md` | `create-spec-doc` | Crear/actualizar requirements | `document: "requirements"` |
+| `design.md` | `create-spec-doc` | Crear/actualizar diseño | `document: "design"` |
+| `tasks.md` | `create-spec-doc` | Crear/actualizar tasks | `document: "tasks"` |
+| Task status | `manage-tasks` | Listar, cambiar estado, obtener siguiente | `action: "next-pending"` |
+| Implementation logs | `log-implementation` | Registrar métricas de ejecución | `taskId, summary, filesModified` |
+| Approvals | `request-approval` | Solicitar revisión humana | `type: "document"` |
+| Spec status | `spec-status` | Ver progreso general | `specName: "..."` |
+| Context loading | `get-spec-context` | Cargar requirements/design/tasks | `specName: "..."` |
+| Steering context | `get-steering-context` | Cargar steering docs | `projectPath: "..."` |
+
+### Workflow Automatizado
+
+El `orchestrator.md` usa estas tools para ejecutar el workflow completo **sin duplicar contenido de tasks.md**:
+
+```typescript
+// Patrón de ejecución (ver orchestrator.md)
+while (task = manage-tasks('next-pending')) {
+  manage-tasks('set-status', task.id, 'in-progress')
+  executeTaskFromDefinition(task)  // Usa task.prompt de tasks.md
+  manage-tasks('set-status', task.id, 'completed')
+  log-implementation(task.id, ...)
+}
+```
+
+**Principio DRY**: El orchestrator **referencia** tasks.md, no **duplica** su contenido.
+
+**Principio SSoT**: Steering files **referencian** docs/manifiesto/, no duplican.
+
+---
+
+## �📚 Referencias
 
 - **Spec Workflow MCP Docs**: [GitHub - pimzino/spec-workflow-mcp](https://github.com/pimzino/spec-workflow-mcp)
 - **DAATH-ZEN Manifesto**: `docs/manifiesto/README.md`

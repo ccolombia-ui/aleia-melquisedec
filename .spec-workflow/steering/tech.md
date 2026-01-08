@@ -1,70 +1,45 @@
-# Technical Steering - Monorepo Stack
+# Technical Steering - monorepo-improvements-v1.1.0
 
-## 🏗️ Arquitectura General
+## 📖 Referencias Técnicas (SSoT)
 
-```
-aleia-melquisedec/
-├── apps/                    # Research applications (one per domain/instance)
-├── packages/                # Shared Python packages
-│   ├── core-mcp/           # MCP server para interacción con Claude/GPT
-│   └── daath-toolkit/      # Toolkit de captura y almacenamiento
-├── docs/                    # Documentación organizada por tipo
-│   ├── manifiesto/         # Fundamentos filosóficos y workflow
-│   ├── guides/             # Guías prácticas
-│   ├── architecture/       # ADRs y decisiones técnicas
-│   └── _meta/              # Issues y roadmap local
-├── tools/                   # Scripts operacionales
-│   ├── setup/              # Scripts de instalación
-│   ├── maintenance/        # Scripts de limpieza y validación
-│   ├── deployment/         # Scripts de despliegue
-│   └── testing/            # Scripts de pruebas
-├── infrastructure/          # Docker, CI/CD configs
-└── _templates/             # Templates para nuevos proyectos/research
-```
+**Arquitectura del Monorepo**:
+- **ADR-001 Monorepo Structure**: [docs/architecture/ADR-001-monorepo-structure.md](../../docs/architecture/ADR-001-monorepo-structure.md)
+- **Arquitectura Visual**: [docs/architecture/estructura-visual.md](../../docs/architecture/estructura-visual.md)
+- **Configuración Completa**: [docs/guides/CONFIGURACION_COMPLETA.md](../../docs/guides/CONFIGURACION_COMPLETA.md)
 
-## 🐍 Python Stack
+**MCPs y Tooling**:
+- **MCPs Recomendados**: [docs/manifiesto/03-workflow/04-mcps-recomendados.md](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
+- **Docker MCP Toolkit**: [docs/guides/docker-mcp-toolkit.md](../../docs/guides/docker-mcp-toolkit.md)
+- **Workflows GitHub Actions**: [docs/guides/workflows-github-actions.md](../../docs/guides/workflows-github-actions.md)
 
-- **Version**: Python 3.10+
-- **Package Manager**: pip con requirements.txt
-- **Packaging**: pyproject.toml (PEP 517/518)
-- **Testing**: pytest + pytest-cov
-- **Formatting**: black + isort
-- **Linting**: flake8, mypy (opcional)
+**Estrategia de Branching y Migración**:
+- **Estrategia Branching**: [docs/guides/estrategia-branching.md](../../docs/guides/estrategia-branching.md)
+- **Migración Estructura**: [docs/guides/migracion-estructura.md](../../docs/guides/migracion-estructura.md)
 
-## 📦 Dependencias Principales
+---
 
-### packages/daath-toolkit/
-```
-- pinecone-client>=2.2.0    # Vector database
-- openai>=1.0.0             # Embeddings API
-- pyyaml>=6.0               # YAML parsing
-- python-frontmatter>=1.0   # Markdown frontmatter
-```
+## 🛠️ Stack Técnico para este Spec
 
-### packages/core-mcp/
-```
-- mcp>=0.9.0                # Model Context Protocol SDK
-- fastapi>=0.100.0          # API framework
-- uvicorn>=0.23.0           # ASGI server
-```
+**Python**:
+- Version: 3.10+
+- Formatting: black + isort
+- Linting: flake8
+- Testing: pytest + pytest-cov
+- Packaging: pyproject.toml (PEP 517/518)
 
-## 🔧 Herramientas de Desarrollo
+**Pre-commit Hooks** (Task 1.3):
+- trailing-whitespace, end-of-file-fixer
+- check-yaml, check-json
+- black, isort, flake8
+- validate-doc-links.py (custom)
 
-- **Editor**: VS Code con extensiones Python, spec-workflow-mcp
-- **Version Control**: Git + GitHub
-- **Pre-commit**: hooks para calidad
-- **CI/CD**: GitHub Actions (configuración pendiente)
+**Docker**:
+- `infrastructure/docker/docker-compose.yml` para servicios
+- Neo4j para knowledge graph (lessons)
+- Redis para caché (opcional)
 
-## 🐳 Docker
-
-- `infrastructure/docker/docker-compose.yml` para servicios locales
-- Redis para caché/sessions
-- Neo4j para knowledge graph (opcional)
-
-## 📁 Convenciones de Nomenclatura
-
-- **Python files**: `snake_case.py`
-- **Python packages**: `snake_case/`
-- **Markdown docs**: `kebab-case.md`
-- **YAML configs**: `kebab-case.yaml`
-- **Directories**: `kebab-case/` para docs, `snake_case/` para código
+**Git Workflow**:
+- Commits incrementales por task
+- Mensajes siguiendo Conventional Commits
+- git mv para preservar history (Task 1.2)
+- Tag al finalizar: monorepo-improvements-v1.1.0

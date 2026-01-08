@@ -1,47 +1,44 @@
-# Product Steering - DAATH-ZEN Melquisedec
+# Product Steering - monorepo-improvements-v1.1.0
 
-## 🎯 Visión
+## 📖 Referencias Primarias (SSoT)
 
-DAATH-ZEN Melquisedec es un sistema de investigación autopoiético que permite capturar, procesar y evolucionar conocimiento colaborando con agentes de IA. El proyecto encarna el concepto de los **5 Rostros** de la inteligencia colectiva.
+**DAATH-ZEN Fundamentos** (no duplicar, referenciar):
+- **¿Qué es Melquisedec?**: [docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md](../../docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md)
+- **Fundamento Kabalístico**: [docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md](../../docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md)
+- **5 Rostros**: [docs/manifiesto/01-fundamentos/03-cinco-rostros.md](../../docs/manifiesto/01-fundamentos/03-cinco-rostros.md)
+- **Principios Fundacionales**: [docs/manifiesto/01-fundamentos/04-principios-fundacionales.md](../../docs/manifiesto/01-fundamentos/04-principios-fundacionales.md)
 
-## 🌟 Principios de Producto
+**DAATH-ZEN Arquitectura**:
+- **Sistema Checkpoints**: [docs/manifiesto/02-arquitectura/02-sistema-checkpoints.md](../../docs/manifiesto/02-arquitectura/02-sistema-checkpoints.md)
+- **Sincronización Knowledge**: [docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md](../../docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md)
+- **Sistema Autopoiesis**: [docs/manifiesto/02-arquitectura/05-autopoiesis-system.md](../../docs/manifiesto/02-arquitectura/05-autopoiesis-system.md)
 
-### P1: Autopoiesis First
-El sistema debe ser capaz de auto-generarse y evolucionar a partir de sus propias interacciones.
+**DAATH-ZEN Workflow**:
+- **MCPs Recomendados**: [docs/manifiesto/03-workflow/04-mcps-recomendados.md](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
+- **Sistema Autopoiesis (workflow)**: [docs/manifiesto/03-workflow/05-autopoiesis.md](../../docs/manifiesto/03-workflow/05-autopoiesis.md)
 
-### P3: Issue-Driven Everything
-Todo trabajo inicia desde un ISSUE explícito con metadata estructurada.
+---
 
-### P5: Knowledge Capture
-Cada interacción genera artifacts reutilizables (chatlogs, lessons, outputs).
+## 🎯 Contexto para este Spec
 
-### P10: Feedback Loops
-Los outputs generan nuevos issues en un ciclo continuo de mejora.
+**Objetivo v1.1.0**: Consolidar monorepo con autopoiesis completa post-reorganización
 
-## 🎭 Los 5 Rostros
+**Rostros Involucrados**:
+- **MELQUISEDEC** (classifier) - Tasks 1.1, 1.6
+- **MORPHEUS** (implementer) - Tasks 1.2, 1.3, 1.5
+- **SALOMON** (architect) - Task 1.4
+- **ALMA** (publisher) - Task 1.7
 
-1. **MELQUISEDEC** - El facilitador y contextualizador
-2. **HYPATIA** - La investigadora y analista
-3. **SALOMÓN** - El arquitecto y diseñador de soluciones
-4. **MORPHEUS** - El implementador y ejecutor
-5. **ALMA** - La evaluadora y sintetizadora de lessons learned
+**Principios Aplicados**:
+- **P1: Autopoiesis First** - Lessons alimentan Neo4j → nuevos issues
+- **P3: Issue-Driven** - Spec iniciado desde issue explícito
+- **P5: Knowledge Capture** - 6 lessons + summary.yaml
+- **P10: Feedback Loops** - Cleanup script detecta nuevos problemas
 
-## 🎯 Objetivos del Release v1.1.0
-
-Este spec agrupa mejoras de mantenimiento del monorepo identificadas post-reorganización:
-
-1. Limpiar referencias a estructura obsoleta (`nucleo-investigacion`)
-2. Organizar documentación en ubicaciones correctas
-3. Implementar automatización de calidad (pre-commit hooks)
-4. Formalizar el paquete daath-toolkit
-5. Agregar cobertura de tests
-6. Crear herramientas de validación continua
-
-## 📊 Métricas de Éxito
-
-- [ ] 0 referencias a `nucleo-investigacion` en el codebase
-- [ ] Raíz del proyecto limpia (<10 archivos)
-- [ ] Pre-commit hooks activos protegiendo main
-- [ ] daath-toolkit instalable via `pip install -e .`
-- [ ] Cobertura de tests >80% en capture/ y storage/
-- [ ] Script de validación ejecutable sin errores
+**Métricas de Éxito**:
+- 0 referencias `nucleo-investigacion`
+- Raíz <10 archivos
+- Pre-commit hooks activos
+- daath-toolkit instalable
+- Tests >80% coverage
+- Script validación sin errores críticos
