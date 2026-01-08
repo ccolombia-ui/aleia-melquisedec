@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-01-08
+
+### Added
+- **GitHub Actions Workflows**: 4 complete automation pipelines
+  - CI/CD Pipeline: validation, security, tests, linting
+  - Changelog Automation: auto-update on PR merge
+  - Documentation Health Check: weekly validation + reports
+  - Release Management: auto-create releases from tags
+- **Branching Strategy**: Research-per-branch model documented
+  - Each investigation = independent branch (`research/XX-nombre`)
+  - Feature branches for infrastructure improvements
+  - Hotfix branches for urgent corrections
+- **Documentation Guides**:
+  - `estrategia-branching.md`: Complete branching workflow
+  - `workflows-github-actions.md`: Workflows explanation + "are they prompts?" analysis
+  - `CONFIGURACION_COMPLETA.md`: Setup summary and next steps
+- **Badges to README**: Release, Tests, Neo4j, Python, Conventional Commits
+
+### Changed
+- Enhanced `.gitignore`: Added Docker volumes, test apps pattern
+- Upgraded CI workflow: 6 jobs (structure, docs, commits, branches, security, generators)
+
+### Removed
+- Test app `apps/01-test-reorganizacion/` after successful validation
+
+### Infrastructure
+- 4 GitHub Actions workflows totaling ~500 lines of automation
+- Weekly scheduled documentation health checks (Mondays 9 AM)
+- Automatic changelog updates on PR merge
+- Security scanning for hardcoded credentials
+
+---
+
 ## [1.0.0] - 2026-01-08
 
 ### Added
