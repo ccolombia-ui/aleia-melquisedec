@@ -51,10 +51,11 @@
   - _Lesson: lessons-learned/task-1.6-cleanup-script.md_
   - _Prompt: Role: MELQUISEDEC Classifier | Task: Script to identify orphaned files, broken symlinks, unused imports; classify by severity; dry-run by default | Restrictions: Dry-run by default, no destructive operations without --force | Success: Script identifies all issues, generates report with severity levels_
 
-- [ ] 1.7. Generate lessons-learned summary
+- [x] 1.7. Generate lessons-learned summary
   - File: .spec-workflow/specs/monorepo-improvements-v1.1.0/lessons-learned/summary.yaml
   - _Requirements: ALL_
   - _Rostro: ALMA_
   - _MCPs: base=[neo4j, memory] | specialized=[filesystem]_
-  - _Lesson: N/A_
+  - _Lesson: lessons-learned/summary.yaml (self-documenting)_
   - _Prompt: Role: ALMA Publisher | Task: Aggregate all lessons from tasks 1.1-1.6, extract patterns, calculate confidence scores, identify reusable patterns for future specs | Restrictions: Only include validated lessons | Success: summary.yaml created with aggregated insights, patterns documented_
+  - _Nota: Task 1.5 marcada como descontinuada en summary (moved to Keter investigation)_
