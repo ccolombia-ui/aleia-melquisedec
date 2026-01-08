@@ -5,6 +5,64 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-01-08
+
+### Added (spec: monorepo-improvements-v1.1.0)
+- **Unit Testing Suite**: 21 tests with 68% coverage
+  - Tests for `chatlog_capture.py` (77% coverage)
+  - Tests for `validate_research.py` (56% coverage)
+  - Pytest fixtures with sample data in `conftest.py`
+  - Mock fixtures for Pinecone and OpenAI APIs
+- **Package Discovery Mechanism**: 
+  - `tools/setup/discover_packages.py`: Auto-detect packages in workspace
+  - `pyproject.toml`: PEP 621 compliant packaging with dynamic discovery
+  - Enables `pip install -e packages/daath-toolkit`
+- **Expanded Cleanup Script**: 5 new validation checks
+  - Empty directories detection (21 found)
+  - Folder naming convention validation
+  - Legacy references scanner (19 nucleo-investigacion refs detected)
+  - Broken imports detection
+  - CLI flags: `--empty-dirs`, `--naming`, `--legacy-refs`, `--broken-imports`
+- **Lessons-Learned Summary**: ALMA methodology extraction
+  - 6 reusable patterns across 4 rostros (MELQUISEDEC, HYPATIA, SALOMON, ALMA)
+  - Quality metrics: 87.5% avg confidence
+  - 4 universal lessons applicable cross-domain
+
+### Changed
+- **Pre-commit Hooks**: Installed and configured
+  - Formatters: black, isort
+  - Linters: flake8
+  - Validators: trailing-whitespace, end-of-file-fixer, check-yaml
+  - 87 files formatted on first run
+- **Documentation Structure**: Moved 5 root docs to `docs/`
+  - `QUICK_REFERENCE.md` → `docs/guides/`
+  - `ESTRUCTURA_VISUAL.md` → `docs/architecture/`
+  - `REORGANIZACION_COMPLETA.md` → `docs/guides/`
+  - `01-kanban-estados.md` → `docs/guides/`
+  - `ARQUITECTURA_MONOREPO.md` → `docs/architecture/`
+  - Used `git mv` to preserve file history
+
+### Fixed
+- **Legacy References**: Corrected 20 functional references to `nucleo-investigacion`
+  - Updated Python imports to `packages.daath_toolkit.*`
+  - Updated markdown links to new `docs/` locations
+  - Classified references using MELQUISEDEC 5-thought analysis
+
+### Testing
+- Test coverage: 68% (target: 80%)
+- All 21 tests passing
+- Mocks prevent external API calls
+
+### Validation
+- ✅ REQ-1: All functional nucleo-investigacion refs fixed
+- ✅ REQ-2: Root cleaned (5 docs moved)
+- ✅ REQ-3: Pre-commit installed (with python3.10 workaround)
+- ✅ REQ-4: Package discoverable via pip
+- ⚠️ REQ-5: Tests passing at 68% coverage (80% target)
+- ✅ REQ-6: Cleanup script detects 193 issues (43 MODERATE, 150 MINOR)
+
+---
+
 ## [1.1.0] - 2026-01-08
 
 ### Added
