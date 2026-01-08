@@ -3,8 +3,13 @@
 > Monorepo de investigación autopoiético para el desarrollo de sistemas de conocimiento augmentado
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Release](https://img.shields.io/github/v/release/ccolombia-ui/aleia-melquisedec?include_prereleases)](https://github.com/ccolombia-ui/aleia-melquisedec/releases)
+[![Tests](https://github.com/ccolombia-ui/aleia-melquisedec/actions/workflows/test.yml/badge.svg)](https://github.com/ccolombia-ui/aleia-melquisedec/actions)
 [![Docker](https://img.shields.io/badge/Docker-20.10+-blue.svg)](https://www.docker.com/)
 [![MCP](https://img.shields.io/badge/MCP-Toolkit-green.svg)](https://github.com/docker/mcp-toolkit)
+[![Neo4j](https://img.shields.io/badge/Neo4j-5.15-008CC1.svg)](https://neo4j.com/)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB.svg)](https://www.python.org/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 
 ---
 

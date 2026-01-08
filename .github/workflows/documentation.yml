@@ -1,0 +1,248 @@
+name: Documentation Health Check
+
+on:
+  push:
+    branches: [ main, 'research/**' ]
+    paths:
+      - 'docs/**'
+      - '**.md'
+      - 'apps/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+      - '**.md'
+      - 'apps/**'
+  schedule:
+    # Run weekly on Mondays at 9 AM
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-documentation-health:
+    name: Documentation Health Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install markdown pyyaml
+    
+    - name: Check for orphaned documentation
+      run: |
+        echo "🔍 Checking for orphaned documentation files..."
+        
+        # Find all .md files
+        all_docs=$(find docs -name "*.md")
+        
+        # Check if they are referenced in README or other docs
+        orphaned=0
+        for doc in $all_docs; do
+          filename=$(basename "$doc")
+          if ! grep -r -q "$filename" README.md docs/ 2>/dev/null; then
+            echo "⚠️  Potentially orphaned: $doc"
+            orphaned=$((orphaned + 1))
+          fi
+        done
+        
+        if [ $orphaned -gt 0 ]; then
+          echo "⚠️  Found $orphaned potentially orphaned documentation files"
+        else
+          echo "✅ No orphaned documentation found"
+        fi
+    
+    - name: Check README completeness
+      run: |
+        echo "📋 Checking README completeness..."
+        
+        required_sections=(
+          "Visión"
+          "Estructura"
+          "Getting Started"
+          "Licencia"
+        )
+        
+        missing=0
+        for section in "${required_sections[@]}"; do
+          if ! grep -q "$section" README.md; then
+            echo "❌ Missing section in README: $section"
+            missing=$((missing + 1))
+          else
+            echo "✅ Found section: $section"
+          fi
+        done
+        
+        if [ $missing -gt 0 ]; then
+          exit 1
+        fi
+    
+    - name: Validate YAML frontmatter in research apps
+      run: |
+        echo "🔍 Validating YAML frontmatter..."
+        
+        python - <<'EOF'
+        import os
+        import yaml
+        import re
+        
+        errors = []
+        
+        for root, dirs, files in os.walk('apps'):
+            if 'PROPOSITO.md' in files:
+                proposito_path = os.path.join(root, 'PROPOSITO.md')
+                
+                with open(proposito_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                
+                # Extract YAML frontmatter
+                yaml_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+                if not yaml_match:
+                    yaml_match = re.search(r'```yaml\s*\n(.*?)\n```', content, re.DOTALL)
+                
+                if yaml_match:
+                    try:
+                        data = yaml.safe_load(yaml_match.group(1))
+                        
+                        # Check required fields
+                        required_fields = ['id', 'version', 'created', 'status', 'purpose']
+                        for field in required_fields:
+                            if field not in data:
+                                errors.append(f"❌ {proposito_path}: Missing field '{field}'")
+                        
+                        print(f"✅ {proposito_path}: Valid YAML frontmatter")
+                    except yaml.YAMLError as e:
+                        errors.append(f"❌ {proposito_path}: Invalid YAML - {e}")
+                else:
+                    errors.append(f"⚠️  {proposito_path}: No YAML frontmatter found")
+        
+        if errors:
+            print("\n" + "\n".join(errors))
+            exit(1)
+        else:
+            print("\n✅ All YAML frontmatter is valid")
+        EOF
+    
+    - name: Check for TODO/FIXME comments
+      run: |
+        echo "🔍 Checking for TODO/FIXME comments in documentation..."
+        
+        todos=$(grep -r -n "TODO\|FIXME" docs/ apps/ --include="*.md" || true)
+        
+        if [ -n "$todos" ]; then
+          echo "📝 Found TODO/FIXME comments:"
+          echo "$todos"
+          echo ""
+          echo "ℹ️  Consider creating issues for these items"
+        else
+          echo "✅ No TODO/FIXME comments found"
+        fi
+    
+    - name: Check documentation dates
+      run: |
+        echo "📅 Checking for outdated documentation..."
+        
+        # Find docs not modified in last 90 days
+        old_docs=$(find docs -name "*.md" -mtime +90 2>/dev/null || true)
+        
+        if [ -n "$old_docs" ]; then
+          echo "⚠️  Documentation not updated in 90+ days:"
+          echo "$old_docs"
+          echo ""
+          echo "ℹ️  Consider reviewing these files for accuracy"
+        else
+          echo "✅ All documentation is relatively recent"
+        fi
+    
+    - name: Generate documentation report
+      if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+      run: |
+        echo "# Documentation Health Report" > doc_report.md
+        echo "Generated: $(date)" >> doc_report.md
+        echo "" >> doc_report.md
+        
+        echo "## Statistics" >> doc_report.md
+        echo "- Total markdown files: $(find . -name '*.md' | wc -l)" >> doc_report.md
+        echo "- Documentation files: $(find docs -name '*.md' | wc -l)" >> doc_report.md
+        echo "- Research apps: $(find apps -maxdepth 1 -type d -name '[0-9]*-*' | wc -l)" >> doc_report.md
+        echo "" >> doc_report.md
+        
+        echo "## Recent Changes" >> doc_report.md
+        git log --since="7 days ago" --pretty=format:"- %s (%an)" --name-only -- docs/ | head -20 >> doc_report.md
+        
+        cat doc_report.md
+    
+    - name: Upload report
+      if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation-health-report
+        path: doc_report.md
+
+  check-code-documentation:
+    name: Check Code Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Check Python docstrings
+      run: |
+        echo "🐍 Checking Python docstrings..."
+        
+        python - <<'EOF'
+        import os
+        import ast
+        import sys
+        
+        missing_docstrings = []
+        
+        for root, dirs, files in os.walk('.'):
+            # Skip .git and other hidden dirs
+            dirs[:] = [d for d in dirs if not d.startswith('.')]
+            
+            for file in files:
+                if file.endswith('.py'):
+                    filepath = os.path.join(root, file)
+                    
+                    # Skip test files and __init__.py
+                    if 'test_' in file or file == '__init__.py':
+                        continue
+                    
+                    try:
+                        with open(filepath, 'r', encoding='utf-8') as f:
+                            tree = ast.parse(f.read())
+                        
+                        for node in ast.walk(tree):
+                            if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
+                                # Check if has docstring
+                                docstring = ast.get_docstring(node)
+                                if not docstring:
+                                    missing_docstrings.append(f"{filepath}: {node.name}")
+                    
+                    except Exception as e:
+                        print(f"⚠️  Could not parse {filepath}: {e}")
+        
+        if missing_docstrings:
+            print("⚠️  Missing docstrings in:")
+            for item in missing_docstrings[:20]:  # Limit to first 20
+                print(f"  - {item}")
+            
+            if len(missing_docstrings) > 20:
+                print(f"  ... and {len(missing_docstrings) - 20} more")
+            
+            print(f"\nℹ️  Total: {len(missing_docstrings)} functions/classes without docstrings")
+        else:
+            print("✅ All functions and classes have docstrings")
+        EOF

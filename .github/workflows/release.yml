@@ -1,0 +1,116 @@
+name: Release Management
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.1)'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Get version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          version="${{ inputs.version }}"
+        else
+          version=${GITHUB_REF#refs/tags/v}
+        fi
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "📦 Version: $version"
+    
+    - name: Extract changelog for this version
+      id: changelog
+      run: |
+        version="${{ steps.version.outputs.version }}"
+        
+        # Extract changelog section for this version
+        awk "/## \[$version\]/,/## \[/" CHANGELOG.md | sed '$d' > release_notes.md
+        
+        if [ ! -s release_notes.md ]; then
+          echo "⚠️  No changelog entry found for version $version"
+          echo "No changelog entry available" > release_notes.md
+        fi
+        
+        cat release_notes.md
+    
+    - name: Generate release statistics
+      run: |
+        version="${{ steps.version.outputs.version }}"
+        
+        echo "" >> release_notes.md
+        echo "## 📊 Statistics" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "- Total commits: $(git rev-list --count HEAD)" >> release_notes.md
+        echo "- Contributors: $(git log --format='%an' | sort -u | wc -l)" >> release_notes.md
+        echo "- Files: $(git ls-files | wc -l)" >> release_notes.md
+        echo "- Research apps: $(find apps -maxdepth 1 -type d -name '[0-9]*-*' | wc -l)" >> release_notes.md
+        echo "- Documentation: $(find docs -name '*.md' | wc -l) files" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "## 🔗 Links" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "- [Full Changelog](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md)" >> release_notes.md
+        echo "- [Documentation](https://github.com/${{ github.repository }}/tree/main/docs)" >> release_notes.md
+        echo "- [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)" >> release_notes.md
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: Release v${{ steps.version.outputs.version }}
+        body_path: release_notes.md
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Update version badge
+      run: |
+        echo "✅ Release v${{ steps.version.outputs.version }} created successfully"
+
+  validate-release:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    needs: create-release
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install pyyaml
+    
+    - name: Run full validation
+      run: |
+        echo "🔍 Running full validation suite..."
+        
+        # Validate all research structures
+        python packages/daath-toolkit/validators/validate_research.py apps/00-template
+        
+        # Check documentation
+        test -f README.md
+        test -f ARQUITECTURA_MONOREPO.md
+        test -f CHANGELOG.md
+        test -f CONTRIBUTING.md
+        
+        echo "✅ All validations passed"

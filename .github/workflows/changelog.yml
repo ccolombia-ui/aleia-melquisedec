@@ -1,0 +1,126 @@
+name: Changelog Automation
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [ main ]
+
+jobs:
+  update-changelog:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Extract version from PR
+      id: version
+      run: |
+        # Intentar extraer versión del título o etiquetas del PR
+        pr_title="${{ github.event.pull_request.title }}"
+        
+        if [[ "$pr_title" =~ v?([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+          version="${BASH_REMATCH[1]}"
+        else
+          # Si no hay versión en el título, usar fecha
+          version="unreleased-$(date +%Y-%m-%d)"
+        fi
+        
+        echo "version=$version" >> $GITHUB_OUTPUT
+        echo "📦 Version detected: $version"
+    
+    - name: Get PR details
+      id: pr_details
+      run: |
+        pr_number="${{ github.event.pull_request.number }}"
+        pr_title="${{ github.event.pull_request.title }}"
+        pr_author="${{ github.event.pull_request.user.login }}"
+        pr_body="${{ github.event.pull_request.body }}"
+        
+        # Extraer tipo de commit del título
+        if [[ "$pr_title" =~ ^(feat|fix|docs|chore|refactor|test|perf|ci|build)(\([a-z-]+\))?: ]]; then
+          commit_type="${BASH_REMATCH[1]}"
+        else
+          commit_type="chore"
+        fi
+        
+        echo "commit_type=$commit_type" >> $GITHUB_OUTPUT
+        echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
+        echo "pr_title=$pr_title" >> $GITHUB_OUTPUT
+        echo "pr_author=$pr_author" >> $GITHUB_OUTPUT
+    
+    - name: Update CHANGELOG.md
+      run: |
+        version="${{ steps.version.outputs.version }}"
+        commit_type="${{ steps.pr_details.outputs.commit_type }}"
+        pr_number="${{ steps.pr_details.outputs.pr_number }}"
+        pr_title="${{ steps.pr_details.outputs.pr_title }}"
+        pr_author="${{ steps.pr_details.outputs.pr_author }}"
+        
+        # Determinar sección según tipo de commit
+        case "$commit_type" in
+          feat)     section="### Added" ;;
+          fix)      section="### Fixed" ;;
+          docs)     section="### Documentation" ;;
+          refactor) section="### Changed" ;;
+          perf)     section="### Performance" ;;
+          *)        section="### Other" ;;
+        esac
+        
+        # Buscar si ya existe el encabezado de versión
+        if grep -q "## \[$version\]" CHANGELOG.md; then
+          # Versión existe, añadir bajo la sección correcta
+          awk -v section="$section" -v entry="- $pr_title (#$pr_number by @$pr_author)" '
+            /^## \[/ { in_version=1 }
+            in_version && $0 == section {
+              print $0
+              print entry
+              found=1
+              next
+            }
+            { print }
+            END { if (!found) print "\nWARNING: Section not found" }
+          ' CHANGELOG.md > CHANGELOG.tmp
+          mv CHANGELOG.tmp CHANGELOG.md
+        else
+          # Versión no existe, crear nueva entrada
+          today=$(date +%Y-%m-%d)
+          
+          # Crear entrada temporal
+          cat > changelog_entry.tmp <<EOF
+## [$version] - $today
+
+$section
+- $pr_title (#$pr_number by @$pr_author)
+
+EOF
+          
+          # Insertar después de la primera línea de "## ["
+          awk '/^## \[/ && !inserted { print_entry=1; inserted=1 }
+               print_entry { system("cat changelog_entry.tmp"); print_entry=0 }
+               { print }' CHANGELOG.md > CHANGELOG.tmp
+          
+          mv CHANGELOG.tmp CHANGELOG.md
+          rm changelog_entry.tmp
+        fi
+        
+        echo "✅ CHANGELOG.md updated for version $version"
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+        if git diff --quiet CHANGELOG.md; then
+          echo "No changes to CHANGELOG.md"
+        else
+          git add CHANGELOG.md
+          git commit -m "docs: update CHANGELOG.md for PR #${{ steps.pr_details.outputs.pr_number }}"
+          git push origin main
+          echo "✅ CHANGELOG.md committed and pushed"
+        fi
