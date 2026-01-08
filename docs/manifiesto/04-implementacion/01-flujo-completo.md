@@ -42,5 +42,5 @@ Breve guía paso a paso desde la creación de un issue hasta la publicación de 
 
 **Referencias**: `01-research-instance.md`, `03-versionamiento.md`, `03-checklist-research-instance.md`
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

@@ -1,6 +1,6 @@
 # Guía Completa: Docker MCP Toolkit + Neo4j Local
 
-**Fecha:** 2026-01-07  
+**Fecha:** 2026-01-07
 **Propósito:** Conectar Neo4j local con Docker MCP Toolkit para gestionar grafos y embeddings
 
 ---
@@ -81,16 +81,16 @@ neo4j:
   environment:
     # Autenticación
     - NEO4J_AUTH=neo4j/password123
-    
+
     # Memoria optimizada para embeddings
     - NEO4J_dbms_memory_heap_initial__size=512M
     - NEO4J_dbms_memory_heap_max__size=2G
     - NEO4J_dbms_memory_pagecache_size=512M
-    
+
     # Plugins para grafos de conocimiento
     - NEO4J_PLUGINS=["apoc", "graph-data-science"]
     - NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
-    
+
     # Red
     - NEO4J_dbms_connector_bolt_advertised__address=localhost:7687
   volumes:
@@ -351,7 +351,7 @@ CREATE (b)-[:ALMACENA]->(d:Dato {tipo: "Grafo de Conocimiento"})
 
 **Usar con Copilot:**
 ```
-@workspace "Usando neo4j-cypher MCP, busca todos los conceptos 
+@workspace "Usando neo4j-cypher MCP, busca todos los conceptos
 relacionados con 'Docker MCP Toolkit' en el grafo de conocimiento"
 ```
 
@@ -373,8 +373,8 @@ CALL gds.graph.project(
 
 **Usar con Copilot:**
 ```
-@workspace "Genera embeddings para todos los conceptos 
-en Neo4j usando Ollama, luego búscame conceptos 
+@workspace "Genera embeddings para todos los conceptos
+en Neo4j usando Ollama, luego búscame conceptos
 similares a 'inteligencia artificial'"
 ```
 
@@ -383,8 +383,8 @@ similares a 'inteligencia artificial'"
 **Objetivo:** Que Copilot recuerde contexto entre sesiones
 
 ```
-@workspace "Guarda en neo4j-memory que estoy trabajando 
-en el proyecto Melquisedec, enfocado en grafos de conocimiento 
+@workspace "Guarda en neo4j-memory que estoy trabajando
+en el proyecto Melquisedec, enfocado en grafos de conocimiento
 con Neo4j y embeddings con Ollama"
 ```
 
@@ -570,5 +570,5 @@ docker-compose down -v
 
 ---
 
-**Última actualización:** 2026-01-07  
+**Última actualización:** 2026-01-07
 **Autor:** GitHub Copilot + Aleia Melquisedec Team

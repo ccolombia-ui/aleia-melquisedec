@@ -58,5 +58,5 @@ MERGE (a)-[:DERIVES_FROM]->(b)
 
 **Referencias**: `03-templates-hkm.md`, `01-research-instance.md`
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

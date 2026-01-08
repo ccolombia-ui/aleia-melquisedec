@@ -95,11 +95,11 @@ aleia-melquisedec/
 apps:
   formato: "{número}-{nombre-descriptivo}"
   ejemplo: "01-knowledge-graph-research"
-  
+
 packages:
   formato: "{purpose}-{component}"
   ejemplo: "core-mcp", "daath-toolkit"
-  
+
 tools:
   formato: "{action}_{target}.{ext}"
   ejemplo: "setup_neo4j.ps1", "test_mcps.py"

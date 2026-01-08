@@ -27,19 +27,19 @@ Todo conocimiento en MELQUISEDEC se guarda en **3 lugares** al mismo tiempo:
 ```mermaid
 graph LR
     K[Conocimiento<br/>Nuevo] --> W[Write API<br/>Unificada]
-    
+
     W --> MD[📁 Markdown<br/>Humanos + Git]
     W --> Neo[🔗 Neo4j<br/>Relaciones + Queries]
     W --> Vec[🔍 Embeddings<br/>Búsqueda Semántica]
-    
+
     MD -.-> R[🔄 Reconciliador]
     Neo -.-> R
     Vec -.-> R
-    
+
     R -->|Repara inconsistencias| MD
     R -->|desde Markdown (SSoT)| Neo
     R -->|cada 5 minutos| Vec
-    
+
     style W fill:#FFD700
     style R fill:#FF6347
 ```
@@ -157,7 +157,7 @@ graph TD
     A[Nueva Sesión] --> B{¿Primera vez?}
     B -->|Sí| C[Activar: neo4j, memory]
     B -->|No| C
-    
+
     C --> D[FASE 1: PREPARACIÓN]
     D --> E[Query Neo4j: ¿Qué spec estoy ejecutando?]
     E --> F[Query Neo4j: ¿Qué tasks están COMPLETED?]
@@ -244,12 +244,12 @@ class TripleWriteResult:
 
 class KnowledgeWriter:
     """Write API unificada para los 3 sistemas."""
-    
+
     def __init__(self, fs_root: str, neo4j_uri: str, vector_store):
         self.fs_root = fs_root
         self.neo4j = Neo4jClient(neo4j_uri)
         self.vectors = vector_store
-    
+
     def write_issue(
         self,
         issue_id: str,
@@ -260,19 +260,19 @@ class KnowledgeWriter:
     ) -> TripleWriteResult:
         """
         Escribe Issue en los 3 sistemas de forma atómica.
-        
+
         Args:
             issue_id: "issue-001-crisp-dm"
             yaml_content: Contenido completo del ISSUE.yaml
             research_question: "¿Cómo aplicar CRISP-DM...?"
             domain: "data-science"
             metadata: Metadata adicional
-        
+
         Returns:
             TripleWriteResult con paths/IDs o errores
         """
         errors = []
-        
+
         # 1. Markdown (Filesystem)
         try:
             md_path = f"{self.fs_root}/0-inbox/{issue_id}.yaml"
@@ -281,7 +281,7 @@ class KnowledgeWriter:
         except Exception as e:
             errors.append(f"Markdown: {e}")
             md_path = None
-        
+
         # 2. Neo4j (Graph)
         try:
             query = """
@@ -290,10 +290,10 @@ class KnowledgeWriter:
                 i.domain = $domain,
                 i.created_at = datetime(),
                 i += $metadata
-            
+
             MERGE (d:Domain {name: $domain})
             MERGE (i)-[:BELONGS_TO]->(d)
-            
+
             RETURN i.id AS node_id
             """
             result = self.neo4j.run(
@@ -307,7 +307,7 @@ class KnowledgeWriter:
         except Exception as e:
             errors.append(f"Neo4j: {e}")
             node_id = None
-        
+
         # 3. Vectors (Embeddings)
         try:
             embedding = generate_embedding(research_question)
@@ -325,7 +325,7 @@ class KnowledgeWriter:
         except Exception as e:
             errors.append(f"Vectors: {e}")
             vec_id = None
-        
+
         return TripleWriteResult(
             success=len(errors) == 0,
             markdown_path=md_path,
@@ -359,17 +359,17 @@ class Inconsistency:
 
 class Reconciler:
     """Servicio que detecta y repara inconsistencias."""
-    
+
     def __init__(self, writer: KnowledgeWriter):
         self.writer = writer
-    
+
     def scan_spec(self, spec_id: str) -> List[Inconsistency]:
         """Escanea un spec completo buscando inconsistencias."""
         inconsistencies = []
-        
+
         # 1. Obtener todos los artifacts del filesystem
         md_artifacts = self._scan_markdown(spec_id)
-        
+
         # 2. Para cada artifact, verificar Neo4j y Vectors
         for artifact in md_artifacts:
             # 2a. Verificar Neo4j
@@ -385,7 +385,7 @@ class Reconciler:
                     detected_at=datetime.now()
                 ))
                 continue
-            
+
             # 2b. Verificar Vectors
             vector = self._get_vector(artifact['id'])
             if not vector:
@@ -399,7 +399,7 @@ class Reconciler:
                     detected_at=datetime.now()
                 ))
                 continue
-            
+
             # 2c. Verificar versiones coincidan
             if artifact.get('version') != neo4j_node.get('version'):
                 inconsistencies.append(Inconsistency(
@@ -411,25 +411,25 @@ class Reconciler:
                     vector_state=vector,
                     detected_at=datetime.now()
                 ))
-        
+
         return inconsistencies
-    
+
     def repair_inconsistency(self, inc: Inconsistency) -> bool:
         """Repara una inconsistencia detectada."""
         if inc.issue_type == "missing_node":
             # Crear nodo en Neo4j desde Markdown
             return self._create_neo4j_node_from_markdown(inc)
-        
+
         elif inc.issue_type == "missing_vector":
             # Generar embedding desde Markdown
             return self._create_vector_from_markdown(inc)
-        
+
         elif inc.issue_type == "version_mismatch":
             # Markdown es SSoT, actualizar Neo4j y Vectors
             return self._update_from_markdown(inc)
-        
+
         return False
-    
+
     def _create_neo4j_node_from_markdown(self, inc: Inconsistency) -> bool:
         """Crea nodo Neo4j desde estado de Markdown."""
         try:
@@ -462,10 +462,10 @@ from typing import Dict, Any, List
 
 class CheckpointValidator:
     """Valida que Output Triple esté sincronizado."""
-    
+
     def __init__(self, writer: KnowledgeWriter):
         self.writer = writer
-    
+
     def validate_output_triple(
         self,
         artifact_id: str,
@@ -473,7 +473,7 @@ class CheckpointValidator:
     ) -> Dict[str, Any]:
         """
         Valida que el artifact existe en los 3 sistemas.
-        
+
         Returns:
             {
                 'valid': bool,
@@ -490,28 +490,28 @@ class CheckpointValidator:
             'vectors': {},
             'consistency': {}
         }
-        
+
         # 1. Validar Markdown
         md_path = self._find_markdown(artifact_id)
         result['markdown'] = {
             'exists': md_path is not None,
             'path': md_path
         }
-        
+
         # 2. Validar Neo4j
         neo4j_node = self._find_neo4j_node(artifact_id, artifact_type)
         result['neo4j'] = {
             'exists': neo4j_node is not None,
             'node_id': neo4j_node.get('id') if neo4j_node else None
         }
-        
+
         # 3. Validar Vectors
         vector = self._find_vector(artifact_id)
         result['vectors'] = {
             'exists': vector is not None,
             'vector_id': vector.get('id') if vector else None
         }
-        
+
         # 4. Validar Consistency
         if all([
             result['markdown']['exists'],
@@ -528,7 +528,7 @@ class CheckpointValidator:
                     md_data.get('version') == neo4j_node.get('version')
                 )
             }
-        
+
         result['valid'] = (
             result['markdown']['exists'] and
             result['neo4j']['exists'] and
@@ -536,7 +536,7 @@ class CheckpointValidator:
             result['consistency'].get('ids_match', False) and
             result['consistency'].get('versions_match', False)
         )
-        
+
         return result
 ```
 
@@ -569,7 +569,7 @@ mcps_base:
 def fase_1_preparacion(spec_id: str):
     # 1. Activar Neo4j MCP
     activate_mcp("neo4j")
-    
+
     # 2. Query: ¿Qué tasks están COMPLETED?
     completed_tasks = query_neo4j(f"""
         MATCH (s:Spec {{id: '{spec_id}'}})-[:HAS_TASK]->(t:Task)
@@ -577,7 +577,7 @@ def fase_1_preparacion(spec_id: str):
         RETURN t.id, t.output_file, t.rostro
         ORDER BY t.completed_at DESC
     """)
-    
+
     # 3. Query: ¿Cuál es la siguiente task?
     next_task = query_neo4j(f"""
         MATCH (s:Spec {{id: '{spec_id}'}})-[:HAS_TASK]->(t:Task)
@@ -586,7 +586,7 @@ def fase_1_preparacion(spec_id: str):
         ORDER BY t.task_number ASC
         LIMIT 1
     """)
-    
+
     # 4. Cargar Implementation Logs de la task anterior
     if completed_tasks:
         last_task_id = completed_tasks[0]['id']
@@ -599,7 +599,7 @@ def fase_1_preparacion(spec_id: str):
         context = "\n\n".join([log['content'] for log in logs])
     else:
         context = "Primera vez ejecutando este spec."
-    
+
     # 5. Preguntar al usuario si continuar
     print(f"✅ Contexto cargado: {len(completed_tasks)} tasks completadas")
     print(f"📝 Siguiente task: {next_task['title']}")
@@ -612,7 +612,7 @@ def fase_1_preparacion(spec_id: str):
 ```python
 def execute_task(task_id: str, spec_id: str):
     # ... ejecutar task ...
-    
+
     # Al finalizar, usar Write API
     result = knowledge_writer.write_task_result(
         task_id=task_id,
@@ -625,13 +625,13 @@ def execute_task(task_id: str, spec_id: str):
             "completed_at": datetime.now()
         }
     )
-    
+
     # Validar Output Triple
     validation = checkpoint_validator.validate_output_triple(
         artifact_id=task_id,
         artifact_type="Task"
     )
-    
+
     if not validation['valid']:
         print("❌ Checkpoint FAILED: Triple inconsistente")
         # Intentar reparar
@@ -660,14 +660,14 @@ def fase_5_persistencia(spec_id: str, commit_sha: str):
         }})
         CREATE (s)-[:HAS_COMMIT]->(c)
     """)
-    
+
     # 2. Actualizar status de Spec en Neo4j
     query_neo4j(f"""
         MATCH (s:Spec {{id: '{spec_id}'}})
         SET s.last_commit = '{commit_sha}',
             s.last_updated = datetime()
     """)
-    
+
     # 3. Generar embedding del spec completo
     spec_summary = generate_spec_summary(spec_id)
     embedding = generate_embedding(spec_summary)
@@ -700,7 +700,7 @@ def fase_5_persistencia(spec_id: str, commit_sha: str):
 4. Generar issue_id: "issue-001-crisp-dm"
 5. Crear YAML content
 6. Llamar Write API Unificada:
-   
+
    result = knowledge_writer.write_issue(
        issue_id="issue-001-crisp-dm",
        yaml_content="""

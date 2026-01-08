@@ -44,7 +44,7 @@ Actualmente, la raíz del proyecto contiene varios archivos markdown que deberí
 
 1. **QUICK_REFERENCE.md** → `docs/guides/quick-reference.md`
    - Guía rápida de uso, pertenece a guides/
-   
+
 2. **ESTRUCTURA_VISUAL.md** → `docs/architecture/estructura-visual.md`
    - Documentación de arquitectura, pertenece a architecture/
 
@@ -192,7 +192,7 @@ Refs: ISSUE-002
 
 ---
 
-**Estado**: 🔴 OPEN  
-**Estimación**: 30-45 minutos  
-**Bloqueadores**: Ninguno  
+**Estado**: 🔴 OPEN
+**Estimación**: 30-45 minutos
+**Bloqueadores**: Ninguno
 **Dependencias**: Se beneficia de ISSUE-001 (script validate_doc_links.py)

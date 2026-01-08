@@ -132,5 +132,5 @@ CREATE (l)-[:VALIDATED_IN {
 
 ---
 
-**Creado**: YYYY-MM-DD | **Última actualización**: YYYY-MM-DD  
+**Creado**: YYYY-MM-DD | **Última actualización**: YYYY-MM-DD
 **Autor**: ALMA (extractora) + Usuario (validador)

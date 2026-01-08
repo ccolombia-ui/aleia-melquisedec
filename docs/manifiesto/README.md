@@ -153,33 +153,33 @@ graph TB
         Query["🧠 Consultar:<br/>¿Qué tasks completadas?<br/>¿Cuál es la siguiente?<br/>¿Hay logs previos?"]
         Neo --> Query
     end
-    
+
     subgraph "FASE 2-4: WORKFLOW"
         M[MELQUISEDEC<br/>Clasifica]
         H[HYPATIA<br/>Investiga]
         S[SALOMON<br/>Analiza]
         Mo[MORPHEUS<br/>Diseña]
         A[ALMA<br/>Manifiesta]
-        
+
         M --> H --> S --> Mo --> A
     end
-    
+
     subgraph "FASE 5: PERSISTENCIA TRIPLE"
         FS[📁 Archivos<br/>Markdown]
         Graph[🔗 Grafo<br/>Neo4j]
         Vec[🔍 Embeddings<br/>Vector Store]
-        
+
         FS -.-> Sync[🔄 Reconciliador<br/>Background]
         Graph -.-> Sync
         Vec -.-> Sync
     end
-    
+
     Query --> M
     A --> FS
     A --> Graph
     A --> Vec
     Graph -.->|feedback| Neo
-    
+
     style M fill:#FFD700
     style H fill:#9370DB
     style S fill:#4682B4
@@ -367,9 +367,9 @@ Bajo las siguientes condiciones:
 
 ---
 
-**Versión actual**: 4.0.0  
-**Última actualización**: 2026-01-08  
-**Próxima revisión**: 2026-04-08 (trimestral)  
+**Versión actual**: 4.0.0
+**Última actualización**: 2026-01-08
+**Próxima revisión**: 2026-04-08 (trimestral)
 
 ---
 

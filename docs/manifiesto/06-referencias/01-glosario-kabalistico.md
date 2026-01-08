@@ -39,5 +39,5 @@ Este glosario reúne términos usados en el manifiesto y en la organización MEL
 ## Uso
 Cada término puede referenciarse por `id` en sistemas y debe tener una entrada en este documento si es ampliamente usado.
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

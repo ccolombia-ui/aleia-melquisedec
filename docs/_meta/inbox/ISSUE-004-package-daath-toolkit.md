@@ -412,7 +412,7 @@ daath-store = "daath_toolkit.storage.vector_store:cli_main"
 
 ---
 
-**Estado**: 🔴 OPEN  
-**Estimación**: 2-3 horas  
-**Bloqueadores**: Ninguno  
+**Estado**: 🔴 OPEN
+**Estimación**: 2-3 horas
+**Bloqueadores**: Ninguno
 **Dependencias**: Se beneficia de ISSUE-003 (pre-commit para validar packaging)

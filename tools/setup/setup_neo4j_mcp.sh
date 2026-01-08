@@ -31,22 +31,22 @@ check_neo4j_running() {
 configure_neo4j_cypher() {
     echo ""
     echo "🔧 Configurando neo4j-cypher MCP..."
-    
+
     # Configurar URI
     docker mcp config set neo4j-cypher NEO4J_URI "$NEO4J_URI"
     echo "  ✅ NEO4J_URI configurado: $NEO4J_URI"
-    
+
     # Configurar DATABASE
     docker mcp config set neo4j-cypher NEO4J_DATABASE "$NEO4J_DATABASE"
     echo "  ✅ NEO4J_DATABASE configurado: $NEO4J_DATABASE"
-    
+
     # Configurar secretos
     docker mcp secret set neo4j-cypher NEO4J_USER "$NEO4J_USER"
     echo "  ✅ NEO4J_USER configurado"
-    
+
     docker mcp secret set neo4j-cypher NEO4J_PASSWORD "$NEO4J_PASSWORD"
     echo "  ✅ NEO4J_PASSWORD configurado"
-    
+
     echo "✅ neo4j-cypher configurado correctamente"
 }
 
@@ -54,22 +54,22 @@ configure_neo4j_cypher() {
 configure_neo4j_memory() {
     echo ""
     echo "🔧 Configurando neo4j-memory MCP..."
-    
+
     # Configurar URI
     docker mcp config set neo4j-memory NEO4J_URI "$NEO4J_URI"
     echo "  ✅ NEO4J_URI configurado: $NEO4J_URI"
-    
+
     # Configurar DATABASE (memoria usa database 'memory')
     docker mcp config set neo4j-memory NEO4J_DATABASE "memory"
     echo "  ✅ NEO4J_DATABASE configurado: memory"
-    
+
     # Configurar secretos
     docker mcp secret set neo4j-memory NEO4J_USER "$NEO4J_USER"
     echo "  ✅ NEO4J_USER configurado"
-    
+
     docker mcp secret set neo4j-memory NEO4J_PASSWORD "$NEO4J_PASSWORD"
     echo "  ✅ NEO4J_PASSWORD configurado"
-    
+
     echo "✅ neo4j-memory configurado correctamente"
 }
 
@@ -79,7 +79,7 @@ configure_redis() {
     echo "🔧 Configurando redis MCP..."
     echo "⚠️  Redis requiere una instancia corriendo"
     echo "   Puedes agregarlo al docker-compose.yml si lo necesitas"
-    
+
     read -p "¿Quieres configurar Redis? (s/n): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Ss]$ ]]; then
@@ -96,10 +96,10 @@ verify_configuration() {
     echo ""
     echo "🔍 Verificando configuración..."
     echo ""
-    
+
     echo "Estado de servidores Neo4j:"
     docker mcp server ls | grep "neo4j"
-    
+
     echo ""
     echo "✅ Configuración completada!"
     echo ""
@@ -126,12 +126,12 @@ main() {
             echo "⚠️  Continúa la configuración sin verificar Neo4j"
         fi
     fi
-    
+
     # Configurar MCPs
     configure_neo4j_cypher
     configure_neo4j_memory
     configure_redis
-    
+
     # Verificar
     verify_configuration
 }

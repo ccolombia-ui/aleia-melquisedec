@@ -37,30 +37,30 @@ graph TB
         L1[Extraer Lessons]
         O1[Output: GUIA_v1.0.0]
     end
-    
+
     subgraph "Evolución del Sistema"
         P1[Prompt TYPE v1.0.0]
         P2[Prompt TYPE v1.1.0<br/>+ Lessons incorporadas]
         D1[Domain: data-science]
-        
+
         L1 -.->|"Destila conocimiento"| P2
         P2 -.->|"Pertenece a"| D1
     end
-    
+
     subgraph "Research Instance 002"
         I2[Issue: Investigar TDSP]
         E2[Ejecutar con<br/>daath-zen-data-science-v1.1.0]
-        
+
         P2 -.->|"Usa prompt mejorado"| E2
     end
-    
+
     I1 --> E1
     E1 --> C1
     C1 --> L1
     L1 --> O1
-    
+
     E1 -.->|"Usa"| P1
-    
+
     style L1 fill:#FFD700
     style P2 fill:#90EE90
     style D1 fill:#87CEEB
@@ -147,8 +147,8 @@ lessons_applied_to_prompt: "daath-zen-data-science-v1.1.0"
 ```markdown
 # Transcript Completo: Instance 001 - CRISP-DM
 
-**Instance ID**: instance-001-crisp-dm  
-**Fecha**: 2026-01-05 a 2026-01-08  
+**Instance ID**: instance-001-crisp-dm
+**Fecha**: 2026-01-05 a 2026-01-08
 **Prompts**: root-v1.0.0, type-v1.0.0, instance-v1.0.0
 
 ---
@@ -210,8 +210,8 @@ priority: "high"
 ```markdown
 # Conversaciones con HYPATIA
 
-**Instance**: instance-001-crisp-dm  
-**Rostro**: HYPATIA (Daath - La Investigadora)  
+**Instance**: instance-001-crisp-dm
+**Rostro**: HYPATIA (Daath - La Investigadora)
 **Prompt usado**: daath-zen-data-science-v1.0.0
 
 ---
@@ -386,25 +386,25 @@ lessons:
     confidence: 0.95
     status: "validated"
     applies_to: "daath-zen-data-science-v1.1.0"
-  
+
   - id: "lesson-002-salomon-tooling-criteria"
     rostro: "SALOMON"
     confidence: 0.90
     status: "validated"
     applies_to: "daath-zen-data-science-v1.1.0"
-  
+
   - id: "lesson-003-hypatia-wikipedia-start"
     rostro: "HYPATIA"
     confidence: 0.85
     status: "validated"
     applies_to: "daath-zen-root-v1.1.0"  # Aplicable a TODOS los dominios
-  
+
   - id: "lesson-004-morpheus-template-reuse"
     rostro: "MORPHEUS"
     confidence: 0.75
     status: "proposed"  # No validado aún
     applies_to: "daath-zen-data-science-v1.2.0"  # Para próxima versión
-  
+
   - id: "lesson-005-alma-version-tagging"
     rostro: "ALMA"
     confidence: 0.80
@@ -420,7 +420,7 @@ prompt_updates_generated:
       v1.1.0 (2026-01-08)
       - Added citation filtering for HYPATIA (lesson-001)
       - Added tooling comparison criteria for SALOMON (lesson-002)
-  
+
   - prompt_id: "daath-zen-root"
     from_version: "1.0.0"
     to_version: "1.1.0"
@@ -626,15 +626,15 @@ CREATE (l3)-[:APPLIES_TO_DOMAIN]->(d2)  # También aplicable a domain DD-002
 MATCH (d:Domain {id: "DD-001"})<-[:BELONGS_TO]-(i:ResearchInstance)
 MATCH (i)-[:LEARNED]->(l:Lesson)
 MATCH (l)-[:IMPROVES]->(p:PromptType)
-RETURN d.name AS domain, 
-       COUNT(DISTINCT i) AS instances, 
+RETURN d.name AS domain,
+       COUNT(DISTINCT i) AS instances,
        COUNT(DISTINCT l) AS lessons,
        MAX(p.version) AS latest_prompt_version
 
 // Query 2: Lessons de un rostro específico
 MATCH (l:Lesson {rostro: "HYPATIA", status: "validated"})
 MATCH (l)-[:IMPROVES]->(p:PromptType)
-RETURN l.text AS lesson, 
+RETURN l.text AS lesson,
        l.confidence AS confidence,
        p.version AS applied_in_version
 
@@ -658,7 +658,7 @@ RETURN i.name, p.version, p.lessons_incorporated
 // Query 6: Confidence promedio de lessons por rostro
 MATCH (l:Lesson)
 WHERE l.status = "validated"
-RETURN l.rostro AS rostro, 
+RETURN l.rostro AS rostro,
        AVG(l.confidence) AS avg_confidence,
        COUNT(l) AS validated_lessons
 ORDER BY avg_confidence DESC
@@ -704,7 +704,7 @@ namespaces = {
             "outputs": [...]
         }
     },
-    
+
     # Domain DD-002: software-architecture
     "DD-002": {
         "DD-002.global": [...],
@@ -729,7 +729,7 @@ class DomainAwareVectorStore:
         self.pc = Pinecone()
         self.index = self.pc.Index(index_name)
         self.openai = OpenAI()
-    
+
     def upsert_artifact(
         self,
         domain_id: str,
@@ -740,20 +740,20 @@ class DomainAwareVectorStore:
         metadata: dict
     ):
         """Inserta artifact con namespace correcto."""
-        
+
         # Generar embedding
         response = self.openai.embeddings.create(
             model="text-embedding-ada-002",
             input=text
         )
         embedding = response.data[0].embedding
-        
+
         # Namespace pattern: {domain_id}.{instance_id}
         namespace = f"{domain_id}.{instance_id}"
-        
+
         # Vector ID: {domain_id}-{instance_id}-{artifact_type}-{artifact_id}
         vector_id = f"{domain_id}-{instance_id}-{artifact_type}-{artifact_id}"
-        
+
         # Metadata enriquecida
         enriched_metadata = {
             "domain_id": domain_id,
@@ -762,7 +762,7 @@ class DomainAwareVectorStore:
             "artifact_type": artifact_type,
             **metadata
         }
-        
+
         # Upsert
         self.index.upsert(
             vectors=[{
@@ -772,9 +772,9 @@ class DomainAwareVectorStore:
             }],
             namespace=namespace
         )
-        
+
         return vector_id
-    
+
     def search_in_domain(
         self,
         query: str,
@@ -784,25 +784,25 @@ class DomainAwareVectorStore:
         top_k: int = 5
     ):
         """Busca en un dominio específico (opcionalmente en instance)."""
-        
+
         # Generar embedding del query
         response = self.openai.embeddings.create(
             model="text-embedding-ada-002",
             input=query
         )
         query_embedding = response.data[0].embedding
-        
+
         # Determinar namespace
         if instance_id:
             namespace = f"{domain_id}.{instance_id}"
         else:
             namespace = f"{domain_id}"
-        
+
         # Filter por tipo (opcional)
         filter_dict = {}
         if artifact_type:
             filter_dict["artifact_type"] = artifact_type
-        
+
         # Query
         results = self.index.query(
             vector=query_embedding,
@@ -811,7 +811,7 @@ class DomainAwareVectorStore:
             top_k=top_k,
             include_metadata=True
         )
-        
+
         return results
 
 # Uso
@@ -895,7 +895,7 @@ changelog:
       - id: "lesson-002-salomon-tooling-criteria"
         path: "_daath/lessons/instance-001-crisp-dm/lesson-002-salomon-tooling-criteria.md"
         confidence: 0.90
-  
+
   v1.0.0:
     date: "2026-01-01"
     changes:
@@ -1005,9 +1005,9 @@ sequenceDiagram
     participant Neo as Neo4j
     participant Vec as Vectors
     participant P as Prompts
-    
+
     U->>M: "Investiga CRISP-DM"
-    
+
     Note over M: Usa daath-zen-data-science-v1.0.0
     M->>Chat: Registra conversación (metadata)
     M->>Neo: CREATE (instance:ResearchInstance {id: "DD-001-I001"})
@@ -1046,43 +1046,43 @@ sequenceDiagram
 ```
     S->>Mo: Pasa checkpoint
     Mo->>Chat: Registra diseño de templates
-    
+
     Mo->>A: Pasa checkpoint
     A->>Chat: Registra publicación
     A->>Vec: Inserta output en namespace DD-001.I001
-    
+
     Note over A: Research instance completada
-    
+
     A->>A: Analiza chatlog completo con LLM
     A->>L: Genera 5 lessons propuestas
     A->>U: "Encontré estas 5 lessons. ¿Cuáles aplicar?"
-    
+
     U->>A: Aprueba 3 lessons, rechaza 2
-    
+
     A->>Neo: CREATE (lesson-001:Lesson)
     A->>Neo: CREATE (lesson-002:Lesson)
     A->>Neo: CREATE (lesson-003:Lesson)
     A->>Vec: Inserta lessons en namespace DD-001.I001.lessons
-    
+
     A->>L: Guarda lessons en _daath/lessons/instance-001/
-    
+
     A->>Mo: "Actualiza prompt TYPE con 3 lessons"
     Mo->>P: Lee daath-zen-data-science-v1.0.0
     Mo->>P: Incorpora lessons como texto + referencias
     Mo->>P: Guarda daath-zen-data-science-v1.1.0
-    
+
     Mo->>U: "Aquí está el diff del prompt v1.0.0 → v1.1.0"
     U->>Mo: Aprueba cambios
-    
+
     Mo->>Neo: CREATE (prompt-v1.1.0:PromptType)
     Mo->>Neo: CREATE (lesson)-[:IMPROVES]->(prompt-v1.1.0)
     Mo->>Neo: CREATE (prompt-v1.0.0)-[:EVOLVED_TO]->(prompt-v1.1.0)
-    
+
     Note over P: daath-zen-data-science-v1.1.0 listo
-    
+
     U->>M: "Investiga TDSP" (nueva instance)
     M->>P: Usa daath-zen-data-science-v1.1.0 (mejorado!)
-    
+
     Note over M: Lessons aplicadas automáticamente
 ```
 

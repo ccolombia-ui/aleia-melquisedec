@@ -1,8 +1,8 @@
 # ADR 001: Estructura de Monorepo
 
-**Estado**: Aceptado  
-**Fecha**: 2026-01-07  
-**Autores**: Equipo MELQUISEDEC  
+**Estado**: Aceptado
+**Fecha**: 2026-01-07
+**Autores**: Equipo MELQUISEDEC
 
 ---
 
@@ -76,13 +76,13 @@ aleia-melquisedec/
 **Rechazado**: No escala para múltiples investigaciones
 
 ### 2. Multi-repo (repo por investigación)
-**Rechazado**: 
+**Rechazado**:
 - Dificulta compartir código común
 - Complica sincronización de infraestructura
 - Overhead de gestión de repos
 
 ### 3. Monorepo con Turborepo/Nx
-**Pospuesto**: 
+**Pospuesto**:
 - Overhead innecesario para fase actual
 - Se puede migrar en el futuro si es necesario
 - Decisión reversible

@@ -44,8 +44,8 @@ Usa este patrón cuando necesites:
 ### User Stories (Estándar)
 
 #### US-1: Pre-Push Validation
-**As a** developer  
-**I want** automated validation before pushing  
+**As a** developer
+**I want** automated validation before pushing
 **So that** I ensure code quality and prevent broken commits
 
 **Acceptance Criteria**:
@@ -55,8 +55,8 @@ Usa este patrón cuando necesites:
 - Fast feedback (< 3min)
 
 #### US-2: Structured Commits
-**As a** team member  
-**I want** consistent commit format  
+**As a** team member
+**I want** consistent commit format
 **So that** we can track changes and generate changelogs
 
 **Acceptance Criteria**:
@@ -66,8 +66,8 @@ Usa este patrón cuando necesites:
 - Easy to parse
 
 #### US-3: Branch Protection
-**As a** maintainer  
-**I want** branch validation  
+**As a** maintainer
+**I want** branch validation
 **So that** we prevent accidental pushes to protected branches
 
 **Acceptance Criteria**:
@@ -77,8 +77,8 @@ Usa este patrón cuando necesites:
 - Suggests corrections
 
 #### US-4: Push Execution
-**As a** developer  
-**I want** reliable push with error handling  
+**As a** developer
+**I want** reliable push with error handling
 **So that** conflicts are resolved cleanly
 
 **Acceptance Criteria**:
@@ -207,7 +207,7 @@ Usa este patrón cuando necesites:
 ## MCPs por Rostro (Estándar)
 
 ### MELQUISEDEC (Branch Validation)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `git`, `sequential-thinking`
 
 **Tareas típicas**:
@@ -216,7 +216,7 @@ Usa este patrón cuando necesites:
 - Classification of changes
 
 ### MORPHEUS (Pre-commit, Testing)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `filesystem`, `python-env`, `python-refactoring`, `git`
 
 **Tareas típicas**:
@@ -225,7 +225,7 @@ Usa este patrón cuando necesites:
 - Integration testing
 
 ### ALMA (Commit, Push, Post-Push)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `filesystem`, `git`, `github`, `sequential-thinking`
 
 **Tareas típicas**:
@@ -239,7 +239,7 @@ Usa este patrón cuando necesites:
 ## Lessons Comunes
 
 ### Lesson Pattern 1: Fast Feedback is Critical
-**Confidence**: 0.90  
+**Confidence**: 0.90
 **Context**: Pre-commit hooks que tardan >1min frustran developers y se deshabilitan.
 
 **Best Practice**:
@@ -250,7 +250,7 @@ Usa este patrón cuando necesites:
 > 4. Skip tests en pre-commit (déjalos para pre-push)
 
 ### Lesson Pattern 2: Clear Error Messages
-**Confidence**: 0.85  
+**Confidence**: 0.85
 **Context**: Errores crípticos como "push failed" no ayudan.
 
 **Best Practice**:
@@ -261,7 +261,7 @@ Usa este patrón cuando necesites:
 > Ejemplo: "❌ Push failed: No upstream branch. Run: `git push -u origin main`"
 
 ### Lesson Pattern 3: Dry-Run Mode
-**Confidence**: 0.88  
+**Confidence**: 0.88
 **Context**: Developers tienen miedo de romper cosas, no ejecutan workflows.
 
 **Best Practice**:
@@ -272,14 +272,14 @@ Usa este patrón cuando necesites:
 > Genera confianza y permite testing seguro.
 
 ### Lesson Pattern 4: Metadata in Commits
-**Confidence**: 0.92  
+**Confidence**: 0.92
 **Context**: Sin metadata, imposible rastrear qué rostro/MCP produjo cambios.
 
 **Best Practice**:
 > Formato de commit:
 > ```
 > type(spec): task-id description
-> 
+>
 > Spec: name-vX.Y.Z
 > Task: X.Y
 > Rostro: NAME

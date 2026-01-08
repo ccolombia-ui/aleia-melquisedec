@@ -6,15 +6,15 @@ Este spec aplica pensamiento sistémico multinivel para resolver la pregunta: **
 
 ### Principios Guía
 
-1. **Separación Framework/Implementación**: 
+1. **Separación Framework/Implementación**:
    - Framework (melquisedec) = metodología + tooling
    - Apps (bereshit, otros) = uso concreto del framework
-   
+
 2. **Modularidad por Propósito**:
    - `packages/` = componentes reutilizables
    - `apps/` = aplicaciones/investigaciones
    - `tools/` = scripts de desarrollo
-   
+
 3. **Autonomía con Coherencia**:
    - Repos independientes para investigaciones
    - Dependencia compartida en daath-toolkit
@@ -29,19 +29,19 @@ graph TD
     A[aleia-melquisedec<br/>FRAMEWORK] -->|proporciona| B[daath-toolkit]
     A -->|define| C[Metodología DAATH-ZEN]
     A -->|ofrece| D[spec-workflow]
-    
+
     B -->|usado por| E[aleia-bereshit]
     B -->|usado por| F[aleia-{futuro}]
-    
+
     E -->|contiene| G[apps/keter]
     E -->|contiene| H[apps/...]
-    
+
     C -->|guía| E
     C -->|guía| F
-    
+
     D -->|gestiona| E
     D -->|gestiona| F
-    
+
     G -.posible.-> I[Package: keter-tool]
     I -.si madura.-> B
 
@@ -70,7 +70,7 @@ class ComponentClassifier:
     """
     Clasifica componentes en: package, app, tool, example
     """
-    
+
     def classify(self, component: Component) -> Placement:
         # Nivel 1: Propósito
         if component.is_methodology_or_tooling():
@@ -78,25 +78,25 @@ class ComponentClassifier:
                 return Placement.PACKAGES_MELQUISEDEC
             else:
                 return Placement.TOOLS
-        
+
         # Nivel 2: Reusabilidad
         if component.is_reusable_library():
             if component.maturity >= MaturityLevel.BETA:
                 return Placement.PACKAGES_IN_ORIGIN_REPO
             else:
                 return Placement.APPS_IN_ORIGIN_REPO
-        
+
         # Nivel 3: Independencia
         if component.has_independent_lifecycle():
             return Placement.SEPARATE_REPO
-        
+
         # Nivel 4: Naturaleza
         if component.is_research_or_application():
             if component.is_demo_or_example():
                 return Placement.EXAMPLES_MELQUISEDEC
             else:
                 return Placement.APPS_IN_SEPARATE_REPO
-        
+
         # Default: conservador
         return Placement.APPS_IN_SEPARATE_REPO
 ```
@@ -114,23 +114,23 @@ Análisis Estructural:
   - Escanear directorio tree
   - Identificar módulos principales
   - Mapear dependencias internas
-  
+
 Análisis de Dependencias:
   - requirements.txt / pyproject.toml
   - Imports de terceros
   - Imports locales vs externos
-  
+
 Análisis de Madurez:
   - Existencia de tests
   - Coverage (si medible)
   - Documentación (docstrings, README)
   - Versionado (tags git?)
-  
+
 Análisis Funcional:
   - ¿Qué hace keter?
   - ¿Es standalone o depende de contexto?
   - ¿Tiene CLI, API, o es librería?
-  
+
 Análisis de Valor:
   - ¿Útil solo para bereshit?
   - ¿Reutilizable en otros proyectos?
@@ -250,33 +250,33 @@ Contenido:
 def create_research_repo(name: str, purpose: str):
     """
     Crea nuevo repo de investigación con estructura DAATH-ZEN
-    
+
     Args:
         name: Nombre del proyecto (ej: "cognitive-architectures")
         purpose: Descripción breve del propósito
     """
     repo_name = f"aleia-{name}"
-    
+
     # 1. Clonar template structure
     copy_tree(TEMPLATE_PATH, repo_name)
-    
+
     # 2. Personalizar archivos
     render_template("README.md", {
         "project_name": name,
         "purpose": purpose,
         "daath_version": get_daath_version()
     })
-    
+
     # 3. Inicializar git
     subprocess.run(["git", "init"], cwd=repo_name)
-    
+
     # 4. Instalar dependencies
     create_pyproject_toml(repo_name, name, purpose)
-    
+
     # 5. Setup pre-commit
-    copy_file("templates/.pre-commit-config.yaml", 
+    copy_file("templates/.pre-commit-config.yaml",
               f"{repo_name}/.pre-commit-config.yaml")
-    
+
     print(f"✅ Repo {repo_name} creado exitosamente")
     print(f"📍 Ubicación: ./{repo_name}")
     print(f"🚀 Next steps:")
@@ -379,7 +379,7 @@ class ComponentMetadata:
     maturity_level: MaturityLevel  # PROTOTYPE, BETA, STABLE
     reusability_score: int  # 1-10
     is_framework_core: bool
-    
+
     def to_scorecard(self) -> str:
         """Generate markdown scorecard"""
         ...
@@ -394,7 +394,7 @@ class PlacementDecision:
     rationale: str
     action_items: List[str]
     confidence: float  # 0-1
-    
+
     class Placement(Enum):
         PACKAGES_MELQUISEDEC = "packages/ in melquisedec"
         PACKAGES_ORIGIN_REPO = "packages/ in origin repo"
@@ -435,7 +435,7 @@ decision = analyzer.classify(metadata)
 
 # Generación
 generator = RepoGenerator()
-generator.create("cognitive-arch", 
+generator.create("cognitive-arch",
                  purpose="Estudios de BDI y SOAR",
                  template="research")
 ```
@@ -558,31 +558,31 @@ Re-evaluate when:
 ## Risk Analysis
 
 ### Risk 1: Fragmentación del Ecosistema
-**Probabilidad**: Media  
-**Impacto**: Alto  
-**Mitigación**: 
+**Probabilidad**: Media
+**Impacto**: Alto
+**Mitigación**:
 - Guidelines claras y fáciles de seguir
 - daath-toolkit como punto de integración
 - spec-workflow para coordinación
 
 ### Risk 2: Overhead de Gestión Multi-Repo
-**Probabilidad**: Alta  
-**Impacto**: Medio  
+**Probabilidad**: Alta
+**Impacto**: Medio
 **Mitigación**:
 - Automatización con CI/CD
 - Templates pre-configurados
 - Documentación exhaustiva
 
 ### Risk 3: Confusión sobre apps/ vs Investigaciones Reales
-**Probabilidad**: Baja (después de este spec)  
-**Impacto**: Medio  
+**Probabilidad**: Baja (después de este spec)
+**Impacto**: Medio
 **Mitigación**:
 - Renombrado a examples/ o README explícito
 - CONTRIBUTING.md actualizado
 
 ### Risk 4: Keter Analysis Incompleto (sin acceso)
-**Probabilidad**: Media  
-**Impacto**: Bajo  
+**Probabilidad**: Media
+**Impacto**: Bajo
 **Mitigación**:
 - Documentar proceso agnóstico del contenido
 - Solicitar info al usuario

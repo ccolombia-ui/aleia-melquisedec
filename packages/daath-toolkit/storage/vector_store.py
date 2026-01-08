@@ -8,7 +8,7 @@ Gestión de vectores organizados por:
 
 Uso:
     store = DomainAwareVectorStore("melquisedec-knowledge")
-    
+
     # Insertar artifact
     store.upsert_artifact(
         domain_id="DD-001",
@@ -18,7 +18,7 @@ Uso:
         text="CRISP-DM is a data mining methodology...",
         metadata={"version": "1.0.0"}
     )
-    
+
     # Buscar en domain
     results = store.search_in_domain(
         query="data mining methodology",
@@ -37,16 +37,16 @@ from datetime import datetime
 class DomainAwareVectorStore:
     """
     Vector store con organización por dominios y instances.
-    
+
     Estructura de namespaces:
         {domain_id}.{instance_id}
-        
+
     Ejemplos:
         DD-001.global          # Conocimiento general del domain
         DD-001.I001            # Instance 001 de domain DD-001
         DD-001.I001.lessons    # Lessons de instance 001
     """
-    
+
     def __init__(
         self,
         index_name: str = "melquisedec-knowledge",
@@ -56,7 +56,7 @@ class DomainAwareVectorStore:
         # Inicializar Pinecone
         self.pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
         self.index_name = index_name
-        
+
         # Crear índice si no existe
         if index_name not in self.pc.list_indexes().names():
             self.pc.create_index(
@@ -68,16 +68,16 @@ class DomainAwareVectorStore:
                     region=os.getenv("PINECONE_REGION", "us-east-1")
                 )
             )
-        
+
         self.index = self.pc.Index(index_name)
-        
+
         # Inicializar OpenAI
         self.openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    
+
     # =========================================================================
     # UPSERT (INSERCIÓN/ACTUALIZACIÓN)
     # =========================================================================
-    
+
     def upsert_artifact(
         self,
         domain_id: str,
@@ -89,7 +89,7 @@ class DomainAwareVectorStore:
     ) -> str:
         """
         Inserta artifact con namespace correcto.
-        
+
         Args:
             domain_id: ID del domain (DD-001, DD-002, etc.)
             instance_id: ID de la instance (I001, I002, etc.)
@@ -97,7 +97,7 @@ class DomainAwareVectorStore:
             artifact_type: Tipo de artifact
             text: Texto para generar embedding
             metadata: Metadata adicional
-        
+
         Returns:
             Vector ID generado
         """
@@ -107,13 +107,13 @@ class DomainAwareVectorStore:
             input=text
         )
         embedding = response.data[0].embedding
-        
+
         # Namespace pattern: {domain_id}.{instance_id}
         namespace = f"{domain_id}.{instance_id}"
-        
+
         # Vector ID: {domain_id}-{instance_id}-{artifact_type}-{artifact_id}
         vector_id = f"{domain_id}-{instance_id}-{artifact_type}-{artifact_id}"
-        
+
         # Metadata enriquecida
         enriched_metadata = {
             "domain_id": domain_id,
@@ -124,7 +124,7 @@ class DomainAwareVectorStore:
             "text": text[:1000],  # Primeros 1000 chars para referencia
             **(metadata or {})
         }
-        
+
         # Upsert
         self.index.upsert(
             vectors=[{
@@ -134,9 +134,9 @@ class DomainAwareVectorStore:
             }],
             namespace=namespace
         )
-        
+
         return vector_id
-    
+
     def upsert_lesson(
         self,
         domain_id: str,
@@ -149,7 +149,7 @@ class DomainAwareVectorStore:
     ) -> str:
         """
         Inserta lesson como vector.
-        
+
         Args:
             domain_id: ID del domain
             instance_id: ID de la instance que generó la lesson
@@ -158,7 +158,7 @@ class DomainAwareVectorStore:
             rostro: Rostro que generó la lesson
             confidence: Confidence score de la lesson
             metadata: Metadata adicional
-        
+
         Returns:
             Vector ID generado
         """
@@ -174,7 +174,7 @@ class DomainAwareVectorStore:
                 **(metadata or {})
             }
         )
-    
+
     def upsert_domain_knowledge(
         self,
         domain_id: str,
@@ -184,7 +184,7 @@ class DomainAwareVectorStore:
     ) -> str:
         """
         Inserta conocimiento general del domain (no específico de instance).
-        
+
         Usa namespace especial: {domain_id}.global
         """
         response = self.openai.embeddings.create(
@@ -192,10 +192,10 @@ class DomainAwareVectorStore:
             input=text
         )
         embedding = response.data[0].embedding
-        
+
         namespace = f"{domain_id}.global"
         vector_id = f"{domain_id}-global-{artifact_id}"
-        
+
         enriched_metadata = {
             "domain_id": domain_id,
             "instance_id": "global",
@@ -205,7 +205,7 @@ class DomainAwareVectorStore:
             "text": text[:1000],
             **(metadata or {})
         }
-        
+
         self.index.upsert(
             vectors=[{
                 "id": vector_id,
@@ -214,13 +214,13 @@ class DomainAwareVectorStore:
             }],
             namespace=namespace
         )
-        
+
         return vector_id
-    
+
     # =========================================================================
     # SEARCH (BÚSQUEDA)
     # =========================================================================
-    
+
     def search_in_domain(
         self,
         query: str,
@@ -232,7 +232,7 @@ class DomainAwareVectorStore:
     ) -> List[Dict]:
         """
         Busca en un domain específico (opcionalmente en instance).
-        
+
         Args:
             query: Query en lenguaje natural
             domain_id: Domain donde buscar
@@ -240,7 +240,7 @@ class DomainAwareVectorStore:
             artifact_type: Filtrar por tipo (opcional)
             top_k: Número de resultados
             include_global: Incluir conocimiento global del domain
-        
+
         Returns:
             Lista de matches con score y metadata
         """
@@ -250,28 +250,28 @@ class DomainAwareVectorStore:
             input=query
         )
         query_embedding = response.data[0].embedding
-        
+
         # Determinar namespaces a buscar
         namespaces = []
-        
+
         if instance_id:
             namespaces.append(f"{domain_id}.{instance_id}")
         else:
             # Buscar en todas las instances del domain (requiere listar)
             # Por ahora, asumimos que se especifica instance o se usa global
             pass
-        
+
         if include_global:
             namespaces.append(f"{domain_id}.global")
-        
+
         # Filter por tipo (opcional)
         filter_dict = {}
         if artifact_type:
             filter_dict["artifact_type"] = artifact_type
-        
+
         # Query en cada namespace y combinar resultados
         all_matches = []
-        
+
         for namespace in namespaces:
             try:
                 results = self.index.query(
@@ -281,7 +281,7 @@ class DomainAwareVectorStore:
                     top_k=top_k,
                     include_metadata=True
                 )
-                
+
                 for match in results.matches:
                     all_matches.append({
                         "id": match.id,
@@ -289,15 +289,15 @@ class DomainAwareVectorStore:
                         "namespace": namespace,
                         **match.metadata
                     })
-            
+
             except Exception as e:
                 # Namespace no existe (OK, puede ser que no haya data aún)
                 continue
-        
+
         # Ordenar por score y limitar a top_k
         all_matches.sort(key=lambda x: x["score"], reverse=True)
         return all_matches[:top_k]
-    
+
     def search_lessons(
         self,
         query: str,
@@ -308,14 +308,14 @@ class DomainAwareVectorStore:
     ) -> List[Dict]:
         """
         Busca lessons específicamente.
-        
+
         Args:
             query: Query en lenguaje natural
             domain_id: Filtrar por domain (opcional)
             rostro: Filtrar por rostro (opcional)
             min_confidence: Confidence mínima (opcional)
             top_k: Número de resultados
-        
+
         Returns:
             Lista de lessons relevantes
         """
@@ -324,7 +324,7 @@ class DomainAwareVectorStore:
             input=query
         )
         query_embedding = response.data[0].embedding
-        
+
         # Construir filter
         filter_dict = {"artifact_type": "lesson"}
         if rostro:
@@ -333,7 +333,7 @@ class DomainAwareVectorStore:
             filter_dict["confidence"] = {"$gte": min_confidence}
         if domain_id:
             filter_dict["domain_id"] = domain_id
-        
+
         # Query (sin namespace para buscar en todos)
         results = self.index.query(
             vector=query_embedding,
@@ -341,13 +341,13 @@ class DomainAwareVectorStore:
             top_k=top_k,
             include_metadata=True
         )
-        
+
         return [{
             "id": match.id,
             "score": match.score,
             **match.metadata
         } for match in results.matches]
-    
+
     def search_cross_domain(
         self,
         query: str,
@@ -356,7 +356,7 @@ class DomainAwareVectorStore:
     ) -> List[Dict]:
         """
         Busca en TODOS los domains.
-        
+
         Útil para encontrar patterns universales.
         """
         response = self.openai.embeddings.create(
@@ -364,28 +364,28 @@ class DomainAwareVectorStore:
             input=query
         )
         query_embedding = response.data[0].embedding
-        
+
         filter_dict = {}
         if artifact_type:
             filter_dict["artifact_type"] = artifact_type
-        
+
         results = self.index.query(
             vector=query_embedding,
             filter=filter_dict if filter_dict else None,
             top_k=top_k,
             include_metadata=True
         )
-        
+
         return [{
             "id": match.id,
             "score": match.score,
             **match.metadata
         } for match in results.matches]
-    
+
     # =========================================================================
     # DELETE
     # =========================================================================
-    
+
     def delete_instance(
         self,
         domain_id: str,
@@ -393,23 +393,23 @@ class DomainAwareVectorStore:
     ):
         """
         Elimina todos los vectores de una instance.
-        
+
         Útil para rollback si instance falla.
         """
         namespace = f"{domain_id}.{instance_id}"
-        
+
         # Eliminar namespace completo
         self.index.delete(delete_all=True, namespace=namespace)
-    
+
     # =========================================================================
     # STATS
     # =========================================================================
-    
+
     def get_namespace_stats(self, namespace: str) -> Dict:
         """Obtiene estadísticas de un namespace."""
-        
+
         stats = self.index.describe_index_stats()
-        
+
         if namespace in stats.namespaces:
             return {
                 "namespace": namespace,
@@ -420,21 +420,21 @@ class DomainAwareVectorStore:
                 "namespace": namespace,
                 "vector_count": 0
             }
-    
+
     def get_domain_stats(self, domain_id: str) -> Dict:
         """Obtiene estadísticas de un domain completo."""
-        
+
         stats = self.index.describe_index_stats()
-        
+
         # Contar vectores en todos los namespaces del domain
         total_vectors = 0
         namespaces_count = 0
-        
+
         for ns, ns_stats in stats.namespaces.items():
             if ns.startswith(f"{domain_id}."):
                 total_vectors += ns_stats.vector_count
                 namespaces_count += 1
-        
+
         return {
             "domain_id": domain_id,
             "total_vectors": total_vectors,
@@ -449,7 +449,7 @@ class DomainAwareVectorStore:
 if __name__ == "__main__":
     # Inicializar store
     store = DomainAwareVectorStore("melquisedec-knowledge")
-    
+
     # Ejemplo 1: Insertar concepto en instance
     vector_id = store.upsert_artifact(
         domain_id="DD-001",
@@ -463,7 +463,7 @@ if __name__ == "__main__":
         }
     )
     print(f"✅ Concepto insertado: {vector_id}")
-    
+
     # Ejemplo 2: Insertar lesson
     lesson_id = store.upsert_lesson(
         domain_id="DD-001",
@@ -478,7 +478,7 @@ if __name__ == "__main__":
         }
     )
     print(f"✅ Lesson insertada: {lesson_id}")
-    
+
     # Ejemplo 3: Buscar en domain
     results = store.search_in_domain(
         query="data mining methodology",
@@ -490,7 +490,7 @@ if __name__ == "__main__":
     for r in results:
         print(f"  - {r['id']} (score: {r['score']:.3f})")
         print(f"    {r['text'][:100]}...")
-    
+
     # Ejemplo 4: Buscar lessons de HYPATIA
     hypatia_lessons = store.search_lessons(
         query="how to filter academic papers",
@@ -501,7 +501,7 @@ if __name__ == "__main__":
     print(f"\n📚 Lessons de HYPATIA:")
     for lesson in hypatia_lessons:
         print(f"  - {lesson['id']} (confidence: {lesson['confidence']})")
-    
+
     # Ejemplo 5: Stats del domain
     stats = store.get_domain_stats("DD-001")
     print(f"\n📊 Stats de domain DD-001:")

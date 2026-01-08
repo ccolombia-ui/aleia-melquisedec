@@ -7,7 +7,7 @@ priority: "medium"               # low, medium, high, critical
 status: "open"                   # open, in-progress, blocked, done
 created: "YYYY-MM-DD"
 assignee: ""                     # MELQUISEDEC, HYPATIA, SALOMON, MORPHEUS, ALMA
-tags: 
+tags:
   - "tag-relevante"
   - "otro-tag"
 related_issues: []               # ["ISSUE-001", "ISSUE-005"]
@@ -106,5 +106,5 @@ Cualquier información adicional relevante.
 
 ---
 
-**Creado**: YYYY-MM-DD  
+**Creado**: YYYY-MM-DD
 **Última actualización**: YYYY-MM-DD

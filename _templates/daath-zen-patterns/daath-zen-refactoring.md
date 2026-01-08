@@ -46,8 +46,8 @@ Usa este patrón cuando necesites:
 ### User Stories (Estándar)
 
 #### US-1: Análisis de Estado Actual
-**As a** developer  
-**I want** to understand the current structure and identify issues  
+**As a** developer
+**I want** to understand the current structure and identify issues
 **So that** I can plan refactoring safely
 
 **Acceptance Criteria**:
@@ -57,8 +57,8 @@ Usa este patrón cuando necesites:
 - Risk assessment documented
 
 #### US-2: Restructuring
-**As a** developer  
-**I want** to move/rename files and packages  
+**As a** developer
+**I want** to move/rename files and packages
 **So that** the structure follows the new conventions
 
 **Acceptance Criteria**:
@@ -68,8 +68,8 @@ Usa este patrón cuando necesites:
 - Git history preserved
 
 #### US-3: Reference Fixing
-**As a** developer  
-**I want** to update all references to moved/renamed entities  
+**As a** developer
+**I want** to update all references to moved/renamed entities
 **So that** nothing breaks
 
 **Acceptance Criteria**:
@@ -79,8 +79,8 @@ Usa este patrón cuando necesites:
 - Zero broken references
 
 #### US-4: Validation
-**As a** developer  
-**I want** to verify the refactoring didn't break anything  
+**As a** developer
+**I want** to verify the refactoring didn't break anything
 **So that** I can merge with confidence
 
 **Acceptance Criteria**:
@@ -190,7 +190,7 @@ Usa este patrón cuando necesites:
 ## MCPs por Rostro (Estándar)
 
 ### MELQUISEDEC (Análisis)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `filesystem`, `grep-search`, `sequential-thinking`
 
 **Tareas típicas**:
@@ -199,7 +199,7 @@ Usa este patrón cuando necesites:
 - Clasificación de referencias
 
 ### SALOMON (Planificación)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `sequential-thinking`, `filesystem`
 
 **Tareas típicas**:
@@ -208,7 +208,7 @@ Usa este patrón cuando necesites:
 - Planificación de orden de operaciones
 
 ### MORPHEUS (Ejecución)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `filesystem`, `python-refactoring`, `python-env`, `git`, `grep-search`, `markitdown`
 
 **Tareas típicas**:
@@ -218,7 +218,7 @@ Usa este patrón cuando necesites:
 - Restructuring
 
 ### ALMA (Validación y Publicación)
-**Base**: `neo4j`, `memory`  
+**Base**: `neo4j`, `memory`
 **Especializados**: `filesystem`, `python-env`, `git`
 
 **Tareas típicas**:
@@ -232,7 +232,7 @@ Usa este patrón cuando necesites:
 ## Lessons Comunes
 
 ### Lesson Pattern 1: Classification is Critical
-**Confidence**: 0.90  
+**Confidence**: 0.90
 **Context**: En task 1.1 (análisis), subestimar la clasificación lleva a romper importaciones críticas.
 
 **Best Practice**:
@@ -242,7 +242,7 @@ Usa este patrón cuando necesites:
 > 3. Owner (qué módulo las usa)
 
 ### Lesson Pattern 2: Batch + Test
-**Confidence**: 0.85  
+**Confidence**: 0.85
 **Context**: Mover todos los archivos de una vez y luego arreglar imports genera caos.
 
 **Best Practice**:
@@ -253,7 +253,7 @@ Usa este patrón cuando necesites:
 > 4. Next batch
 
 ### Lesson Pattern 3: Git MV, Not Plain MV
-**Confidence**: 0.95  
+**Confidence**: 0.95
 **Context**: Usar `mv` en lugar de `git mv` rompe el history.
 
 **Best Practice**:
@@ -263,7 +263,7 @@ Usa este patrón cuando necesites:
 > - Rollback capabilities
 
 ### Lesson Pattern 4: Relative Paths > Absolute
-**Confidence**: 0.80  
+**Confidence**: 0.80
 **Context**: Absolute paths rompen cuando el repo se clona en diferentes rutas.
 
 **Best Practice**:

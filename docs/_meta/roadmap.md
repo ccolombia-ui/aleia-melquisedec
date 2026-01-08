@@ -1,6 +1,6 @@
 # Roadmap - Monorepo DAATH-ZEN MELQUISEDEC
 
-> **Versión**: 1.0.0  
+> **Versión**: 1.0.0
 > **Última actualización**: 2026-01-08
 
 ---
@@ -156,5 +156,5 @@ Para sugerir cambios al roadmap, crear issue en `docs/_meta/inbox/` con:
 
 ---
 
-**Última revisión**: 2026-01-08  
+**Última revisión**: 2026-01-08
 **Próxima revisión**: 2026-02-01

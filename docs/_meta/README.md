@@ -51,7 +51,7 @@ priority: "high"                 # low, medium, high, critical
 status: "open"                   # open, in-progress, blocked, done
 created: "YYYY-MM-DD"
 assignee: "MELQUISEDEC"
-tags: 
+tags:
   - "tag1"
   - "tag2"
 ---

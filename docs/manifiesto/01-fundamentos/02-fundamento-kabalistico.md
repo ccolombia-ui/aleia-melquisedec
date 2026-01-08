@@ -188,7 +188,7 @@ graph TB
 - Outputs tangibles
 - Realidad observable
 - Manifestación concreta
-- Resultado verificable 
+- Resultado verificable
 
 ---
 
@@ -339,16 +339,16 @@ sequenceDiagram
 
     R->>FS: 1. Escribir concept-ddd.md
     Note over FS: HKM Header con id="concept-ddd-v1.0.0"
-    
+
     R->>Neo: 2. Crear nodo Concept
     Note over Neo: CREATE (c:Concept {id: "concept-ddd-v1.0.0"})
-    
+
     R->>Neo: 3. Crear relación DERIVES_FROM
     Note over Neo: (c)-[:DERIVES_FROM]->(l:Literature)
-    
+
     R->>Vec: 4. Generar embedding
     Note over Vec: metadata: {id: "concept-ddd-v1.0.0", type: "concept"}
-    
+
     R->>CK: 5. Solicitar validación
     CK->>FS: Verificar MD existe
     CK->>Neo: Verificar nodo existe
@@ -478,17 +478,17 @@ checkpoint_hypatia:
       - path: "2-atomic/concept-ddd.md"
       - metadata_valid: true
       - version: "1.0.0"
-    
+
     graph:
       - node_exists: "Concept:concept-ddd-v1.0.0"
       - relationships: ["DERIVES_FROM:Literature"]
       - properties_match_md: true
-    
+
     vectors:
       - embedding_exists: "concept-ddd-v1.0.0"
       - dimension: 1536  # OpenAI ada-002
       - metadata_has_version: true
-    
+
     consistency:
       - md_id == graph_id == vector_id: true
       - md_version == graph_version == vector_metadata.version: true
@@ -509,7 +509,7 @@ graph TB
     F[⚠️ Estado inconsistente]
     G[Reconciliador detecta gap]
     H[Re-intenta operación fallida]
-    
+
     A --> B
     B -->|Sí| C
     B -->|No| F
@@ -529,21 +529,21 @@ graph TB
 def reconcile_knowledge_stores():
     for md_file in filesystem.list("**/*.md"):
         md_id = extract_id(md_file)
-        
+
         # Verificar existencia en los 3 sistemas
         has_graph = neo4j.exists(md_id)
         has_vector = vector_store.exists(md_id)
-        
+
         if not has_graph:
             sync_to_graph(md_file)
-        
+
         if not has_vector:
             sync_to_vectors(md_file)
-        
+
         # Verificar consistencia de versiones
         md_version = md_file.metadata.version
         graph_version = neo4j.get(md_id).version
-        
+
         if md_version != graph_version:
             log_inconsistency(md_id, md_version, graph_version)
 ```
@@ -626,14 +626,14 @@ ALMA espera que MORPHEUS termine diseño               ← Tzimtzum
 - Integración CI/CD: validar presence of HKM header y `seci.derives_from` antes de permitir transición `in-progress` → `review` o `done`.
 
 #### Métricas y Señales de Salud
-- **Tiempo medio en `blocked`** por issue (objetivo: disminuir)  
-- **% de adherencia a Tzimtzum** (issues que respetaron handoffs)  
-- **MTTU (mean time to unblock)** — tiempo desde `blocked` → `in-progress`  
+- **Tiempo medio en `blocked`** por issue (objetivo: disminuir)
+- **% de adherencia a Tzimtzum** (issues que respetaron handoffs)
+- **MTTU (mean time to unblock)** — tiempo desde `blocked` → `in-progress`
 - **Causa raíz de bypass** documentada en `02-lessons-learned.md`
 
 #### Ejemplos Prácticos
-- *Investigación pura (no artifact)*: HYPATIA puede trabajar en paralelo en búsquedas exploratorias (NO Tzimtzum obligatorio).  
-- *Construcción de Output* (artifact): SALOMON no debe empezar integraciones finales hasta que HYPATIA publique los `2-atomic/concepts` con HKM completo (APLICAR Tzimtzum).  
+- *Investigación pura (no artifact)*: HYPATIA puede trabajar en paralelo en búsquedas exploratorias (NO Tzimtzum obligatorio).
+- *Construcción de Output* (artifact): SALOMON no debe empezar integraciones finales hasta que HYPATIA publique los `2-atomic/concepts` con HKM completo (APLICAR Tzimtzum).
 - *Bug crítico en producción*: Se puede usar `Expedite lane` y documentar la excepción en el issue; después, registrar la lesson learned.
 
 **Razón**: Sin contracciones operativas, las fases producen artifacts inconsistente o no trazables; con Tzimtzum correctamente aplicado, se garantiza calidad, trazabilidad y decisiones informadas.

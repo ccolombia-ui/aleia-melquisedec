@@ -285,7 +285,7 @@ filesystem.write_file(
 
 ```yaml
 validates:
-  markdown: 
+  markdown:
     - "1-literature/*.pdf"
     - "1-literature/extracts/*.md"
     - "2-atomic/concept-*.md"
@@ -456,7 +456,7 @@ if feedback.questions > 10:
         question="Usuarios tienen 10+ preguntas sobre sección 'Data Understanding'. ¿Crear issue para mejorar esa sección?",
         steps=3
     )
-    
+
     if decision.result == "yes":
         create_inbox_issue("Mejorar sección Data Understanding en guía CRISP-DM")
 ```
@@ -483,9 +483,9 @@ sequenceDiagram
     participant S as SALOMON
     participant Mo as MORPHEUS
     participant A as ALMA
-    
+
     U->>M: "Investiga CRISP-DM"
-    
+
     Note over M: MCPs: neo4j, memory, filesystem, sequential-thinking, brave-search
     M->>M: Clasificar con sequential-thinking
     M->>M: Buscar contexto con brave-search
@@ -493,9 +493,9 @@ sequenceDiagram
     M->>M: Registrar en neo4j
     M->>M: Store en memory
     M->>M: 🔍 Checkpoint M
-    
+
     M->>H: ✅ Issue clasificado
-    
+
     Note over H: MCPs: neo4j, memory, brave-search, wikipedia, arxiv, firecrawl, markitdown
     H->>H: Buscar web con brave-search
     H->>H: Extraer Wikipedia con wikipedia
@@ -504,36 +504,36 @@ sequenceDiagram
     H->>H: Sintetizar conceptos → filesystem
     H->>H: Registrar en neo4j
     H->>H: 🔍 Checkpoint H
-    
+
     H->>S: ✅ Conceptos sintetizados
-    
+
     Note over S: MCPs: neo4j, memory, sequential-thinking, perplexity
     S->>S: Comparar con sequential-thinking
     S->>S: Profundizar con perplexity
     S->>S: Decidir y justificar
     S->>S: Registrar en neo4j
     S->>S: 🔍 Checkpoint S
-    
+
     S->>Mo: ✅ Decisión tomada
-    
+
     Note over Mo: MCPs: neo4j, memory, filesystem, sequential-thinking
     Mo->>Mo: Diseñar templates
     Mo->>Mo: Validar con sequential-thinking
     Mo->>Mo: Escribir con filesystem
     Mo->>Mo: Registrar en neo4j
     Mo->>Mo: 🔍 Checkpoint Mo
-    
+
     Mo->>A: ✅ Templates listos
-    
+
     Note over A: MCPs: neo4j, memory, filesystem, git, sequential-thinking
     A->>A: Crear output con filesystem
     A->>A: Commit/tag con git
     A->>A: Push con git
     A->>A: Registrar en neo4j
     A->>A: 🔍 Checkpoint A
-    
+
     A->>U: ✅ Output publicado
-    
+
     A->>A: Monitorear feedback
     A->>M: Crear inbox si hay lessons learned
 ```
@@ -620,20 +620,20 @@ sequenceDiagram
 ```python
 def validate_rostro_mcps(rostro_name: str) -> bool:
     """Valida que un rostro tiene todos sus MCPs disponibles."""
-    
+
     config = load_mcp_config()
     required_mcps = config['rostros'][rostro_name]
-    
+
     # Base MCPs (obligatorios)
     for mcp in required_mcps['base']:
         if not is_mcp_available(mcp):
             raise RuntimeError(f"{rostro_name}: Base MCP '{mcp}' no disponible")
-    
+
     # Specialized MCPs
     for mcp in required_mcps['specialized']:
         if not is_mcp_available(mcp):
             raise RuntimeError(f"{rostro_name}: Specialized MCP '{mcp}' no disponible")
-    
+
     return True
 
 # Antes de ejecutar rostro
@@ -727,7 +727,7 @@ validate_rostro_mcps("HYPATIA")
 ### ✅ Regla de Oro
 
 > **Cada rostro debe tener `neo4j` + `memory` como base.**
-> 
+>
 > Sin ellos, el rostro es incompleto y rompe el Output Triple.
 
 ### 🚀 Expansión Futura

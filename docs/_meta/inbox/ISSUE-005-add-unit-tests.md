@@ -147,7 +147,7 @@ from pathlib import Path
 from daath_toolkit.capture import ChatlogCapture
 
 class TestChatlogCapture:
-    
+
     def test_init_valid(self, temp_workspace):
         """Test initialization with valid parameters"""
         capture = ChatlogCapture(
@@ -157,60 +157,60 @@ class TestChatlogCapture:
         )
         assert capture.domain == "physics"
         assert capture.instance == "quantum"
-    
+
     def test_init_invalid_domain(self, temp_workspace):
         """Test initialization with invalid domain"""
         with pytest.raises(ValueError, match="domain"):
             ChatlogCapture(domain="", instance="test", workspace_root=temp_workspace)
-    
+
     def test_save_conversation_creates_structure(self, temp_workspace, sample_messages):
         """Test that save_conversation creates proper directory structure"""
         capture = ChatlogCapture("physics", "quantum", temp_workspace)
         capture.save_conversation(sample_messages)
-        
+
         # Verify structure
         assert (temp_workspace / "_daath" / "chatlog").exists()
         assert (temp_workspace / "_daath" / "chatlog" / "by-rostro").exists()
         assert (temp_workspace / "_daath" / "chatlog" / "metadata.yaml").exists()
-    
+
     def test_parse_by_rostro_separates_correctly(self, temp_workspace, sample_messages):
         """Test that messages are correctly separated by rostro"""
         capture = ChatlogCapture("physics", "quantum", temp_workspace)
         capture.save_conversation(sample_messages)
-        
+
         # Check individual rostro files
         melquisedec_file = temp_workspace / "_daath" / "chatlog" / "by-rostro" / "01-melquisedec.md"
         hypatia_file = temp_workspace / "_daath" / "chatlog" / "by-rostro" / "02-hypatia.md"
-        
+
         assert melquisedec_file.exists()
         assert hypatia_file.exists()
-        
+
         # Verify content
         melquisedec_content = melquisedec_file.read_text()
         assert "La autopoiesis es" in melquisedec_content
-        
+
         hypatia_content = hypatia_file.read_text()
         assert "Un ejemplo claro" in hypatia_content
-    
+
     def test_metadata_yaml_format(self, temp_workspace, sample_messages):
         """Test that metadata.yaml has correct format"""
         import yaml
-        
+
         capture = ChatlogCapture("physics", "quantum", temp_workspace)
         capture.save_conversation(sample_messages, metadata={"topic": "autopoiesis"})
-        
+
         metadata_file = temp_workspace / "_daath" / "chatlog" / "metadata.yaml"
         metadata = yaml.safe_load(metadata_file.read_text())
-        
+
         assert metadata["domain"] == "physics"
         assert metadata["instance"] == "quantum"
         assert metadata["topic"] == "autopoiesis"
         assert "created_at" in metadata
-    
+
     def test_empty_conversation(self, temp_workspace):
         """Test handling of empty conversation"""
         capture = ChatlogCapture("physics", "quantum", temp_workspace)
-        
+
         with pytest.raises(ValueError, match="empty"):
             capture.save_conversation([])
 ```
@@ -224,37 +224,37 @@ from unittest.mock import patch, MagicMock
 from daath_toolkit.storage import DomainAwareVectorStore
 
 class TestDomainAwareVectorStore:
-    
+
     @patch('daath_toolkit.storage.vector_store.pinecone')
     def test_init_connects_to_pinecone(self, mock_pinecone):
         """Test initialization connects to Pinecone"""
         store = DomainAwareVectorStore(domain="physics", api_key="test-key")
-        
+
         mock_pinecone.init.assert_called_once()
         assert store.domain == "physics"
-    
+
     @patch('daath_toolkit.storage.vector_store.pinecone')
     def test_build_namespace(self, mock_pinecone):
         """Test namespace building"""
         store = DomainAwareVectorStore(domain="physics", api_key="test-key")
-        
+
         namespace = store._build_namespace("quantum")
         assert namespace == "physics/quantum"
-    
+
     @patch('daath_toolkit.storage.vector_store.pinecone')
     def test_upsert_vectors(self, mock_pinecone, sample_vectors):
         """Test upserting vectors"""
         mock_index = MagicMock()
         mock_pinecone.Index.return_value = mock_index
-        
+
         store = DomainAwareVectorStore(domain="physics", api_key="test-key")
         store.upsert_vectors("quantum", sample_vectors)
-        
+
         # Verify upsert was called with correct namespace
         mock_index.upsert.assert_called_once()
         call_args = mock_index.upsert.call_args
         assert call_args[1]['namespace'] == "physics/quantum"
-    
+
     @patch('daath_toolkit.storage.vector_store.pinecone')
     def test_query_similar(self, mock_pinecone):
         """Test querying similar vectors"""
@@ -266,13 +266,13 @@ class TestDomainAwareVectorStore:
             ]
         }
         mock_pinecone.Index.return_value = mock_index
-        
+
         store = DomainAwareVectorStore(domain="physics", api_key="test-key")
         results = store.query_similar("quantum", [0.1] * 1536, top_k=2)
-        
+
         assert len(results['matches']) == 2
         assert results['matches'][0]['score'] == 0.95
-    
+
     @patch('daath_toolkit.storage.vector_store.pinecone')
     def test_list_instances(self, mock_pinecone):
         """Test listing instances in domain"""
@@ -285,10 +285,10 @@ class TestDomainAwareVectorStore:
             }
         }
         mock_pinecone.Index.return_value = mock_index
-        
+
         store = DomainAwareVectorStore(domain="physics", api_key="test-key")
         instances = store.list_instances()
-        
+
         assert len(instances) == 2
         assert "quantum" in instances
         assert "relativity" in instances
@@ -306,7 +306,7 @@ from daath_toolkit.capture import ChatlogCapture
 @pytest.mark.integration
 class TestChatlogCaptureIntegration:
     """Integration tests with real filesystem"""
-    
+
     def test_end_to_end_capture(self, temp_workspace):
         """Test complete end-to-end chatlog capture"""
         messages = [
@@ -315,17 +315,17 @@ class TestChatlogCaptureIntegration:
             {"role": "user", "content": "Follow up"},
             {"role": "assistant", "content": "[HYPATIA] Detailed explanation"},
         ]
-        
+
         capture = ChatlogCapture("test-domain", "test-instance", temp_workspace)
         result = capture.save_conversation(messages, metadata={"test": True})
-        
+
         # Verify all artifacts created
         chatlog_dir = temp_workspace / "_daath" / "chatlog"
         assert (chatlog_dir / "full-transcript.md").exists()
         assert (chatlog_dir / "metadata.yaml").exists()
         assert (chatlog_dir / "by-rostro" / "01-melquisedec.md").exists()
         assert (chatlog_dir / "by-rostro" / "02-hypatia.md").exists()
-        
+
         # Verify content integrity
         transcript = (chatlog_dir / "full-transcript.md").read_text()
         assert "Test question" in transcript
@@ -464,7 +464,7 @@ jobs:
 
 ---
 
-**Estado**: 🔴 OPEN  
-**Estimación**: 3-4 horas  
-**Bloqueadores**: ISSUE-004 (necesita pyproject.toml para pytest config)  
+**Estado**: 🔴 OPEN
+**Estimación**: 3-4 horas
+**Bloqueadores**: ISSUE-004 (necesita pyproject.toml para pytest config)
 **Dependencias**: ISSUE-004 debe completarse primero

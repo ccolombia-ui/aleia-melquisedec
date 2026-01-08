@@ -86,9 +86,9 @@ Ver [docs/manifiesto/03-workflow/05-autopoiesis.md](../../manifiesto/03-workflow
 
 ## ✅ Criterios de Aceptación
 
-1. ✅ **Búsqueda completa**: 
+1. ✅ **Búsqueda completa**:
    - `grep -r "nucleo-investigacion"` no devuelve resultados
-   
+
 2. ✅ **Imports funcionan**:
    - Todos los imports de `packages.daath_toolkit` se resuelven correctamente
    - No hay `ModuleNotFoundError` al ejecutar scripts
@@ -143,7 +143,7 @@ pre-commit run --all-files
 
 ---
 
-**Estado**: 🔴 OPEN  
-**Estimación**: 1-2 horas  
-**Bloqueadores**: Ninguno  
+**Estado**: 🔴 OPEN
+**Estimación**: 1-2 horas
+**Bloqueadores**: Ninguno
 **Dependencias**: ISSUE-002 (mejora la validación de links)

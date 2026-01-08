@@ -50,5 +50,5 @@ Los tests E2E fallan intermitentemente por dependencia externa. Se recomienda mo
 
 ---
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

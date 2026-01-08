@@ -227,6 +227,6 @@ npx -y spec-workflow-mcp@latest --dashboard --port 5000
 
 **Sistema operacional y listo para ejecutar** 🎉
 
-**Dashboard**: http://localhost:5000  
-**Tareas totales**: 21 (7+5+9)  
+**Dashboard**: http://localhost:5000
+**Tareas totales**: 21 (7+5+9)
 **Patrones disponibles**: 2 (refactoring, git-workflow)

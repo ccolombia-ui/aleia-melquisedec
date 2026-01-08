@@ -1,7 +1,7 @@
 # Conversaciones con ALMA
 
-**Instance**: instance-XXX-{topic}  
-**Rostro**: ALMA (Malkuth - La Publicadora)  
+**Instance**: instance-XXX-{topic}
+**Rostro**: ALMA (Malkuth - La Publicadora)
 **Prompt usado**: daath-zen-{domain}-v{x.y.z}
 
 ---
@@ -36,7 +36,7 @@
    - **Contexto**: [Descripción del problema/situación]
    - **Solución**: [Qué se aprendió]
    - **Aplicable a**: daath-zen-{domain}
-   
+
 2. **lesson-002-{rostro}-{topic}** (confidence: 0.XX)
    - [...]
 

@@ -416,6 +416,6 @@ Esta migración es ejemplo de **P2: Autopoiesis por Diseño**:
 
 ---
 
-**Autor**: Equipo ALEIA-BERESHIT  
-**Fecha**: 2026-01-08  
+**Autor**: Equipo ALEIA-BERESHIT
+**Fecha**: 2026-01-08
 **Versión de este documento**: 1.0.0

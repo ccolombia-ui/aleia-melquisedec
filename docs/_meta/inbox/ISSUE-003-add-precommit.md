@@ -311,7 +311,7 @@ Refs: ISSUE-003"
 
 ---
 
-**Estado**: 🔴 OPEN  
-**Estimación**: 1-2 horas (setup) + tiempo de reformateo si es necesario  
-**Bloqueadores**: Ninguno  
+**Estado**: 🔴 OPEN
+**Estimación**: 1-2 horas (setup) + tiempo de reformateo si es necesario
+**Bloqueadores**: Ninguno
 **Dependencias**: Se beneficia de ISSUE-001 (validate_doc_links.py debe existir)

@@ -272,7 +272,7 @@ lesson_id = "DD-001-I001-L001"
 if approved:
     # Crear lesson formal
     lesson_file = Path("5-outputs/DD-001-semantic-search/_daath/lessons") / f"{lesson_id}.md"
-    
+
     lesson_content = f"""---
 lesson_id: {lesson_id}
 instance_id: DD-001-I001
@@ -349,10 +349,10 @@ CREATE (l)-[:IMPROVES {{from_version: 'v1.0.0', to_version: 'v1.1.0'}}]->(p)
 - Citation count puede estar sesgado hacia papers antiguos
 - Considerar citation velocity para topics nuevos
 """
-    
+
     with open(lesson_file, 'w', encoding='utf-8') as f:
         f.write(lesson_content)
-    
+
     print(f"✅ Lesson {lesson_id} creada en _daath/lessons/")
 
 else:
@@ -463,10 +463,10 @@ user_approved = True  # Usuario decide
 if user_approved:
     # Crear nueva versión del prompt
     new_version = "v1.1.0"
-    
+
     # Actualizar archivo del prompt (en 3-prompts/)
     # ... código para editar prompt ...
-    
+
     print(f"✅ Prompt actualizado a {new_version}")
 ```
 
@@ -634,7 +634,7 @@ schema.graph.run("""
     MATCH (l:Lesson {lesson_id: $lesson_id})
     MATCH (i:ResearchInstance {instance_id: $instance_id})
     CREATE (l)-[:VALIDATED_IN {result: 'failed', reason: $reason}]->(i)
-""", 
+""",
     lesson_id="DD-001-I001-L001",
     instance_id="DD-001-I005",
     reason="Citation filter too aggressive for emerging topic"

@@ -10,7 +10,7 @@
   - _Lesson: lessons-learned/task-1.1-fix-references.md_
   - _Prompt: Role: MELQUISEDEC Classifier | Task: Scan all files for 'nucleo-investigacion' references, classify by type (Python import, markdown link, Docker config), prioritize by impact | Restrictions: Don't break working imports, preserve git history | Success: All 23 references updated, no broken imports, validation passed_
 
-- [ ] 1.2. Move root documentation files to docs/
+- [x] 1.2. Move root documentation files to docs/
   - File: QUICK_REFERENCE.md, ESTRUCTURA_VISUAL.md, REORGANIZACION_COMPLETA.md
   - _Requirements: REQ-2_
   - _Rostro: MORPHEUS_

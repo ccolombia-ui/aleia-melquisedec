@@ -31,7 +31,7 @@ lessons:
   #   applies_to: "daath-zen-{domain}-v{x.y.z}"
   #   path: "_daath/lessons/lesson-001-hypatia-citations.md"
   #   scope: "domain"
-  
+
   # - id: "lesson-002-salomon-tooling"
   #   rostro: "SALOMON"
   #   confidence: 0.90
@@ -39,7 +39,7 @@ lessons:
   #   applies_to: "daath-zen-{domain}-v{x.y.z}"
   #   path: "_daath/lessons/lesson-002-salomon-tooling.md"
   #   scope: "domain"
-  
+
   # [Agregar más lessons aquí]
 
 # Prompt updates generados

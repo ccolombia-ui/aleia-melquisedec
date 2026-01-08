@@ -44,37 +44,37 @@ Sin sincronización explícita:
 ```mermaid
 graph TB
     Rostro[Rostro executa operación]
-    
+
     WriteAPI[Write API Unificada]
-    
+
     FS[Filesystem<br/>Markdown]
     Neo[Neo4j<br/>Graph]
     Vec[Vector Store<br/>Embeddings]
-    
+
     Reconciler[Reconciliador<br/>Background Service]
-    
+
     Check{Checkpoint<br/>Validación}
-    
+
     Rostro --> WriteAPI
     WriteAPI --> FS
     WriteAPI --> Neo
     WriteAPI --> Vec
-    
+
     FS -.-> Reconciler
     Neo -.-> Reconciler
     Vec -.-> Reconciler
-    
+
     Reconciler -.->|Detecta inconsistencias| FS
     Reconciler -.->|Repara| Neo
     Reconciler -.->|Repara| Vec
-    
+
     FS --> Check
     Neo --> Check
     Vec --> Check
-    
+
     Check -->|✅ Consistente| NextRostro[Siguiente Rostro]
     Check -->|❌ Inconsistente| Reconciler
-    
+
     style WriteAPI fill:#FFD700
     style Reconciler fill:#FF6347
     style Check fill:#32CD32
@@ -107,7 +107,7 @@ class TripleWriteResult:
 
 class KnowledgeWriter:
     """API unificada para escribir conocimiento en los 3 sistemas."""
-    
+
     def __init__(
         self,
         filesystem_root: str,
@@ -118,7 +118,7 @@ class KnowledgeWriter:
         self.fs_root = filesystem_root
         self.neo4j = Neo4jDriver(neo4j_uri, neo4j_auth)
         self.vectors = vector_store_client
-    
+
     def write_knowledge(
         self,
         artifact_id: str,
@@ -131,7 +131,7 @@ class KnowledgeWriter:
     ) -> TripleWriteResult:
         """
         Escribe conocimiento en los 3 sistemas de forma atómica.
-        
+
         Args:
             artifact_id: ID único del artefacto
             artifact_type: Tipo de nodo en Neo4j
@@ -140,7 +140,7 @@ class KnowledgeWriter:
             graph_relationships: Lista de relaciones a crear
             embeddable_text: Texto para generar embedding
             metadata: Metadata del embedding
-        
+
         Returns:
             TripleWriteResult con paths/IDs creados o errores
         """
@@ -148,17 +148,17 @@ class KnowledgeWriter:
         md_path = None
         node_id = None
         vec_id = None
-        
+
         try:
             # 1. Escribir Markdown
             md_path = self._write_markdown(
-                artifact_id, 
-                markdown_content, 
+                artifact_id,
+                markdown_content,
                 metadata
             )
         except Exception as e:
             errors.append(f"MD write failed: {str(e)}")
-        
+
         try:
             # 2. Escribir Graph
             node_id = self._write_graph(
@@ -169,7 +169,7 @@ class KnowledgeWriter:
             )
         except Exception as e:
             errors.append(f"Graph write failed: {str(e)}")
-        
+
         try:
             # 3. Escribir Vector
             vec_id = self._write_vector(
@@ -179,9 +179,9 @@ class KnowledgeWriter:
             )
         except Exception as e:
             errors.append(f"Vector write failed: {str(e)}")
-        
+
         success = len(errors) == 0
-        
+
         return TripleWriteResult(
             success=success,
             markdown_path=md_path,
@@ -190,21 +190,21 @@ class KnowledgeWriter:
             errors=errors,
             timestamp=datetime.utcnow()
         )
-    
+
     def _write_markdown(
-        self, 
-        artifact_id: str, 
-        content: str, 
+        self,
+        artifact_id: str,
+        content: str,
         metadata: Dict[str, Any]
     ) -> str:
         """Escribe archivo Markdown con frontmatter."""
         import yaml
         from pathlib import Path
-        
+
         # Construir frontmatter
         frontmatter = yaml.dump(metadata, default_flow_style=False)
         full_content = f"---\n{frontmatter}---\n\n{content}"
-        
+
         # Determinar path según tipo
         artifact_type = metadata.get('type', 'unknown')
         folder_map = {
@@ -214,16 +214,16 @@ class KnowledgeWriter:
             'template': '4-dataset',
             'output': '5-outputs'
         }
-        
+
         folder = folder_map.get(artifact_type, 'unknown')
         path = Path(self.fs_root) / folder / f"{artifact_id}.md"
-        
+
         # Escribir
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(full_content, encoding='utf-8')
-        
+
         return str(path)
-    
+
     def _write_graph(
         self,
         artifact_id: str,
@@ -232,7 +232,7 @@ class KnowledgeWriter:
         relationships: List[Dict[str, Any]]
     ) -> str:
         """Escribe nodo y relaciones en Neo4j."""
-        
+
         # 1. Crear nodo principal
         props_str = ", ".join([f"{k}: ${k}" for k in properties.keys()])
         create_query = f"""
@@ -240,10 +240,10 @@ class KnowledgeWriter:
         SET n += {{{props_str}}}
         RETURN n.id AS node_id
         """
-        
+
         result = self.neo4j.run(create_query, id=artifact_id, **properties)
         node_id = result[0]['node_id']
-        
+
         # 2. Crear relaciones
         for rel in relationships:
             rel_query = f"""
@@ -252,15 +252,15 @@ class KnowledgeWriter:
             MERGE (source)-[r:{rel['type']} {{{rel.get('properties', {})}}}]->(target)
             RETURN r
             """
-            
+
             self.neo4j.run(
                 rel_query,
                 source_id=artifact_id,
                 target_id=rel['target_id']
             )
-        
+
         return node_id
-    
+
     def _write_vector(
         self,
         artifact_id: str,
@@ -269,20 +269,20 @@ class KnowledgeWriter:
     ) -> str:
         """Genera embedding y guarda en vector store."""
         from openai import OpenAI
-        
+
         client = OpenAI()
-        
+
         # Generar embedding
         response = client.embeddings.create(
             model="text-embedding-ada-002",
             input=text
         )
-        
+
         embedding = response.data[0].embedding
-        
+
         # Guardar en vector store (ejemplo: Pinecone)
         vector_id = f"{artifact_id}-embedding"
-        
+
         self.vectors.upsert(
             vectors=[{
                 'id': vector_id,
@@ -293,7 +293,7 @@ class KnowledgeWriter:
                 }
             }]
         )
-        
+
         return vector_id
 ```
 
@@ -409,7 +409,7 @@ class Inconsistency:
 
 class KnowledgeReconciler:
     """Servicio de background para reconciliar inconsistencias."""
-    
+
     def __init__(
         self,
         writer: KnowledgeWriter,
@@ -418,15 +418,15 @@ class KnowledgeReconciler:
         self.writer = writer
         self.check_interval = check_interval_seconds
         self.logger = logging.getLogger("Reconciler")
-    
+
     def run_forever(self):
         """Loop principal del reconciliador."""
         self.logger.info("🔄 Reconciler started")
-        
+
         while True:
             try:
                 inconsistencies = self.detect_inconsistencies()
-                
+
                 if inconsistencies:
                     self.logger.warning(
                         f"⚠️  Found {len(inconsistencies)} inconsistencies"
@@ -434,17 +434,17 @@ class KnowledgeReconciler:
                     self.repair_inconsistencies(inconsistencies)
                 else:
                     self.logger.info("✅ All systems consistent")
-                
+
                 time.sleep(self.check_interval)
-            
+
             except Exception as e:
                 self.logger.error(f"❌ Reconciler error: {str(e)}")
                 time.sleep(self.check_interval)
-    
+
     def detect_inconsistencies(self) -> List[Inconsistency]:
         """
         Detecta inconsistencias entre MD, Graph, Vector.
-        
+
         Estrategia:
         1. Listar todos los artifacts en MD (fuente de verdad)
         2. Para cada artifact, verificar existencia en Graph y Vector
@@ -452,13 +452,13 @@ class KnowledgeReconciler:
         4. Verificar que relaciones existan
         """
         inconsistencies = []
-        
+
         # 1. Obtener lista de artifacts desde filesystem
         artifacts = self._list_all_markdown_artifacts()
-        
+
         for artifact in artifacts:
             artifact_id = artifact['id']
-            
+
             # 2. Verificar Graph
             graph_node = self._get_graph_node(artifact_id)
             if not graph_node:
@@ -469,7 +469,7 @@ class KnowledgeReconciler:
                     detected_at=datetime.utcnow()
                 ))
                 continue  # No puede verificar versión si no existe
-            
+
             # 3. Verificar Vector
             vector = self._get_vector(artifact_id)
             if not vector:
@@ -479,12 +479,12 @@ class KnowledgeReconciler:
                     details={'artifact': artifact},
                     detected_at=datetime.utcnow()
                 ))
-            
+
             # 4. Verificar versiones
             md_version = artifact.get('version')
             graph_version = graph_node.get('version')
             vector_version = vector.metadata.get('version') if vector else None
-            
+
             if md_version != graph_version:
                 inconsistencies.append(Inconsistency(
                     artifact_id=artifact_id,
@@ -496,7 +496,7 @@ class KnowledgeReconciler:
                     },
                     detected_at=datetime.utcnow()
                 ))
-            
+
             if md_version != vector_version:
                 inconsistencies.append(Inconsistency(
                     artifact_id=artifact_id,
@@ -508,14 +508,14 @@ class KnowledgeReconciler:
                     },
                     detected_at=datetime.utcnow()
                 ))
-            
+
             # 5. Verificar relaciones declaradas en MD existen en Graph
             declared_derives_from = artifact.get('seci', {}).get('derives_from', [])
             actual_derives_from = self._get_graph_relationships(
-                artifact_id, 
+                artifact_id,
                 'DERIVES_FROM'
             )
-            
+
             for expected in declared_derives_from:
                 if expected not in actual_derives_from:
                     inconsistencies.append(Inconsistency(
@@ -527,41 +527,41 @@ class KnowledgeReconciler:
                         },
                         detected_at=datetime.utcnow()
                     ))
-        
+
         return inconsistencies
-    
+
     def repair_inconsistencies(self, inconsistencies: List[Inconsistency]):
         """Repara inconsistencias detectadas."""
-        
+
         for inc in inconsistencies:
             self.logger.info(
                 f"🔧 Repairing {inc.type.value} for {inc.artifact_id}"
             )
-            
+
             try:
                 if inc.type == InconsistencyType.MISSING_GRAPH:
                     self._repair_missing_graph(inc)
-                
+
                 elif inc.type == InconsistencyType.MISSING_VECTOR:
                     self._repair_missing_vector(inc)
-                
+
                 elif inc.type == InconsistencyType.VERSION_MISMATCH:
                     self._repair_version_mismatch(inc)
-                
+
                 elif inc.type == InconsistencyType.MISSING_RELATIONSHIP:
                     self._repair_missing_relationship(inc)
-                
+
                 self.logger.info(f"✅ Repaired {inc.artifact_id}")
-            
+
             except Exception as e:
                 self.logger.error(
                     f"❌ Failed to repair {inc.artifact_id}: {str(e)}"
                 )
-    
+
     def _repair_missing_graph(self, inc: Inconsistency):
         """Crea nodo en Graph basado en MD."""
         artifact = inc.details['artifact']
-        
+
         self.writer._write_graph(
             artifact_id=inc.artifact_id,
             artifact_type=artifact['type'],
@@ -572,30 +572,30 @@ class KnowledgeReconciler:
             },
             relationships=[]  # Se reparan por separado
         )
-    
+
     def _repair_missing_vector(self, inc: Inconsistency):
         """Genera embedding basado en MD."""
         artifact = inc.details['artifact']
-        
+
         # Leer contenido del MD
         md_path = self._get_markdown_path(inc.artifact_id)
         with open(md_path, 'r') as f:
             content = f.read()
-        
+
         # Extraer texto embeddable (sin frontmatter)
         text = self._extract_embeddable_text(content)
-        
+
         self.writer._write_vector(
             artifact_id=inc.artifact_id,
             text=text,
             metadata=artifact
         )
-    
+
     def _repair_version_mismatch(self, inc: Inconsistency):
         """Propaga versión correcta (MD es fuente de verdad)."""
         correct_version = inc.details['md_version']
         system = inc.details['system']
-        
+
         if system == 'graph':
             # Actualizar versión en Graph
             self.writer.neo4j.run(
@@ -603,16 +603,16 @@ class KnowledgeReconciler:
                 id=inc.artifact_id,
                 version=correct_version
             )
-        
+
         elif system == 'vector':
             # Re-generar vector con versión correcta
             self._repair_missing_vector(inc)  # Regenera con metadata actual
-    
+
     def _repair_missing_relationship(self, inc: Inconsistency):
         """Crea relación faltante en Graph."""
         rel_type = inc.details['relationship_type']
         target = inc.details['target']
-        
+
         # Crear relación
         self.writer.neo4j.run(f"""
             MATCH (source {{id: $source_id}})
@@ -620,14 +620,14 @@ class KnowledgeReconciler:
             MERGE (source)-[r:{rel_type}]->(target)
             RETURN r
         """, source_id=inc.artifact_id, target_id=target)
-    
+
     # Métodos auxiliares (simplificados)
-    
+
     def _list_all_markdown_artifacts(self) -> List[Dict[str, Any]]:
         """Lista todos los artifacts en filesystem."""
         # Implementación: escanear carpetas, parsear frontmatter
         pass
-    
+
     def _get_graph_node(self, artifact_id: str) -> Optional[Dict]:
         """Obtiene nodo de Neo4j."""
         result = self.writer.neo4j.run(
@@ -635,17 +635,17 @@ class KnowledgeReconciler:
             id=artifact_id
         )
         return result[0]['n'] if result else None
-    
+
     def _get_vector(self, artifact_id: str):
         """Obtiene vector de vector store."""
         try:
             return self.writer.vectors.fetch([f"{artifact_id}-embedding"])
         except:
             return None
-    
+
     def _get_graph_relationships(
-        self, 
-        artifact_id: str, 
+        self,
+        artifact_id: str,
         rel_type: str
     ) -> List[str]:
         """Obtiene IDs de nodos relacionados."""
@@ -718,17 +718,17 @@ def checkpoint_with_reconciliation(
 ) -> CheckpointResult:
     """
     Checkpoint que intenta reconciliar antes de fallar.
-    
+
     Args:
         artifact_id: ID del artefacto a validar
         rostro_name: Nombre del rostro (para logs)
         reconciler: Instancia del reconciler
         max_retries: Intentos de reconciliación
-    
+
     Returns:
         CheckpointResult
     """
-    
+
     for attempt in range(max_retries):
         # Ejecutar checkpoint normal
         result = validate_checkpoint(
@@ -738,33 +738,33 @@ def checkpoint_with_reconciliation(
             graph_query=f"MATCH (n {{id: '{artifact_id}'}}) RETURN n",
             vector_id=f"{artifact_id}-embedding"
         )
-        
+
         if result.passed:
             return result
-        
+
         # Si falló, intentar reconciliar
         logging.warning(
             f"Checkpoint falló (attempt {attempt+1}/{max_retries}). "
             f"Iniciando reconciliación..."
         )
-        
+
         # Detectar inconsistencias específicas de este artifact
         inconsistencies = reconciler.detect_inconsistencies()
         relevant = [
-            inc for inc in inconsistencies 
+            inc for inc in inconsistencies
             if inc.artifact_id == artifact_id
         ]
-        
+
         if not relevant:
             # No hay inconsistencias detectables, fallo real
             break
-        
+
         # Reparar
         reconciler.repair_inconsistencies(relevant)
-        
+
         # Esperar un poco y reintentar
         time.sleep(2)
-    
+
     # Si llegamos aquí, checkpoint falló definitivamente
     return result
 ```

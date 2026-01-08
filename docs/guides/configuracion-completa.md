@@ -1,6 +1,6 @@
 # ✅ Configuración Completa - Neo4j + Docker MCP Toolkit
 
-**Fecha:** 2026-01-07  
+**Fecha:** 2026-01-07
 **Estado:** ✅ CONFIGURACIÓN EXITOSA
 
 ---
@@ -43,7 +43,7 @@ python tools/testing/test_mcp_toolkit.py --verbose
 #### **test_mcps.py** (EXISTENTE)
 - **Propósito:** Prueba MCPs de `.vscode/mcp.json` (Claude Desktop)
 - **Ubicación:** `tools/testing/test_mcps.py`
-- **Diferencias:** 
+- **Diferencias:**
   - Lee configuración de archivo JSON local
   - Ejecuta binarios directamente
   - Para proyectos sin Docker MCP Toolkit
@@ -81,23 +81,23 @@ python tools/testing/test_mcp_toolkit.py --verbose
 neo4j:
   image: neo4j:5.15-community
   container_name: melquisedec-neo4j
-  
+
   # Memoria optimizada para embeddings y grafos
   environment:
     - NEO4J_dbms_memory_heap_initial__size=512M
     - NEO4J_dbms_memory_heap_max__size=2G
     - NEO4J_dbms_memory_pagecache_size=512M
-    
+
     # Plugins para grafos de conocimiento
     - NEO4J_PLUGINS=["apoc", "graph-data-science"]
-    
+
   # Volúmenes para persistencia
   volumes:
     - neo4j_data:/data
     - neo4j_logs:/logs
     - neo4j_import:/var/lib/neo4j/import
     - neo4j_plugins:/plugins
-    
+
   # Healthcheck para validar disponibilidad
   healthcheck:
     test: ["CMD-SHELL", "cypher-shell -u neo4j -p password123 'RETURN 1'"]
@@ -137,7 +137,7 @@ NEO4J_PASSWORD: password123 (secreto)
 
 **Uso:**
 ```
-@workspace "Usando neo4j-cypher, crea un grafo de conocimiento 
+@workspace "Usando neo4j-cypher, crea un grafo de conocimiento
 con los conceptos principales del proyecto"
 ```
 
@@ -153,7 +153,7 @@ NEO4J_PASSWORD: password123 (secreto)
 
 **Uso:**
 ```
-@workspace "Guarda en memoria que estoy trabajando en 
+@workspace "Guarda en memoria que estoy trabajando en
 grafos de conocimiento con Neo4j y embeddings"
 ```
 
@@ -291,21 +291,21 @@ RETURN p, n, o, m
 
 **Ejemplo 1: Consultar grafo**
 ```
-@workspace "Usando neo4j-cypher MCP, muéstrame todas 
+@workspace "Usando neo4j-cypher MCP, muéstrame todas
 las tecnologías que usa el proyecto Melquisedec"
 ```
 
 **Ejemplo 2: Guardar en memoria**
 ```
-@workspace "Guarda en neo4j-memory que el objetivo 
-del proyecto es crear un sistema de gestión de 
+@workspace "Guarda en neo4j-memory que el objetivo
+del proyecto es crear un sistema de gestión de
 conocimiento con grafos y embeddings"
 ```
 
 **Ejemplo 3: Búsqueda semántica**
 ```
-@workspace "Busca en el grafo de conocimiento conceptos 
-relacionados con 'inteligencia artificial' usando 
+@workspace "Busca en el grafo de conocimiento conceptos
+relacionados con 'inteligencia artificial' usando
 similitud semántica"
 ```
 
@@ -387,5 +387,5 @@ docker mcp config show
 
 ---
 
-**Autor:** GitHub Copilot + Aleia Melquisedec Team  
+**Autor:** GitHub Copilot + Aleia Melquisedec Team
 **Fecha:** 2026-01-07

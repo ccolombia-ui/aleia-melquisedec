@@ -79,11 +79,11 @@
 ```python
 def pre_commit_hook():
     changed_files = get_staged_files()
-    
+
     # Filter by file type
     python_files = [f for f in changed_files if f.endswith('.py')]
     md_files = [f for f in changed_files if f.endswith('.md')]
-    
+
     # Run checks in parallel
     results = []
     if python_files:
@@ -91,14 +91,14 @@ def pre_commit_hook():
         results.append(run_flake8(python_files))
         results.append(run_isort(python_files))
         results.append(run_mypy(python_files))
-    
+
     if md_files:
         results.append(run_markdownlint(md_files))
-    
+
     if any(r.failed for r in results):
         print_errors(results)
         return EXIT_FAILURE
-    
+
     return EXIT_SUCCESS
 ```
 
@@ -120,11 +120,11 @@ def run_affected_tests(changed_files):
         if src.startswith('packages/'):
             pkg = extract_package_name(src)
             test_files.extend(find_tests_for_package(pkg))
-    
+
     if not test_files:
         print("No tests affected, skipping")
         return EXIT_SUCCESS
-    
+
     # Run pytest
     result = subprocess.run([
         'pytest',
@@ -132,7 +132,7 @@ def run_affected_tests(changed_files):
         '--cov-report=term-missing',
         *test_files
     ])
-    
+
     return result.returncode
 ```
 
@@ -150,7 +150,7 @@ def run_affected_tests(changed_files):
 def validate_branch():
     # Get current branch
     branch = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).strip()
-    
+
     # Check if on main
     if branch == 'main':
         response = input("⚠️  You're on main. Create a feature branch? (y/n): ")
@@ -158,19 +158,19 @@ def validate_branch():
             return suggest_branch_creation()
         elif response.lower() != 'n':
             return EXIT_FAILURE
-    
+
     # Validate branch name format
     if not re.match(r'^(spec|hotfix|docs)/[\w-]+', branch):
         print(f"⚠️  Branch name '{branch}' doesn't follow convention")
         print("Expected: spec/<name> or hotfix/<name> or docs/<name>")
-    
+
     # Check upstream
     try:
         subprocess.check_output(['git', 'rev-parse', '@{u}'])
     except:
         print("⚠️  No upstream tracking. Run: git push -u origin", branch)
         return EXIT_FAILURE
-    
+
     return EXIT_SUCCESS
 ```
 
@@ -188,7 +188,7 @@ def validate_branch():
 def generate_commit_message():
     # Get branch name
     branch = get_current_branch()
-    
+
     # Extract spec from branch (e.g., spec/git-push-workflow-v1.0.0)
     spec_match = re.match(r'spec/([\w-]+)-v(\d+\.\d+\.\d+)', branch)
     if spec_match:
@@ -197,15 +197,15 @@ def generate_commit_message():
     else:
         spec_name = None
         version = None
-    
+
     # Get staged files to infer type
     changed_files = get_staged_files()
     commit_type = infer_commit_type(changed_files)
-    
+
     # Prompt for task ID and description
     task_id = input("Task ID (e.g., 1.1): ").strip()
     description = input("Brief description: ").strip()
-    
+
     # Read spec context if available
     rostro = None
     mcps = None
@@ -213,7 +213,7 @@ def generate_commit_message():
         task_info = read_task_from_spec(spec_name, task_id)
         rostro = task_info.get('rostro')
         mcps = task_info.get('mcps')
-    
+
     # Generate message
     message = f"{commit_type}({spec_name}): {task_id} {description}\n\n"
     message += f"Spec: {spec_name}-v{version}\n"
@@ -223,7 +223,7 @@ def generate_commit_message():
     if mcps:
         message += f"MCPs: {mcps}\n"
     message += f"Lesson: lessons-learned/task-{task_id}-lesson.md\n"
-    
+
     return message
 ```
 
@@ -240,21 +240,21 @@ def generate_commit_message():
 ```python
 def push_to_remote(dry_run=False):
     branch = get_current_branch()
-    
+
     # Get unpushed commits
     unpushed = get_unpushed_commits()
     print(f"📦 Pushing {len(unpushed)} commit(s) to origin/{branch}")
-    
+
     for commit in unpushed:
         print(f"  - {commit['hash'][:7]}: {commit['message']}")
-    
+
     if dry_run:
         print("🧪 Dry-run mode, not pushing")
         return EXIT_SUCCESS
-    
+
     # Push
     result = subprocess.run(['git', 'push', 'origin', branch])
-    
+
     if result.returncode == 0:
         print("✅ Successfully pushed to origin/" + branch)
         return EXIT_SUCCESS
@@ -400,13 +400,13 @@ repos:
     hooks:
       - id: black
         language_version: python3.10
-  
+
   - repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
         args: ['--max-line-length=88']
-  
+
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:

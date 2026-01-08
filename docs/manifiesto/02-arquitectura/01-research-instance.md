@@ -548,14 +548,14 @@ graph TB
     Work["3-workbook/<br/>Análisis"]
     Data["4-dataset/<br/>Templates"]
     Out["5-outputs/<br/>Output final"]
-    
+
     Inbox -->|MELQUISEDEC clasifica| Lit
     Lit -->|HYPATIA busca| Atomic
     Atomic -->|HYPATIA sintetiza| Work
     Work -->|SALOMON analiza| Data
     Data -->|MORPHEUS diseña| Out
     Out -->|ALMA publica| Inbox
-    
+
     style Inbox fill:#FFD700
     style Atomic fill:#9370DB
     style Work fill:#4682B4
@@ -647,6 +647,6 @@ python _melquisedec/validate-metadata.py
 
 ---
 
-**Versión**: 4.0.0  
-**Última actualización**: 2026-01-08  
+**Versión**: 4.0.0
+**Última actualización**: 2026-01-08
 **Próxima revisión**: 2026-04-08

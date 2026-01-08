@@ -16,7 +16,7 @@ Cada investigación en DAATH-ZEN MELQUISEDEC es un **branch independiente** que 
 ### Branch Principal: `main`
 
 - **Propósito**: Estado estable del monorepo
-- **Contiene**: 
+- **Contiene**:
   - Infraestructura base (packages/, infrastructure/, tools/)
   - Documentación general (docs/)
   - Template de investigación (apps/00-template/)
@@ -31,10 +31,10 @@ Cada investigación en DAATH-ZEN MELQUISEDEC es un **branch independiente** que 
   - `research/02-embeddings-semanticos`
   - `research/03-agentes-autonomos`
 - **Propósito**: Desarrollo completo de una investigación
-- **Contiene**: 
+- **Contiene**:
   - Todo de `main`
   - Una carpeta `apps/XX-nombre/` con la investigación
-- **Ciclo de vida**: 
+- **Ciclo de vida**:
   1. Creación desde `main`
   2. Desarrollo activo (commits frecuentes)
   3. PR a `main` cuando esté madura (opcional)
@@ -124,7 +124,7 @@ git push origin research/01-mi-investigacion
 gh pr create \
   --title "feat(research): integrate 01-mi-investigacion findings" \
   --body "## Summary
-  
+
 Esta investigación exploró [descripción].
 
 ## Key Findings

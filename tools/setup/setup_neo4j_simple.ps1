@@ -73,7 +73,7 @@ Write-Host "[OK] neo4j-memory configurado correctamente" -ForegroundColor Green
 if ($neo4jRunning) {
     Write-Host ""
     Write-Host "Creando base de datos 'memory' en Neo4j..." -ForegroundColor Cyan
-    
+
     try {
         $output = docker exec melquisedec-neo4j cypher-shell -u $NEO4J_USER -p $NEO4J_PASSWORD -d system "CREATE DATABASE memory IF NOT EXISTS;" 2>&1
         Write-Host "[OK] Base de datos 'memory' creada/verificada" -ForegroundColor Green

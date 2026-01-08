@@ -1,7 +1,7 @@
 # Conversaciones con MORPHEUS
 
-**Instance**: instance-XXX-{topic}  
-**Rostro**: MORPHEUS (Yesod - El Diseñador)  
+**Instance**: instance-XXX-{topic}
+**Rostro**: MORPHEUS (Yesod - El Diseñador)
 **Prompt usado**: daath-zen-{domain}-v{x.y.z}
 
 ---

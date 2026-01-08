@@ -12,7 +12,7 @@ Documentación de decisiones arquitectónicas y estructura del proyecto.
   - Descripción de cada carpeta top-level
   - Convenciones de naming
   - Flujos de trabajo
-  
+
 - [[estructura-visual]] - **Diagrama visual ASCII** (movido desde raíz en 2026-01-08)
   - Tree structure del monorepo
   - Colores y jerarquía visual

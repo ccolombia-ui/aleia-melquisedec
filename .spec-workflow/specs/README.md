@@ -427,7 +427,7 @@ graph TD
 
 - **Spec name**: `kebab-case` (ej: `user-authentication`, `monorepo-improvements-v1.1.0`)
 - **Task IDs**: `X.Y` donde X es el grupo funcional, Y es la tarea secuencial (ej: `1.1`, `1.2`, `2.1`)
-- **File names**: 
+- **File names**:
   - Documentos principales: `lowercase.md`
   - Logs: `task-X.Y-short-name.md`
   - Artifacts: `descriptive-name.json|.md|.txt`

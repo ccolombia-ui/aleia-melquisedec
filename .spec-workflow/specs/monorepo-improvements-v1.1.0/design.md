@@ -7,7 +7,7 @@ Este spec no introduce nueva arquitectura, sino que **consolida** la estructura 
 ```
 [ANTES]                              [DESPUÉS]
 ─────────────────────────────────────────────────
-nucleo-investigacion/ (eliminado)    
+nucleo-investigacion/ (eliminado)
 ├── scripts/ ──────────────────────→ packages/daath-toolkit/
 ├── docs/ ─────────────────────────→ docs/manifiesto/03-workflow/
 └── setup_*.sh ────────────────────→ tools/setup/
@@ -30,9 +30,9 @@ ARQUITECTURA_MONOREPO.md (raíz) ───→ docs/architecture/arquitectura-mon
 ```python
 # Mapeo de paths obsoletos → nuevos
 PATH_MAPPING = {
-    "nucleo-investigacion/scripts/chatlog_capture.py": 
+    "nucleo-investigacion/scripts/chatlog_capture.py":
         "packages/daath-toolkit/capture/chatlog_capture.py",
-    "nucleo-investigacion/scripts/vector_store.py": 
+    "nucleo-investigacion/scripts/vector_store.py":
         "packages/daath-toolkit/storage/domain_aware_vector_store.py",
     "nucleo-investigacion/docs/workflow-autopoiesis.md":
         "docs/manifiesto/03-workflow/05-autopoiesis.md",
@@ -72,19 +72,19 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks: [trailing-whitespace, end-of-file-fixer, check-yaml, check-json]
-  
+
   - repo: https://github.com/psf/black
     rev: 23.12.1
     hooks: [black]
-  
+
   - repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks: [isort]
-  
+
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
     hooks: [flake8]
-  
+
   - repo: local
     hooks:
       - id: validate-doc-links

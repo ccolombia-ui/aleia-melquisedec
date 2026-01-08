@@ -112,8 +112,8 @@ Usar template:
 ```markdown
 # ADR {número}: {Título}
 
-**Estado**: Propuesto | Aceptado | Rechazado | Deprecado  
-**Fecha**: YYYY-MM-DD  
+**Estado**: Propuesto | Aceptado | Rechazado | Deprecado
+**Fecha**: YYYY-MM-DD
 **Autores**: [Nombres]
 
 ## Contexto
@@ -313,7 +313,7 @@ Los issues son **SPECS** que se convierten en **PROMPTS** para LLMs:
 
 **Ejemplo**:
 ```
-ISSUE-003 (add pre-commit) 
+ISSUE-003 (add pre-commit)
   → Dar todo el issue al LLM
     → LLM genera .pre-commit-config.yaml
       → Ejecutar pytest/tests

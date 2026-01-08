@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "docs/manifiesto/04-implementacion/04-memoria-y-persistencia-triple.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "04-memoria-y-persistencia-triple"
             }
           },
           {
@@ -221,6 +221,11 @@
   },
   "active": "69621fe1295a4d41",
   "lastOpenFiles": [
+    "docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md",
+    "docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md",
+    "docs/manifiesto/bereshit-v3.0.0.md",
+    "docs/manifiesto/ANALISIS_Y_PROPUESTA_V4.md",
+    "README.md",
     "docs/guides/README.md",
     "docs/architecture/README.md",
     "docs/README.md",
@@ -249,14 +254,9 @@
     "tools/git",
     "docs/manifiesto/02-arquitectura/03-templates-hkm.md",
     "docs/manifiesto/02-arquitectura/01-research-instance.md",
-    "_templates/daath-zen-patterns/daath-zen-git-workflow.md",
-    "_templates/daath-zen-patterns/daath-zen-refactoring.md",
-    "_templates/daath-zen-patterns/README.md",
     "_templates/daath-zen-patterns",
     "audit.log",
-    "docs/_meta/inbox/_spec-issue-workflow/README.md",
     "docs/_meta/inbox/_spec-issue-workflow/approvals/rejected",
-    "docs/_meta/inbox/ISSUE-006-cleanup-validation.md",
     "Sin título.canvas"
   ]
 }

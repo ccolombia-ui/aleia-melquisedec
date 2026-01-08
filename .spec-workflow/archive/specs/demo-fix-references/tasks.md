@@ -10,9 +10,9 @@ Run comprehensive search to identify all files with nucleo-investigacion referen
 - [ ] Document results in a list
 - [ ] Categorize by file type
 
-**Status**: pending  
-**Priority**: high  
-**Files**: All files in repository  
+**Status**: pending
+**Priority**: high
+**Files**: All files in repository
 **Requirements**: REQ-1, REQ-2, REQ-3
 
 ---
@@ -25,9 +25,9 @@ Update all Python files that import from the old directory structure.
 - [ ] Update import paths to new location
 - [ ] Verify imports work
 
-**Status**: pending  
-**Priority**: high  
-**Files**: `packages/**/*.py`, `tools/**/*.py`  
+**Status**: pending
+**Priority**: high
+**Files**: `packages/**/*.py`, `tools/**/*.py`
 **Requirements**: REQ-1
 
 ---
@@ -40,9 +40,9 @@ Update or remove all broken links in documentation files.
 - [ ] Update links to new paths
 - [ ] Remove links that no longer apply
 
-**Status**: pending  
-**Priority**: medium  
-**Files**: `docs/**/*.md`, `README.md`  
+**Status**: pending
+**Priority**: medium
+**Files**: `docs/**/*.md`, `README.md`
 **Requirements**: REQ-2
 
 ---
@@ -55,9 +55,9 @@ Run tests and validators to ensure nothing is broken.
 - [ ] Run documentation link validator
 - [ ] Verify grep returns 0 results
 
-**Status**: pending  
-**Priority**: high  
-**Files**: Test files  
+**Status**: pending
+**Priority**: high
+**Files**: Test files
 **Requirements**: NFR-1, NFR-2
 
 ---
@@ -71,6 +71,6 @@ Run tests and validators to ensure nothing is broken.
 | 1.3 | Fix Markdown links | pending | medium |
 | 1.4 | Validate changes | pending | high |
 
-**Total**: 4 tasks  
-**Completed**: 0  
+**Total**: 4 tasks
+**Completed**: 0
 **Pending**: 4

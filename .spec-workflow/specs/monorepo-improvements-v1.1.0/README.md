@@ -8,7 +8,7 @@ Consolidar monorepo DAATH-ZEN con autopoiesis completa post-reorganización:
 - ✅ Implementar validación automática (pre-commit, tests, cleanup)
 - ✅ Preparar packaging formal de `daath-toolkit`
 
-**Estado**: 🚧 En implementación  
+**Estado**: 🚧 En implementación
 **Spec Path**: `C:\proyectos\aleia-melquisedec\.spec-workflow\specs\monorepo-improvements-v1.1.0`
 
 ---
@@ -114,7 +114,7 @@ graph TD
 
 ## 🛠️ MCPs Recomendados
 
-**Base** (todas las tasks): `neo4j`, `memory`  
+**Base** (todas las tasks): `neo4j`, `memory`
 **Specialized**:
 - `filesystem` - Task 1.1, 1.2, 1.3, 1.4, 1.5, 1.6
 - `grep-search` - Task 1.1, 1.2, 1.6
@@ -160,6 +160,6 @@ aleia-melquisedec/
 
 ---
 
-**Versión**: 1.1.0  
-**Última actualización**: 2026-01-08  
+**Versión**: 1.1.0
+**Última actualización**: 2026-01-08
 **Rostro autor**: MORPHEUS

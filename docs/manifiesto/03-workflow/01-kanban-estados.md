@@ -77,5 +77,5 @@ dependencies: ["ISSUE-099"]
 
 **Referencias**: `01-kanban-estados.md` → `02-trazabilidad.md`, `03-versionamiento.md`
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

@@ -34,5 +34,5 @@ Registro de versiones importantes del manifiesto y cambios significativos en la 
 
 ---
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

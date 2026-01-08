@@ -22,25 +22,25 @@ rostros_executed:
     completed_at: null
     checkpoint_passed: null                  # true | false | null
     errors: []
-    
+
   - rostro: "HYPATIA"
     started_at: null
     completed_at: null
     checkpoint_passed: null
     errors: []
-    
+
   - rostro: "SALOMON"
     started_at: null
     completed_at: null
     checkpoint_passed: null
     errors: []
-    
+
   - rostro: "MORPHEUS"
     started_at: null
     completed_at: null
     checkpoint_passed: null
     errors: []
-    
+
   - rostro: "ALMA"
     started_at: null
     completed_at: null

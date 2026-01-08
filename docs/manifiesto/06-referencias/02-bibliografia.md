@@ -34,5 +34,5 @@ Lista seleccionada de referencias citadas y útiles para el manifiesto y prácti
 - Añadir DOI/URL/ISBN donde sea posible.
 - Mantener formato consistente (APA/Chicago) según contexto del output.
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

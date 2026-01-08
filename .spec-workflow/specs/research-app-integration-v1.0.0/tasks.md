@@ -3,8 +3,8 @@
 ## Overview
 Este task board implementa el análisis y decisión arquitectónica sobre integración de apps de investigación (caso: keter) en el ecosistema DAATH-ZEN.
 
-**Status**: 🟡 NOT STARTED  
-**Priority**: HIGH (decisión arquitectónica fundamental)  
+**Status**: 🟡 NOT STARTED
+**Priority**: HIGH (decisión arquitectónica fundamental)
 **Estimated Duration**: 3-4 sesiones de trabajo
 
 ---
@@ -12,8 +12,8 @@ Este task board implementa el análisis y decisión arquitectónica sobre integr
 ## Phase 1: Discovery & Analysis 🔍
 
 ### TASK-1.1: Gather Keter Information
-**Owner**: Developer + User  
-**Priority**: ⚡ CRITICAL (bloquea análisis)  
+**Owner**: Developer + User
+**Priority**: ⚡ CRITICAL (bloquea análisis)
 **Estimated Time**: 30 min
 
 **Description**:
@@ -35,9 +35,9 @@ Obtener información estructural de keter ya que está fuera del workspace actua
 ---
 
 ### TASK-1.2: Analyze Keter Structure
-**Owner**: AI Agent  
-**Priority**: HIGH  
-**Estimated Time**: 45 min  
+**Owner**: AI Agent
+**Priority**: HIGH
+**Estimated Time**: 45 min
 **Depends On**: TASK-1.1
 
 **Description**:
@@ -62,9 +62,9 @@ scorecard = metadata.to_scorecard()
 ---
 
 ### TASK-1.3: Apply Decision Tree to Keter
-**Owner**: AI Agent  
-**Priority**: HIGH  
-**Estimated Time**: 30 min  
+**Owner**: AI Agent
+**Priority**: HIGH
+**Estimated Time**: 30 min
 **Depends On**: TASK-1.2
 
 **Description**:
@@ -88,8 +88,8 @@ Aplicar el decision tree a keter para determinar placement recomendado.
 ## Phase 2: Architecture Documentation 📐
 
 ### TASK-2.1: Create ADR-002 Multi-Repo Strategy
-**Owner**: AI Agent  
-**Priority**: ⚡ CRITICAL  
+**Owner**: AI Agent
+**Priority**: ⚡ CRITICAL
 **Estimated Time**: 1 hour
 
 **Description**:
@@ -116,8 +116,8 @@ Documentar la estrategia arquitectónica multi-repositorio como ADR formal.
 ---
 
 ### TASK-2.2: Create Component Placement Guidelines
-**Owner**: AI Agent  
-**Priority**: HIGH  
+**Owner**: AI Agent
+**Priority**: HIGH
 **Estimated Time**: 1 hour
 
 **Description**:
@@ -141,8 +141,8 @@ Crear decision tree visual y guidelines para clasificar componentes futuros.
 ---
 
 ### TASK-2.3: Create New Research Repo Template
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 1 hour
 
 **Description**:
@@ -179,8 +179,8 @@ aleia-{name}/
 ---
 
 ### TASK-2.4: Create Multi-Repo Spec Workflow Guidelines
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 45 min
 
 **Description**:
@@ -199,8 +199,8 @@ Documentar cómo gestionar specs que involucran múltiples repositorios.
 ## Phase 3: Repository Cleanup 🧹
 
 ### TASK-3.1: Clarify apps/ Purpose in Melquisedec
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 30 min
 
 **Description**:
@@ -224,9 +224,9 @@ Decidir y documentar el rol de `apps/` en melquisedec: ¿examples/ o mantener co
 ---
 
 ### TASK-3.2: Update ARQUITECTURA_MONOREPO.md
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
-**Estimated Time**: 30 min  
+**Owner**: AI Agent
+**Priority**: MEDIUM
+**Estimated Time**: 30 min
 **Depends On**: TASK-2.1, TASK-3.1
 
 **Description**:
@@ -250,9 +250,9 @@ Incorporar multi-repo strategy en documento de arquitectura principal.
 ## Phase 4: Decision & Next Steps 🎯
 
 ### TASK-4.1: Document Keter Final Decision
-**Owner**: AI Agent + User Approval  
-**Priority**: ⚡ CRITICAL  
-**Estimated Time**: 30 min  
+**Owner**: AI Agent + User Approval
+**Priority**: ⚡ CRITICAL
+**Estimated Time**: 30 min
 **Depends On**: TASK-1.3
 
 **Description**:
@@ -275,9 +275,9 @@ Basado en análisis, documentar decisión formal sobre el futuro de keter.
 ---
 
 ### TASK-4.2: Create Implementation Roadmap (if applicable)
-**Owner**: AI Agent  
-**Priority**: LOW (depends on decision)  
-**Estimated Time**: 30 min  
+**Owner**: AI Agent
+**Priority**: LOW (depends on decision)
+**Estimated Time**: 30 min
 **Depends On**: TASK-4.1
 
 **Description**:
@@ -296,9 +296,9 @@ Si la decisión requiere implementación (ej: packaging), crear roadmap de alto 
 ---
 
 ### TASK-4.3: Update CONTRIBUTING.md
-**Owner**: AI Agent  
-**Priority**: LOW  
-**Estimated Time**: 20 min  
+**Owner**: AI Agent
+**Priority**: LOW
+**Estimated Time**: 20 min
 **Depends On**: TASK-2.2
 
 **Description**:
@@ -316,8 +316,8 @@ Actualizar guía de contribución con nueva sección "Where to Contribute".
 ## Phase 5: Validation & Documentation 📋
 
 ### TASK-5.1: Self-Validate Spec Multi-Repo Compliance
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 15 min
 
 **Description**:
@@ -333,8 +333,8 @@ Verificar que este spec sigue sus propias guidelines para multi-repo.
 ---
 
 ### TASK-5.2: Generate Summary & Changelog
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 20 min
 
 **Description**:
@@ -369,8 +369,8 @@ Crear resumen ejecutivo y actualizar CHANGELOG.md.
 ---
 
 ### TASK-5.3: Create Spec Completion Report
-**Owner**: AI Agent  
-**Priority**: LOW  
+**Owner**: AI Agent
+**Priority**: LOW
 **Estimated Time**: 15 min
 
 **Description**:
@@ -413,8 +413,8 @@ Generar reporte final con métricas de completitud.
 ## Meta Tasks 🔧
 
 ### META-1: Setup Spec Folder Structure
-**Owner**: AI Agent  
-**Priority**: ⚡ IMMEDIATE  
+**Owner**: AI Agent
+**Priority**: ⚡ IMMEDIATE
 **Estimated Time**: 5 min
 
 **Description**:
@@ -442,8 +442,8 @@ research-app-integration-v1.0.0/
 ---
 
 ### META-2: Create Spec README
-**Owner**: AI Agent  
-**Priority**: MEDIUM  
+**Owner**: AI Agent
+**Priority**: MEDIUM
 **Estimated Time**: 15 min
 
 **Description**:
@@ -466,23 +466,23 @@ Crear README.md del spec como punto de entrada.
 graph TD
     M1[META-1: Setup Structure] --> T11[TASK-1.1: Gather Keter Info]
     M1 --> M2[META-2: Create README]
-    
+
     T11 --> T12[TASK-1.2: Analyze Keter]
     T12 --> T13[TASK-1.3: Apply Decision Tree]
-    
+
     T13 --> T21[TASK-2.1: ADR-002]
     T13 --> T22[TASK-2.2: Placement Guidelines]
     T21 --> T23[TASK-2.3: Repo Template]
     T21 --> T24[TASK-2.4: Multi-Repo Workflow]
-    
+
     T21 --> T31[TASK-3.1: Clarify apps/]
     T21 --> T32[TASK-3.2: Update ARQUITECTURA]
     T31 --> T32
-    
+
     T13 --> T41[TASK-4.1: Keter Decision]
     T41 --> T42[TASK-4.2: Implementation Roadmap]
     T22 --> T43[TASK-4.3: Update CONTRIBUTING]
-    
+
     T24 --> T51[TASK-5.1: Self-Validate]
     T32 --> T52[TASK-5.2: Summary & Changelog]
     T41 --> T52
@@ -504,23 +504,23 @@ graph TD
 ## Execution Strategy
 
 ### Sprint 1: Discovery (Tasks 1.1-1.3)
-**Goal**: Entender keter y aplicar análisis  
-**Duration**: 1 session (2 hours)  
+**Goal**: Entender keter y aplicar análisis
+**Duration**: 1 session (2 hours)
 **Output**: keter evaluation & decision
 
 ### Sprint 2: Documentation (Tasks 2.1-2.4)
-**Goal**: Crear artefactos arquitectónicos  
-**Duration**: 1 session (2.5 hours)  
+**Goal**: Crear artefactos arquitectónicos
+**Duration**: 1 session (2.5 hours)
 **Output**: 4 documentos guía
 
 ### Sprint 3: Cleanup (Tasks 3.1-3.2, 4.3)
-**Goal**: Actualizar repo melquisedec  
-**Duration**: 1 session (1.5 hours)  
+**Goal**: Actualizar repo melquisedec
+**Duration**: 1 session (1.5 hours)
 **Output**: Repo actualizado con nuevas guidelines
 
 ### Sprint 4: Finalization (Tasks 4.1-4.2, 5.1-5.3)
-**Goal**: Decisión final y cierre  
-**Duration**: 1 session (1.5 hours)  
+**Goal**: Decisión final y cierre
+**Duration**: 1 session (1.5 hours)
 **Output**: Spec completo y validado
 
 **Total Estimated Time**: 7.5 hours (4 sesiones de ~2h)

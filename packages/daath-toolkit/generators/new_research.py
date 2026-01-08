@@ -20,7 +20,7 @@ def generate_research(
 ):
     """
     Genera una nueva investigación
-    
+
     Args:
         name: Nombre de la investigación (ej: "knowledge-graph-analysis")
         purpose: Propósito breve de la investigación
@@ -35,40 +35,40 @@ def generate_research(
                 base_path = current
                 break
             current = current.parent
-        
+
         if base_path is None:
             print("❌ Error: No se pudo detectar la raíz del proyecto")
             sys.exit(1)
-    
+
     # Paths
     apps_path = base_path / 'apps'
     template_path = apps_path / '00-template'
-    
+
     # Encontrar siguiente número
     existing_apps = [d for d in apps_path.iterdir() if d.is_dir() and d.name.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'))]
     next_number = len(existing_apps)  # 00-template no cuenta
-    
+
     # Nombre con número
     app_id = f"{next_number:02d}-{name}"
     target_path = apps_path / app_id
-    
+
     if target_path.exists():
         print(f"❌ Error: Ya existe: {target_path}")
         sys.exit(1)
-    
+
     print(f"\n{'='*60}")
     print(f"Creando nueva investigación: {app_id}")
     print(f"{'='*60}\n")
-    
+
     # Copiar template
     print(f"📂 Copiando template...")
     shutil.copytree(template_path, target_path)
-    
+
     # Personalizar PROPOSITO.md
     print(f"✏️ Personalizando PROPOSITO.md...")
     proposito_path = target_path / 'PROPOSITO.md'
     content = proposito_path.read_text(encoding='utf-8')
-    
+
     # Reemplazos
     replacements = {
         '[NOMBRE-INVESTIGACIÓN]': name.replace('-', ' ').title(),
@@ -76,29 +76,29 @@ def generate_research(
         'YYYY-MM-DD': datetime.now().strftime('%Y-%m-%d'),
         'MELQUISEDEC"  # MELQUISEDEC': f'{initiated_by}"  # {initiated_by}'
     }
-    
+
     if purpose:
         # Reemplazar el placeholder de purpose
         content = content.replace(
             '[Describir en 2-3 líneas qué problema resuelve esta investigación\n   y qué conocimiento busca generar]',
             purpose
         )
-    
+
     for old, new in replacements.items():
         content = content.replace(old, new)
-    
+
     proposito_path.write_text(content, encoding='utf-8')
-    
+
     # Personalizar README.md
     readme_path = target_path / 'README.md'
     readme_content = readme_path.read_text(encoding='utf-8')
     readme_content = readme_content.replace('[NOMBRE-INVESTIGACIÓN]', name.replace('-', ' ').title())
     readme_path.write_text(readme_content, encoding='utf-8')
-    
+
     # Crear 0-inbox por defecto
     inbox_path = target_path / '0-inbox'
     inbox_path.mkdir(exist_ok=True)
-    
+
     inbox_readme = inbox_path / 'README.md'
     inbox_readme.write_text(f"""# Inbox - {name}
 
@@ -112,7 +112,7 @@ Crear archivos markdown aquí:
 - `request-funcionalidad.md` para requests
 
 """, encoding='utf-8')
-    
+
     print(f"\n{'='*60}")
     print(f"✅ Investigación creada exitosamente!")
     print(f"{'='*60}\n")
@@ -146,14 +146,14 @@ def main():
         choices=['MELQUISEDEC', 'HYPATIA', 'SALOMON', 'MORPHEUS', 'ALMA'],
         help='Rostro que inicia la investigación'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Validar nombre
     if not args.name.replace('-', '').replace('_', '').isalnum():
         print("❌ Error: El nombre debe ser alfanumérico con guiones")
         sys.exit(1)
-    
+
     generate_research(
         name=args.name,
         purpose=args.purpose,

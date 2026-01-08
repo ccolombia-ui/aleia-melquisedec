@@ -106,23 +106,23 @@ Este spec se generó usando análisis multinivel:
 ## 🗺️ Phases
 
 ### Phase 1: Discovery 🔍
-**Goal**: Understand keter and apply analysis framework  
-**Tasks**: 1.1-1.3 (Gather info, Analyze, Apply decision tree)  
+**Goal**: Understand keter and apply analysis framework
+**Tasks**: 1.1-1.3 (Gather info, Analyze, Apply decision tree)
 **Duration**: 1 session (~2h)
 
 ### Phase 2: Documentation 📐
-**Goal**: Create architectural artifacts  
-**Tasks**: 2.1-2.4 (ADR, Guidelines, Template, Multi-repo workflow)  
+**Goal**: Create architectural artifacts
+**Tasks**: 2.1-2.4 (ADR, Guidelines, Template, Multi-repo workflow)
 **Duration**: 1 session (~2.5h)
 
 ### Phase 3: Cleanup 🧹
-**Goal**: Update melquisedec repo  
-**Tasks**: 3.1-3.2 (Clarify apps/, Update ARQUITECTURA)  
+**Goal**: Update melquisedec repo
+**Tasks**: 3.1-3.2 (Clarify apps/, Update ARQUITECTURA)
 **Duration**: 1 session (~1.5h)
 
 ### Phase 4: Finalization 🎯
-**Goal**: Final decision and validation  
-**Tasks**: 4.1-4.3, 5.1-5.3 (Decision, Roadmap, Validation)  
+**Goal**: Final decision and validation
+**Tasks**: 4.1-4.3, 5.1-5.3 (Decision, Roadmap, Validation)
 **Duration**: 1 session (~1.5h)
 
 **Total Estimate**: 7.5 hours across 4 work sessions
@@ -188,21 +188,21 @@ Get-Content README.md  # o PROPOSITO.md
 <summary><b>Decision Log (updated as spec progresses)</b></summary>
 
 ### Decision 1: Multi-Repo Strategy
-**Date**: 2026-01-08  
-**Decision**: Framework (melquisedec) y Apps (bereshit+) en repos separados  
-**Rationale**: [Pending ADR-002]  
+**Date**: 2026-01-08
+**Decision**: Framework (melquisedec) y Apps (bereshit+) en repos separados
+**Rationale**: [Pending ADR-002]
 **Status**: 🟡 Proposed
 
 ### Decision 2: apps/ Purpose
-**Date**: TBD  
-**Decision**: [Pending TASK-3.1]  
-**Options**: Rename to examples/ OR Keep with explicit README  
+**Date**: TBD
+**Decision**: [Pending TASK-3.1]
+**Options**: Rename to examples/ OR Keep with explicit README
 **Status**: 🟡 Under Analysis
 
 ### Decision 3: Keter Placement
-**Date**: TBD  
-**Decision**: [Pending TASK-4.1]  
-**Options**: A) Stay, B) Package, C) Standalone, D) Toolkit  
+**Date**: TBD
+**Decision**: [Pending TASK-4.1]
+**Options**: A) Stay, B) Package, C) Standalone, D) Toolkit
 **Status**: 🟡 Pending Analysis
 
 </details>

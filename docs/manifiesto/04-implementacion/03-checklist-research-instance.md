@@ -30,5 +30,5 @@ La instancia puede publicarse si todos los checks anteriores son `true` y la rev
 
 ---
 
-**Versión**: 4.0.0  
+**Versión**: 4.0.0
 **Última actualización**: 2026-01-08

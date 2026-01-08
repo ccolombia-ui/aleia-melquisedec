@@ -246,5 +246,5 @@ grep -r "\- \[ \]" .spec-workflow/specs/*/tasks.md
 
 ---
 
-**Última actualización**: 2024 (Sistema v3.0)  
+**Última actualización**: 2024 (Sistema v3.0)
 **Mantenido por**: ALMA (Rostro Publicador DAATH-ZEN)

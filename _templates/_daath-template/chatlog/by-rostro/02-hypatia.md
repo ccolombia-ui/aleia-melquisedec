@@ -1,7 +1,7 @@
 # Conversaciones con HYPATIA
 
-**Instance**: instance-XXX-{topic}  
-**Rostro**: HYPATIA (Daath - La Investigadora)  
+**Instance**: instance-XXX-{topic}
+**Rostro**: HYPATIA (Daath - La Investigadora)
 **Prompt usado**: daath-zen-{domain}-v{x.y.z}
 
 ---

@@ -242,9 +242,9 @@ Inspirado por:
    ```
 
 2. **Los MCP Servers ya están configurados:**
-   
+
    Los MCPs están configurados globalmente en VS Code (`User Settings`) y se cargan automáticamente al iniciar GitHub Copilot Chat.
-   
+
    **Verificar configuración actual:**
    - Presiona `Ctrl+Shift+P`
    - Ejecuta: `Preferences: Open User Settings (JSON)`
@@ -253,7 +253,7 @@ Inspirado por:
 3. **Requisitos:**
    - Node.js (v16+) y npm - Para MCPs de Filesystem y Memory
    - Python 3.10+ y uv - Para MCP de Fetch
-   
+
    ```bash
    # Verificar instalaciones
    node --version
@@ -268,7 +268,7 @@ Inspirado por:
 Los MCPs configurados en `settings.json` **no aparecerán como herramientas personalizadas** en GitHub Copilot Chat. GitHub Copilot viene con MCPs preconfigurados a nivel de plataforma:
 
 - ✅ GitHub MCP
-- ✅ GitKraken MCP  
+- ✅ GitKraken MCP
 - ✅ Playwright MCP
 - ✅ Markdown MCP
 - ✅ Apify MCP

@@ -303,7 +303,7 @@ Si un workflow falla:
    ```bash
    # Instalar act (GitHub Actions local)
    # https://github.com/nektos/act
-   
+
    act push -j validate-structure
    ```
 3. **Revisar sintaxis**: [GitHub Actions Validator](https://rhysd.github.io/actionlint/)

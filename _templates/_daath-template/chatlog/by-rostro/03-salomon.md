@@ -1,7 +1,7 @@
 # Conversaciones con SALOMON
 
-**Instance**: instance-XXX-{topic}  
-**Rostro**: SALOMON (Tiferet - El Analista)  
+**Instance**: instance-XXX-{topic}
+**Rostro**: SALOMON (Tiferet - El Analista)
 **Prompt usado**: daath-zen-{domain}-v{x.y.z}
 
 ---

@@ -253,7 +253,7 @@ issue-003-book-ddd
 
 #### Graph (Neo4j)
 ```cypher
-MATCH path = 
+MATCH path =
   (i:Issue {id: "issue-003-book-ddd"})
   -[:INFORMS]->
   (l:Literature)
@@ -348,13 +348,13 @@ Estructura `0-inbox/` → `5-outputs/` debe repetirse en cada nivel.
 - Automatizar checks (CI) que validen: presencia de HKM header, `seci.derives_from` apunta a artifact existente y passing tests antes de permitir `in-progress` → `review`/`done`.
 
 ### Métricas y señales de salud
-- **Tiempo medio en `blocked`** por issue (objetivo: reducir).  
-- **% de adherencia a Tzimtzum** (issues que respetaron handoffs).  
+- **Tiempo medio en `blocked`** por issue (objetivo: reducir).
+- **% de adherencia a Tzimtzum** (issues que respetaron handoffs).
 - **MTTU (Mean Time To Unblock)** — tiempo desde `blocked` → `in-progress`.
 - Registrar la **causa raíz** de cualquier bypass en `02-lessons-learned.md`.
 
 ### Ejemplo práctico
-- *Investigación exploratoria (sin artifact)*: HYPATIA puede trabajar en paralelo (NO Tzimtzum obligatorio).  
+- *Investigación exploratoria (sin artifact)*: HYPATIA puede trabajar en paralelo (NO Tzimtzum obligatorio).
 - *Construcción de output final*: SALOMON espera a que HYPATIA publique `2-atomic/concepts` con HKM completo (APLICAR Tzimtzum).
 
 ### Anti-patrón (a evitar)
@@ -472,7 +472,7 @@ sequenceDiagram
     A->>FS: Crear v1.1.0.md (NO editar v1.0.0.md)
     A->>Neo: CREATE (:Output {version: "1.1.0"})
     A->>Vec: Upsert embedding con version=1.1.0
-    
+
     A->>Git: git tag output-v1.1.0
     A->>Git: git push
 

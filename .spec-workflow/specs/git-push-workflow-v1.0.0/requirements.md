@@ -9,8 +9,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 ## User Stories
 
 ### US-1: Pre-Push Validation
-**As a** developer  
-**I want** automated validation before pushing  
+**As a** developer
+**I want** automated validation before pushing
 **So that** I ensure code quality and prevent broken commits
 
 **Acceptance Criteria**:
@@ -20,8 +20,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 - No broken references
 
 ### US-2: Structured Commit Messages
-**As a** team member  
-**I want** consistent commit message format  
+**As a** team member
+**I want** consistent commit message format
 **So that** we can track changes and generate changelogs automatically
 
 **Acceptance Criteria**:
@@ -31,8 +31,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 - Includes rostro and MCPs metadata
 
 ### US-3: Branch Protection
-**As a** repository maintainer  
-**I want** to validate branch state before push  
+**As a** repository maintainer
+**I want** to validate branch state before push
 **So that** we prevent pushing to protected branches accidentally
 
 **Acceptance Criteria**:
@@ -42,8 +42,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 - Check for conflicts
 
 ### US-4: Change Documentation
-**As a** contributor  
-**I want** to document significant changes  
+**As a** contributor
+**I want** to document significant changes
 **So that** team members understand the context
 
 **Acceptance Criteria**:
@@ -56,8 +56,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 ## Functional Requirements
 
 ### REQ-1: Pre-commit Validation
-**Priority**: MUST  
-**Rostro**: MORPHEUS  
+**Priority**: MUST
+**Rostro**: MORPHEUS
 **Description**: Run linters, formatters, and syntax checkers before allowing commit
 
 **Technical Details**:
@@ -72,8 +72,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 - Clear error messages
 
 ### REQ-2: Test Execution
-**Priority**: MUST  
-**Rostro**: MORPHEUS  
+**Priority**: MUST
+**Rostro**: MORPHEUS
 **Description**: Run relevant tests based on changed files
 
 **Technical Details**:
@@ -88,8 +88,8 @@ Standardize the process of pushing changes to the remote repository with proper 
 - Execution time < 2 minutes
 
 ### REQ-3: Commit Message Generation
-**Priority**: MUST  
-**Rostro**: ALMA  
+**Priority**: MUST
+**Rostro**: ALMA
 **Description**: Generate or validate commit message format
 
 **Technical Details**:
@@ -117,8 +117,8 @@ Lesson: {lesson-file or N/A}
 - Descriptive and clear
 
 ### REQ-4: Branch Validation
-**Priority**: SHOULD  
-**Rostro**: MELQUISEDEC  
+**Priority**: SHOULD
+**Rostro**: MELQUISEDEC
 **Description**: Validate branch state and relationships
 
 **Technical Details**:
@@ -133,8 +133,8 @@ Lesson: {lesson-file or N/A}
 - Suggestions for resolution
 
 ### REQ-5: Remote Push
-**Priority**: MUST  
-**Rostro**: ALMA  
+**Priority**: MUST
+**Rostro**: ALMA
 **Description**: Execute git push with proper error handling
 
 **Technical Details**:
@@ -149,8 +149,8 @@ Lesson: {lesson-file or N/A}
 - Retry suggestions
 
 ### REQ-6: Post-Push Actions
-**Priority**: SHOULD  
-**Rostro**: ALMA  
+**Priority**: SHOULD
+**Rostro**: ALMA
 **Description**: Execute post-push actions (tags, notifications)
 
 **Technical Details**:

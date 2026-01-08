@@ -71,22 +71,22 @@ sequenceDiagram
     M->>M: 🔍 Checkpoint MELQUISEDEC
     Note over M: Valida Output Triple
     M-->>H: ✅ Checkpoint pasado
-    
+
     H->>H: Ejecuta investigación
     H->>H: 🔍 Checkpoint HYPATIA
     Note over H: Valida Output Triple
     H-->>S: ✅ Checkpoint pasado
-    
+
     S->>S: Ejecuta análisis
     S->>S: 🔍 Checkpoint SALOMON
     Note over S: Valida Output Triple
     S-->>Mo: ✅ Checkpoint pasado
-    
+
     Mo->>Mo: Ejecuta diseño
     Mo->>Mo: 🔍 Checkpoint MORPHEUS
     Note over Mo: Valida Output Triple
     Mo-->>A: ✅ Checkpoint pasado
-    
+
     A->>A: Ejecuta publicación
     A->>A: 🔍 Checkpoint ALMA
     Note over A: Valida Output Triple
@@ -147,21 +147,21 @@ RETURN t
 # Python: Verificar embedding del research_question
 def validate_melquisedec_vectors(issue_id: str) -> bool:
     vector_id = f"{issue_id}-question"
-    
+
     # Verificar que existe embedding
     embedding = vector_store.get(vector_id)
     if not embedding:
         return False
-    
+
     # Verificar dimensión correcta (OpenAI ada-002 = 1536)
     if len(embedding.vector) != 1536:
         return False
-    
+
     # Verificar metadata
     required_metadata = ['id', 'type', 'domain', 'version']
     if not all(k in embedding.metadata for k in required_metadata):
         return False
-    
+
     return True
 ```
 
@@ -246,19 +246,19 @@ RETURN c.version
 def validate_hypatia_vectors(concept_id: str) -> bool:
     # Verificar embedding del concepto
     embedding = vector_store.get(f"{concept_id}-definition")
-    
+
     # Verificar que metadata tiene derives_from
     if 'derives_from' not in embedding.metadata:
         return False
-    
+
     # Verificar que derives_from coincide con Graph
     graph_sources = neo4j.query(
         "MATCH (c:Concept {id: $cid})-[:DERIVES_FROM]->(s) RETURN s.id",
         cid=concept_id
     )
-    
+
     vector_sources = embedding.metadata['derives_from']
-    
+
     # Deben coincidir
     return set(graph_sources) == set(vector_sources)
 ```
@@ -399,7 +399,7 @@ decision:
 
 **Selección**: CRISP-DM
 
-**Justificación**: 
+**Justificación**:
 - Tooling disponible reduce tiempo de implementación
 - Equipo ya tiene experiencia (reduce riesgo)
 - Documentación madura facilita onboarding
@@ -487,13 +487,13 @@ phases:
     outputs:
       - "business-objectives.md"
       - "success-criteria.yaml"
-  
+
   - id: "data-understanding"
     name: "Data Understanding"
     outputs:
       - "data-exploration.ipynb"
       - "data-quality-report.md"
-  
+
   # ... 4 fases más
 ```
 
@@ -564,14 +564,14 @@ RETURN t.id, v
 ```python
 def validate_alma_vectors(output_id: str) -> bool:
     embedding = vector_store.get(f"{output_id}-docs")
-    
+
     # Verificar que puede encontrarse semánticamente
     similar = vector_store.search(embedding.vector, top_k=5)
-    
+
     # El output debe ser el resultado #1 (similar a sí mismo)
     if similar[0].id != output_id:
         return False
-    
+
     # Verificar metadata completa para trazabilidad
     required = ['id', 'version', 'derives_from', 'published_at']
     return all(k in embedding.metadata for k in required)
@@ -592,11 +592,11 @@ derives_from:
   - id: "template-crisp-dm-phases"
     version: "1.0.0"  # NO "latest"
     path: "_melquisedec/templates/crisp-dm-phases.yaml"
-  
+
   - id: "analysis-crisp-vs-tdsp"
     version: "1.0.0"
     path: "3-workbook/analysis-crisp-vs-tdsp.md"
-  
+
   - id: "concept-crisp-dm"
     version: "1.0.0"
     path: "2-atomic/concept-crisp-dm.md"
@@ -649,51 +649,51 @@ CREATE (o)-[:DERIVES_FROM {at_version: "1.0.0"}]->(a)
 ```mermaid
 graph TB
     Start([Usuario solicita investigación])
-    
+
     M[MELQUISEDEC<br/>Clasifica]
     CM{Checkpoint M<br/>MD + Graph + Vector}
-    
+
     H[HYPATIA<br/>Investiga]
     CH{Checkpoint H<br/>MD + Graph + Vector}
-    
+
     S[SALOMON<br/>Analiza]
     CS{Checkpoint S<br/>MD + Graph + Vector}
-    
+
     Mo[MORPHEUS<br/>Diseña]
     CMo{Checkpoint Mo<br/>MD + Graph + Vector}
-    
+
     A[ALMA<br/>Publica]
     CA{Checkpoint A<br/>MD + Graph + Vector}
-    
+
     End([Output publicado])
     Feedback([Monitoreo feedback])
     NewInbox([Nuevo inbox])
-    
+
     Start --> M
     M --> CM
     CM -->|❌ Fallo| M
     CM -->|✅ Pasó| H
-    
+
     H --> CH
     CH -->|❌ Fallo| H
     CH -->|✅ Pasó| S
-    
+
     S --> CS
     CS -->|❌ Fallo| S
     CS -->|✅ Pasó| Mo
-    
+
     Mo --> CMo
     CMo -->|❌ Fallo| Mo
     CMo -->|✅ Pasó| A
-    
+
     A --> CA
     CA -->|❌ Fallo| A
     CA -->|✅ Pasó| End
-    
+
     End --> Feedback
     Feedback -.->|Lesson learned| NewInbox
     NewInbox -.->|Autopoiesis| M
-    
+
     style CM fill:#FFD700
     style CH fill:#9370DB
     style CS fill:#4682B4
@@ -729,38 +729,38 @@ def validate_checkpoint(
 ) -> CheckpointResult:
     """
     Valida Output Triple para un artefacto.
-    
+
     Args:
         rostro: Nombre del rostro (MELQUISEDEC, HYPATIA, etc.)
         artifact_id: ID único del artefacto
         markdown_path: Ruta al archivo MD
         graph_query: Query Cypher para validar grafo
         vector_id: ID del embedding
-    
+
     Returns:
         CheckpointResult con detalles de validación
     """
     errors = []
-    
+
     # 1. Validar Markdown
     markdown_ok = False
     try:
         with open(markdown_path, 'r') as f:
             content = f.read()
             metadata = extract_yaml_frontmatter(content)
-            
+
             if 'id' not in metadata:
                 errors.append(f"MD: Missing 'id' in frontmatter")
             elif metadata['id'] != artifact_id:
                 errors.append(f"MD: ID mismatch {metadata['id']} != {artifact_id}")
-            
+
             if 'version' not in metadata:
                 errors.append(f"MD: Missing 'version'")
-            
+
             markdown_ok = len(errors) == 0
     except FileNotFoundError:
         errors.append(f"MD: File not found {markdown_path}")
-    
+
     # 2. Validar Graph
     graph_ok = False
     try:
@@ -774,7 +774,7 @@ def validate_checkpoint(
             graph_ok = len([e for e in errors if 'Graph' in e]) == 0
     except Exception as e:
         errors.append(f"Graph: Query failed {str(e)}")
-    
+
     # 3. Validar Vectors
     vectors_ok = False
     try:
@@ -786,30 +786,30 @@ def validate_checkpoint(
                 errors.append(f"Vector: Missing 'id' in metadata")
             elif embedding.metadata['id'] != artifact_id:
                 errors.append(f"Vector: ID mismatch")
-            
+
             if 'version' not in embedding.metadata:
                 errors.append(f"Vector: Missing 'version' in metadata")
-            
+
             vectors_ok = len([e for e in errors if 'Vector' in e]) == 0
     except Exception as e:
         errors.append(f"Vector: Retrieval failed {str(e)}")
-    
+
     # 4. Validar Consistencia
     consistency_ok = False
     if markdown_ok and graph_ok and vectors_ok:
         md_version = metadata['version']
         graph_version = node['version']
         vector_version = embedding.metadata['version']
-        
+
         if md_version != graph_version:
             errors.append(f"Consistency: Version mismatch MD({md_version}) != Graph({graph_version})")
         if md_version != vector_version:
             errors.append(f"Consistency: Version mismatch MD({md_version}) != Vector({vector_version})")
-        
+
         consistency_ok = len([e for e in errors if 'Consistency' in e]) == 0
-    
+
     passed = markdown_ok and graph_ok and vectors_ok and consistency_ok
-    
+
     return CheckpointResult(
         passed=passed,
         markdown_ok=markdown_ok,

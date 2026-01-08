@@ -1,8 +1,8 @@
 # Transcript Completo: Instance {XXX} - {Topic}
 
-**Instance ID**: instance-XXX-{topic}  
-**Domain ID**: DD-XXX  
-**Fecha**: YYYY-MM-DD a YYYY-MM-DD  
+**Instance ID**: instance-XXX-{topic}
+**Domain ID**: DD-XXX
+**Fecha**: YYYY-MM-DD a YYYY-MM-DD
 **Prompts**: root-v{x.y.z}, type-v{x.y.z}, instance-v{x.y.z}
 
 ---
@@ -80,5 +80,5 @@ Ver: `_daath/lessons/summary.yaml`
 
 ---
 
-**Generado automáticamente** por el sistema de autopoiesis.  
+**Generado automáticamente** por el sistema de autopoiesis.
 **Última actualización**: YYYY-MM-DD HH:MM

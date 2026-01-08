@@ -54,12 +54,12 @@ while (true) {
     specName: "monorepo-improvements-v1.1.0",
     action: "next-pending"
   });
-  
+
   if (!nextTask.data?.task) break; // No hay más tasks
-  
+
   const task = nextTask.data.task;
   console.log(`Iniciando: ${task.id} - ${task.title}`);
-  
+
   // 2. Marcar como en progreso
   await mcpClient.callTool('manage-tasks', {
     projectPath: "/absolute/path/to/project",
@@ -68,11 +68,11 @@ while (true) {
     taskId: task.id,
     status: "in-progress"
   });
-  
+
   // 3. EJECUTAR según task.prompt, task.rostro, task.mcps definidos en tasks.md
   //    (NO duplicar lógica aquí - tasks.md es la fuente única)
   await executeTaskFromDefinition(task);
-  
+
   // 4. Marcar como completada
   await mcpClient.callTool('manage-tasks', {
     projectPath: "/absolute/path/to/project",
@@ -81,7 +81,7 @@ while (true) {
     taskId: task.id,
     status: "completed"
   });
-  
+
   // 5. Checkpoints (si aplica)
   if (task.id === "1.1") validateCheckpoint("ck-01-no-nucleo-refs");
   if (task.id === "1.5") validateCheckpoint("ck-02-coverage-80");

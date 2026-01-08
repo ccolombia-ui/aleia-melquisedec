@@ -1,7 +1,7 @@
 # Conversaciones con MELQUISEDEC
 
-**Instance**: instance-XXX-{topic}  
-**Rostro**: MELQUISEDEC (Keter - El Clasificador)  
+**Instance**: instance-XXX-{topic}
+**Rostro**: MELQUISEDEC (Keter - El Clasificador)
 **Prompt usado**: daath-zen-{domain}-v{x.y.z}
 
 ---

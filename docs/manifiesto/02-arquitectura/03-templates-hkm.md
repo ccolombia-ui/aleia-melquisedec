@@ -178,7 +178,7 @@ Referencias externas (URLs, DOIs, ISBNs).
 
 ```yaml
 dc:
-  source: 
+  source:
     - "https://en.wikipedia.org/wiki/Cross-industry_standard_process_for_data_mining"
     - "DOI:10.1109/TKDE.2000.123456"
     - "ISBN:978-0321125217"
@@ -196,7 +196,7 @@ Lista de artifacts de los cuales deriva este artifact.
 
 ```yaml
 seci:
-  derives_from: 
+  derives_from:
     - "../1-literature/papers/chapman-2000-crisp-dm.pdf"
     - "../2-atomic/concepts/concept-data-mining.md"
 ```
@@ -314,7 +314,7 @@ dc:
   date: "2026-01-08"
   subject: ["Comparison", "Decision", "Methodologies"]
 seci:
-  derives_from: 
+  derives_from:
     - "../2-atomic/concepts/concept-crisp-dm.md"
     - "../2-atomic/concepts/concept-tdsp.md"
     - "../2-atomic/concepts/concept-kdd.md"
@@ -342,7 +342,7 @@ dc:
   date: "2026-01-08"
   subject: ["CRISP-DM", "Guide", "Tutorial"]
 seci:
-  derives_from: 
+  derives_from:
     - "../3-workbook/analysis-methodologies.md"
     - "../4-dataset/templates/crisp-dm-phase1-template.md"
   informs: []
@@ -405,74 +405,74 @@ REQUIRED_SECI_FIELDS = ["derives_from"]
 
 def validate_header(filepath: Path) -> bool:
     """Valida header HKM de un archivo."""
-    
+
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
-    
+
     # Extraer frontmatter YAML
     if not content.startswith("---"):
         print(f"❌ {filepath}: Missing YAML frontmatter")
         return False
-    
+
     yaml_end = content.find("---", 3)
     if yaml_end == -1:
         print(f"❌ {filepath}: Unclosed YAML frontmatter")
         return False
-    
+
     yaml_content = content[3:yaml_end]
-    
+
     try:
         metadata = yaml.safe_load(yaml_content)
     except yaml.YAMLError as e:
         print(f"❌ {filepath}: Invalid YAML: {e}")
         return False
-    
+
     # Validar campos requeridos
     for field in REQUIRED_FIELDS:
         if field not in metadata:
             print(f"❌ {filepath}: Missing required field '{field}'")
             return False
-    
+
     # Validar Dublin Core
     for field in REQUIRED_DC_FIELDS:
         if field not in metadata["dc"]:
             print(f"❌ {filepath}: Missing required dc.{field}")
             return False
-    
+
     # Validar SECI
     for field in REQUIRED_SECI_FIELDS:
         if field not in metadata["seci"]:
             print(f"❌ {filepath}: Missing required seci.{field}")
             return False
-    
+
     print(f"✅ {filepath}: Valid HKM header")
     return True
 
 
 def validate_all():
     """Valida todos los archivos .md en carpetas principales."""
-    
+
     folders = [
-        "0-inbox", "1-literature", "2-atomic", 
+        "0-inbox", "1-literature", "2-atomic",
         "3-workbook", "4-dataset", "5-outputs"
     ]
-    
+
     all_valid = True
-    
+
     for folder in folders:
         folder_path = Path(folder)
         if not folder_path.exists():
             continue
-        
+
         for md_file in folder_path.rglob("*.md"):
             if not validate_header(md_file):
                 all_valid = False
-    
+
     if all_valid:
         print("\n✅ All files have valid HKM headers")
     else:
         print("\n❌ Some files have invalid headers")
-    
+
     return all_valid
 
 
@@ -569,6 +569,6 @@ index.upsert(vectors=[vector_data], namespace="DD-001.I001")
 
 ---
 
-**Versión**: 4.0.0  
-**Última actualización**: 2026-01-08  
+**Versión**: 4.0.0
+**Última actualización**: 2026-01-08
 **Próxima revisión**: 2026-04-08
