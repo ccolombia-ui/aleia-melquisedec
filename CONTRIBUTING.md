@@ -222,9 +222,126 @@ refactor(daath-toolkit): simplificar validadores
 
 ---
 
-## 🐛 Reportar Issues
+## � Sistema de Issues y Mejoras
 
-Usar template:
+### Para Issues del Monorepo (Infraestructura)
+
+Para reportar problemas o proponer mejoras a la estructura del monorepo, herramientas, o infraestructura general:
+
+**Location**: `docs/_meta/inbox/`
+
+#### Crear un Issue
+
+1. **Copiar template**:
+   ```powershell
+   cp docs/_meta/templates/issue-template.md docs/_meta/inbox/ISSUE-XXX-descripcion.md
+   ```
+
+2. **Completar metadata YAML**:
+   ```yaml
+   ---
+   id: ISSUE-XXX
+   title: Título descriptivo del issue
+   type: bug | enhancement | maintenance | testing
+   area: codebase | documentation | packages | tooling | automation | infrastructure
+   priority: high | medium | low
+   status: open | in-progress | blocked | done
+   created: YYYY-MM-DD
+   assignee: nombre | null
+   tags: [tag1, tag2, tag3]
+   related_issues: [ISSUE-001, ISSUE-002]
+   ---
+   ```
+
+3. **Completar secciones**:
+   - **Objetivo**: ¿Qué se busca resolver?
+   - **Contexto**: ¿Por qué es necesario?
+   - **Solución Propuesta**: ¿Cómo resolverlo?
+   - **Implementación**: Pasos concretos
+   - **Criterios de Aceptación**: ¿Cuándo está completo?
+   - **Testing**: ¿Cómo validar?
+
+#### Workflow de Issues
+
+```
+OPEN → IN-PROGRESS → (BLOCKED?) → DONE
+  ↓         ↓                        ↓
+inbox/   inbox/                   done/
+```
+
+**Estados**:
+- `open`: Issue nuevo, no iniciado
+- `in-progress`: Alguien está trabajando
+- `blocked`: Esperando dependencia o decisión
+- `done`: Completado y validado
+
+**Mover a done/**:
+```powershell
+# Cuando se complete el issue
+git mv docs/_meta/inbox/ISSUE-XXX-nombre.md docs/_meta/done/ISSUE-XXX-nombre.md
+
+# Actualizar metadata en el archivo
+status: done
+completed: YYYY-MM-DD
+```
+
+#### Buscar Issues
+
+```powershell
+# Ver todos los issues abiertos
+ls docs/_meta/inbox/
+
+# Buscar por tag
+grep -r "tag: cleanup" docs/_meta/inbox/
+
+# Buscar por área
+grep -r "area: packages" docs/_meta/inbox/
+
+# Buscar por prioridad alta
+grep -r "priority: high" docs/_meta/inbox/
+```
+
+#### De Issue a Implementation
+
+Los issues son **SPECS** que se convierten en **PROMPTS** para LLMs:
+
+1. **Issue = SPEC**: Documento con contexto completo
+2. **Issue → PROMPT**: Copiar issue completo al LLM
+3. **LLM → CODE**: El LLM genera código/cambios
+4. **Validation**: Ejecutar criterios de aceptación
+5. **Done**: Mover issue a `done/` y cerrar
+
+**Ejemplo**:
+```
+ISSUE-003 (add pre-commit) 
+  → Dar todo el issue al LLM
+    → LLM genera .pre-commit-config.yaml
+      → Ejecutar pytest/tests
+        → Marcar como done
+```
+
+### Para Issues de Investigación (Apps)
+
+Para issues específicos de proyectos de investigación:
+
+**Location**: `apps/XX-nombre/0-inbox/`
+
+Seguir estructura similar pero dentro del app específico.
+
+### Diferencia: Monorepo vs App Issues
+
+| Aspecto | Monorepo Issues | App Issues |
+|---------|-----------------|------------|
+| **Location** | `docs/_meta/inbox/` | `apps/XX/0-inbox/` |
+| **Scope** | Infraestructura, tools, packages | Investigación específica |
+| **Ejemplos** | "Fix imports", "Add pre-commit" | "Analizar dataset", "Entrenar modelo" |
+| **Tracking** | Git + local markdown | Local markdown |
+
+---
+
+## 🐛 Reportar Bugs (Quick Issues)
+
+Para bugs simples que no requieren SPEC completo, usar GitHub Issues:
 
 ```markdown
 ## Descripción del problema

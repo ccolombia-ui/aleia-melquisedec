@@ -325,30 +325,40 @@ Estructura `0-inbox/` → `5-outputs/` debe repetirse en cada nivel.
 
 ## P8: Tzimtzum (Dependency Blocking)
 
-**Enunciado**: Cada etapa espera dependencias antes de ejecutar (contracción antes de expansión).
+**Enunciado**: Cada etapa aplica una "contracción operativa" (espera) ante dependencias que deben cumplirse antes de generar el artifact que consumirá la siguiente etapa.
 
 ### Inspiración Kabalística
 
-**Tzimtzum** = Contracción de Dios para crear espacio al universo.
+**Tzimtzum** = Contracción intencional para crear espacio y evitar expansión prematura.
 
-### Aplicación MELQUISEDEC
+### Regla de decisión (Operativa)
+- **¿La actividad genera un ARTIFACT consumido por el siguiente rostro?**
+  - **Sí** → *NOT Tzimtzum* (permitir trabajo preparatorio en paralelo, pero la **fase productiva** que genera el artifact debe respetar el checkpoint y no publicar hasta validación).
+  - **No** → *Tzimtzum* (esperar al rostro anterior antes de proceder).
 
-- HYPATIA NO ejecuta hasta que MELQUISEDEC termine clasificación
-- SALOMON NO ejecuta hasta que HYPATIA termine búsqueda
-- MORPHEUS NO ejecuta hasta que SALOMON termine análisis
-- ALMA NO ejecuta hasta que MORPHEUS termine diseño
+> Si la respuesta es incierta, por defecto **aplicar Tzimtzum** hasta clarificar en el issue o checklist.
 
-### ❌ Anti-patrón
+### Excepciones
+- **Expedite lane**: Casos críticos pueden saltarse Tzimtzum con aprobación explícita de `MELQUISEDEC` y registro del motivo y riesgos en el issue.
+- **Prototipos/experimentos**: Permitidos en paralelo siempre que no produzcan outputs oficiales ni alteren trazabilidad.
 
-Ejecutar etapas en paralelo sin validar dependencias.
+### Mapeo a Kanban y Automatización
+- Usar `blocked` para indicar dependencia pendiente; no liberar hasta que la dependencia se resuelva.
+- Aplicar WIP limits por rostro para evitar multitarea ineficiente mientras se espera.
+- Automatizar checks (CI) que validen: presencia de HKM header, `seci.derives_from` apunta a artifact existente y passing tests antes de permitir `in-progress` → `review`/`done`.
 
-### ✅ Validación
+### Métricas y señales de salud
+- **Tiempo medio en `blocked`** por issue (objetivo: reducir).  
+- **% de adherencia a Tzimtzum** (issues que respetaron handoffs).  
+- **MTTU (Mean Time To Unblock)** — tiempo desde `blocked` → `in-progress`.
+- Registrar la **causa raíz** de cualquier bypass en `02-lessons-learned.md`.
 
-Cascade waterfall explícito en `ISSUE.yaml`:
+### Ejemplo práctico
+- *Investigación exploratoria (sin artifact)*: HYPATIA puede trabajar en paralelo (NO Tzimtzum obligatorio).  
+- *Construcción de output final*: SALOMON espera a que HYPATIA publique `2-atomic/concepts` con HKM completo (APLICAR Tzimtzum).
 
-```yaml
-cascada_siguiente: "HYPATIA → SALOMON → MORPHEUS → ALMA"
-```
+### Anti-patrón (a evitar)
+- Saltar handoffs sin validaciones (produce artifacts inconsistentes y rompe trazabilidad).
 
 ---
 
