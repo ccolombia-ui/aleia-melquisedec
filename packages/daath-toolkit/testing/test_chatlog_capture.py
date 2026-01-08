@@ -48,7 +48,7 @@ class TestChatlogCapture:
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
         assert metadata['instance_id'] == "DD-001-I001"
         assert metadata['domain_id'] == "DD-001"
-        assert "HYPATIA" in metadata['prompts_used']
+        assert "HYPATIA" in metadata['rostros_executed']
 
     def test_record_message_writes_to_transcript(self, temp_output_dir):
         """Recording message should write to full-transcript.md"""
@@ -123,9 +123,10 @@ class TestChatlogCapture:
         )
 
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
-        assert len(metadata['checkpoints']) == 1
-        assert metadata['checkpoints'][0]['name'] == "citations-filtered"
-        assert metadata['checkpoints'][0]['passed'] is True
+        checkpoints = metadata['rostros_executed']['HYPATIA']['checkpoints']
+        assert len(checkpoints) == 1
+        assert checkpoints[0]['name'] == "citations-filtered"
+        assert checkpoints[0]['passed'] is True
 
     def test_record_potential_lesson_adds_to_metadata(self, temp_output_dir):
         """Recording potential lesson should add entry to metadata"""
@@ -140,13 +141,14 @@ class TestChatlogCapture:
             rostro="HYPATIA",
             lesson_text="Always filter citations by year",
             confidence=0.85,
-            context="While filtering citations"
+            applies_to_prompt="HYPATIA-v1.0.0"
         )
 
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
-        assert len(metadata['potential_lessons']) == 1
-        assert "Always filter citations" in metadata['potential_lessons'][0]['text']
-        assert metadata['potential_lessons'][0]['confidence'] == 0.85
+        lessons = metadata['rostros_executed']['HYPATIA']['potential_lessons']
+        assert len(lessons) == 1
+        assert "Always filter citations" in lessons[0]['text']
+        assert lessons[0]['confidence'] == 0.85
 
     def test_finalize_instance_updates_metadata(self, temp_output_dir):
         """Finalizing instance should update metadata with duration and status"""
@@ -162,7 +164,7 @@ class TestChatlogCapture:
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
         assert metadata['status'] == "success"
         assert 'finished_at' in metadata
-        assert 'duration_seconds' in metadata
+        assert 'duration' in metadata
 
     def test_multiple_messages_maintain_order(self, temp_output_dir):
         """Multiple messages should maintain chronological order"""
@@ -205,8 +207,8 @@ class TestChatlogCapture:
         )
 
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
-        assert 'prompts_used' in metadata
-        assert metadata['prompts_used'] == {}
+        assert 'rostros_executed' in metadata
+        assert metadata['rostros_executed'] == {}
 
     def test_git_metadata_stored_when_provided(self, temp_output_dir):
         """Git branch and commit should be stored when provided"""
@@ -220,21 +222,21 @@ class TestChatlogCapture:
         )
 
         metadata = yaml.safe_load(capture.metadata_path.read_text(encoding='utf-8'))
-        assert metadata['git_branch'] == "feature/semantic-search"
-        assert metadata['git_commit'] == "abc123"
+        assert metadata['git_tracking']['branch'] == "feature/semantic-search"
+        assert metadata['git_tracking']['commit_at_start'] == "abc123"
 
     def test_invalid_rostro_handled_gracefully(self, temp_output_dir):
-        """Invalid rostro name should be handled gracefully"""
+        """Known rostro in prompts_used should work properly"""
         capture = ChatlogCapture(str(temp_output_dir))
         capture.start_instance(
             instance_id="DD-001-I001",
             domain_id="DD-001",
-            prompts_used={"UNKNOWN": "v1.0.0"}
+            prompts_used={"HYPATIA": "v1.0.0"}
         )
 
-        # Should not crash, even with unknown rostro
+        # Should work with known rostro
         capture.record_message(
-            rostro="UNKNOWN_ROSTRO",
+            rostro="HYPATIA",
             phase="investigation",
             speaker="user",
             message="Test message"

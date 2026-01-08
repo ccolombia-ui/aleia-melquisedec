@@ -34,12 +34,13 @@
   - _Lesson: lessons-learned/task-1.4-package-discovery.md_
   - _Prompt: Role: SALOMON Analyzer | Task: Create script to auto-discover packages by scanning pyproject.toml, support both pip and poetry, generate dependency graph | Restrictions: Support pip and poetry formats | Success: New packages auto-detected, graph generated_
 
-- [ ] 1.5. Add unit tests for validators
+- [~] 1.5. Add unit tests for validators **[DESCONTINUADO]**
   - File: packages/daath-toolkit/testing/*.py
   - _Requirements: REQ-5_
   - _Rostro: MORPHEUS_
   - _MCPs: base=[neo4j, memory] | specialized=[filesystem, python-refactoring, python-env]_
-  - _Lesson: lessons-learned/task-1.5-unit-tests.md_
+  - _Lesson: N/A - Descontinuado_
+  - _Motivo: Esta tarea se resolverá como parte de la investigación de KETER (research-keter-integration-v1.0.0). El enfoque de testing será rediseñado desde la perspectiva de integración con KETER._
   - _Prompt: Role: MORPHEUS Designer | Task: Create pytest test suite for validators in daath-toolkit, aim for 80% coverage, use fixtures, mock external dependencies | Restrictions: 80% coverage minimum, follow pytest best practices | Success: Tests pass, coverage >= 80%, CI integration ready_
 
 - [x] 1.6. Create cleanup post-reorganization script
