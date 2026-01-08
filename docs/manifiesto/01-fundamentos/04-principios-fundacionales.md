@@ -180,19 +180,66 @@ Cada checkpoint debe tener `status: pass` antes de continuar.
 
 ## P6: Trazabilidad Explícita
 
-**Enunciado**: Toda decisión, concepto o output debe ser trazable hasta su fuente.
+**Enunciado**: Toda decisión, concepto o output debe ser trazable hasta su fuente **en los 3 sistemas del Output Triple**.
 
-### Mecanismos
+### Arquitectura de Trazabilidad: Output Triple
+
+MELQUISEDEC registra conocimiento en **3 dimensiones independientes**:
+
+1. **Markdown (Filesystem)**: Archivos `.md` con metadata YAML
+2. **Graph (Neo4j)**: Nodos y relaciones semánticas
+3. **Vectors (Embeddings)**: Embeddings para búsqueda semántica
+
+**Cada artefacto existe en las 3 dimensiones simultáneamente.**
+
+### Mecanismos por Sistema
+
+#### 1. Markdown (Filesystem)
 
 - **HKM Header**: `id`, `is_a`, `permalink`
 - **Dublin Core**: `creator`, `source`, `date`
 - **SECI Model**: `derives_from`, `informs`
 
-### Ejemplo de Trazabilidad
-
+```yaml
+---
+id: "concept-bounded-context"
+seci:
+  derives_from: ["evans-2003-ddd"]
+  informs: ["analysis-ddd-architecture"]
+---
 ```
-ISSUE → Literatura → Concepto Atómico → Workbook → Output
 
+#### 2. Graph (Neo4j)
+
+- Nodos: `Concept`, `Literature`, `Analysis`, `Output`
+- Relaciones: `DERIVES_FROM`, `INFORMS`, `SELECTS`, `REJECTS`
+
+```cypher
+CREATE (c:Concept {id: "concept-bounded-context"})
+CREATE (l:Literature {id: "evans-2003-ddd"})
+CREATE (c)-[:DERIVES_FROM {page: 14}]->(l)
+```
+
+#### 3. Vectors (Embeddings)
+
+- Metadata incluye trazabilidad completa
+- Permite búsqueda semántica de artefactos relacionados
+
+```python
+{
+  "id": "concept-bounded-context-embedding",
+  "metadata": {
+    "artifact_id": "concept-bounded-context",
+    "derives_from": ["evans-2003-ddd"],
+    "version": "1.0.0"
+  }
+}
+```
+
+### Ejemplo de Trazabilidad Completa
+
+#### Filesystem (MD)
+```
 issue-003-book-ddd
   ↓ derives_from
 1-literature/book/domain-driven-design/
@@ -204,13 +251,43 @@ issue-003-book-ddd
 5-outputs/CALE_ARCHITECTURE.md
 ```
 
+#### Graph (Neo4j)
+```cypher
+MATCH path = 
+  (i:Issue {id: "issue-003-book-ddd"})
+  -[:INFORMS]->
+  (l:Literature)
+  -[:INFORMS]->
+  (c:Concept)
+  -[:INFORMS]->
+  (w:Workbook)
+  -[:INFORMS]->
+  (o:Output)
+RETURN path
+```
+
+#### Vectors
+```python
+# Búsqueda semántica: "bounded context"
+results = vector_store.search("bounded context architecture")
+# Retorna: concept-bounded-context, analysis-ddd-architecture, output-cale-architecture
+# Todos con metadata de trazabilidad
+```
+
 ### ❌ Anti-patrón
 
-Outputs sin referencias a fuentes primarias.
+- Outputs sin referencias a fuentes primarias
+- Artefactos que existen en 1 o 2 sistemas (no los 3)
+- Metadata de trazabilidad inconsistente entre sistemas
 
 ### ✅ Validación
 
-Grafo de trazabilidad debe ser acíclico dirigido (DAG).
+1. **Grafo de trazabilidad es DAG** (acíclico dirigido)
+2. **Cada artefacto existe en MD + Graph + Vector**
+3. **Metadata `derives_from` coincide en los 3 sistemas**
+4. **Checkpoints validan consistencia tripartita**
+
+Ver [02-arquitectura/04-sincronizacion-knowledge.md](../02-arquitectura/04-sincronizacion-knowledge.md) para detalles técnicos.
 
 ---
 
@@ -277,9 +354,11 @@ cascada_siguiente: "HYPATIA → SALOMON → MORPHEUS → ALMA"
 
 ## P9: Outputs como Snapshots Inmutables
 
-**Enunciado**: Los outputs publicados son **inmutables**. Cambios requieren nueva versión.
+**Enunciado**: Los outputs publicados son **inmutables en los 3 sistemas**. Cambios requieren nueva versión.
 
-### Versionamiento Semántico
+### Versionamiento en Output Triple
+
+Cada artefacto tiene versión semántica **sincronizada** en los 3 sistemas:
 
 ```
 MAJOR.MINOR.PATCH
@@ -289,20 +368,136 @@ MINOR: Nuevas features (compatible)
 PATCH: Bug fixes
 ```
 
-### Ejemplo
+#### 1. Markdown (Filesystem)
 
+```yaml
+---
+id: "output-cale-architecture"
+version: "1.0.0"  # ← Versión explícita en frontmatter
+---
+```
+
+Archivo versionado:
 ```
 5-outputs/CALE_ARCHITECTURE_v1.0.0.md  ← Inmutable
-5-outputs/CALE_ARCHITECTURE_v1.1.0.md  ← Nueva versión
+5-outputs/CALE_ARCHITECTURE_v1.1.0.md  ← Nueva versión (no sobrescribir)
+```
+
+#### 2. Graph (Neo4j)
+
+```cypher
+CREATE (o:Output {
+  id: "output-cale-architecture",
+  version: "1.0.0",  # ← Versión en propiedades
+  published: true,
+  immutable: true
+})
+
+# Relaciones con versiones EXACTAS
+CREATE (o)-[:PRODUCES {at_version: "1.0.0"}]->(t:Template)
+CREATE (o)-[:DERIVES_FROM {at_version: "1.0.0"}]->(a:Analysis)
+```
+
+**CRÍTICO**: Relaciones deben especificar `at_version` para inmutabilidad:
+
+```cypher
+// ❌ MAL: Versión implícita (mutable)
+CREATE (o)-[:PRODUCES]->(t)
+
+// ✅ BIEN: Versión explícita (inmutable)
+CREATE (o)-[:PRODUCES {at_version: "1.0.0"}]->(t)
+```
+
+#### 3. Vectors (Embeddings)
+
+```python
+{
+  "id": "output-cale-architecture-v1.0.0-embedding",  # ← Versión en ID
+  "metadata": {
+    "artifact_id": "output-cale-architecture",
+    "version": "1.0.0",  # ← Versión en metadata
+    "immutable": true,
+    "published_at": "2026-01-08T15:30:00Z"
+  }
+}
+```
+
+### Sincronización de Versiones
+
+El **reconciliador** garantiza que versiones coincidan:
+
+```python
+# Checkpoint valida consistencia
+md_version = "1.0.0"       # De frontmatter
+graph_version = "1.0.0"    # De nodo Neo4j
+vector_version = "1.0.0"   # De metadata
+
+assert md_version == graph_version == vector_version
+```
+
+Ver [02-arquitectura/04-sincronizacion-knowledge.md](../02-arquitectura/04-sincronizacion-knowledge.md) para detalles técnicos.
+
+### Git Tags para Inmutabilidad
+
+```bash
+# ALMA ejecuta al publicar
+git tag output-cale-architecture-v1.0.0
+git push origin output-cale-architecture-v1.0.0
+```
+
+Git tag es **punto de anclaje inmutable** del output.
+
+### Ejemplo: Publicar Nueva Versión
+
+```mermaid
+sequenceDiagram
+    participant A as ALMA
+    participant FS as Filesystem
+    participant Neo as Neo4j
+    participant Vec as Vectors
+    participant Git as Git
+
+    Note over A: Detecta cambio necesario
+
+    A->>FS: Crear v1.1.0.md (NO editar v1.0.0.md)
+    A->>Neo: CREATE (:Output {version: "1.1.0"})
+    A->>Vec: Upsert embedding con version=1.1.0
+    
+    A->>Git: git tag output-v1.1.0
+    A->>Git: git push
+
+    Note over A: v1.0.0 sigue inmutable<br/>v1.1.0 es nueva versión
 ```
 
 ### ❌ Anti-patrón
 
-Editar outputs publicados sin cambiar versión.
+- Editar outputs publicados sin cambiar versión
+- Sobrescribir archivos versionados
+- Relaciones sin `at_version` (versionamiento implícito)
+- Versiones desincronizadas entre MD, Graph, Vector
 
 ### ✅ Validación
 
-Git tags en outputs: `git tag output-v1.0.0`.
+1. **Filesystem**: Archivos con `_v{x.y.z}.md` no se editan
+2. **Graph**: Nodos `Output` tienen `immutable: true`
+3. **Vectors**: Embeddings incluyen `version` en metadata
+4. **Git**: Tag existe para cada versión publicada
+5. **Checkpoint**: Versiones coinciden en los 3 sistemas
+
+### Excepción: Typos y Hotfixes
+
+Para correcciones menores (typos):
+
+```
+v1.0.0 → v1.0.1 (PATCH)
+```
+
+Proceso:
+1. Crear `output_v1.0.1.md` (no editar v1.0.0)
+2. Actualizar versión en Neo4j y Vector
+3. Git tag `output-v1.0.1`
+
+**NUNCA** editar `v1.0.0` directamente.
 
 ---
 

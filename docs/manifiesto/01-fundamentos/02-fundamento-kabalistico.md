@@ -194,18 +194,18 @@ graph TB
 
 ## Mapeo MELQUISEDEC → Sephirot
 
-| Sephirah     | Rostro MELQUISEDEC | Carpeta Research Instance | Función                               | Output Triple                     |
-| ------------ | ------------------ | ------------------------- | ------------------------------------- | --------------------------------- |
-| **Keter**    | MELQUISEDEC        | `0-inbox/`                | Orquestación, clasificación de issues | MD + Graph (Issue) + Vector (question) |
-| **Chokhmah** | HYPATIA            | `1-literature/` (input)   | Búsqueda de fuentes primarias         | MD + Graph (Literature) + Vector (abstract) |
-| **Binah**    | HYPATIA            | `1-literature/extracts/`  | Análisis y extracción de contenido    | MD + Graph (Extract) + Vector (content) |
-| **Daath**    | HYPATIA            | `2-atomic/`               | Síntesis de conceptos                 | MD + Graph (Concept) + Vector (definition) |
-| **Chesed**   | SALOMON            | `2-atomic/concepts/`      | Generación abundante de ideas         | MD + Graph (múltiples Concepts) + Vectors |
-| **Geburah**  | SALOMON            | `2-atomic/arguments/`     | Filtrado crítico de conceptos         | MD + Graph (Argument) + Vector (critique) |
-| **Tiferet**  | SALOMON            | `3-workbook/`             | Análisis equilibrado y decisiones     | MD + Graph (Analysis) + Vector (conclusions) |
-| **Netzach**  | MORPHEUS           | `4-dataset/` (iterativo)  | Persistencia en implementación        | MD + Graph (Pattern) + Vector (design) |
-| **Hod**      | MORPHEUS           | `_melquisedec/*.yaml`     | Validación de arquitectura            | MD + Graph (Validation) + Vector (criteria) |
-| **Yesod**    | MORPHEUS           | Templates, schemas        | Fundaciones arquitectónicas           | MD + Graph (Template) + Vector (schema) |
+| Sephirah     | Rostro MELQUISEDEC | Carpeta Research Instance | Función                               | Output Triple                                 |
+| ------------ | ------------------ | ------------------------- | ------------------------------------- | --------------------------------------------- |
+| **Keter**    | MELQUISEDEC        | `0-inbox/`                | Orquestación, clasificación de issues | MD + Graph (Issue) + Vector (question)        |
+| **Chokhmah** | HYPATIA            | `1-literature/` (input)   | Búsqueda de fuentes primarias         | MD + Graph (Literature) + Vector (abstract)   |
+| **Binah**    | HYPATIA            | `1-literature/extracts/`  | Análisis y extracción de contenido    | MD + Graph (Extract) + Vector (content)       |
+| **Daath**    | HYPATIA            | `2-atomic/`               | Síntesis de conceptos                 | MD + Graph (Concept) + Vector (definition)    |
+| **Chesed**   | SALOMON            | `2-atomic/concepts/`      | Generación abundante de ideas         | MD + Graph (múltiples Concepts) + Vectors     |
+| **Geburah**  | SALOMON            | `2-atomic/arguments/`     | Filtrado crítico de conceptos         | MD + Graph (Argument) + Vector (critique)     |
+| **Tiferet**  | SALOMON            | `3-workbook/`             | Análisis equilibrado y decisiones     | MD + Graph (Analysis) + Vector (conclusions)  |
+| **Netzach**  | MORPHEUS           | `4-dataset/` (iterativo)  | Persistencia en implementación        | MD + Graph (Pattern) + Vector (design)        |
+| **Hod**      | MORPHEUS           | `_melquisedec/*.yaml`     | Validación de arquitectura            | MD + Graph (Validation) + Vector (criteria)   |
+| **Yesod**    | MORPHEUS           | Templates, schemas        | Fundaciones arquitectónicas           | MD + Graph (Template) + Vector (schema)       |
 | **Malkuth**  | ALMA               | `5-outputs/`              | Manifestación de entregables          | MD + Graph (Output + version) + Vector (docs) |
 
 ### Diagrama del Mapeo
