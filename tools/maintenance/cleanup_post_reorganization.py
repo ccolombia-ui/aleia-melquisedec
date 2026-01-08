@@ -121,8 +121,8 @@ def generate_summary(base_path: Path = None):
     print(f"  - {len(md_files)} archivos markdown en docs/")
     
     # Root docs
-    root_docs = ['README.md', 'ARQUITECTURA_MONOREPO.md', 'REORGANIZACION_COMPLETA.md', 
-                 'ESTRUCTURA_VISUAL.md', 'QUICK_REFERENCE.md', 'CONTRIBUTING.md']
+    root_docs = ['README.md', 'CONTRIBUTING.md', 'LICENSE', 'CHANGELOG.md',
+                 '.gitignore', '.env.example', 'audit.log']
     existing_docs = [d for d in root_docs if (base_path / d).exists()]
     print(f"  - {len(existing_docs)} documentos principales en raíz")
     

@@ -221,6 +221,14 @@
   },
   "active": "69621fe1295a4d41",
   "lastOpenFiles": [
+    "docs/guides/README.md",
+    "docs/architecture/README.md",
+    "docs/README.md",
+    "docs/architecture/arquitectura-monorepo.md",
+    "docs/guides/kanban-estados.md",
+    "docs/guides/reorganizacion-completa.md",
+    "docs/architecture/estructura-visual.md",
+    "docs/guides/quick-reference.md",
     "docs/manifiesto/04-implementacion/04-memoria-y-persistencia-triple.md",
     "tests/integration/test_git_push_workflow.py",
     "tests/integration",
@@ -249,14 +257,6 @@
     "docs/_meta/inbox/_spec-issue-workflow/README.md",
     "docs/_meta/inbox/_spec-issue-workflow/approvals/rejected",
     "docs/_meta/inbox/ISSUE-006-cleanup-validation.md",
-    "docs/_meta/inbox/ISSUE-005-add-unit-tests.md",
-    "docs/_meta/inbox/ISSUE-004-package-daath-toolkit.md",
-    "docs/_meta/inbox/ISSUE-003-add-precommit.md",
-    "docs/_meta/inbox/ISSUE-002-move-root-docs.md",
-    "docs/_meta/inbox/ISSUE-001-fix-nucleo-refs.md",
-    "docs/_meta/roadmap.md",
-    "docs/_meta/templates/issue-template.md",
-    "docs/_meta/README.md",
     "Sin título.canvas"
   ]
 }

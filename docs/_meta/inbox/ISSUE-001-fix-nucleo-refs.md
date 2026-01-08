@@ -125,8 +125,8 @@ pre-commit run --all-files
 
 ## 📚 Referencias
 
-- **Reorganización original**: [docs/guides/REORGANIZACION_COMPLETA.md](../../guides/REORGANIZACION_COMPLETA.md)
-- **Nueva estructura**: [ARQUITECTURA_MONOREPO.md](../../../ARQUITECTURA_MONOREPO.md)
+- **Reorganización original**: [[reorganizacion-completa]]
+- **Nueva estructura**: [[arquitectura-monorepo]]
 - **Conversación**: Chatlog 2026-01-08 sobre eliminación de nucleo-investigacion
 
 ## 📝 Notas Adicionales

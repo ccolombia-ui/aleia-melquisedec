@@ -49,7 +49,7 @@ aleia-melquisedec/
     └── deployment/            # Despliegue
 ```
 
-**Ver arquitectura completa**: [ARQUITECTURA_MONOREPO.md](ARQUITECTURA_MONOREPO.md)
+**Ver arquitectura completa**: [[arquitectura-monorepo]]
 
 ---
 
@@ -196,9 +196,9 @@ El proyecto ha sido reorganizado siguiendo mejores prácticas de monorepo:
 - ✅ **100% validado**: Todos los tests pasan, estructura verificada
 
 Ver detalles completos:
-- [Resumen de Reorganización](REORGANIZACION_COMPLETA.md)
-- [Estructura Visual](ESTRUCTURA_VISUAL.md)
-- [Quick Reference](QUICK_REFERENCE.md)
+- [[reorganizacion-completa]]
+- [[estructura-visual]]
+- [[quick-reference]]
 
 ---
 
@@ -212,7 +212,7 @@ Ver [CONTRIBUTING.md](CONTRIBUTING.md) para guías de contribución.
 
 ## 📖 Documentación
 
-- [Arquitectura del Monorepo](ARQUITECTURA_MONOREPO.md)
+- [[arquitectura-monorepo]]
 - [Manifiesto MELQUISEDEC v3.0.0](docs/manifiesto/bereshit-v3.0.0.md)
 - [Guía Docker MCP Toolkit](docs/guides/docker-mcp-toolkit.md)
 - [Configuración Completa](docs/guides/configuracion-completa.md)
