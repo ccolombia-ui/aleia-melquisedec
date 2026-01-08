@@ -1,0 +1,6 @@
+# Requisitos mínimos solicitados
+mcp
+neo4j
+ollama
+firecrawl-py
+requests

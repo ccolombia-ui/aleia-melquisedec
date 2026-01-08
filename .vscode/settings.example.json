@@ -1,0 +1,32 @@
+{
+  "mcp.servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "disabled": false
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "disabled": false
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "disabled": false
+    },
+    "python": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/mcp-python-server"],
+      "disabled": false
+    }
+  },
+  "telemetry.telemetryLevel": "off",
+  "github.copilot.advanced": {
+    "telemetry": false
+  }
+}

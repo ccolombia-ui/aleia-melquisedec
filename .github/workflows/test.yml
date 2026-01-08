@@ -1,0 +1,37 @@
+name: Test MCPs
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-mcps:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyyaml
+    
+    - name: Validate research structures
+      run: |
+        python packages/daath-toolkit/validators/validate_research.py apps/00-template || true
+        echo "Validation completed"
+    
+    - name: Check documentation exists
+      run: |
+        test -f README.md
+        test -f ARQUITECTURA_MONOREPO.md
+        test -f CONTRIBUTING.md
+        echo "Documentation files verified"

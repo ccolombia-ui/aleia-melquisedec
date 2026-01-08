@@ -1,0 +1,93 @@
+{
+	"servers": {
+		"filesystem": {
+			"type": "stdio",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"pnpm",
+				"dlx",
+				"@modelcontextprotocol/server-filesystem",
+				"c:/proyectos/aleia-manjushry",
+				"c:/proyectos"
+			],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"apify": {
+			"type": "stdio",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"pnpm",
+				"dlx",
+				"@apify/actors-mcp-server"
+			],
+			"env": {
+				"APIFY_TOKEN": "${APIFY_TOKEN}",
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"firecrawl": {
+			"type": "stdio",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"pnpm",
+				"dlx",
+				"firecrawl-mcp"
+			],
+			"env": {
+				"FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}",
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"markitdown": {
+			"type": "stdio",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"pnpm",
+				"dlx",
+				"markitdown-mcp-npx"
+			],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"playwright": {
+			"type": "stdio",
+			"command": "cmd",
+			"args": [
+				"/c",
+				"pnpm",
+				"dlx",
+				"@microsoft/mcp-server-playwright"
+			],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"docker mcp gateway run": {
+			"type": "stdio",
+			"command": "docker",
+			"args": [
+				"mcp",
+				"gateway",
+				"run"
+			]
+		}
+	},
+	"inputs": []
+}

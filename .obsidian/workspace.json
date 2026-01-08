@@ -1,0 +1,246 @@
+{
+  "main": {
+    "id": "091a191b02837c7a",
+    "type": "split",
+    "children": [
+      {
+        "id": "e3e02541290eda18",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "69621fe1295a4d41",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "bereshit/manifiesto-melquisedec-v3.0.0.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "manifiesto-melquisedec-v3.0.0"
+            }
+          },
+          {
+            "id": "cefe6bfd2d36a0ea",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ARQUITECTURA_MONOREPO.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ARQUITECTURA_MONOREPO"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0c9ee41a3629f0de",
+    "type": "split",
+    "children": [
+      {
+        "id": "bf90051613547157",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c5a493fad22a9415",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de archivos"
+            }
+          },
+          {
+            "id": "cc1bb40591dc3e32",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Buscar"
+            }
+          },
+          {
+            "id": "26a376ffe027193c",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b68b875ba705115c",
+    "type": "split",
+    "children": [
+      {
+        "id": "68ea7a441e406141",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "78501f359de2b32e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Enlaces entrantes"
+            }
+          },
+          {
+            "id": "aed32b3be965a33f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Enlaces salientes"
+            }
+          },
+          {
+            "id": "2d05951b9fb09d0c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "b455f3e20066a331",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas las propiedades"
+            }
+          },
+          {
+            "id": "504c7cbf5af7c407",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Esquema"
+            }
+          },
+          {
+            "id": "4ab1cb0b4926120b",
+            "type": "leaf",
+            "state": {
+              "type": "smart-connections-view",
+              "state": {},
+              "icon": "smart-connections",
+              "title": "Connections"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir selector rápido": false,
+      "graph:Abrir vista gráfica": false,
+      "canvas:Crear nuevo lienzo": false,
+      "daily-notes:Abrir la nota de hoy": false,
+      "templates:Insertar plantilla": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Crear nueva base": false,
+      "smart-connections-visualizer:Open smart connections visualizer": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Smart Lookup: Open lookup view": false,
+      "smart-connections:Smart Connections: Open random connection": false
+    }
+  },
+  "active": "cefe6bfd2d36a0ea",
+  "lastOpenFiles": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "QUICK_REFERENCE.md",
+    "docs/guides/migracion-estructura.md",
+    "ESTRUCTURA_VISUAL.md",
+    "tools/maintenance/cleanup_post_reorganization.py",
+    "docs/guides/docker-mcp-toolkit.md",
+    "REORGANIZACION_COMPLETA.md",
+    "docs/guides/configuracion-completa.md",
+    "docs/architecture/ADR-001-monorepo-structure.md",
+    "apps/01-test-reorganizacion/0-inbox/README.md",
+    "apps/01-test-reorganizacion/0-inbox",
+    "apps/01-test-reorganizacion/README.md",
+    "apps/01-test-reorganizacion/PROPOSITO.md",
+    "apps/01-test-reorganizacion",
+    "ARQUITECTURA_MONOREPO.md",
+    "packages/daath-toolkit/generators/new_research.py",
+    "packages/daath-toolkit/validators/validate_research.py",
+    "CONTRIBUTING.md",
+    "apps/00-template/PROPOSITO.md",
+    "apps/00-template/README.md",
+    "apps/00-template",
+    "tools/testing/test_mcps.py",
+    "tools/testing/test_mcp_toolkit.py",
+    "tools/setup/setup_neo4j_mcp.sh",
+    "docs/manifiesto/bereshit-v3.0.0.md",
+    "_templates/app-melquisedec/README.md",
+    "_templates/app-melquisedec/PROPOSITO.md",
+    "bereshit/manifiesto-melquisedec-v3.0.0.md"
+  ]
+}
