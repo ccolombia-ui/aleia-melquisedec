@@ -597,9 +597,9 @@ En Kabbalah:
 
 ### Tzimtzum en MELQUISEDEC (Principio P8)
 
-**Aplicación**: Cada rostro espera (se "contrae") antes de ejecutar.
+**Aplicación**: Cada rostro aplica una "contracción operativa" (espera) antes de iniciar su fase principal cuando esa fase depende de un artifact producido por el rostro anterior.
 
-```
+```text
 HYPATIA espera que MELQUISEDEC termine clasificación  ← Tzimtzum
   ↓
 SALOMON espera que HYPATIA termine búsqueda           ← Tzimtzum
@@ -609,7 +609,34 @@ MORPHEUS espera que SALOMON termine análisis          ← Tzimtzum
 ALMA espera que MORPHEUS termine diseño               ← Tzimtzum
 ```
 
-**Razón**: Sin espera (contracción), habría caos (todos ejecutando simultáneamente sin inputs válidos).
+#### Regla de decisión (Simple)
+- **¿La actividad incluye construir un ARTIFACT que será consumido por el siguiente rostro?**
+  - **Sí** → *NOT Tzimtzum*: permitir actividades paralelas de preparación (p. ej. investigación, pruebas), pero **la fase productiva** que genera el artifact debe respetar el checkpoint y no publicar hasta tener validación.
+  - **No** → *Tzimtzum*: esperar al anterior (sequential handoff)
+
+> Nota: Por defecto, si la respuesta es incierta, **aplicar Tzimtzum** (esperar) hasta clarificar por issue o checklist.
+
+#### Excepciones y vías rápidas
+- **Expedite lane**: Casos críticos pueden saltarse Tzimtzum con aprobación explícita de `MELQUISEDEC` y registro en el issue (motivo, riesgos, owner).
+- **Trabajos preparatorios** (p. ej. prototipos, experimentos exploratorios) pueden ejecutarse en paralelo siempre que no publiquen outputs que rompan trazabilidad.
+
+#### Mapeo a Kanban y Automatización
+- Estado `blocked` se usa cuando la dependencia no está satisfecha; no eliminar `blocked` hasta que la dependencia esté resuelta.
+- WIP limits y asignaciones evitan que un rostro tenga demasiados items `in-progress` mientras espera (reduce multi-tasking ineficiente).
+- Integración CI/CD: validar presence of HKM header y `seci.derives_from` antes de permitir transición `in-progress` → `review` o `done`.
+
+#### Métricas y Señales de Salud
+- **Tiempo medio en `blocked`** por issue (objetivo: disminuir)  
+- **% de adherencia a Tzimtzum** (issues que respetaron handoffs)  
+- **MTTU (mean time to unblock)** — tiempo desde `blocked` → `in-progress`  
+- **Causa raíz de bypass** documentada en `02-lessons-learned.md`
+
+#### Ejemplos Prácticos
+- *Investigación pura (no artifact)*: HYPATIA puede trabajar en paralelo en búsquedas exploratorias (NO Tzimtzum obligatorio).  
+- *Construcción de Output* (artifact): SALOMON no debe empezar integraciones finales hasta que HYPATIA publique los `2-atomic/concepts` con HKM completo (APLICAR Tzimtzum).  
+- *Bug crítico en producción*: Se puede usar `Expedite lane` y documentar la excepción en el issue; después, registrar la lesson learned.
+
+**Razón**: Sin contracciones operativas, las fases producen artifacts inconsistente o no trazables; con Tzimtzum correctamente aplicado, se garantiza calidad, trazabilidad y decisiones informadas.
 
 **Ver**: [04-principios-fundacionales.md - P8](04-principios-fundacionales.md#p8-tzimtzum-dependency-blocking)
 
