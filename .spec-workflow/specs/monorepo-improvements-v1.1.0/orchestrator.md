@@ -153,19 +153,73 @@ Archivo: `lessons-learned/task-${taskId}-${name}.md`
 
 ## FASE 5: PERSISTENCIA
 
-**Git Workflow**:
+**Resumen**: La persistencia final debe usar el `git-push-workflow` compartido (`tools/git/push_workflow.py`) como la *última tarea* del orchestrator. El agente **siempre** debe preguntar (si está en modo interactivo) 2 parámetros antes de ejecutar la persistencia: **(1) lista de archivos a incluir en el push** y **(2) branch destino**. Por política: **NO USAREMOS RAMAS A MENOS QUE SE INDIQUE EXPLÍCITAMENTE** en la configuración (`allow_branch_push: true`) o se pase `--allow-branch-push` vía CLI.
+
+### Uso recomendado (interactivo)
 ```bash
-# Commits incrementales por task (ver tasks.md para mensajes)
-git add .
-git commit -m "${task.commitMessage}"
-
-# Tag al completar todas las tasks
-git tag -a monorepo-improvements-v1.1.0 -m "Release v1.1.0"
-
-# Push
-git push origin main
-git push origin monorepo-improvements-v1.1.0
+# Ejemplo interactivo: el agente preguntará por files y branch si no están provistos
+python tools/git/push_workflow.py --commit-message "spec: complete monorepo-improvements-v1.1.0"
+# El agente preguntará: Files to include in commit (comma-separated) → ej: .spec-workflow/specs/monorepo-improvements-v1.1.0/*,Implementation\ Logs/*,lessons-learned/*
+# Luego preguntará: Target branch to push to (empty = current branch)
 ```
+
+### Uso recomendado (non-interactive / CI)
+```bash
+# Incluir un archivo .gitpush.yml en el spec o pasar --files/--branch
+python tools/git/push_workflow.py --config .spec-workflow/specs/monorepo-improvements-v1.0.0/.gitpush.yml --non-interactive --json-output artifacts/push-summary.json
+```
+
+### Ejemplo de `.gitpush.yml` (por spec)
+```yaml
+stages:
+  pre_commit: false
+  tests: false
+  branch_validate: false
+  commit: true
+  push: true
+  post_push: false
+files:
+  - ".spec-workflow/specs/monorepo-improvements-v1.1.0/**"
+  - "Implementation Logs/**"
+  - "lessons-learned/**"
+branch: main
+allow_branch_push: false
+non_interactive: true
+commit_message: "spec: complete monorepo-improvements-v1.1.0"
+dry_run: false
+failure_mode: fail_fast
+```
+
+> Nota: Si `non_interactive: true` y no hay `files` o `branch` definidos, el script fallará (esto evita pushes accidentalmente incompletos). El agente está obligado a solicitar ambos parámetros cuando se ejecute interactivamente.
+
+### Integración en el Orchestrator
+Añade la llamada al final del bucle de tasks (fase 2) después de: 1) marcar todas las tasks completadas, 2) crear lessons, 3) generar artifacts y logs. Ejemplo (pseudocódigo):
+```typescript
+// After all tasks are completed and logs/lessons generated
+await runCommand(`python tools/git/push_workflow.py --config .spec-workflow/specs/monorepo-improvements-v1.1.0/.gitpush.yml --non-interactive --json-output artifacts/push-summary.json`)
+if (pushSummary.results.some(r => !r.ok)) {
+  // Log failure and mark spec as needing attention
+  await createIssueOrNote("Push failed", pushSummary)
+}
+```
+
+### Tagging y archivado
+- Después de un push exitoso, considerar crear tag de release y mover el spec a `archive/`:
+```bash
+git tag -a monorepo-improvements-v1.1.0 -m "Release v1.1.0"
+python tools/git/push_workflow.py --config .spec-workflow/specs/monorepo-improvements-v1.1.0/.gitpush.yml --non-interactive --post-push
+# Archive locally
+mv .spec-workflow/specs/monorepo-improvements-v1.1.0 .spec-workflow/archive/specs/
+```
+
+### Buenas prácticas recomendadas
+- **No duplicar**: usar el script central (`tools/git/push_workflow.py`) y per-spec `.gitpush.yml` para parámetros.
+- **Preguntar siempre**: agente debe preguntar `files` y `branch` si no provistos; nunca asumir.
+- **No usar ramas salvo explícito**: policy enforced by script; use `allow_branch_push: true` only when intended.
+- **Guardar resumen JSON**: usar `--json-output` para registrar el resultado y anexarlo a `Implementation Logs/`.
+- **Plantilla por spec**: añadir `.gitpush.example.yml` en la carpeta del spec para guiar al mantenedor.
+
+---
 
 **Neo4j Nodes** (desde lessons):
 ```bash

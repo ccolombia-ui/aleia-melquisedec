@@ -1,0 +1,17 @@
+stages:
+  pre_commit: false
+  tests: false
+  branch_validate: false
+  commit: true
+  push: true
+  post_push: false
+files:
+  - ".spec-workflow/specs/monorepo-improvements-v1.1.0/**"
+  - "Implementation Logs/**"
+  - "lessons-learned/**"
+branch: main
+allow_branch_push: false
+non_interactive: true
+commit_message: "spec: complete monorepo-improvements-v1.1.0"
+dry_run: true
+failure_mode: fail_fast
