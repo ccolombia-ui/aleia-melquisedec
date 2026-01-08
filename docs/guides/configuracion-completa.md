@@ -26,7 +26,7 @@ Se ha completado exitosamente la configuración de **Neo4j local** con **Docker 
 
 #### **test_docker_mcp_toolkit.py** (NUEVO)
 - **Propósito:** Prueba todos los MCPs de Docker Toolkit
-- **Ubicación:** `nucleo-investigacion/scripts/test_docker_mcp_toolkit.py`
+- **Ubicación:** `tools/testing/test_mcp_toolkit.py`
 - **Características:**
   - ✅ Validación de 19 servidores MCP
   - ✅ Métricas detalladas con explicaciones
@@ -36,13 +36,13 @@ Se ha completado exitosamente la configuración de **Neo4j local** con **Docker 
 
 **Uso:**
 ```powershell
-python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py
-python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py --verbose
+python tools/testing/test_mcp_toolkit.py
+python tools/testing/test_mcp_toolkit.py --verbose
 ```
 
 #### **test_mcps.py** (EXISTENTE)
 - **Propósito:** Prueba MCPs de `.vscode/mcp.json` (Claude Desktop)
-- **Ubicación:** `nucleo-investigacion/scripts/test_mcps.py`
+- **Ubicación:** `tools/testing/test_mcps.py`
 - **Diferencias:** 
   - Lee configuración de archivo JSON local
   - Ejecuta binarios directamente
@@ -52,7 +52,7 @@ python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py --verbose
 
 #### **setup_neo4j_simple.ps1** (NUEVO)
 - **Propósito:** Configura Neo4j local con Docker MCP Toolkit
-- **Ubicación:** `nucleo-investigacion/scripts/setup_neo4j_simple.ps1`
+- **Ubicación:** `tools/setup/setup_neo4j_simple.ps1`
 - **Características:**
   - ✅ Verifica si Neo4j está corriendo
   - ✅ Configura neo4j-cypher MCP
@@ -62,18 +62,18 @@ python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py --verbose
 
 **Uso:**
 ```powershell
-.\nucleo-investigacion\scripts\setup_neo4j_simple.ps1
+.\tools\setup\setup_neo4j_simple.ps1
 ```
 
 #### **setup_neo4j_mcp.sh** (NUEVO)
 - **Propósito:** Versión Bash del script de configuración
-- **Ubicación:** `nucleo-investigacion/scripts/setup_neo4j_mcp.sh`
+- **Ubicación:** `tools/setup/setup_neo4j_mcp.sh`
 - **Para:** Linux/Mac/WSL
 
 ### 3. Docker Compose Mejorado
 
 #### **docker-compose.yml** (MODIFICADO)
-- **Ubicación:** `nucleo-investigacion/docker-compose.yml`
+- **Ubicación:** `infrastructure/docker/docker-compose.yml`
 - **Mejoras:**
 
 ```yaml
@@ -106,7 +106,7 @@ neo4j:
 ### 4. Documentación
 
 #### **DOCKER_MCP_TOOLKIT_GUIDE.md** (NUEVO)
-- **Ubicación:** `nucleo-investigacion/docs/DOCKER_MCP_TOOLKIT_GUIDE.md`
+- **Ubicación:** `docs/guides/docker-mcp-toolkit.md`
 - **Contenido:**
   - ✅ Arquitectura completa del sistema
   - ✅ Explicación de todas las métricas
@@ -116,7 +116,7 @@ neo4j:
   - ✅ Comandos útiles
 
 #### **pruebas_mcp_results.md** (EXISTENTE)
-- **Ubicación:** `nucleo-investigacion/scripts/pruebas_mcp_results.md`
+- **Ubicación:** `docs/_meta/inbox/pruebas_mcp_results.md` (archivado)
 - **Contenido:** Resultados de pruebas iniciales (sequential thinking, filesystem, wikipedia)
 
 ---
@@ -323,7 +323,7 @@ docker ps | Select-String "melquisedec-neo4j"
 docker logs melquisedec-neo4j
 
 # Probar MCPs
-python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py
+python tools/testing/test_mcp_toolkit.py
 
 # Ver estado de MCPs
 docker mcp server ls
@@ -333,13 +333,13 @@ docker mcp server ls
 
 ```powershell
 # Iniciar Neo4j
-docker-compose -f nucleo-investigacion/docker-compose.yml up -d neo4j
+docker-compose -f infrastructure/docker/docker-compose.yml up -d neo4j
 
 # Detener Neo4j
-docker-compose -f nucleo-investigacion/docker-compose.yml stop neo4j
+docker-compose -f infrastructure/docker/docker-compose.yml stop neo4j
 
 # Reiniciar Neo4j
-docker-compose -f nucleo-investigacion/docker-compose.yml restart neo4j
+docker-compose -f infrastructure/docker/docker-compose.yml restart neo4j
 
 # Acceder a cypher-shell
 docker exec -it melquisedec-neo4j cypher-shell -u neo4j -p password123

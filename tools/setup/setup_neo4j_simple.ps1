@@ -20,11 +20,11 @@ if ($neo4jRunning) {
     Write-Host "[OK] Neo4j local esta corriendo" -ForegroundColor Green
 } else {
     Write-Host "[ERROR] Neo4j local NO esta corriendo" -ForegroundColor Red
-    Write-Host "Inicia con: docker-compose -f nucleo-investigacion/docker-compose.yml up -d neo4j" -ForegroundColor Yellow
+    Write-Host "Inicia con: docker-compose -f infrastructure/docker/docker-compose.yml up -d neo4j" -ForegroundColor Yellow
     $response = Read-Host "Quieres iniciarlo ahora? (s/n)"
     if ($response -eq "s" -or $response -eq "S") {
         Write-Host "Iniciando Neo4j..." -ForegroundColor Cyan
-        Set-Location nucleo-investigacion
+        Set-Location infrastructure/docker
         docker-compose up -d neo4j
         Set-Location ..
         Write-Host "Esperando 30 segundos..." -ForegroundColor Yellow
@@ -95,7 +95,7 @@ Write-Host "[OK] Configuracion completada!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Proximos pasos:" -ForegroundColor Cyan
 Write-Host "  1. Verifica que Neo4j este corriendo: docker ps"
-Write-Host "  2. Prueba los MCPs: python nucleo-investigacion/scripts/test_docker_mcp_toolkit.py"
+Write-Host "  2. Prueba los MCPs: python tools/testing/test_mcp_toolkit.py"
 Write-Host "  3. Accede a Neo4j Browser: http://localhost:7474"
 Write-Host "  4. Usuario: neo4j, Password: password123"
 Write-Host "  5. Usa los MCPs en VS Code con GitHub Copilot"

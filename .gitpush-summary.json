@@ -1,0 +1,36 @@
+{
+  "config_used": {
+    "stages": {
+      "pre_commit": false,
+      "tests": false,
+      "branch_validate": false,
+      "commit": true,
+      "push": true,
+      "post_push": false
+    },
+    "minimal": false,
+    "dry_run": true,
+    "non_interactive": true,
+    "commit_message": "spec: add configurable git-push-workflow-v1.0.0",
+    "failure_mode": "fail_fast",
+    "runners": {
+      "tests": "tools/testing/run_affected_tests.py",
+      "branch_validate": "tools/git/validate_branch.py",
+      "commit_msg_generator": "tools/git/generate_commit_msg.py"
+    }
+  },
+  "results": [
+    {
+      "name": "commit",
+      "ok": true,
+      "code": 0,
+      "message": "committed"
+    },
+    {
+      "name": "push",
+      "ok": true,
+      "code": 0,
+      "message": "dry-run: would push to origin/main"
+    }
+  ]
+}

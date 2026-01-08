@@ -221,6 +221,7 @@
   },
   "active": "69621fe1295a4d41",
   "lastOpenFiles": [
+    "docs/manifiesto/04-implementacion/04-memoria-y-persistencia-triple.md",
     "tests/integration/test_git_push_workflow.py",
     "tests/integration",
     "tests",
@@ -247,7 +248,6 @@
     "audit.log",
     "docs/_meta/inbox/_spec-issue-workflow/README.md",
     "docs/_meta/inbox/_spec-issue-workflow/approvals/rejected",
-    "docs/_meta/inbox/_spec-issue-workflow/approvals/approved",
     "docs/_meta/inbox/ISSUE-006-cleanup-validation.md",
     "docs/_meta/inbox/ISSUE-005-add-unit-tests.md",
     "docs/_meta/inbox/ISSUE-004-package-daath-toolkit.md",

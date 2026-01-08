@@ -14,9 +14,9 @@ Esta carpeta implementa un **workflow completo** que combina:
 
 | Documento | Propósito | Cuándo Leer |
 |-----------|-----------|-------------|
-| ⭐ [RESUMEN_SISTEMA_COMPLETO.md](./RESUMEN_SISTEMA_COMPLETO.md) | Visión general del sistema | **LEE PRIMERO** |
-| 🚀 [GUIA_RAPIDA.md](./GUIA_RAPIDA.md) | Quick start, troubleshooting | Segundo paso |
-| 📋 [steering/best-practices.md](./steering/best-practices.md) | Guía completa (10 secciones) | Referencia continua |
+| ⭐ [RESUMEN_SISTEMA_COMPLETO.md](_meta/RESUMEN_SISTEMA_COMPLETO.md) | Visión general del sistema | **LEE PRIMERO** |
+| 🚀 [GUIA_RAPIDA.md](_meta/GUIA_RAPIDA.md) | Quick start, troubleshooting | Segundo paso |
+| 📋 [steering/best-practices.md](_meta/best-practices.md) | Guía completa (10 secciones) | Referencia continua |
 | 🎨 [_templates/daath-zen-patterns/](../templates/daath-zen-patterns/) | Catálogo de patterns | Al crear nuevos specs |
 
 ---
@@ -67,7 +67,7 @@ Esta carpeta implementa un **workflow completo** que combina:
 
 **MCPs Base (OBLIGATORIOS)**: `neo4j`, `memory` (para Output Triple)
 
-Más info: [steering/best-practices.md#mcps-por-tipo-de-tarea](./steering/best-practices.md)
+Más info: [steering/best-practices.md#mcps-por-tipo-de-tarea](_meta/best-practices.md)
 
 ---
 
@@ -181,7 +181,7 @@ grep -r "\- \[ \]" .spec-workflow/specs/*/tasks.md
 | Recurso | Link |
 |---------|------|
 | Manifiesto DAATH-ZEN v4 | [docs/manifiesto/](../docs/manifiesto/) |
-| Workflow Autopoiesis | [nucleo-investigacion/docs/workflow-autopoiesis.md](../nucleo-investigacion/docs/workflow-autopoiesis.md) |
+| Workflow Autopoiesis | [[05-autopoiesis]] |
 | ADR Monorepo | [docs/architecture/ADR-001-monorepo-structure.md](../docs/architecture/ADR-001-monorepo-structure.md) |
 | MCPs Docker Toolkit | [docs/guides/docker-mcp-toolkit.md](../docs/guides/docker-mcp-toolkit.md) |
 | Estrategia Branching | [docs/guides/estrategia-branching.md](../docs/guides/estrategia-branching.md) |
@@ -220,7 +220,7 @@ grep -r "\- \[ \]" .spec-workflow/specs/*/tasks.md
 1. **Verifica formato**: `- [ ] X.Y.` (punto después del número)
 2. **Refresca dashboard**: F5 en navegador
 3. **Revisa logs**: `spec-workflow-mcp` output en VS Code
-4. **Ver**: [GUIA_RAPIDA.md#troubleshooting](./GUIA_RAPIDA.md#troubleshooting)
+4. **Ver**: [GUIA_RAPIDA.md#troubleshooting](_meta/GUIA_RAPIDA.md#troubleshooting)
 
 ### MCPs no están disponibles
 1. **Docker corriendo**: `docker ps` debe mostrar contenedores
@@ -231,7 +231,7 @@ grep -r "\- \[ \]" .spec-workflow/specs/*/tasks.md
 1. **Campo presente**: `_Lesson: path_` en task
 2. **Directorio existe**: `mkdir lessons-learned/`
 3. **Output Triple**: Verifica que Cypher + Markdown + Lesson se generen juntos
-4. **Ver**: [steering/best-practices.md#output-triple](./steering/best-practices.md)
+4. **Ver**: [steering/best-practices.md#output-triple](_meta/best-practices.md)
 
 ---
 

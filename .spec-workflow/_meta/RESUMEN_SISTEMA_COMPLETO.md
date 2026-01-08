@@ -253,7 +253,7 @@ Task final (X.9): Agregar todas las lessons en `summary.yaml`
 
 ### Documentación Creada
 
-1. **[.spec-workflow/steering/best-practices.md](../../.spec-workflow/steering/best-practices.md)**
+1. **[.spec-workflow/steering/best-practices.md](best-practices.md)**
    - ⭐ **DOCUMENTO MAESTRO** de mejores prácticas
    - 10 secciones completas
    - Checklist de calidad
@@ -346,4 +346,4 @@ Task final (X.9): Agregar todas las lessons en `summary.yaml`
 
 ---
 
-**¿Preguntas?** Consulta [best-practices.md](../../.spec-workflow/steering/best-practices.md) 📖
+**¿Preguntas?** Consulta [best-practices.md](best-practices.md) 📖

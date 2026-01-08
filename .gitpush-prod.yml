@@ -1,0 +1,12 @@
+stages:
+  pre_commit: false
+  tests: false
+  branch_validate: false
+  commit: false
+  push: true
+  post_push: false
+minimal: false
+non_interactive: true
+dry_run: false
+failure_mode: fail_fast
+commit_message: null

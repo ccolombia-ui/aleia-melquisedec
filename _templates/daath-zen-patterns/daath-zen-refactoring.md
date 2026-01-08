@@ -348,6 +348,6 @@ Ver specs que usan este patrón:
 
 ## Referencias
 
-- [Best Practices](../../.spec-workflow/steering/best-practices.md)
+- [Best Practices](../../.spec-workflow/_meta/best-practices.md)
 - [MCPs Recomendados](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
 - [Lesson Template](../_daath-template/lessons/lesson-template.md)

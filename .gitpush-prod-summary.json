@@ -1,0 +1,30 @@
+{
+  "config_used": {
+    "stages": {
+      "pre_commit": false,
+      "tests": false,
+      "branch_validate": false,
+      "commit": false,
+      "push": true,
+      "post_push": false
+    },
+    "minimal": false,
+    "dry_run": false,
+    "non_interactive": true,
+    "commit_message": null,
+    "failure_mode": "fail_fast",
+    "runners": {
+      "tests": "tools/testing/run_affected_tests.py",
+      "branch_validate": "tools/git/validate_branch.py",
+      "commit_msg_generator": "tools/git/generate_commit_msg.py"
+    }
+  },
+  "results": [
+    {
+      "name": "push",
+      "ok": true,
+      "code": 0,
+      "message": ""
+    }
+  ]
+}

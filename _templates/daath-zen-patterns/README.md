@@ -219,6 +219,6 @@ Por patrón, tracking:
 
 ## Referencias
 
-- [Best Practices: Spec Workflow](../../.spec-workflow/steering/best-practices.md)
+- [Best Practices: Spec Workflow](../../.spec-workflow/_meta/best-practices.md)
 - [Lesson Template](../_daath-template/lessons/lesson-template.md)
 - [MCPs Recomendados](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)

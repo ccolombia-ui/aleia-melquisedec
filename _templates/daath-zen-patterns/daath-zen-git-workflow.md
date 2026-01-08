@@ -363,6 +363,6 @@ Ver spec que usa este patrón:
 
 ## Referencias
 
-- [Best Practices](../../.spec-workflow/steering/best-practices.md)
+- [Best Practices](../../.spec-workflow/_meta/best-practices.md)
 - [MCPs Recomendados](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
 - [Git Push Workflow Spec](../../.spec-workflow/specs/git-push-workflow-v1.0.0/)

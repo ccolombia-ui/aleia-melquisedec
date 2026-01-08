@@ -8,7 +8,7 @@ Un workflow **integrado** de 3 niveles:
 2. **DAATH-ZEN** (Método): Ejecutar con los 5 Rostros + MCPs + Output Triple
 3. **Autopoiesis** (Ciclo): Lessons → Patterns → Mejores specs
 
-**📖 Documento principal**: [RESUMEN_SISTEMA_COMPLETO.md](./RESUMEN_SISTEMA_COMPLETO.md) (léelo primero)
+**📖 Documento principal**: [RESUMEN_SISTEMA_COMPLETO.md](_meta/RESUMEN_SISTEMA_COMPLETO.md) (léelo primero)
 
 ---
 
@@ -194,7 +194,7 @@ npx -y spec-workflow-mcp@latest --dashboard --port 5000
 ## 📚 Recursos Clave
 
 ### Documentación
-- ⭐ [RESUMEN_SISTEMA_COMPLETO.md](./RESUMEN_SISTEMA_COMPLETO.md) - **LÉELO PRIMERO**
+- ⭐ [RESUMEN_SISTEMA_COMPLETO.md](_meta/RESUMEN_SISTEMA_COMPLETO.md) - **LÉELO PRIMERO**
 - ⭐ [steering/best-practices.md](./steering/best-practices.md) - Guía completa (10 secciones)
 - [_templates/daath-zen-patterns/README.md](../_templates/daath-zen-patterns/README.md) - Catálogo de patrones
 
@@ -216,7 +216,7 @@ npx -y spec-workflow-mcp@latest --dashboard --port 5000
 
 ## 🚀 Próximos Pasos
 
-1. ✅ **Lee el resumen**: [RESUMEN_SISTEMA_COMPLETO.md](./RESUMEN_SISTEMA_COMPLETO.md)
+1. ✅ **Lee el resumen**: [RESUMEN_SISTEMA_COMPLETO.md](_meta/RESUMEN_SISTEMA_COMPLETO.md)
 2. ✅ **Estudia best practices**: [steering/best-practices.md](./steering/best-practices.md)
 3. ✅ **Revisa ejemplo**: [specs/git-push-workflow-v1.0.0/](./specs/git-push-workflow-v1.0.0/)
 4. ⏳ **Ejecuta task 1.1** de monorepo-improvements
