@@ -2,7 +2,7 @@
 
 ## 1. Mejoras de Estructura del Monorepo
 
-- [ ] 1.1. Fix all nucleo-investigacion references
+- [x] 1.1. Fix all nucleo-investigacion references
   - File: *.md, *.py, docker-compose.yml
   - _Requirements: REQ-1_
   - _Rostro: MELQUISEDEC_
