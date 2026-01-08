@@ -18,7 +18,7 @@
   - _Lesson: lessons-learned/task-1.2-move-docs.md_
   - _Prompt: Role: MORPHEUS Designer | Task: Move 3 root docs to docs/ preserving structure, update all internal relative links, verify no broken references | Restrictions: Maintain link integrity, update SUMMARY.md if exists | Success: Files moved, all links working, no 404s_
 
-- [ ] 1.3. Add pre-commit hooks
+- [x] 1.3. Add pre-commit hooks
   - File: .pre-commit-config.yaml, package.json
   - _Requirements: REQ-3_
   - _Rostro: MORPHEUS_

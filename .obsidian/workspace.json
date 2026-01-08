@@ -221,6 +221,9 @@
   },
   "active": "69621fe1295a4d41",
   "lastOpenFiles": [
+    "packages/daath-toolkit/README.md",
+    "packages/daath-toolkit/pyproject.toml",
+    "tools/maintenance/discover_packages.py",
     "docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md",
     "docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md",
     "docs/manifiesto/bereshit-v3.0.0.md",
@@ -253,10 +256,7 @@
     "docs/manifiesto/03-workflow/01-kanban-estados.md",
     "tools/git",
     "docs/manifiesto/02-arquitectura/03-templates-hkm.md",
-    "docs/manifiesto/02-arquitectura/01-research-instance.md",
     "_templates/daath-zen-patterns",
-    "audit.log",
-    "docs/_meta/inbox/_spec-issue-workflow/approvals/rejected",
     "Sin título.canvas"
   ]
 }
