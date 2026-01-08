@@ -89,6 +89,7 @@ docs/manifiesto/
 | **Ver ejemplos** | 05-casos-estudio/ (cualquier caso) |
 | **Buscar conceptos** | 06-referencias/01-glosario.md |
 | **Validar cumplimiento** | 02-arquitectura/02-sistema-checkpoints.md |
+| **🆕 Entender memoria Neo4j + triple sync** | 04-implementacion/04-memoria-y-persistencia-triple.md |
 
 ---
 
@@ -146,22 +147,49 @@ docs/manifiesto/
 ### Flujo de Cascada
 
 ```mermaid
-graph LR
-    M[MELQUISEDEC<br/>Clasifica]
-    H[HYPATIA<br/>Investiga]
-    S[SALOMON<br/>Analiza]
-    Mo[MORPHEUS<br/>Diseña]
-    A[ALMA<br/>Manifiesta]
-
-    M --> H --> S --> Mo --> A
-    A -.->|feedback| M
-
+graph TB
+    subgraph "FASE 1: PREPARACIÓN"
+        Neo[(Neo4j<br/>Memoria)]
+        Query["🧠 Consultar:<br/>¿Qué tasks completadas?<br/>¿Cuál es la siguiente?<br/>¿Hay logs previos?"]
+        Neo --> Query
+    end
+    
+    subgraph "FASE 2-4: WORKFLOW"
+        M[MELQUISEDEC<br/>Clasifica]
+        H[HYPATIA<br/>Investiga]
+        S[SALOMON<br/>Analiza]
+        Mo[MORPHEUS<br/>Diseña]
+        A[ALMA<br/>Manifiesta]
+        
+        M --> H --> S --> Mo --> A
+    end
+    
+    subgraph "FASE 5: PERSISTENCIA TRIPLE"
+        FS[📁 Archivos<br/>Markdown]
+        Graph[🔗 Grafo<br/>Neo4j]
+        Vec[🔍 Embeddings<br/>Vector Store]
+        
+        FS -.-> Sync[🔄 Reconciliador<br/>Background]
+        Graph -.-> Sync
+        Vec -.-> Sync
+    end
+    
+    Query --> M
+    A --> FS
+    A --> Graph
+    A --> Vec
+    Graph -.->|feedback| Neo
+    
     style M fill:#FFD700
     style H fill:#9370DB
     style S fill:#4682B4
     style Mo fill:#32CD32
     style A fill:#8B4513
+    style Neo fill:#FF6347
+    style Sync fill:#FFA500
 ```
+
+**Nuevo**: Ver [04-implementacion/04-memoria-y-persistencia-triple.md](04-implementacion/04-memoria-y-persistencia-triple.md) para explicación completa.
 
 ---
 
