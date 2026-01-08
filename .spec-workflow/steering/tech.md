@@ -3,18 +3,18 @@
 ## 📖 Referencias Técnicas (SSoT)
 
 **Arquitectura del Monorepo**:
-- **ADR-001 Monorepo Structure**: [docs/architecture/ADR-001-monorepo-structure.md](../../docs/architecture/ADR-001-monorepo-structure.md)
-- **Arquitectura Visual**: [docs/architecture/estructura-visual.md](../../docs/architecture/estructura-visual.md)
-- **Configuración Completa**: [docs/guides/CONFIGURACION_COMPLETA.md](../../docs/guides/CONFIGURACION_COMPLETA.md)
+- **ADR-001 Monorepo Structure**: [[ADR-001-monorepo-structure]]
+- **Arquitectura Visual**: [[ESTRUCTURA_VISUAL]]
+- **Configuración Completa**: [[CONFIGURACION_COMPLETA]]
 
 **MCPs y Tooling**:
-- **MCPs Recomendados**: [docs/manifiesto/03-workflow/04-mcps-recomendados.md](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
-- **Docker MCP Toolkit**: [docs/guides/docker-mcp-toolkit.md](../../docs/guides/docker-mcp-toolkit.md)
-- **Workflows GitHub Actions**: [docs/guides/workflows-github-actions.md](../../docs/guides/workflows-github-actions.md)
+- **MCPs Recomendados**: [[04-mcps-recomendados]]
+- **Docker MCP Toolkit**: [[docker-mcp-toolkit]]
+- **Workflows GitHub Actions**: [[workflows-github-actions]]
 
 **Estrategia de Branching y Migración**:
-- **Estrategia Branching**: [docs/guides/estrategia-branching.md](../../docs/guides/estrategia-branching.md)
-- **Migración Estructura**: [docs/guides/migracion-estructura.md](../../docs/guides/migracion-estructura.md)
+- **Estrategia Branching**: [[estrategia-branching]]
+- **Migración Estructura**: [[migracion-estructura]]
 
 ---
 

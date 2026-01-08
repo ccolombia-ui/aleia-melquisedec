@@ -3,19 +3,19 @@
 ## 📖 Referencias Primarias (SSoT)
 
 **DAATH-ZEN Fundamentos** (no duplicar, referenciar):
-- **¿Qué es Melquisedec?**: [docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md](../../docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md)
-- **Fundamento Kabalístico**: [docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md](../../docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md)
-- **5 Rostros**: [docs/manifiesto/01-fundamentos/03-cinco-rostros.md](../../docs/manifiesto/01-fundamentos/03-cinco-rostros.md)
-- **Principios Fundacionales**: [docs/manifiesto/01-fundamentos/04-principios-fundacionales.md](../../docs/manifiesto/01-fundamentos/04-principios-fundacionales.md)
+- **¿Qué es Melquisedec?**: [[01-que-es-melquisedec]]
+- **Fundamento Kabalístico**: [[02-fundamento-kabalistico]]
+- **5 Rostros**: [[03-cinco-rostros]]
+- **Principios Fundacionales**: [[04-principios-fundacionales]]
 
 **DAATH-ZEN Arquitectura**:
-- **Sistema Checkpoints**: [docs/manifiesto/02-arquitectura/02-sistema-checkpoints.md](../../docs/manifiesto/02-arquitectura/02-sistema-checkpoints.md)
-- **Sincronización Knowledge**: [docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md](../../docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md)
-- **Sistema Autopoiesis**: [docs/manifiesto/02-arquitectura/05-autopoiesis-system.md](../../docs/manifiesto/02-arquitectura/05-autopoiesis-system.md)
+- **Sistema Checkpoints**: [[02-sistema-checkpoints]]
+- **Sincronización Knowledge**: [[04-sincronizacion-knowledge]]
+- **Sistema Autopoiesis**: [[05-autopoiesis-system]]
 
 **DAATH-ZEN Workflow**:
-- **MCPs Recomendados**: [docs/manifiesto/03-workflow/04-mcps-recomendados.md](../../docs/manifiesto/03-workflow/04-mcps-recomendados.md)
-- **Sistema Autopoiesis (workflow)**: [docs/manifiesto/03-workflow/05-autopoiesis.md](../../docs/manifiesto/03-workflow/05-autopoiesis.md)
+- **MCPs Recomendados**: [[04-mcps-recomendados]]
+- **Sistema Autopoiesis (workflow)**: [[05-autopoiesis]]
 
 ---
 
