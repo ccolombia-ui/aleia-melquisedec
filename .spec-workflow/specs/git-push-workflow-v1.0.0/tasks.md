@@ -34,13 +34,13 @@
   - _Lesson: lessons-learned/task-1.4-commit-msg.md_
   - _Prompt: Role: ALMA Publisher | Task: Extract spec name from branch, read task metadata from tasks.md, generate conventional commit format with rostro/MCPs metadata, prompt user for description | Restrictions: Follow conventional commits spec, include all metadata fields | Success: Generated message follows format, includes spec/task/rostro/MCPs, user can edit before commit_
 
-- [ ] 1.5. Implement configurable push workflow script
+- [x] 1.5. Implement configurable push workflow script (COMPLETED)
   - File: tools/git/push_workflow.py
   - _Requirements: REQ-5_
   - _Rostro: ALMA_
   - _MCPs: base=[neo4j, memory] | specialized=[git, github, sequential-thinking]_
   - _Lesson: lessons-learned/task-1.5-push-workflow.md_
-  - _Prompt: Role: ALMA Publisher | Task: Create a CLI `push_workflow.py` that reads optional `.gitpush.yml` and supports flags: `--dry-run`, `--non-interactive`, `--minimal`. The script must allow enabling/disabling stages (pre_commit, tests, branch_validate, commit, push, post_push), run in CI as a final task, return appropriate exit codes, and be minimal by default. Support a `--stages` override and `failure_mode` handling (warn vs fail). Provide clear logging and structured JSON output for CI consumption. | Restrictions: Keep default minimal and fast, avoid heavy operations unless enabled in config | Success: Script is configurable, supports minimal mode, usable as final CI task, includes `--dry-run`, and provides JSON summary on completion._
+  - _Prompt: Role: ALMA Publisher | Task: Create a CLI `push_workflow.py` that reads optional `.gitpush.yml` and supports flags: `--dry-run`, `--non-interactive`, `--minimal`, `--files`, `--branch`, `--allow-branch-push`. The script prompts for `files` and `branch` when running interactively (agent must ask), enforces "no branches unless allowed" policy, supports minimal mode, and emits JSON summary for CI. | Restrictions: Keep default minimal and fast, avoid heavy operations unless enabled in config | Success: Script is configurable, supports minimal mode, usable as final CI task, includes `--dry-run`, prompts agent for files and branch when interactive, enforces branch push policy._
 
 - [ ] 1.6. Create post-push Neo4j logger
   - File: tools/git/log_to_neo4j.py

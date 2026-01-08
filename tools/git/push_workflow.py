@@ -127,7 +127,7 @@ def get_current_branch() -> str:
         return "unknown"
 
 
-def stage_commit(commit_message: str | None, non_interactive: bool) -> StageResult:
+def stage_commit(commit_message: str | None, non_interactive: bool, files: list | None = None) -> StageResult:
     # If commit_message is None and non_interactive, skip commit stage
     if commit_message is None and non_interactive:
         return StageResult("commit", True, 0, "skipped (non-interactive + no message)")
@@ -148,15 +148,25 @@ def stage_commit(commit_message: str | None, non_interactive: bool) -> StageResu
         return StageResult("commit", False, 2, "no commit message provided and generator failed")
     # Perform commit
     try:
-        run_subprocess(["git", "add", "-A"], check=True)
+        if files:
+            # add explicit file list
+            # allow globs; use shell expansion via git add --
+            cmd = ["git", "add", "--"] + files
+            run_subprocess(cmd, check=True)
+        else:
+            run_subprocess(["git", "add", "-A"], check=True)
         run_subprocess(["git", "commit", "-m", commit_message], check=False)
         return StageResult("commit", True, 0, "committed")
     except subprocess.CalledProcessError as e:
         return StageResult("commit", False, e.returncode, str(e))
 
 
-def stage_push(dry_run: bool) -> StageResult:
-    branch = get_current_branch()
+def stage_push(dry_run: bool, target_branch: str | None = None, allow_branch_push: bool = False) -> StageResult:
+    current = get_current_branch()
+    branch = target_branch or current
+    # If user requested a different branch but branch pushes are not allowed, error
+    if branch != current and not allow_branch_push:
+        return StageResult("push", False, 3, f"refusing to push to branch '{branch}' (different from current '{current}'). Enable allow_branch_push in config or pass --allow-branch-push to override)")
     if dry_run:
         return StageResult("push", True, 0, f"dry-run: would push to origin/{branch}")
     try:
@@ -185,6 +195,9 @@ def main(argv=None):
     p.add_argument("--non-interactive", action="store_true")
     p.add_argument("--minimal", action="store_true")
     p.add_argument("--commit-message", help="Commit message to use (overrides generator)")
+    p.add_argument("--files", help="Comma-separated list of files or globs to include in commit (default: all staged)")
+    p.add_argument("--branch", help="Target branch to push to (default: current branch). NOTE: branches are only used if allowed in config")
+    p.add_argument("--allow-branch-push", action="store_true", help="Allow pushing to a branch different than the current local branch (default false unless enabled in config)")
     p.add_argument("--json-output", help="Path to write JSON summary")
     args = p.parse_args(argv)
 
@@ -200,6 +213,14 @@ def main(argv=None):
         cfg["stages"] = {k: False for k in cfg["stages"]}
         cfg["stages"]["pre_commit"] = True
         cfg["stages"]["push"] = True
+
+    # CLI-level file/branch overrides
+    if args.files:
+        cfg["files"] = [f.strip() for f in args.files.split(",") if f.strip()]
+    if args.branch:
+        cfg["branch"] = args.branch
+    if args.allow_branch_push:
+        cfg["allow_branch_push"] = True
 
     if cfg.get("minimal"):
         cfg["stages"] = {k: False for k in cfg["stages"]}
@@ -240,9 +261,18 @@ def main(argv=None):
             print("Fail-fast on branch validation")
             sys.exit(res.code or 1)
 
-    # 4. commit
+    # Prompt for parameters if needed (agent must ask files and branch when interactive)
+    files_param = cfg.get("files")
+    branch_param = cfg.get("branch")
+    allow_branch_push = cfg.get("allow_branch_push", False)
+
     if stages_cfg.get("commit"):
-        res = stage_commit(args.commit_message or cfg.get("commit_message"), cfg.get("non_interactive"))
+        # If interactive and missing files, ask
+        if not files_param and not cfg.get("non_interactive"):
+            resp = input("Files to include in commit (comma-separated, empty = all): ").strip()
+            files_param = [f.strip() for f in resp.split(",") if f.strip()] if resp else None
+        # Commit stage
+        res = stage_commit(args.commit_message or cfg.get("commit_message"), cfg.get("non_interactive"), files=files_param)
         ok = handle_result(res)
         if not ok and cfg.get("failure_mode") == "fail_fast":
             print("Fail-fast on commit")
@@ -250,7 +280,11 @@ def main(argv=None):
 
     # 5. push
     if stages_cfg.get("push"):
-        res = stage_push(cfg.get("dry_run") or args.dry_run)
+        # If interactive and missing branch, ask
+        if not branch_param and not cfg.get("non_interactive"):
+            resp = input("Target branch to push to (empty = current branch): ").strip()
+            branch_param = resp if resp else None
+        res = stage_push(cfg.get("dry_run") or args.dry_run, target_branch=branch_param, allow_branch_push=allow_branch_push)
         ok = handle_result(res)
         if not ok and cfg.get("failure_mode") == "fail_fast":
             print("Fail-fast on push")
