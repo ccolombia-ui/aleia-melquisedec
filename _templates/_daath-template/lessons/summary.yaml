@@ -1,0 +1,78 @@
+---
+# Summary de Lessons Extraídas
+# Este archivo se genera automáticamente por ALMA al finalizar instance
+
+instance_id: "instance-XXX-{topic}"
+domain_id: "DD-XXX"
+extraction_date: "YYYY-MM-DD"
+extracted_by: "ALMA"
+reviewed_by: "Usuario"
+
+# Estadísticas
+total_lessons: 0
+proposed_lessons: 0
+validated_lessons: 0
+rejected_lessons: 0
+
+# Lessons por rostro
+lessons_by_rostro:
+  MELQUISEDEC: 0
+  HYPATIA: 0
+  SALOMON: 0
+  MORPHEUS: 0
+  ALMA: 0
+
+# Lista de lessons
+lessons:
+  # - id: "lesson-001-hypatia-citations"
+  #   rostro: "HYPATIA"
+  #   confidence: 0.95
+  #   status: "validated"
+  #   applies_to: "daath-zen-{domain}-v{x.y.z}"
+  #   path: "_daath/lessons/lesson-001-hypatia-citations.md"
+  #   scope: "domain"
+  
+  # - id: "lesson-002-salomon-tooling"
+  #   rostro: "SALOMON"
+  #   confidence: 0.90
+  #   status: "validated"
+  #   applies_to: "daath-zen-{domain}-v{x.y.z}"
+  #   path: "_daath/lessons/lesson-002-salomon-tooling.md"
+  #   scope: "domain"
+  
+  # [Agregar más lessons aquí]
+
+# Prompt updates generados
+prompt_updates_generated: []
+  # - prompt_id: "daath-zen-{domain}"
+  #   from_version: "X.Y.Z"
+  #   to_version: "X.Y+1.Z"
+  #   lessons_applied: ["lesson-001", "lesson-002"]
+  #   status: "pending"  # pending | applied | rejected
+  #   changelog: |
+  #     vX.Y+1.Z (YYYY-MM-DD)
+  #     - Added [feature] (lesson-001)
+  #     - Improved [aspect] (lesson-002)
+
+# Cross-domain lessons (si hay lessons universales)
+universal_lessons: []
+  # - id: "lesson-003-hypatia-wikipedia"
+  #   applies_to_domains: ["DD-001", "DD-002", "DD-003"]  # Aplica a múltiples dominios
+
+# Métricas de calidad
+quality_metrics:
+  avg_confidence: null        # Promedio de confidence de lessons validadas
+  validation_rate: null       # % de lessons validadas vs propuestas
+  rejection_rate: null        # % de lessons rechazadas
+  avg_time_to_validate: null  # Tiempo promedio para validar (días)
+
+# Referencias
+chatlog_path: "_daath/chatlog/full-transcript.md"
+metadata_path: "_daath/chatlog/metadata.yaml"
+
+# Próximos pasos
+next_steps:
+  - "MORPHEUS: Incorporar lessons validadas a daath-zen-{domain}-v{x.y+1.z}"
+  - "Validar lessons propuestas en próxima instance del dominio"
+  - "Actualizar métricas de dominio en Neo4j"
+---

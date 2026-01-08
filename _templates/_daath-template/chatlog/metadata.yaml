@@ -1,0 +1,70 @@
+---
+# Metadata de Research Instance
+# Este archivo se genera automáticamente al iniciar una instance
+
+instance_id: "instance-XXX-{topic}"          # Generado: instance-001-crisp-dm
+domain_id: "DD-XXX"                          # Dominio temático: DD-001, DD-002, etc.
+started_at: "YYYY-MM-DDTHH:MM:SSZ"          # ISO 8601 timestamp
+completed_at: null                           # Se completa cuando ALMA termina
+duration_hours: null                         # Calculado al completar
+status: "in-progress"                        # in-progress | completed | failed | rollback
+
+# Prompts usados en esta instance
+prompts_used:
+  root: "daath-zen-root-v{x.y.z}"           # Prompt ROOT (universal)
+  type: "daath-zen-{domain}-v{x.y.z}"       # Prompt TYPE (dominio)
+  instance: "daath-zen-{topic}-v{x.y.z}"    # Prompt INSTANCE (específico)
+
+# Ejecución de la cascada de rostros
+rostros_executed:
+  - rostro: "MELQUISEDEC"
+    started_at: null
+    completed_at: null
+    checkpoint_passed: null                  # true | false | null
+    errors: []
+    
+  - rostro: "HYPATIA"
+    started_at: null
+    completed_at: null
+    checkpoint_passed: null
+    errors: []
+    
+  - rostro: "SALOMON"
+    started_at: null
+    completed_at: null
+    checkpoint_passed: null
+    errors: []
+    
+  - rostro: "MORPHEUS"
+    started_at: null
+    completed_at: null
+    checkpoint_passed: null
+    errors: []
+    
+  - rostro: "ALMA"
+    started_at: null
+    completed_at: null
+    checkpoint_passed: null
+    errors: []
+
+# Outputs producidos
+outputs_produced:
+  - id: "output-{topic}"
+    version: "1.0.0"
+    path: "5-outputs/{OUTPUT_NAME}_v1.0.0/{MAIN_FILE}.md"
+    neo4j_node_id: null                      # Se llena al publicar en Neo4j
+    vector_namespace: null                   # Se llena al publicar en Pinecone
+
+# Lessons extraídas
+lessons_extracted: 0                         # Count al finalizar
+lessons_validated: 0                         # Count de lessons con status=validated
+lessons_applied_to_prompt: null              # Version del prompt que incorporó lessons
+
+# Rollback info (si aplica)
+rollback_reason: null                        # Razón del rollback si status=rollback
+rollback_timestamp: null
+
+# Git tracking
+git_commit_sha: null                         # SHA del commit que contiene este output
+git_tag: null                                # Tag del output: output-{topic}-v1.0.0
+---

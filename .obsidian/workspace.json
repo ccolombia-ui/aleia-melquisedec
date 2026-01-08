@@ -13,30 +13,29 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "bereshit/manifiesto-melquisedec-v3.0.0.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "manifiesto-melquisedec-v3.0.0"
-            }
-          },
-          {
-            "id": "cefe6bfd2d36a0ea",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ARQUITECTURA_MONOREPO.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ARQUITECTURA_MONOREPO"
+              "title": "README"
+            }
+          },
+          {
+            "id": "8a37f441e9e5b14c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/manifiesto/01-fundamentos/03-cinco-rostros.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "03-cinco-rostros"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -186,13 +185,23 @@
               "icon": "smart-connections",
               "title": "Connections"
             }
+          },
+          {
+            "id": "88699630502fdb97",
+            "type": "leaf",
+            "state": {
+              "type": "smart-connections-visualizer",
+              "state": {},
+              "icon": "git-fork",
+              "title": "Smart connections visualizer"
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 444.5,
     "collapsed": true
   },
   "left-ribbon": {
@@ -210,39 +219,43 @@
       "smart-connections:Smart Connections: Open random connection": false
     }
   },
-  "active": "cefe6bfd2d36a0ea",
+  "active": "69621fe1295a4d41",
   "lastOpenFiles": [
-    "docs/guides/workflows-github-actions.md",
-    "docs/guides/estrategia-branching.md",
-    "CHANGELOG.md",
-    "LICENSE",
-    "README.md",
     "QUICK_REFERENCE.md",
-    "docs/guides/migracion-estructura.md",
     "ESTRUCTURA_VISUAL.md",
-    "tools/maintenance/cleanup_post_reorganization.py",
-    "docs/guides/docker-mcp-toolkit.md",
-    "REORGANIZACION_COMPLETA.md",
-    "docs/guides/configuracion-completa.md",
-    "docs/architecture/ADR-001-monorepo-structure.md",
-    "apps/01-test-reorganizacion/0-inbox/README.md",
-    "apps/01-test-reorganizacion/0-inbox",
-    "apps/01-test-reorganizacion/README.md",
-    "apps/01-test-reorganizacion/PROPOSITO.md",
-    "apps/01-test-reorganizacion",
-    "ARQUITECTURA_MONOREPO.md",
-    "packages/daath-toolkit/generators/new_research.py",
-    "packages/daath-toolkit/validators/validate_research.py",
     "CONTRIBUTING.md",
-    "apps/00-template/PROPOSITO.md",
-    "apps/00-template/README.md",
-    "apps/00-template",
-    "tools/testing/test_mcps.py",
-    "tools/testing/test_mcp_toolkit.py",
-    "tools/setup/setup_neo4j_mcp.sh",
-    "docs/manifiesto/bereshit-v3.0.0.md",
-    "_templates/app-melquisedec/README.md",
-    "_templates/app-melquisedec/PROPOSITO.md",
-    "bereshit/manifiesto-melquisedec-v3.0.0.md"
+    "CHANGELOG.md",
+    "ARQUITECTURA_MONOREPO.md",
+    "01-kanban-estados.md",
+    "docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md",
+    "packages/daath-toolkit/storage/__init__.py",
+    "packages/daath-toolkit/capture/__init__.py",
+    "docs/manifiesto/03-workflow/05-autopoiesis.md",
+    "tools/setup/neo4j_schema.py",
+    "packages/daath-toolkit/storage/vector_store.py",
+    "packages/daath-toolkit/capture/chatlog_capture.py",
+    "packages/daath-toolkit/storage",
+    "packages/daath-toolkit/capture",
+    "docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md",
+    "docs/manifiesto/01-fundamentos/04-principios-fundacionales.md",
+    "docs/manifiesto/01-fundamentos/03-cinco-rostros.md",
+    "nucleo-investigacion/docs/workflow-autopoiesis.md",
+    "README.md",
+    "REORGANIZACION_COMPLETA.md",
+    "docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md",
+    "Sin título.canvas",
+    "_templates/_daath-template/chatlog/by-rostro/04-morpheus.md",
+    "_templates/_daath-template/chatlog/by-rostro/01-melquisedec.md",
+    "nucleo-investigacion/requirements.txt",
+    "nucleo-investigacion/docs",
+    "nucleo-investigacion/scripts/chatlog_capture.py",
+    "docs/manifiesto/02-arquitectura/05-autopoiesis-system.md",
+    "_templates/_daath-template/lessons/lesson-template.md",
+    "_templates/_daath-template/chatlog/by-rostro/05-alma.md",
+    "_templates/_daath-template/chatlog/by-rostro/03-salomon.md",
+    "_templates/_daath-template/chatlog/by-rostro/02-hypatia.md",
+    "_templates/_daath-template/chatlog/full-transcript.md",
+    "_templates/_daath-template/README.md",
+    "docs/manifiesto/03-workflow/04-mcps-recomendados.md"
   ]
 }

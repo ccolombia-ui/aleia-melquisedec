@@ -1,6 +1,12 @@
-# Requisitos mínimos solicitados
+# Core MCP Requirements
+# Base
 mcp
-neo4j
+neo4j>=5.14.0
 ollama
 firecrawl-py
 requests
+
+# Vector Store & AI (from nucleo-investigacion)
+pinecone-client>=3.0.0
+openai>=1.0.0
+pyyaml>=6.0.0

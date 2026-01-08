@@ -16,6 +16,7 @@ Flujo de trabajo, gobernanza y gestión del conocimiento:
 2. **[02-trazabilidad.md](02-trazabilidad.md)** - Cadena derives_from → informs
 3. **[03-versionamiento.md](03-versionamiento.md)** - Semantic versioning y alerts
 4. **[04-mcps-recomendados.md](04-mcps-recomendados.md)** - MCPs por rostro
+5. **[05-autopoiesis.md](05-autopoiesis.md)** - Sistema de autopoiesis y captura
 
 ---
 

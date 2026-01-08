@@ -26,6 +26,8 @@ aleia-melquisedec/
 │   │   └── scripts/                     # Scripts de gestión
 │   │
 │   └── daath-toolkit/                   # Herramientas compartidas
+│       ├── capture/                     # Captura de chatlogs
+│       ├── storage/                     # Vector store domain-aware
 │       ├── validators/                  # Validadores de estructura
 │       ├── generators/                  # Generadores de apps
 │       └── testing/                     # Frameworks de testing
@@ -119,12 +121,13 @@ tools:
 
 | Aspecto | Antes | Después |
 |---------|-------|---------|
-| **Documentación** | Dispersa (raíz, nucleo-investigacion) | Centralizada en `docs/` |
-| **Scripts** | Mezcla en nucleo-investigacion/scripts | Separados por propósito en `tools/` |
-| **Infraestructura** | Solo en nucleo-investigacion | Separada en `infrastructure/` |
+| **Documentación** | Dispersa (raíz, carpetas varias) | Centralizada en `docs/` |
+| **Scripts** | Mezclados en múltiples ubicaciones | Separados por propósito en `tools/` |
+| **Infraestructura** | Dispersa | Separada en `infrastructure/` |
 | **Reutilización** | No había componentes compartidos | `packages/` con código común |
 | **Templates** | _templates/app-melquisedec | apps/00-template (más intuitivo) |
 | **Testing** | Scripts sueltos | Framework en packages/daath-toolkit/testing |
+| **Capture/Storage** | No existía | packages/daath-toolkit/capture/ y storage/ |
 | **CI/CD** | No existía | .github/workflows/ preparado |
 
 ---

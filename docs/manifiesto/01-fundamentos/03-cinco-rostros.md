@@ -306,13 +306,13 @@ sequenceDiagram
 
 ### Ejemplo de Ejecución Híbrida
 
-| Rostro | Ejecutor |
-|--------|----------|
-| MELQUISEDEC | Humano (Project Manager) + IA (clasificación automática) |
-| HYPATIA | IA (búsqueda automatizada) + Humano (validación de fuentes) |
-| SALOMON | IA (análisis comparativo) + Humano (decisión final) |
-| MORPHEUS | Humano (arquitecto) + IA (generación de templates) |
-| ALMA | IA (generación de documentos) + Humano (revisión editorial) |
+| Rostro      | Ejecutor                                                    |
+| ----------- | ----------------------------------------------------------- |
+| MELQUISEDEC | Humano (Project Manager) + IA (clasificación automática)    |
+| HYPATIA     | IA (búsqueda automatizada) + Humano (validación de fuentes) |
+| SALOMON     | IA (análisis comparativo) + Humano (decisión final)         |
+| MORPHEUS    | Humano (arquitecto) + IA (generación de templates)          |
+| ALMA        | IA (generación de documentos) + Humano (revisión editorial) |
 
 ---
 
