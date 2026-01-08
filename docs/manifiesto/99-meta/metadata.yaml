@@ -1,0 +1,43 @@
+---
+id: "manifiesto-metadata"
+name: "Manifiesto MELQUISEDEC"
+version: "4.0.0"
+description: "Metadatos del manifiesto y requisitos de estructura para validar integridad"
+authors:
+  - "Equipo ALEIA-BERESHIT"
+date: "2026-01-08"
+directories:
+  - "docs/manifiesto/01-fundamentos"
+  - "docs/manifiesto/02-arquitectura"
+  - "docs/manifiesto/03-workflow"
+  - "docs/manifiesto/04-implementacion"
+  - "docs/manifiesto/05-casos-estudio"
+  - "docs/manifiesto/06-referencias"
+  - "docs/manifiesto/99-meta"
+required_files:
+  - "docs/manifiesto/02-arquitectura/01-research-instance.md"
+  - "docs/manifiesto/02-arquitectura/03-templates-hkm.md"
+  - "docs/manifiesto/03-workflow/01-kanban-estados.md"
+  - "docs/manifiesto/03-workflow/02-trazabilidad.md"
+  - "docs/manifiesto/03-workflow/03-versionamiento.md"
+  - "docs/manifiesto/04-implementacion/01-flujo-completo.md"
+  - "docs/manifiesto/04-implementacion/02-lessons-learned.md"
+  - "docs/manifiesto/04-implementacion/03-checklist-research-instance.md"
+  - "docs/manifiesto/06-referencias/01-glosario-kabalistico.md"
+  - "docs/manifiesto/06-referencias/02-bibliografia.md"
+  - "docs/manifiesto/06-referencias/03-changelog-completo.md"
+  - "docs/manifiesto/99-meta/metadata.yaml"
+  - "docs/manifiesto/99-meta/validacion-estructura.py"
+scripts:
+  - "docs/manifiesto/99-meta/validacion-estructura.py"
+validation:
+  last_run: null
+  status: "not-run"
+---
+
+# Metadata del Manifiesto
+
+Este archivo define los requisitos de estructura y archivos mínimos necesarios para declarar el Manifiesto como "completo".
+
+**Versión**: 4.0.0
+**Última actualización**: 2026-01-08
