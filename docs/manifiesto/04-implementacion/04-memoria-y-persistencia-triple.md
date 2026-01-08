@@ -154,16 +154,25 @@ El workflow completo es:
 
 ```mermaid
 graph TD
-    A[Nueva Sesión] --> B{¿Primera vez?}
-    B -->|Sí| C[Activar: neo4j, memory]
+    A[Nueva Sesión]
+    B{¿Primera vez?}
+    C[Activar: neo4j, memory]
+    D[FASE 1: PREPARACIÓN]
+    E[Query Neo4j: ¿Qué spec estoy ejecutando?]
+    F[Query Neo4j: ¿Qué tasks están COMPLETED?]
+    G[Query Neo4j: ¿Hay Implementation Logs?]
+    H[Cargar contexto en memory]
+    I[FASE 2: WORKFLOW - Ejecutar siguiente task]
+    
+    A --> B
+    B -->|Sí| C
     B -->|No| C
-
-    C --> D[FASE 1: PREPARACIÓN]
-    D --> E[Query Neo4j: ¿Qué spec estoy ejecutando?]
-    E --> F[Query Neo4j: ¿Qué tasks están COMPLETED?]
-    F --> G[Query Neo4j: ¿Hay Implementation Logs?]
-    G --> H[Cargar contexto en memory]
-    H --> I[FASE 2: WORKFLOW - Ejecutar siguiente task]
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
 ```
 
 **Cypher Query Ejemplo** (FASE 1):

@@ -26,7 +26,7 @@
   - _Lesson: lessons-learned/task-1.3-precommit.md_
   - _Prompt: Role: MORPHEUS Designer | Task: Configure pre-commit hooks for black, flake8, isort, mypy; add to package.json scripts | Restrictions: Use standard tools from Python ecosystem | Success: Hooks execute on commit, formatted correctly_
 
-- [ ] 1.4. Package discovery mechanism
+- [x] 1.4. Package discovery mechanism
   - File: packages/*/pyproject.toml, scripts/discover-packages.py
   - _Requirements: REQ-4_
   - _Rostro: SALOMON_
@@ -42,7 +42,7 @@
   - _Lesson: lessons-learned/task-1.5-unit-tests.md_
   - _Prompt: Role: MORPHEUS Designer | Task: Create pytest test suite for validators in daath-toolkit, aim for 80% coverage, use fixtures, mock external dependencies | Restrictions: 80% coverage minimum, follow pytest best practices | Success: Tests pass, coverage >= 80%, CI integration ready_
 
-- [ ] 1.6. Create cleanup post-reorganization script
+- [x] 1.6. Create cleanup post-reorganization script
   - File: tools/maintenance/cleanup_post_reorganization.py
   - _Requirements: REQ-6_
   - _Rostro: MELQUISEDEC_

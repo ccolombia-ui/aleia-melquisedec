@@ -92,7 +92,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "b68b875ba705115c",
@@ -221,9 +222,18 @@
   },
   "active": "69621fe1295a4d41",
   "lastOpenFiles": [
+    "packages/daath-toolkit/storage/__pycache__/vector_store.cpython-313.pyc",
+    "packages/daath-toolkit/storage/__pycache__/__init__.cpython-313.pyc",
+    "packages/daath-toolkit/storage/__pycache__",
+    "packages/daath-toolkit/testing/__pycache__/test_vector_store.cpython-313-pytest-9.0.2.pyc",
+    "packages/daath-toolkit/validators/__pycache__/validate_research.cpython-313.pyc",
+    "packages/daath-toolkit/validators/__pycache__/__init__.cpython-313.pyc",
+    "packages/daath-toolkit/validators/__pycache__/validate_research.cpython-313.pyc.6437188418560",
+    "packages/daath-toolkit/validators/__pycache__",
+    "packages/daath-toolkit/testing/__pycache__/test_validate_research.cpython-313-pytest-9.0.2.pyc",
+    "packages/daath-toolkit/capture/__pycache__/chatlog_capture.cpython-313.pyc",
+    "packages/daath-toolkit/capture/__pycache__/__init__.cpython-313.pyc",
     "packages/daath-toolkit/README.md",
-    "packages/daath-toolkit/pyproject.toml",
-    "tools/maintenance/discover_packages.py",
     "docs/manifiesto/01-fundamentos/02-fundamento-kabalistico.md",
     "docs/manifiesto/01-fundamentos/01-que-es-melquisedec.md",
     "docs/manifiesto/bereshit-v3.0.0.md",
@@ -238,13 +248,7 @@
     "docs/architecture/estructura-visual.md",
     "docs/guides/quick-reference.md",
     "docs/manifiesto/04-implementacion/04-memoria-y-persistencia-triple.md",
-    "tests/integration/test_git_push_workflow.py",
-    "tests/integration",
-    "tests",
     "docs/guides/git-push-workflow.md",
-    "tools/git/push_workflow.py",
-    "docs/manifiesto/99-meta/validacion-estructura.py",
-    "docs/manifiesto/99-meta/metadata.yaml",
     "docs/manifiesto/06-referencias/03-changelog-completo.md",
     "docs/manifiesto/06-referencias/02-bibliografia.md",
     "docs/manifiesto/06-referencias/01-glosario-kabalistico.md",
@@ -254,9 +258,6 @@
     "docs/manifiesto/03-workflow/03-versionamiento.md",
     "docs/manifiesto/03-workflow/02-trazabilidad.md",
     "docs/manifiesto/03-workflow/01-kanban-estados.md",
-    "tools/git",
-    "docs/manifiesto/02-arquitectura/03-templates-hkm.md",
-    "_templates/daath-zen-patterns",
     "Sin título.canvas"
   ]
 }
