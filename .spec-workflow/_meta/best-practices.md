@@ -360,4 +360,3 @@ _templates/daath-zen-patterns/
 ```
 Spec → Task → Rostro → Output Triple → Lesson → Pattern → Mejor Spec
 ```
-

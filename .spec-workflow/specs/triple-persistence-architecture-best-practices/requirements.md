@@ -99,6 +99,130 @@ Este spec implementa arquitectura óptima para Triple Persistencia MELQUISEDEC b
    pip install llama-index llama-index-vector-stores-neo4j llama-index-embeddings-ollama
    ```
 
+3. ✅ Implementar Domain Entities con DDD patterns:
+   ```python
+   # packages/daath-toolkit/domain/entities.py
+   from dataclasses import dataclass, field
+   from datetime import datetime
+   from typing import List, Optional
+
+   @dataclass
+   class Document:
+       """Document entity representing a knowledge artifact."""
+       id: str
+       title: str
+       content: str
+       rostro: str  # HYPATIA, MORPHEUS, TESLA, CURIE
+       domain: str  # research, architecture, testing, benchmarks
+       metadata: dict = field(default_factory=dict)
+       chunks: List['Chunk'] = field(default_factory=list)
+       created_at: datetime = field(default_factory=datetime.utcnow)
+
+       def validate(self) -> None:
+           """Validate document invariants."""
+           if not self.title:
+               raise ValueError("Document title required")
+           if len(self.content) < 100:
+               raise ValueError("Document content too short (<100 chars)")
+           if self.rostro not in ["HYPATIA", "MORPHEUS", "TESLA", "CURIE"]:
+               raise ValueError(f"Invalid rostro: {self.rostro}")
+
+   @dataclass
+   class Chunk:
+       """Text chunk with embedding for vector search."""
+       id: str
+       text: str
+       document_id: str
+       rostro: str
+       position: int  # 0-indexed position in document
+       metadata: dict = field(default_factory=dict)
+       embedding: Optional['EmbeddingVector'] = None
+
+       def __post_init__(self):
+           self.metadata["rostro"] = self.rostro
+           self.metadata["position"] = self.position
+
+   @dataclass
+   class EmbeddingVector:
+       """Vector embedding with model information."""
+       vector: List[float]
+       model: str = "qwen2.5:latest"
+       dimensions: int = field(init=False)
+
+       def __post_init__(self):
+           self.dimensions = len(self.vector)
+           if self.dimensions != 768:
+               raise ValueError(f"Expected 768 dimensions, got {self.dimensions}")
+   ```
+
+4. ✅ Definir 8 Ports como Python Protocols (Hexagonal Architecture):
+   ```python
+   # packages/daath-toolkit/domain/ports.py
+   from typing import Protocol, List, Optional
+   from .entities import Chunk, EmbeddingVector
+
+   class VectorStorePort(Protocol):
+       """Port for vector storage operations."""
+       async def add_vectors(
+           self, chunks: List[Chunk],
+           embeddings: List[EmbeddingVector],
+           index_name: str = "melquisedec_embeddings"
+       ) -> List[str]:
+           """Store chunk embeddings in vector index. Returns: List of node IDs."""
+           ...
+
+       async def query_similar(
+           self, query_embedding: EmbeddingVector,
+           top_k: int = 10,
+           filters: Optional[dict] = None
+       ) -> List[tuple[Chunk, float]]:
+           """Query similar chunks. Returns: List of (chunk, similarity_score)."""
+           ...
+
+   class EmbeddingServicePort(Protocol):
+       """Port for embedding generation."""
+       async def embed_text(
+           self, text: str,
+           model: str = "qwen2.5:latest"
+       ) -> EmbeddingVector:
+           """Generate embedding for single text."""
+           ...
+
+       async def embed_batch(
+           self, texts: List[str],
+           model: str = "qwen2.5:latest",
+           batch_size: int = 32
+       ) -> List[EmbeddingVector]:
+           """Generate embeddings for multiple texts."""
+           ...
+
+   class GraphRepositoryPort(Protocol):
+       """Port for graph database operations."""
+       async def create_node(self, label: str, properties: dict) -> str:
+           """Create node in graph. Returns: Node ID."""
+           ...
+
+       async def create_relationship(
+           self, start_node_id: str,
+           end_node_id: str,
+           rel_type: str,
+           properties: dict = None
+       ) -> str:
+           """Create relationship. Returns: Relationship ID."""
+           ...
+
+   class ChunkingPort(Protocol):
+       """Port for text chunking strategies."""
+       async def chunk_text(
+           self, text: str,
+           strategy: str = "semantic",
+           max_chunk_size: int = 512,
+           overlap: int = 50
+       ) -> List[Chunk]:
+           """Split text into chunks."""
+           ...
+   ```
+
 3. ✅ Crear documentación `docs/manifiesto/04-implementacion/06-pipeline-document-processing.md`:
    - Diagrama de fases
    - Código de ejemplo
@@ -110,7 +234,7 @@ Este spec implementa arquitectura óptima para Triple Persistencia MELQUISEDEC b
    class KnowledgeWriter:
        def __init__(self):
            self.pipeline = MELQUISEDECPipeline()
-       
+
        def write_atomically(self, file_paths: List[str], metadata: Dict):
            index = self.pipeline.process_documents(file_paths, metadata)
            return index
@@ -136,11 +260,11 @@ Este spec implementa arquitectura óptima para Triple Persistencia MELQUISEDEC b
      neo4j:
        image: neo4j:5.15-community
        # ... config con APOC + GDS
-     
+
      ollama:
        image: ollama/ollama:latest
        # ... config
-     
+
      # NO Redis para vectores (a menos que se use para cache/sessions)
    ```
 
@@ -264,6 +388,67 @@ Este spec implementa arquitectura óptima para Triple Persistencia MELQUISEDEC b
 - Docs mencionan "Neo4j Vector Index nativo"
 
 **Priority**: 🟠 **MEDIA** - Evita confusión
+
+---
+
+### REQ-7: Testing Strategy con TDD
+
+**Objetivo**: Establecer estrategia de testing comprehensiva siguiendo TDD (Test-Driven Development).
+
+**Criterios de aceptación**:
+1. ✅ Test Pyramid configurado:
+   - **Unit Tests (70%)**: Domain entities, use cases con mocked ports
+   - **Integration Tests (20%)**: Adapters con Neo4j testcontainers
+   - **E2E Tests (10%)**: Full pipeline tests
+
+2. ✅ pytest fixtures para testcontainers:
+   ```python
+   # tests/fixtures/neo4j_fixtures.py
+   import pytest
+   from testcontainers.neo4j import Neo4jContainer
+
+   @pytest.fixture(scope="session")
+   def neo4j_container():
+       with Neo4jContainer("neo4j:5.26.0") as container:
+           # Create vector index
+           driver = container.get_driver()
+           with driver.session() as session:
+               session.run("""
+                   CREATE VECTOR INDEX melquisedec_embeddings IF NOT EXISTS
+                   FOR (n:DocumentChunk)
+                   ON n.embedding
+                   OPTIONS {
+                       indexConfig: {
+                           `vector.dimensions`: 768,
+                           `vector.similarity_function`: 'cosine'
+                       }
+                   }
+               """)
+           yield container
+   ```
+
+3. ✅ Coverage requirements:
+   - Overall: ≥80% line coverage
+   - Domain layer: ≥95%
+   - Application layer: ≥85%
+   - Infrastructure layer: ≥70%
+
+4. ✅ SonarQube quality gates:
+   ```properties
+   # sonar-project.properties
+   sonar.projectKey=aleia-melquisedec
+   sonar.sources=packages/daath-toolkit
+   sonar.tests=tests
+   sonar.python.coverage.reportPaths=coverage.xml
+   sonar.coverage.exclusions=**/tests/**,**/__pycache__/**
+   ```
+
+**Validación**:
+- `pytest --cov=packages/daath-toolkit --cov-report=term` shows ≥80%
+- `pytest tests/integration/` passes with Neo4j testcontainer
+- GitHub Actions CI runs all test tiers successfully
+
+**Priority**: 🔴 **ALTA** - Quality assurance fundacional
 
 ---
 

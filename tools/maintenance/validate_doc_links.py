@@ -17,17 +17,18 @@ Features:
     - Generates comprehensive reports
 """
 
-import re
 import argparse
-from pathlib import Path
-from dataclasses import dataclass
-from typing import List, Dict, Tuple, Optional
+import re
 from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 
 @dataclass
 class LinkIssue:
     """Represents a broken or invalid link"""
+
     file_path: Path
     line_number: int
     link_text: str
@@ -40,8 +41,8 @@ class MarkdownLinkValidator:
     """Validates markdown links in a directory tree"""
 
     # Regex patterns
-    MARKDOWN_LINK = re.compile(r'\[([^\]]+)\]\(([^\)]+)\)')
-    HEADING_ANCHOR = re.compile(r'#[a-zA-Z0-9_-]+')
+    MARKDOWN_LINK = re.compile(r"\[([^\]]+)\]\(([^\)]+)\)")
+    HEADING_ANCHOR = re.compile(r"#[a-zA-Z0-9_-]+")
 
     def __init__(self, root_path: Path, verbose: bool = False):
         self.root = root_path.resolve()
@@ -53,16 +54,25 @@ class MarkdownLinkValidator:
     def _build_file_index(self):
         """Build index of all files for fast lookup"""
         print(f"📂 Indexing files in {self.root}...")
-        for file in self.root.rglob('*'):
+        for file in self.root.rglob("*"):
             if file.is_file() and not self._should_ignore(file):
                 self.file_index[file.name].append(file)
         print(f"✅ Indexed {sum(len(v) for v in self.file_index.values())} files")
 
     def _should_ignore(self, path: Path) -> bool:
         """Check if path should be ignored"""
-        ignored_dirs = {'.git', '__pycache__', 'node_modules', '.venv', 'venv',
-                       '.obsidian', 'dist', 'build', '.pytest_cache'}
-        ignored_extensions = {'.pyc', '.pyo', '.pyd', '.so', '.dll', '.dylib'}
+        ignored_dirs = {
+            ".git",
+            "__pycache__",
+            "node_modules",
+            ".venv",
+            "venv",
+            ".obsidian",
+            "dist",
+            "build",
+            ".pytest_cache",
+        }
+        ignored_extensions = {".pyc", ".pyo", ".pyd", ".so", ".dll", ".dylib"}
 
         # Check if any parent is ignored
         for parent in path.parents:
@@ -77,12 +87,14 @@ class MarkdownLinkValidator:
 
     def _is_external_link(self, target: str) -> bool:
         """Check if link is external (http, https, mailto, etc.)"""
-        return any(target.startswith(prefix) for prefix in ['http://', 'https://', 'mailto:', 'ftp://'])
+        return any(
+            target.startswith(prefix) for prefix in ["http://", "https://", "mailto:", "ftp://"]
+        )
 
     def _resolve_relative_link(self, source_file: Path, target: str) -> Optional[Path]:
         """Resolve relative link from source file"""
         # Remove anchor if present
-        target_path = target.split('#')[0] if '#' in target else target
+        target_path = target.split("#")[0] if "#" in target else target
 
         if not target_path:  # Just an anchor
             return source_file
@@ -102,29 +114,29 @@ class MarkdownLinkValidator:
     def _get_relative_path(self, source: Path, target: Path) -> str:
         """Get relative path from source to target"""
         try:
-            return str(target.relative_to(source.parent)).replace('\\', '/')
+            return str(target.relative_to(source.parent)).replace("\\", "/")
         except ValueError:
             # Files not in same tree, use absolute workspace path
             try:
-                return str(target.relative_to(self.root)).replace('\\', '/')
+                return str(target.relative_to(self.root)).replace("\\", "/")
             except ValueError:
                 return str(target)
 
     def validate_file(self, file_path: Path) -> List[LinkIssue]:
         """Validate all links in a markdown file"""
-        if not file_path.suffix == '.md':
+        if not file_path.suffix == ".md":
             return []
 
         issues = []
 
         try:
-            content = file_path.read_text(encoding='utf-8')
+            content = file_path.read_text(encoding="utf-8")
         except Exception as e:
             print(f"⚠️  Could not read {file_path}: {e}")
             return []
 
         # Find all markdown links
-        for line_num, line in enumerate(content.split('\n'), 1):
+        for line_num, line in enumerate(content.split("\n"), 1):
             for match in self.MARKDOWN_LINK.finditer(line):
                 link_text = match.group(1)
                 link_target = match.group(2)
@@ -148,8 +160,10 @@ class MarkdownLinkValidator:
                         line_number=line_num,
                         link_text=link_text,
                         link_target=link_target,
-                        issue_type='moved' if moved_file else 'broken',
-                        suggested_fix=self._get_relative_path(file_path, moved_file) if moved_file else None
+                        issue_type="moved" if moved_file else "broken",
+                        suggested_fix=self._get_relative_path(file_path, moved_file)
+                        if moved_file
+                        else None,
                     )
                     issues.append(issue)
 
@@ -160,7 +174,7 @@ class MarkdownLinkValidator:
         scan_path = path or self.root
         print(f"\n🔍 Scanning markdown files in {scan_path}...")
 
-        markdown_files = list(scan_path.rglob('*.md'))
+        markdown_files = list(scan_path.rglob("*.md"))
         print(f"📄 Found {len(markdown_files)} markdown files\n")
 
         for md_file in markdown_files:
@@ -187,13 +201,13 @@ class MarkdownLinkValidator:
 
         for file_path, file_issues in issues_by_file.items():
             try:
-                content = file_path.read_text(encoding='utf-8')
+                content = file_path.read_text(encoding="utf-8")
                 original_content = content
 
                 # Apply fixes
                 for issue in file_issues:
-                    old_link = f']({issue.link_target})'
-                    new_link = f']({issue.suggested_fix})'
+                    old_link = f"]({issue.link_target})"
+                    new_link = f"]({issue.suggested_fix})"
                     content = content.replace(old_link, new_link)
                     fixed_count += 1
                     print(f"✅ Fixed: {file_path.name}:{issue.line_number}")
@@ -201,7 +215,7 @@ class MarkdownLinkValidator:
 
                 # Write back
                 if not dry_run and content != original_content:
-                    file_path.write_text(content, encoding='utf-8')
+                    file_path.write_text(content, encoding="utf-8")
 
             except Exception as e:
                 print(f"❌ Could not fix {file_path}: {e}")
@@ -251,34 +265,16 @@ Examples:
   %(prog)s --fix --dry-run        # Preview fixes without applying
   %(prog)s --report               # Generate detailed report
   %(prog)s --verbose              # Show all links found
-        """
+        """,
     )
 
+    parser.add_argument("--path", type=Path, help="Path to scan (default: workspace root)")
+    parser.add_argument("--fix", action="store_true", help="Auto-fix broken links where possible")
     parser.add_argument(
-        '--path',
-        type=Path,
-        help='Path to scan (default: workspace root)'
+        "--dry-run", action="store_true", help="Preview fixes without applying (requires --fix)"
     )
-    parser.add_argument(
-        '--fix',
-        action='store_true',
-        help='Auto-fix broken links where possible'
-    )
-    parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        help='Preview fixes without applying (requires --fix)'
-    )
-    parser.add_argument(
-        '--report',
-        action='store_true',
-        help='Generate detailed report'
-    )
-    parser.add_argument(
-        '--verbose',
-        action='store_true',
-        help='Show all links found during scan'
-    )
+    parser.add_argument("--report", action="store_true", help="Generate detailed report")
+    parser.add_argument("--verbose", action="store_true", help="Show all links found during scan")
 
     args = parser.parse_args()
 
@@ -288,7 +284,7 @@ Examples:
     else:
         # Try to find workspace root
         cwd = Path.cwd()
-        if (cwd / 'docs').exists() or (cwd / 'packages').exists():
+        if (cwd / "docs").exists() or (cwd / "packages").exists():
             root = cwd
         else:
             root = cwd
@@ -327,14 +323,14 @@ Examples:
         print(f"\n{report}")
 
         # Save to file
-        report_file = root / 'docs' / '_meta' / 'link-validation-report.txt'
+        report_file = root / "docs" / "_meta" / "link-validation-report.txt"
         report_file.parent.mkdir(parents=True, exist_ok=True)
-        report_file.write_text(report, encoding='utf-8')
+        report_file.write_text(report, encoding="utf-8")
         print(f"\n💾 Report saved to: {report_file}")
 
     # Exit code
     return 1 if issues else 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     exit(main())

@@ -7,18 +7,24 @@ Valida que una investigación en apps/ siga los principios DAATH-ZEN:
 - Estructura sigue convenciones
 """
 
+import argparse
 import sys
 from pathlib import Path
+
 import yaml
-import argparse
 
 
 class ResearchValidator:
     """Valida estructura de investigaciones DAATH-ZEN"""
 
     VALID_FOLDERS = {
-        '0-inbox', '1-literature', '2-atomic', '3-workbook',
-        '4-dataset', '5-outputs', '_daath'
+        "0-inbox",
+        "1-literature",
+        "2-atomic",
+        "3-workbook",
+        "4-dataset",
+        "5-outputs",
+        "_daath",
     }
 
     def __init__(self, research_path: Path):
@@ -37,29 +43,29 @@ class ResearchValidator:
 
     def _check_proposito(self):
         """Valida PROPOSITO.md"""
-        proposito_path = self.path / 'PROPOSITO.md'
+        proposito_path = self.path / "PROPOSITO.md"
 
         if not proposito_path.exists():
             self.errors.append("❌ PROPOSITO.md no existe")
             return
 
-        content = proposito_path.read_text(encoding='utf-8')
+        content = proposito_path.read_text(encoding="utf-8")
 
         # Buscar bloque YAML (puede estar entre ```yaml o directamente con ---)
         yaml_content = None
 
-        if '```yaml' in content:
+        if "```yaml" in content:
             # Formato con ```yaml
-            yaml_start = content.find('```yaml') + 7
-            yaml_end = content.find('```', yaml_start)
+            yaml_start = content.find("```yaml") + 7
+            yaml_end = content.find("```", yaml_start)
             if yaml_end > yaml_start:
                 yaml_str = content[yaml_start:yaml_end].strip()
                 # Limpiar --- si están presentes
-                yaml_str = yaml_str.replace('---', '').strip()
+                yaml_str = yaml_str.replace("---", "").strip()
                 yaml_content = yaml_str
-        elif content.strip().startswith('---'):
+        elif content.strip().startswith("---"):
             # Formato directo con ---
-            yaml_end = content.find('---', 3)
+            yaml_end = content.find("---", 3)
             if yaml_end > 0:
                 yaml_content = content[3:yaml_end].strip()
 
@@ -68,7 +74,7 @@ class ResearchValidator:
                 metadata = yaml.safe_load(yaml_content)
 
                 # Validar campos requeridos
-                required = ['id', 'version', 'created', 'status', 'purpose', 'initiated_by']
+                required = ["id", "version", "created", "status", "purpose", "initiated_by"]
                 for field in required:
                     if field not in metadata:
                         self.errors.append(f"❌ PROPOSITO.md falta campo: {field}")
@@ -77,8 +83,8 @@ class ResearchValidator:
                         self.info.append(f"✓ {field}: {value}")
 
                 # Validar status
-                valid_statuses = ['inception', 'active', 'synthesis', 'completed', 'archived']
-                if metadata.get('status') not in valid_statuses:
+                valid_statuses = ["inception", "active", "synthesis", "completed", "archived"]
+                if metadata.get("status") not in valid_statuses:
                     self.warnings.append(f"⚠️ Status '{metadata.get('status')}' no es estándar")
 
             except Exception as e:
@@ -94,7 +100,7 @@ class ResearchValidator:
             folder_name = folder.name
 
             # Ignorar carpetas del sistema
-            if folder_name.startswith('.'):
+            if folder_name.startswith("."):
                 continue
 
             # Validar nombre
@@ -109,8 +115,8 @@ class ResearchValidator:
             folder = self.path / folder_name
 
             if folder.exists():
-                files = list(folder.rglob('*'))
-                actual_files = [f for f in files if f.is_file() and not f.name.startswith('.')]
+                files = list(folder.rglob("*"))
+                actual_files = [f for f in files if f.is_file() and not f.name.startswith(".")]
 
                 if len(actual_files) == 0:
                     self.warnings.append(f"⚠️ Carpeta vacía: {folder_name}/")
@@ -150,18 +156,12 @@ class ResearchValidator:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Valida estructura de investigaciones DAATH-ZEN"
+    parser = argparse.ArgumentParser(description="Valida estructura de investigaciones DAATH-ZEN")
+    parser.add_argument(
+        "research_path", type=str, help="Ruta a la investigación (ej: apps/01-mi-investigacion)"
     )
     parser.add_argument(
-        'research_path',
-        type=str,
-        help='Ruta a la investigación (ej: apps/01-mi-investigacion)'
-    )
-    parser.add_argument(
-        '--strict',
-        action='store_true',
-        help='Modo estricto: warnings también fallan'
+        "--strict", action="store_true", help="Modo estricto: warnings también fallan"
     )
 
     args = parser.parse_args()
@@ -188,5 +188,5 @@ def main():
     sys.exit(0 if is_valid else 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

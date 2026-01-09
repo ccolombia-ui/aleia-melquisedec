@@ -1,0 +1,116 @@
+---
+# ISSUE: {{research.name}}
+# Creado por: MELQUISEDEC
+# Fecha: {{date}}
+---
+
+type: research
+id: "{{issue_id}}"
+priority: "{{priority}}"
+
+# CLASIFICACIÓN
+app:
+  name: "{{app_name}}"
+  full_name: "{{app_full_name}}"
+  type: "{{app_type}}"           # HEX | HEX-WF | HEX-WF-MCP
+  domain: "{{domain}}"
+  description: |
+    {{description}}
+
+# RESEARCH QUESTIONS
+# Preguntas que HYPATIA debe responder investigando literatura formal
+research_questions:
+  - question: "¿Qué estándares formales aplican?"
+    id: "RQ-001"
+    answered: false
+    answer_ref: null              # Apunta a 02-atomics/
+
+  - question: "¿Qué entidades del dominio están definidas?"
+    id: "RQ-002"
+    answered: false
+    answer_ref: null
+
+  - question: "¿Qué interfaces (ports) recomienda la literatura?"
+    id: "RQ-003"
+    answered: false
+    answer_ref: null
+
+  - question: "¿Qué patrones de implementación usar?"
+    id: "RQ-004"
+    answered: false
+    answer_ref: null
+
+# HYPOTHESIS (opcional)
+hypothesis:
+  - id: "H-001"
+    statement: "{{hypothesis_statement}}"
+    validated: null               # true | false | null
+    evidence_ref: null
+
+# WORKFLOW STATUS
+workflow:
+  current_rostro: "MELQUISEDEC"
+  current_phase: "0-inbox"
+
+  phases:
+    - rostro: "MELQUISEDEC"
+      phase: "0-inbox"
+      status: "in-progress"
+      started: "{{date}}"
+      completed: null
+
+    - rostro: "HYPATIA"
+      phase: "01-literature"
+      status: "pending"
+      started: null
+      completed: null
+
+    - rostro: "SALOMON"
+      phase: "03-workbook"
+      status: "pending"
+      started: null
+      completed: null
+
+    - rostro: "MORPHEUS"
+      phase: "04-artifacts"
+      status: "pending"
+      started: null
+      completed: null
+
+    - rostro: "ALMA"
+      phase: "05-outputs"
+      status: "pending"
+      started: null
+      completed: null
+
+# CHECKPOINTS
+checkpoints:
+  CK-01:
+    name: "Literature Complete"
+    status: "pending"
+    validated: null
+    date: null
+
+  CK-02:
+    name: "Specs Complete"
+    status: "pending"
+    validated: null
+    date: null
+
+  CK-03:
+    name: "Implementation Complete"
+    status: "pending"
+    validated: null
+    date: null
+
+  CK-04:
+    name: "Package Ready"
+    status: "pending"
+    validated: null
+    date: null
+
+# REFERENCES
+references:
+  template: "app-spec-template"
+  config: "config.yaml"
+  related_issues: []

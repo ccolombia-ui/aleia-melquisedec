@@ -134,7 +134,7 @@ prompt_updates_generated:
   - prompt_id: "daath-zen-software-engineering"
     from_version: "v1.0.0"
     to_version: "v1.1.0-proposed"
-    lessons_applied: 
+    lessons_applied:
       - "lesson-001-melquisedec-reference-classification"
       - "lesson-002-hypatia-git-mv-history"
       - "lesson-003-salomon-precommit-python-version"
@@ -158,11 +158,11 @@ universal_lessons:
   - id: "lesson-002-hypatia-git-mv-history"
     applies_to_domains: ["DD-001-software-engineering", "DD-002-documentation", "DD-003-devops"]
     rationale: "Git history preservation applies to any file reorganization"
-  
+
   - id: "lesson-004-salomon-pep621-pyproject"
     applies_to_domains: ["DD-001-software-engineering"]
     rationale: "Python-specific, but universally applicable to all Python projects"
-  
+
   - id: "lesson-006-melquisedec-severity-classification"
     applies_to_domains: ["DD-001-software-engineering", "DD-003-devops", "DD-004-automation"]
     rationale: "Validation script patterns apply to any automation tool requiring safety"
@@ -188,32 +188,32 @@ task_execution:
     status: "completed"
     commit: "5eb3b1a"
     key_metrics: "20 functional refs fixed, 12 doc refs updated"
-  
+
   - task_id: "1.2"
     title: "Move root docs to docs/"
     status: "completed"
     commit: "5eb3b1a"
     key_metrics: "5 files moved with git mv, history preserved"
-  
+
   - task_id: "1.3"
     title: "Install pre-commit hooks"
     status: "completed"
     commit: "5eb3b1a"
     key_metrics: "87 files formatted, python3.10 version issue documented"
-  
+
   - task_id: "1.4"
     title: "Create package discovery mechanism"
     status: "completed"
     commit: "5eb3b1a"
     key_metrics: "pyproject.toml created, discover_packages.py validates structure"
-  
+
   - task_id: "1.5"
     title: "Add unit tests"
     status: "discontinued"
     commit: null
     key_metrics: "Moved to Keter investigation (research-keter-integration-v1.0.0)"
     discontinuation_reason: "Testing strategy will be redesigned as part of Keter research"
-  
+
   - task_id: "1.6"
     title: "Expand cleanup validation script"
     status: "completed"

@@ -163,7 +163,7 @@ graph TD
     G[Query Neo4j: ¿Hay Implementation Logs?]
     H[Cargar contexto en memory]
     I[FASE 2: WORKFLOW - Ejecutar siguiente task]
-    
+
     A --> B
     B -->|Sí| C
     B -->|No| C
@@ -843,50 +843,50 @@ graph TB
         CD[Claude Desktop<br/>AI Agent]
         VSC <--> CD
     end
-    
+
     subgraph "MCP Servers (Model Context Protocol)"
         MCP_NEO[neo4j-mcp<br/>bolt://localhost:7687]
         MCP_MEM[memory-mcp<br/>Vector Queries]
         MCP_FS[filesystem-mcp<br/>File Operations]
         MCP_SPEC[spec-workflow-mcp<br/>Spec Management]
     end
-    
+
     subgraph "Docker Containers"
         NEO_DOCKER[Neo4j Container<br/>:7687 :7474]
         REDIS[Redis Container<br/>:6379<br/>Vector Store]
         RECONCILER[Reconciler Service<br/>Python Background]
     end
-    
+
     subgraph "Local Filesystem"
         MD_FILES[Markdown Files<br/>c:/proyectos/aleia-melquisedec]
         GIT[Git Repository<br/>GitHub]
     end
-    
+
     subgraph "Visualization Tools"
         NEO_BROWSER[Neo4j Browser<br/>http://localhost:7474]
         OBSIDIAN[Obsidian<br/>Local Vault Viewer]
         VS_GRAPH[VS Code Graph Extensions<br/>Neo4j/Markdown]
     end
-    
+
     CD --> MCP_NEO
     CD --> MCP_MEM
     CD --> MCP_FS
     CD --> MCP_SPEC
-    
+
     MCP_NEO --> NEO_DOCKER
     MCP_MEM --> REDIS
     MCP_FS --> MD_FILES
     MCP_SPEC --> MD_FILES
-    
+
     MD_FILES --> GIT
     RECONCILER --> NEO_DOCKER
     RECONCILER --> REDIS
     RECONCILER --> MD_FILES
-    
+
     NEO_DOCKER -.->|View| NEO_BROWSER
     MD_FILES -.->|View| OBSIDIAN
     NEO_DOCKER -.->|View| VS_GRAPH
-    
+
     style CD fill:#FFD700
     style NEO_DOCKER fill:#FF6347
     style REDIS fill:#32CD32
@@ -909,47 +909,47 @@ sequenceDiagram
     participant MCP_Mem as memory-mcp
     participant Redis as Redis Vector Store
     participant Reconciler as Reconciler Service
-    
+
     Note over User,Reconciler: FASE 0: Inicialización
     User->>VSCode: Abre workspace
     VSCode->>Claude: Activa Claude
     Claude->>MCP_Neo: Conecta (bolt://localhost:7687)
     Claude->>MCP_FS: Conecta (filesystem)
     Claude->>MCP_Mem: Conecta (Redis embeddings)
-    
+
     Note over User,Reconciler: FASE 1: PREPARACIÓN
     User->>Claude: "Continúa con monorepo-improvements-v1.1.0"
     Claude->>MCP_Neo: activate_neo4j_tools()
     MCP_Neo->>Neo4j: Verifica conexión
     Neo4j-->>MCP_Neo: ✅ Connected
-    
+
     Claude->>MCP_Neo: query("MATCH (s:Spec {...})-[:HAS_TASK]->(t:Task) ...")
     MCP_Neo->>Neo4j: Execute Cypher
     Neo4j-->>MCP_Neo: [task-1.1: completed, task-1.2: completed, task-1.3: in_progress]
     MCP_Neo-->>Claude: Query results
-    
+
     Claude->>MCP_Neo: query("MATCH (t:Task {id: 'task-1.3'})-[:HAS_LOG]->...")
     Neo4j-->>Claude: Implementation logs
-    
+
     Claude->>MCP_Mem: search_similar("task-1.3 context")
     MCP_Mem->>Redis: Vector similarity search
     Redis-->>Claude: Related embeddings + metadata
-    
+
     Claude-->>User: "✅ Task 1.3 quedó en refactorización. ¿Continúo?"
-    
+
     Note over User,Reconciler: FASE 2-4: WORKFLOW (Ejecutar Task)
     User->>Claude: "Sí, continúa"
     Claude->>MCP_FS: read_file("setup_neo4j_mcp.py")
     MCP_FS->>FS: Read file
     FS-->>Claude: File content
-    
+
     Claude->>Claude: Ejecuta refactorización (SALOMON)
-    
+
     Note over User,Reconciler: FASE 5: PERSISTENCIA TRIPLE
     Claude->>MCP_FS: write_file("setup_neo4j_mcp.py", new_content)
     MCP_FS->>FS: Write to disk
     FS-->>MCP_FS: ✅ Written
-    
+
     par Triple Write
         Claude->>MCP_Neo: write_cypher("CREATE (t:Task {...})")
         MCP_Neo->>Neo4j: Execute write
@@ -959,23 +959,23 @@ sequenceDiagram
         MCP_Mem->>Redis: Store vector
         Redis-->>Claude: ✅ Vector stored
     end
-    
+
     Note over User,Reconciler: Background Reconciliation
     Reconciler->>FS: Scan markdown files
     Reconciler->>Neo4j: Query nodes
     Reconciler->>Redis: Query vectors
     Reconciler->>Reconciler: Detect inconsistencies
-    
+
     alt Inconsistency Found
         Reconciler->>Neo4j: Repair from markdown (SSoT)
         Reconciler->>Redis: Regenerate embedding
     end
-    
+
     Note over User,Reconciler: Checkpoint Validation
     Claude->>MCP_Neo: validate_checkpoint(task_id)
     MCP_Neo->>Neo4j: Query validation
     Neo4j-->>Claude: ✅ Checkpoint PASSED
-    
+
     Claude-->>User: "✅ Task completada + Output Triple sincronizado"
 ```
 

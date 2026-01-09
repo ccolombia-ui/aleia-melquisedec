@@ -5,7 +5,7 @@
 ```
 PRE-COMMIT = Inspector en la línea de producción
            Revisa CADA pieza antes de empaquetarla
-           
+
 PUSH WORKFLOW = Auditor final del lote
               Revisa TODO el lote antes de enviar al cliente
 ```

@@ -26,39 +26,39 @@ git-push-workflow-v1.0.0:
     status: PARCIAL
     reason: .pre-commit-config.yaml existe (por monorepo-improvements)
     pero: tasks.md marca como [ ] pendiente
-    
+
   task_1.2: # run_affected_tests.py
     status: NO EXISTE
     impact: HIGH
     consequence: push_workflow.py falla en stage 'tests'
-    
+
   task_1.3: # validate_branch.py
     status: NO EXISTE
     impact: MODERATE
     consequence: push_workflow.py falla en stage 'branch_validate'
-    
+
   task_1.4: # generate_commit_msg.py
     status: NO EXISTE
     impact: MODERATE
     consequence: push_workflow.py falla en stage 'commit'
-    
+
   task_1.5: # push_workflow.py
     status: COMPLETO ✅
-    
+
   task_1.6: # log_to_neo4j.py
     status: NO EXISTE
     impact: LOW
     consequence: push_workflow.py falla en stage 'post_push'
-    
+
   task_1.7: # Integration tests
     status: NO EXISTE
     impact: LOW
-    
+
   task_1.8: # Documentation
     status: COMPLETO ✅
     note: docs/guides/git-push-workflow.md existe
     pero: Menciona scripts que no existen (desactualizado)
-    
+
   task_1.9: # Lessons summary
     status: NO EXISTE
 ```
@@ -166,11 +166,11 @@ graph TD
     B --> C{¿Pasa?}
     C -->|Sí| D[Commit completo]
     C -->|No| E[Commit bloqueado]
-    
+
     D --> F[python push_workflow.py]
     F --> G[Stage pre_commit ejecuta OTRA VEZ]
     G --> H[Stage push]
-    
+
     style G fill:#ff9999
     style B fill:#99ff99
 ```
@@ -183,10 +183,10 @@ graph TD
     B --> C{¿Pasa?}
     C -->|Sí| D[Commit completo]
     C -->|No| E[Commit bloqueado]
-    
+
     D --> F[python push_workflow.py --minimal]
     F --> H[Stage push DIRECTO]
-    
+
     style H fill:#99ff99
     style B fill:#99ff99
 ```
@@ -196,10 +196,10 @@ graph TD
 ```yaml
 Escenario 1: Commits individuales
   → Pre-commit: Validación rápida por commit ✅
-  
+
 Escenario 2: Múltiples commits con --no-verify
   → Push workflow: Safety net antes de push ✅
-  
+
 Escenario 3: CI/CD automatizado
   → Push workflow: Validación completa en servidor ✅
 ```
@@ -251,9 +251,9 @@ Escenario 3: CI/CD automatizado
 5. **Actualizar documentación**:
    ```markdown
    # docs/guides/git-push-workflow.md
-   
+
    ## ⚠️ ESTADO ACTUAL
-   
+
    Solo modo `--minimal` está implementado:
    - ✅ pre_commit: Ejecuta pre-commit hooks
    - ✅ push: Hace git push
@@ -261,7 +261,7 @@ Escenario 3: CI/CD automatizado
    - ❌ branch_validate: NO implementado
    - ❌ commit: NO implementado
    - ❌ post_push: NO implementado
-   
+
    Para workflow completo, ver spec git-push-workflow-v1.0.0
    ```
 
@@ -453,7 +453,7 @@ gaps:
 
 redundancy:
   pre_commit_double_execution: YES
-  
+
 maintainability:
   score: 6/10
   reason: "Referencias a código inexistente"
@@ -473,7 +473,7 @@ gaps:
 
 redundancy:
   pre_commit_double_execution: ACCEPTABLE  # Safety net justified
-  
+
 maintainability:
   score: 9/10
   reason: "Código honesto, bien documentado, minimalista"

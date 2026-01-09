@@ -1,0 +1,253 @@
+# SPEC-DOMAIN: {{app_name}}
+<!-- Especificación del Dominio - SALOMON -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **App** | `{{app_name}}` |
+| **Tipo** | `{{app_type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | SALOMON |
+| **Versión** | 1.0.0 |
+
+---
+
+## 1. Visión General del Dominio
+
+### 1.1 Descripción
+
+{{domain.description}}
+
+### 1.2 Bounded Context
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    {{app_name}} Context                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│   │  Entity 1   │  │  Entity 2   │  │  Entity 3   │        │
+│   └─────────────┘  └─────────────┘  └─────────────┘        │
+│                                                             │
+│   ┌─────────────┐  ┌─────────────┐                         │
+│   │ Value Obj 1 │  │ Value Obj 2 │                         │
+│   └─────────────┘  └─────────────┘                         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 1.3 Ubiquitous Language
+
+| Término | Definición | Atomic Ref |
+|---------|------------|------------|
+| `{{term_1}}` | {{definition_1}} | [{{atomic_ref_1}}](../../02-atomics/{{atomic_ref_1}}.md) |
+| `{{term_2}}` | {{definition_2}} | [{{atomic_ref_2}}](../../02-atomics/{{atomic_ref_2}}.md) |
+
+---
+
+## 2. Entidades (Entities)
+
+### 2.1 {{entity_1.name}}
+
+> **Trazabilidad:** [{{entity_1.atomic_ref}}](../../02-atomics/{{entity_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{entity_1.description}}
+
+#### Atributos
+
+| Atributo | Tipo | Requerido | Descripción |
+|----------|------|-----------|-------------|
+| `id` | `{{entity_1.id_type}}` | ✅ | Identificador único |
+| `{{attr_1}}` | `{{type_1}}` | {{required_1}} | {{desc_1}} |
+| `{{attr_2}}` | `{{type_2}}` | {{required_2}} | {{desc_2}} |
+
+#### Invariantes
+
+1. {{entity_1.invariant_1}}
+2. {{entity_1.invariant_2}}
+
+#### Comportamiento
+
+```python
+# Pseudocódigo conceptual
+class {{entity_1.name}}:
+    def {{method_1}}(self, {{params_1}}) -> {{return_1}}:
+        """{{method_1_desc}}"""
+        # Lógica según literatura: {{entity_1.atomic_ref}}
+        pass
+```
+
+---
+
+### 2.2 {{entity_2.name}}
+
+> **Trazabilidad:** [{{entity_2.atomic_ref}}](../../02-atomics/{{entity_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{entity_2.description}}
+
+#### Atributos
+
+| Atributo | Tipo | Requerido | Descripción |
+|----------|------|-----------|-------------|
+| `id` | `{{entity_2.id_type}}` | ✅ | Identificador único |
+
+#### Invariantes
+
+1. {{entity_2.invariant_1}}
+
+---
+
+## 3. Value Objects
+
+### 3.1 {{value_object_1.name}}
+
+> **Trazabilidad:** [{{value_object_1.atomic_ref}}](../../02-atomics/{{value_object_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{value_object_1.description}}
+
+#### Componentes
+
+| Campo | Tipo | Validación |
+|-------|------|------------|
+| `{{field_1}}` | `{{type_1}}` | {{validation_1}} |
+| `{{field_2}}` | `{{type_2}}` | {{validation_2}} |
+
+#### Características
+
+- **Inmutable:** ✅
+- **Equality:** Por valor de campos
+- **Validación:** En construcción
+
+---
+
+## 4. Agregados (Aggregates)
+
+### 4.1 {{aggregate_1.name}} Aggregate
+
+> **Trazabilidad:** [{{aggregate_1.atomic_ref}}](../../02-atomics/{{aggregate_1.atomic_ref}}.md)
+
+#### Estructura
+
+```
+┌────────────────────────────────────────┐
+│        {{aggregate_1.name}}            │  ← Aggregate Root
+├────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐    │
+│  │  Entity A    │  │  Entity B    │    │
+│  └──────────────┘  └──────────────┘    │
+│                                        │
+│  ┌──────────────┐                      │
+│  │ Value Obj X  │                      │
+│  └──────────────┘                      │
+└────────────────────────────────────────┘
+```
+
+#### Componentes
+
+| Componente | Tipo | Rol |
+|------------|------|-----|
+| `{{aggregate_1.root}}` | Entity | Aggregate Root |
+| `{{component_1}}` | {{type_1}} | {{role_1}} |
+
+#### Invariantes del Agregado
+
+1. {{aggregate_1.invariant_1}}
+2. {{aggregate_1.invariant_2}}
+
+---
+
+## 5. Domain Events
+
+### 5.1 {{event_1.name}}
+
+> **Trazabilidad:** [{{event_1.atomic_ref}}](../../02-atomics/{{event_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{event_1.description}}
+
+#### Payload
+
+```yaml
+event:
+  name: "{{event_1.name}}"
+  version: "1.0"
+  payload:
+    {{event_1.field_1}}: {{event_1.type_1}}
+    {{event_1.field_2}}: {{event_1.type_2}}
+    timestamp: datetime
+```
+
+#### Productores
+
+- {{event_1.producer_1}}
+
+#### Consumidores
+
+- {{event_1.consumer_1}}
+
+---
+
+## 6. Domain Services
+
+### 6.1 {{service_1.name}}
+
+> **Trazabilidad:** [{{service_1.atomic_ref}}](../../02-atomics/{{service_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{service_1.description}}
+
+#### Operaciones
+
+| Operación | Input | Output | Descripción |
+|-----------|-------|--------|-------------|
+| `{{op_1}}` | `{{input_1}}` | `{{output_1}}` | {{op_1_desc}} |
+
+---
+
+## 7. Matriz de Trazabilidad
+
+| Elemento Domain | Atomic Concept | Source |
+|-----------------|----------------|--------|
+| `{{entity_1.name}}` | [{{entity_1.atomic_ref}}](../../02-atomics/{{entity_1.atomic_ref}}.md) | {{entity_1.source}} |
+| `{{entity_2.name}}` | [{{entity_2.atomic_ref}}](../../02-atomics/{{entity_2.atomic_ref}}.md) | {{entity_2.source}} |
+| `{{value_object_1.name}}` | [{{value_object_1.atomic_ref}}](../../02-atomics/{{value_object_1.atomic_ref}}.md) | {{value_object_1.source}} |
+
+---
+
+## 8. Validación
+
+### Criterios CK-02 (parcial)
+
+| Criterio | Estado |
+|----------|--------|
+| Todas las entidades trazan a atomics | [ ] |
+| Todos los value objects trazan a atomics | [ ] |
+| No hay conceptos inventados | [ ] |
+| Invariantes documentados | [ ] |
+
+---
+
+## 9. Notas para MORPHEUS
+
+1. Implementar entidades como clases con validación en `__init__`
+2. Value objects deben ser `@dataclass(frozen=True)`
+3. Agregados exponen métodos de negocio, no setters
+4. Events como clases inmutables
+
+---
+
+## Changelog
+
+| Versión | Fecha | Autor | Cambios |
+|---------|-------|-------|---------|
+| 1.0.0 | {{date}} | SALOMON | Versión inicial |

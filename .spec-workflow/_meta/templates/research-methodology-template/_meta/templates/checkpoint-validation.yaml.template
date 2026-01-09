@@ -1,0 +1,197 @@
+---
+# Checkpoint Validation Template
+# Executed at each rostro phase completion
+# Determines if workflow can proceed to next rostro
+
+checkpoint:
+  id: '{{checkpoint.id}}'
+  name: '{{checkpoint.name}}'
+  rostro: '{{checkpoint.rostro}}'
+  phase: '{{checkpoint.phase}}'
+
+# EXECUTION INFO
+execution:
+  date: '{{date}}'
+  timestamp: '{{timestamp}}'
+  executed_by: '{{checkpoint.rostro}}'
+  execution_time: '{{execution.duration_seconds}}s'
+
+# VALIDATION STATUS
+status: '{{validation.status}}'  # pass | fail | pending
+
+# CRITERIA VALIDATION
+criteria:
+  {{#each checkpoint.criteria}}
+  {{@key}}:
+    required: {{this.required}}
+    actual: {{this.actual}}
+    status: '{{this.status}}'  # pass | fail
+    notes: '{{this.notes}}'
+  {{/each}}
+
+# APPROVAL
+approval:
+  required: {{checkpoint.require_approval}}
+  approved: {{approval.approved}}
+  approved_by: '{{approval.approved_by}}'
+  approved_at: '{{approval.approved_at}}'
+  approval_notes: '{{approval.notes}}'
+
+# VALIDATION DETAILS
+validation:
+  files_checked:
+    {{#each validation.files_checked}}
+    - path: '{{this.path}}'
+      exists: {{this.exists}}
+      valid: {{this.valid}}
+      errors: {{this.errors}}
+    {{/each}}
+
+  metrics:
+    {{#each validation.metrics}}
+    - name: '{{this.name}}'
+      value: {{this.value}}
+      threshold: {{this.threshold}}
+      pass: {{this.pass}}
+    {{/each}}
+
+  errors:
+    {{#each validation.errors}}
+    - code: '{{this.code}}'
+      message: '{{this.message}}'
+      severity: '{{this.severity}}'  # error | warning | info
+      location: '{{this.location}}'
+    {{/each}}
+
+# NEXT STEPS
+next_steps: |
+  {{#if (eq validation.status "pass")}}
+  {{#if checkpoint.require_approval}}
+  ✅ Validation PASSED. Awaiting manual approval.
+
+  To approve:
+  1. Review artifacts in {{checkpoint.phase}}/
+  2. Update this file:
+     - approval.approved = true
+     - approval.approved_by = "your-name"
+     - approval.approved_at = "{{timestamp}}"
+  3. Re-run orchestrator to proceed to {{next_rostro}} phase.
+  {{else}}
+  ✅ Validation PASSED (auto-approved). Proceeding to {{next_rostro}} phase.
+  {{/if}}
+  {{else}}
+  ❌ Validation FAILED. Fix issues before proceeding:
+  {{#each validation.errors}}
+  - {{this.message}}
+  {{/each}}
+  {{/if}}
+
+# LESSONS LEARNED (optional)
+lessons:
+  what_worked: '{{lessons.what_worked}}'
+  challenges: '{{lessons.challenges}}'
+  recommendations: '{{lessons.recommendations}}'
+
+# TRACEABILITY
+traceability:
+  previous_checkpoint: '{{traceability.previous_checkpoint}}'
+  next_checkpoint: '{{traceability.next_checkpoint}}'
+  related_tasks:
+    {{#each traceability.related_tasks}}
+    - '{{this}}'
+    {{/each}}
+  artifacts_generated:
+    {{#each traceability.artifacts}}
+    - '{{this}}'
+    {{/each}}
+
+# METADATA
+metadata:
+  research: '{{research.name}}'
+  template_version: '{{research.version}}'
+  validation_schema: 'checkpoint-validation-v1'
+  last_updated: '{{timestamp}}'
+
+---
+
+# Checkpoint Report: {{checkpoint.name}}
+
+## Summary
+
+**Rostro**: {{checkpoint.rostro}}
+**Phase**: {{checkpoint.phase}}
+**Status**: {{validation.status}}
+**Date**: {{date}}
+
+## Validation Results
+
+### Criteria Checked
+
+{{#each checkpoint.criteria}}
+- **{{@key}}**: {{#if this.pass}}✅{{else}}❌{{/if}} (Required: {{this.required}}, Actual: {{this.actual}})
+{{/each}}
+
+### Files Validated
+
+{{#each validation.files_checked}}
+- `{{this.path}}`: {{#if this.valid}}✅{{else}}❌{{/if}}
+{{/each}}
+
+### Metrics
+
+| Metric | Value | Threshold | Status |
+|--------|-------|-----------|--------|
+{{#each validation.metrics}}
+| {{this.name}} | {{this.value}} | {{this.threshold}} | {{#if this.pass}}✅{{else}}❌{{/if}} |
+{{/each}}
+
+## Errors / Warnings
+
+{{#if validation.errors.length}}
+{{#each validation.errors}}
+- **[{{this.severity}}]** {{this.message}} ({{this.location}})
+{{/each}}
+{{else}}
+No errors detected.
+{{/if}}
+
+## Approval Status
+
+{{#if checkpoint.require_approval}}
+**Approval Required**: Yes
+**Approved**: {{#if approval.approved}}✅ Yes{{else}}⏳ Pending{{/if}}
+{{#if approval.approved}}
+**Approved By**: {{approval.approved_by}}
+**Approved At**: {{approval.approved_at}}
+**Notes**: {{approval.notes}}
+{{else}}
+**Action Required**: Manual review and approval needed before proceeding.
+{{/if}}
+{{else}}
+**Approval Required**: No (auto-approved)
+{{/if}}
+
+## Next Steps
+
+{{next_steps}}
+
+## Lessons Learned
+
+{{#if lessons}}
+### What Worked
+{{lessons.what_worked}}
+
+### Challenges
+{{lessons.challenges}}
+
+### Recommendations
+{{lessons.recommendations}}
+{{else}}
+No lessons documented yet.
+{{/if}}
+
+---
+
+**Checkpoint ID**: {{checkpoint.id}}
+**Research**: {{research.name}}
+**Generated**: {{timestamp}}

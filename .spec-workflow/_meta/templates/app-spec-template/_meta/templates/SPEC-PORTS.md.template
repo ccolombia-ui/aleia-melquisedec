@@ -1,0 +1,335 @@
+# SPEC-PORTS: {{app_name}}
+<!-- Especificación de Puertos (Interfaces) - SALOMON -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **App** | `{{app_name}}` |
+| **Tipo** | `{{app_type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | SALOMON |
+| **Versión** | 1.0.0 |
+
+---
+
+## 1. Visión General de Puertos
+
+### 1.1 Arquitectura de Puertos
+
+```
+                    ┌─────────────────────────────────────────┐
+                    │              APPLICATION                │
+                    │                                         │
+   INBOUND          │    ┌─────────────────────────────┐     │         OUTBOUND
+   (Driving)        │    │                             │     │         (Driven)
+                    │    │          DOMAIN             │     │
+┌───────────┐       │    │                             │     │      ┌───────────┐
+│  Port A   │◄──────┼────┤    Entities                 │─────┼─────►│  Port X   │
+│ (Inbound) │       │    │    Value Objects            │     │      │(Outbound) │
+└───────────┘       │    │    Services                 │     │      └───────────┘
+                    │    │                             │     │
+┌───────────┐       │    │                             │     │      ┌───────────┐
+│  Port B   │◄──────┼────┤                             │─────┼─────►│  Port Y   │
+│ (Inbound) │       │    │                             │     │      │(Outbound) │
+└───────────┘       │    └─────────────────────────────┘     │      └───────────┘
+                    │                                         │
+                    └─────────────────────────────────────────┘
+```
+
+### 1.2 Resumen de Puertos
+
+| Puerto | Dirección | Propósito | Atomic Ref |
+|--------|-----------|-----------|------------|
+| `{{port_1.name}}` | Inbound | {{port_1.purpose}} | [{{port_1.atomic_ref}}](../../02-atomics/{{port_1.atomic_ref}}.md) |
+| `{{port_2.name}}` | Inbound | {{port_2.purpose}} | [{{port_2.atomic_ref}}](../../02-atomics/{{port_2.atomic_ref}}.md) |
+| `{{port_3.name}}` | Outbound | {{port_3.purpose}} | [{{port_3.atomic_ref}}](../../02-atomics/{{port_3.atomic_ref}}.md) |
+
+---
+
+## 2. Puertos Inbound (Driving Ports)
+
+> Puertos que el mundo exterior usa para interactuar con el dominio.
+> Definen los **casos de uso** de la aplicación.
+
+### 2.1 {{port_inbound_1.name}}
+
+> **Trazabilidad:** [{{port_inbound_1.atomic_ref}}](../../02-atomics/{{port_inbound_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{port_inbound_1.description}}
+
+#### Interface
+
+```python
+from abc import ABC, abstractmethod
+from typing import {{port_inbound_1.typing_imports}}
+
+class {{port_inbound_1.name}}(ABC):
+    """
+    {{port_inbound_1.docstring}}
+
+    Trazabilidad: {{port_inbound_1.atomic_ref}}
+    """
+
+    @abstractmethod
+    def {{method_1.name}}(
+        self,
+        {{method_1.params}}
+    ) -> {{method_1.return_type}}:
+        """
+        {{method_1.description}}
+
+        Args:
+            {{method_1.args_doc}}
+
+        Returns:
+            {{method_1.returns_doc}}
+
+        Raises:
+            {{method_1.raises_doc}}
+        """
+        pass
+
+    @abstractmethod
+    def {{method_2.name}}(
+        self,
+        {{method_2.params}}
+    ) -> {{method_2.return_type}}:
+        """{{method_2.description}}"""
+        pass
+```
+
+#### Operaciones
+
+| Operación | Input | Output | Descripción |
+|-----------|-------|--------|-------------|
+| `{{method_1.name}}` | `{{method_1.input_summary}}` | `{{method_1.output_summary}}` | {{method_1.description}} |
+| `{{method_2.name}}` | `{{method_2.input_summary}}` | `{{method_2.output_summary}}` | {{method_2.description}} |
+
+#### Errores Posibles
+
+| Error | Código | Cuándo |
+|-------|--------|--------|
+| `{{error_1.name}}` | `{{error_1.code}}` | {{error_1.when}} |
+| `{{error_2.name}}` | `{{error_2.code}}` | {{error_2.when}} |
+
+---
+
+### 2.2 {{port_inbound_2.name}}
+
+> **Trazabilidad:** [{{port_inbound_2.atomic_ref}}](../../02-atomics/{{port_inbound_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{port_inbound_2.description}}
+
+#### Interface
+
+```python
+class {{port_inbound_2.name}}(ABC):
+    """{{port_inbound_2.docstring}}"""
+
+    @abstractmethod
+    def {{method_1.name}}(self, {{method_1.params}}) -> {{method_1.return_type}}:
+        pass
+```
+
+---
+
+## 3. Puertos Outbound (Driven Ports)
+
+> Puertos que el dominio usa para interactuar con el mundo exterior.
+> Definen las **dependencias** del dominio (repositorios, APIs externas, etc.)
+
+### 3.1 {{port_outbound_1.name}}
+
+> **Trazabilidad:** [{{port_outbound_1.atomic_ref}}](../../02-atomics/{{port_outbound_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{port_outbound_1.description}}
+
+#### Interface
+
+```python
+from abc import ABC, abstractmethod
+from typing import {{port_outbound_1.typing_imports}}
+
+class {{port_outbound_1.name}}(ABC):
+    """
+    {{port_outbound_1.docstring}}
+
+    Este puerto debe ser implementado por un adaptador secundario.
+    Trazabilidad: {{port_outbound_1.atomic_ref}}
+    """
+
+    @abstractmethod
+    def {{method_1.name}}(
+        self,
+        {{method_1.params}}
+    ) -> {{method_1.return_type}}:
+        """{{method_1.description}}"""
+        pass
+
+    @abstractmethod
+    def {{method_2.name}}(
+        self,
+        {{method_2.params}}
+    ) -> {{method_2.return_type}}:
+        """{{method_2.description}}"""
+        pass
+```
+
+#### Operaciones
+
+| Operación | Input | Output | Descripción |
+|-----------|-------|--------|-------------|
+| `{{method_1.name}}` | `{{method_1.input_summary}}` | `{{method_1.output_summary}}` | {{method_1.description}} |
+| `{{method_2.name}}` | `{{method_2.input_summary}}` | `{{method_2.output_summary}}` | {{method_2.description}} |
+
+#### Adaptadores Esperados
+
+- **Producción:** {{port_outbound_1.adapter_prod}}
+- **Testing:** {{port_outbound_1.adapter_test}}
+
+---
+
+### 3.2 {{port_outbound_2.name}}
+
+> **Trazabilidad:** [{{port_outbound_2.atomic_ref}}](../../02-atomics/{{port_outbound_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{port_outbound_2.description}}
+
+#### Interface
+
+```python
+class {{port_outbound_2.name}}(ABC):
+    """{{port_outbound_2.docstring}}"""
+
+    @abstractmethod
+    def {{method_1.name}}(self, {{method_1.params}}) -> {{method_1.return_type}}:
+        pass
+```
+
+---
+
+## 4. DTOs (Data Transfer Objects)
+
+> Objetos para transferir datos entre capas sin exponer entidades del dominio.
+
+### 4.1 Request DTOs
+
+#### {{request_dto_1.name}}
+
+```python
+@dataclass
+class {{request_dto_1.name}}:
+    """
+    Request DTO para {{request_dto_1.use_case}}
+    """
+    {{request_dto_1.field_1}}: {{request_dto_1.type_1}}
+    {{request_dto_1.field_2}}: {{request_dto_1.type_2}}
+    {{request_dto_1.field_3}}: Optional[{{request_dto_1.type_3}}] = None
+```
+
+### 4.2 Response DTOs
+
+#### {{response_dto_1.name}}
+
+```python
+@dataclass
+class {{response_dto_1.name}}:
+    """
+    Response DTO para {{response_dto_1.use_case}}
+    """
+    {{response_dto_1.field_1}}: {{response_dto_1.type_1}}
+    {{response_dto_1.field_2}}: {{response_dto_1.type_2}}
+    success: bool
+    errors: List[str] = field(default_factory=list)
+```
+
+---
+
+## 5. Excepciones de Dominio
+
+### 5.1 Jerarquía de Excepciones
+
+```
+{{app_name}}Error (Base)
+├── {{domain}}DomainError
+│   ├── {{entity_1}}NotFoundError
+│   ├── {{entity_1}}ValidationError
+│   └── {{entity_1}}AlreadyExistsError
+├── {{domain}}InfrastructureError
+│   ├── RepositoryError
+│   └── ExternalServiceError
+└── {{domain}}ApplicationError
+    ├── UnauthorizedError
+    └── InvalidOperationError
+```
+
+### 5.2 Definiciones
+
+```python
+class {{app_name}}Error(Exception):
+    """Base exception for {{app_name}}"""
+    def __init__(self, message: str, code: str = "UNKNOWN"):
+        self.message = message
+        self.code = code
+        super().__init__(self.message)
+
+class {{entity_1}}NotFoundError({{app_name}}Error):
+    """{{entity_1}} not found in repository"""
+    def __init__(self, id: str):
+        super().__init__(
+            message=f"{{entity_1}} with id '{id}' not found",
+            code="{{ENTITY_1}}_NOT_FOUND"
+        )
+```
+
+---
+
+## 6. Matriz de Trazabilidad
+
+| Puerto | Tipo | Atomic Concept | Source |
+|--------|------|----------------|--------|
+| `{{port_inbound_1.name}}` | Inbound | [{{port_inbound_1.atomic_ref}}](../../02-atomics/{{port_inbound_1.atomic_ref}}.md) | {{port_inbound_1.source}} |
+| `{{port_inbound_2.name}}` | Inbound | [{{port_inbound_2.atomic_ref}}](../../02-atomics/{{port_inbound_2.atomic_ref}}.md) | {{port_inbound_2.source}} |
+| `{{port_outbound_1.name}}` | Outbound | [{{port_outbound_1.atomic_ref}}](../../02-atomics/{{port_outbound_1.atomic_ref}}.md) | {{port_outbound_1.source}} |
+| `{{port_outbound_2.name}}` | Outbound | [{{port_outbound_2.atomic_ref}}](../../02-atomics/{{port_outbound_2.atomic_ref}}.md) | {{port_outbound_2.source}} |
+
+---
+
+## 7. Validación
+
+### Criterios CK-02 (parcial)
+
+| Criterio | Estado |
+|----------|--------|
+| Todos los puertos inbound trazan a atomics | [ ] |
+| Todos los puertos outbound trazan a atomics | [ ] |
+| DTOs documentados | [ ] |
+| Excepciones definidas | [ ] |
+
+---
+
+## 8. Notas para MORPHEUS
+
+1. Implementar puertos como ABCs en `ports/inbound/` y `ports/outbound/`
+2. DTOs en `ports/dtos/`
+3. Excepciones en `domain/exceptions.py`
+4. Adapters implementan outbound ports
+5. Application services implementan inbound ports
+
+---
+
+## Changelog
+
+| Versión | Fecha | Autor | Cambios |
+|---------|-------|-------|---------|
+| 1.0.0 | {{date}} | SALOMON | Versión inicial |

@@ -1,7 +1,7 @@
 # Análisis Arquitectónico: Best Practices para Triple Persistencia MELQUISEDEC
 
 > **Fecha**: 2026-01-20
-> **Versión**: 1.0.0  
+> **Versión**: 1.0.0
 > **Autor**: Investigación profunda con MCPs + Papers académicos + Análisis competitivo
 
 ---
@@ -10,8 +10,8 @@
 
 **Después de investigar 34 papers académicos, documentación completa de Neo4j y Redis, análisis del código de Obsidian Smart Connections, y revisar el schema `neo4j_schema.py` del proyecto**, estas son las conclusiones:
 
-✅ **MELQUISEDEC está bien arquitecturado** para casos de uso complejos (grafos + embeddings + persistencia)  
-⚠️ **Hay gaps** en documentación de pipelines, schema formal, y benchmarking  
+✅ **MELQUISEDEC está bien arquitecturado** para casos de uso complejos (grafos + embeddings + persistencia)
+⚠️ **Hay gaps** en documentación de pipelines, schema formal, y benchmarking
 🚀 **Recomendaciones específicas** para cerrar gaps y superar a soluciones actuales
 
 ---
@@ -110,12 +110,12 @@ graph TD
     B -->|Atomic Transaction| C[Neo4j]
     C -->|Contains| D[Knowledge Graph Nodes/Rels]
     C -->|Contains| E[Vector Index HNSW]
-    
+
     F[Reconciler Service] -->|5-min cron| C
-    
+
     G[Query: "Find related specs"] -->|Cypher + Vector Query| C
     C -->|Returns| H[Results Graph + Scores]
-    
+
     style E fill:#f9f,stroke:#333,stroke-width:4px
     style C fill:#9cf,stroke:#333,stroke-width:2px
 ```
@@ -256,7 +256,7 @@ logger = logging.getLogger(__name__)
 class MELQUISEDECPipeline:
     """
     Pipeline documentado para transformación Markdown → Neo4j Vector Index
-    
+
     Fases:
     1. Document Loading
     2. Statistical Analysis (idioma, complejidad)
@@ -264,7 +264,7 @@ class MELQUISEDECPipeline:
     4. Embedding (Ollama local: qwen3-embedding)
     5. Storage (Neo4j Vector Index + Knowledge Graph)
     """
-    
+
     def __init__(
         self,
         ollama_url: str = "http://localhost:11434",
@@ -276,20 +276,20 @@ class MELQUISEDECPipeline:
             model_name="qwen3-embedding",
             base_url=ollama_url
         )
-        
+
         self.parser = MarkdownNodeParser(
             chunk_size=512,
             chunk_overlap=100,
             include_metadata=True,
             include_prev_next_rel=True  # Crea relaciones NEXT/PREV en Neo4j
         )
-        
+
         self.neo4j_config = {
             "url": neo4j_url,
             "username": neo4j_user,
             "password": neo4j_password
         }
-    
+
     def process_documents(
         self,
         file_paths: List[str],
@@ -297,11 +297,11 @@ class MELQUISEDECPipeline:
     ) -> VectorStoreIndex:
         """
         Procesa documentos según best practices
-        
+
         Args:
             file_paths: Rutas de archivos .md
             metadata_enrichment: Metadata adicional (domain_id, rostro, etc.)
-        
+
         Returns:
             VectorStoreIndex listo para queries
         """
@@ -317,39 +317,39 @@ class MELQUISEDECPipeline:
             )
             for path in file_paths
         ]
-        
+
         # 2. Statistical Analysis (implementar según OnPrem.LLM)
         for doc in documents:
             doc.metadata["language"] = self._detect_language(doc.text)
             doc.metadata["complexity_score"] = self._calculate_complexity(doc.text)
-        
+
         # 3. Semantic Chunking
         nodes = self.parser.get_nodes_from_documents(documents)
         logger.info(f"Created {len(nodes)} semantic chunks from {len(documents)} documents")
-        
+
         # 4. Embedding + Storage (automático con LlamaIndex)
         from llama_index.vector_stores import Neo4jVectorStore
-        
+
         vector_store = Neo4jVectorStore(
             **self.neo4j_config,
             embedding_dimension=1536,
             index_name="melquisedec_embeddings",
             node_label="DocumentChunk"
         )
-        
+
         index = VectorStoreIndex(
             nodes=nodes,
             storage_context=vector_store,
             embed_model=self.embed_model
         )
-        
+
         return index
-    
+
     def _detect_language(self, text: str) -> str:
         """Statistical language detection"""
         # TODO: implementar con langdetect o similar
         return "es"  # placeholder
-    
+
     def _calculate_complexity(self, text: str) -> float:
         """Complexity score (Flesch-Kincaid o similar)"""
         # TODO: implementar
@@ -370,13 +370,13 @@ class MELQUISEDECPipeline:
 // Smart Connections v4 (Core)
 SmartConnectionsPlugin extends SmartPlugin {
   SmartEnv = SmartEnv;  // Shared environment
-  
+
   collections: {
     connections_lists,  // Resultados de similarity search
     smart_sources,      // Archivos .md indexados
     smart_blocks        // Bloques de texto (opcional)
   }
-  
+
   item_types: {
     ConnectionsList     // Lista de conexiones por nota
   }
@@ -387,19 +387,19 @@ export class ConnectionsList extends CollectionItem {
   async get_results(params = {}) {
     // 1. Pre-process params
     await this.pre_process(params);
-    
+
     // 2. Filter and score
     let results = this.filter_and_score(params);
-    
+
     // 3. Post-process
     results = await this.post_process(results, params);
-    
+
     // 4. Merge pinned results
     results = merge_pinned_results(results, params);
-    
+
     return results;
   }
-  
+
   filter_and_score(params = {}) {
     // Vector similarity search
     // NO hay knowledge graph, solo embeddings
@@ -423,11 +423,11 @@ export class ConnectionsList extends CollectionItem {
 
 **¿Qué NO tiene Smart Connections?**
 
-❌ **Knowledge Graph**: No hay relaciones explícitas entre notas  
-❌ **Trazabilidad**: No rastrea de dónde vienen las ideas  
-❌ **Ontología**: No hay schema formal de conceptos  
-❌ **Validación**: No valida consistencia entre notas  
-❌ **Autopoiesis**: No aprende de sesiones anteriores  
+❌ **Knowledge Graph**: No hay relaciones explícitas entre notas
+❌ **Trazabilidad**: No rastrea de dónde vienen las ideas
+❌ **Ontología**: No hay schema formal de conceptos
+❌ **Validación**: No valida consistencia entre notas
+❌ **Autopoiesis**: No aprende de sesiones anteriores
 
 ### Comparación MELQUISEDEC vs Smart Connections
 
@@ -486,7 +486,7 @@ class ConnectionsBenchmark:
     def __init__(self, test_notes: List[Dict], ground_truth: Dict[str, List[str]]):
         self.test_notes = test_notes
         self.ground_truth = ground_truth
-    
+
     def benchmark_system(
         self,
         system_name: str,
@@ -498,7 +498,7 @@ class ConnectionsBenchmark:
             system_name: "MELQUISEDEC" o "Smart Connections"
             query_function: función que retorna top-k connections
             k: número de resultados
-        
+
         Returns:
             Dict con métricas: precision, recall, MRR, latency
         """
@@ -506,27 +506,27 @@ class ConnectionsBenchmark:
         recalls = []
         reciprocal_ranks = []
         latencies = []
-        
+
         for note in self.test_notes:
             note_id = note["id"]
             true_connections = set(self.ground_truth.get(note_id, []))
-            
+
             # Query
             start_time = time.time()
             predicted = query_function(note["content"], k=k)
             latency = (time.time() - start_time) * 1000  # ms
             latencies.append(latency)
-            
+
             predicted_ids = set([p["id"] for p in predicted])
-            
+
             # Precision & Recall
             tp = len(predicted_ids & true_connections)
             precision = tp / k if k > 0 else 0
             recall = tp / len(true_connections) if true_connections else 0
-            
+
             precisions.append(precision)
             recalls.append(recall)
-            
+
             # MRR (first relevant result)
             for rank, pred_id in enumerate(predicted_ids, 1):
                 if pred_id in true_connections:
@@ -534,7 +534,7 @@ class ConnectionsBenchmark:
                     break
             else:
                 reciprocal_ranks.append(0.0)
-        
+
         return {
             "system": system_name,
             "precision@10": sum(precisions) / len(precisions),
@@ -578,7 +578,7 @@ Este archivo contiene el schema completo de Neo4j para:
 
 class AutopoiesisSchema:
     """Schema manager para el sistema de autopoiesis en Neo4j."""
-    
+
     # Nodos principales:
     # - Domain: Dominios temáticos (data-science, software-arch, etc.)
     # - ResearchInstance: Sesión de research (DD-001-I001, DD-001-I002, etc.)
@@ -627,7 +627,7 @@ class AutopoiesisSchema:
 ```python
 def create_constraints(self):
     """Crea constraints de uniqueness para garantizar integridad."""
-    
+
     constraints = [
         "CREATE CONSTRAINT domain_id_unique IF NOT EXISTS FOR (d:Domain) REQUIRE d.id IS UNIQUE",
         "CREATE CONSTRAINT instance_id_unique IF NOT EXISTS FOR (i:ResearchInstance) REQUIRE i.id IS UNIQUE",
@@ -642,18 +642,18 @@ def create_constraints(self):
 ```python
 def create_indexes(self):
     """Crea índices para queries frecuentes."""
-    
+
     indexes = [
         # Queries por domain_id
         "CREATE INDEX domain_id_index IF NOT EXISTS FOR (n) ON (n.domain_id)",
-        
+
         # Queries por status
         "CREATE INDEX instance_status_index IF NOT EXISTS FOR (i:ResearchInstance) ON (i.status)",
         "CREATE INDEX lesson_status_index IF NOT EXISTS FOR (l:Lesson) ON (l.status)",
-        
+
         # Queries por rostro
         "CREATE INDEX lesson_rostro_index IF NOT EXISTS FOR (l:Lesson) ON (l.rostro)",
-        
+
         # Queries por fecha
         "CREATE INDEX instance_created_index IF NOT EXISTS FOR (i:ResearchInstance) ON (i.started_at)",
     ]
@@ -664,12 +664,12 @@ def create_indexes(self):
 ```python
 def get_domain_evolution(self, domain_id: str) -> List[Dict]:
     """Ver evolución completa de un dominio."""
-    
+
     query = """
     MATCH (d:Domain {id: $domain_id})<-[:BELONGS_TO]-(i:ResearchInstance)
     OPTIONAL MATCH (i)-[:LEARNED]->(l:Lesson)
     OPTIONAL MATCH (l)-[:IMPROVES]->(p:PromptType)
-    
+
     RETURN d.name AS domain,
            COUNT(DISTINCT i) AS total_instances,
            COUNT(DISTINCT l) AS total_lessons,
@@ -931,7 +931,7 @@ rostro_stats = schema.get_confidence_by_rostro()
    ```bash
    # Backup Redis
    redis-cli --rdb dump.rdb
-   
+
    # Backup Neo4j
    neo4j-admin backup --to=/backups/pre-migration
    ```
@@ -955,14 +955,14 @@ rostro_stats = schema.get_confidence_by_rostro()
    # Script de migración
    from redis import Redis
    from neo4j import GraphDatabase
-   
+
    redis_client = Redis(host='localhost', port=6379)
    neo4j_driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "password"))
-   
+
    # Para cada embedding en Redis:
    for key in redis_client.scan_iter("embedding:*"):
        embedding_data = redis_client.json().get(key)
-       
+
        with neo4j_driver.session() as session:
            session.run("""
                MERGE (chunk:DocumentChunk {id: $id})
@@ -988,20 +988,20 @@ rostro_stats = schema.get_confidence_by_rostro()
            """
            # Markdown
            self.write_markdown(content)
-           
+
            # Neo4j (graph + vector en una transacción)
            with self.neo4j_driver.session() as session:
                with session.begin_transaction() as tx:
                    # Graph
                    tx.run("CREATE (n:Note {...})")
-                   
+
                    # Embedding
                    embedding = self.embed_model.encode(content["text"])
                    tx.run("""
                        MATCH (n:Note {id: $id})
                        SET n.embedding = $embedding
                    """, {"id": content["id"], "embedding": embedding})
-                   
+
                    tx.commit()
    ```
 
@@ -1025,30 +1025,30 @@ rostro_stats = schema.get_confidence_by_rostro()
 3. ✅ **Documentar en README**
    ```markdown
    ## Document Processing Pipeline
-   
+
    MELQUISEDEC usa un pipeline formal basado en best practices de RAG:
-   
+
    1. **Document Loading**: SimpleDirectoryReader (LlamaIndex)
    2. **Statistical Analysis**: Language detection + complexity score
    3. **Semantic Chunking**: MarkdownNodeParser (512 tokens, overlap 100)
    4. **Embedding**: Ollama local (qwen3-embedding)
    5. **Storage**: Neo4j Vector Index + Knowledge Graph
-   
+
    Ver `packages/daath-toolkit/processors/document_pipeline.py`
    ```
 
 4. ✅ **Integrar con Write API**
    ```python
    from daath_toolkit.processors.document_pipeline import MELQUISEDECPipeline
-   
+
    class KnowledgeWriter:
        def __init__(self):
            self.pipeline = MELQUISEDECPipeline()
-       
+
        def write_atomically(self, file_paths: List[str], metadata: Dict):
            # Procesar documentos con pipeline formal
            index = self.pipeline.process_documents(file_paths, metadata)
-           
+
            # Index ya está en Neo4j, ready para queries
            return index
    ```
@@ -1062,16 +1062,16 @@ rostro_stats = schema.get_confidence_by_rostro()
 1. ✅ **Crear ADR-002-autopoiesis-schema.md**
    ```markdown
    # ADR 002: Schema de Autopoiesis en Neo4j
-   
+
    ## Status
    Accepted
-   
+
    ## Context
    MELQUISEDEC necesita aprender de sesiones anteriores para evolucionar prompts dinámicamente.
-   
+
    ## Decision
    Usar Neo4j schema con nodos: Domain, ResearchInstance, Lesson, PromptType
-   
+
    ## Consequences
    - ✅ Trazabilidad completa de evolución
    - ✅ Queries de analytics (qué lessons funcionan)
@@ -1084,12 +1084,12 @@ rostro_stats = schema.get_confidence_by_rostro()
 3. ✅ **Actualizar `README.md` principal**
    ```markdown
    ## Schema de Datos
-   
+
    MELQUISEDEC usa 2 schemas en Neo4j:
-   
+
    1. **Knowledge Graph Schema** (concepts, specs, issues)
    2. **Autopoiesis Schema** (domains, instances, lessons, prompts)
-   
+
    Ver [docs/manifiesto/02-arquitectura/06-schema-autopoiesis.md]
    ```
 
@@ -1125,13 +1125,13 @@ rostro_stats = schema.get_confidence_by_rostro()
 4. ✅ **Documentar resultados**
    ```markdown
    ## Benchmark Results
-   
+
    | System | Precision@10 | Recall@10 | MRR | Latency (ms) |
    |--------|-------------|-----------|-----|--------------|
    | Smart Connections | 0.65 | 0.45 | 0.55 | 50 |
    | MELQUISEDEC (embeddings only) | 0.68 | 0.48 | 0.58 | 80 |
    | **MELQUISEDEC (graph + embeddings)** | **0.82** | **0.73** | **0.79** | 120 |
-   
+
    **Conclusión**: MELQUISEDEC supera a Smart Connections en precisión y recall,
    especialmente cuando usa graph + embeddings. Latencia ligeramente mayor pero
    aceptable (120ms).
@@ -1198,23 +1198,23 @@ rostro_stats = schema.get_confidence_by_rostro()
 ```mermaid
 graph TD
     A[Markdown Files] -->|Write API| B[KnowledgeWriter]
-    
+
     B -->|Transaction 1| C[Neo4j Knowledge Graph]
     B -->|Transaction 2| D[Redis Vector Store]
-    
+
     C -->|Contains| E[Nodes/Relationships]
     D -->|Contains| F[Embeddings]
-    
+
     G[Reconciler] -->|5-min cron| C
     G -->|5-min cron| D
-    
+
     H[Query: Graph + Vectors] -->|Query 1| C
     H -->|Query 2| D
     H -->|JOIN manually| I[Combined Results]
-    
+
     style D fill:#f99,stroke:#333,stroke-width:4px
     style I fill:#f99,stroke:#333,stroke-width:2px
-    
+
     J[⚠️ GAP G1: Dual Storage] -.->|Unnecessarily Complex| D
     K[⚠️ GAP G1: Manual JOIN] -.->|Latency +200ms| I
 ```
@@ -1224,23 +1224,23 @@ graph TD
 ```mermaid
 graph TD
     A[Markdown Files] -->|1. Load| B[LlamaIndex Pipeline]
-    
+
     B -->|2. Statistical Analysis| C[Language + Complexity]
     B -->|3. Semantic Chunking| D[MarkdownNodeParser]
     D -->|4. Embedding| E[Ollama qwen3]
     E -->|5. Storage| F[Neo4j Unified]
-    
+
     F -->|Contains| G[Knowledge Graph]
     F -->|Contains| H[Vector Index HNSW]
-    
+
     I[Reconciler] -->|5-min cron| F
-    
+
     J[Query: Graph + Vectors] -->|Single Cypher Query| F
     F -->|Returns| K[Unified Results]
-    
+
     style F fill:#9f9,stroke:#333,stroke-width:4px
     style K fill:#9f9,stroke:#333,stroke-width:2px
-    
+
     L[✅ CLOSED G1: Unified Storage] -.->|Simplified| F
     M[✅ CLOSED G2: Formal Pipeline] -.->|Documented| B
 ```

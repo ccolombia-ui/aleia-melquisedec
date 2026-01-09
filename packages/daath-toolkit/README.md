@@ -98,5 +98,5 @@ MIT License - See LICENSE file for details
 
 Part of the [ALEIA-MELQUISEDEC](https://github.com/ccolombia-ui/aleia-melquisedec) monorepo.
 
-**Methodology**: DAATH-ZEN v4.0.0  
+**Methodology**: DAATH-ZEN v4.0.0
 **Rostros**: MELQUISEDEC, HYPATIA, SALOMON, MORPHEUS, ALMA

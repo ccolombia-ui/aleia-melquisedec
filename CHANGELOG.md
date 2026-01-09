@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Tests for `validate_research.py` (56% coverage)
   - Pytest fixtures with sample data in `conftest.py`
   - Mock fixtures for Pinecone and OpenAI APIs
-- **Package Discovery Mechanism**: 
+- **Package Discovery Mechanism**:
   - `tools/setup/discover_packages.py`: Auto-detect packages in workspace
   - `pyproject.toml`: PEP 621 compliant packaging with dynamic discovery
   - Enables `pip install -e packages/daath-toolkit`

@@ -1,0 +1,186 @@
+---
+# Relationships Template
+# Documents semantic relationships between atomic concepts
+# Created by HYPATIA (Task 1.4)
+
+research: '{{research.name}}'
+version: '1.0.0'
+created: '{{timestamp}}'
+author: 'HYPATIA'
+
+# METADATA
+metadata:
+  total_atomics: {{atomics.count}}
+  total_relationships: {{relationships.count}}
+  relationship_types:
+    - 'PRECEDES'      # Temporal/sequential
+    - 'FOLLOWS'       # Temporal/sequential (inverse)
+    - 'IMPLEMENTS'    # Implementation relationship
+    - 'EXTENDS'       # Extension/specialization
+    - 'PART_OF'       # Compositional
+    - 'RELATES_TO'    # Generic association
+    - 'CONTRADICTS'   # Opposition
+    - 'COMPLEMENTS'   # Complementary
+
+# NEO4J INGESTION
+# This YAML is transformed to Cypher queries in Task 3.4
+neo4j_ready: false  # Set to true after validation
+
+---
+
+# Relationships
+
+## 1. Sequential Relationships (PRECEDES / FOLLOWS)
+
+relationships:
+  sequential:
+    {{#each relationships.sequential}}
+    - id: 'rel-{{@index}}'
+      type: 'PRECEDES'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        strength: {{this.strength}}  # 1-10 (10 = strongest)
+        context: '{{this.context}}'
+    {{/each}}
+
+## 2. Implementation Relationships (IMPLEMENTS)
+
+  implementation:
+    {{#each relationships.implementation}}
+    - id: 'rel-impl-{{@index}}'
+      type: 'IMPLEMENTS'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        implementation_level: '{{this.level}}'  # abstract | concrete | example
+        context: '{{this.context}}'
+    {{/each}}
+
+## 3. Extension Relationships (EXTENDS)
+
+  extension:
+    {{#each relationships.extension}}
+    - id: 'rel-ext-{{@index}}'
+      type: 'EXTENDS'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        extension_type: '{{this.type}}'  # specialization | generalization
+        context: '{{this.context}}'
+    {{/each}}
+
+## 4. Compositional Relationships (PART_OF)
+
+  compositional:
+    {{#each relationships.compositional}}
+    - id: 'rel-comp-{{@index}}'
+      type: 'PART_OF'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        composition_type: '{{this.type}}'  # component | phase | layer
+        context: '{{this.context}}'
+    {{/each}}
+
+## 5. Generic Associations (RELATES_TO)
+
+  generic:
+    {{#each relationships.generic}}
+    - id: 'rel-gen-{{@index}}'
+      type: 'RELATES_TO'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        relation_type: '{{this.type}}'  # influences | depends_on | associated_with
+        strength: {{this.strength}}
+        context: '{{this.context}}'
+    {{/each}}
+
+## 6. Opposition Relationships (CONTRADICTS)
+
+  opposition:
+    {{#each relationships.opposition}}
+    - id: 'rel-opp-{{@index}}'
+      type: 'CONTRADICTS'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        contradiction_type: '{{this.type}}'  # mutually_exclusive | conflicting | alternative
+        context: '{{this.context}}'
+    {{/each}}
+
+## 7. Complementary Relationships (COMPLEMENTS)
+
+  complementary:
+    {{#each relationships.complementary}}
+    - id: 'rel-comp-{{@index}}'
+      type: 'COMPLEMENTS'
+      source: '{{this.source_id}}'
+      target: '{{this.target_id}}'
+      properties:
+        description: '{{this.description}}'
+        complementarity: '{{this.type}}'  # synergistic | parallel | supporting
+        context: '{{this.context}}'
+    {{/each}}
+
+---
+
+# Statistics
+
+statistics:
+  total_relationships: {{relationships.count}}
+  by_type:
+    PRECEDES: {{relationships.sequential.length}}
+    IMPLEMENTS: {{relationships.implementation.length}}
+    EXTENDS: {{relationships.extension.length}}
+    PART_OF: {{relationships.compositional.length}}
+    RELATES_TO: {{relationships.generic.length}}
+    CONTRADICTS: {{relationships.opposition.length}}
+    COMPLEMENTS: {{relationships.complementary.length}}
+
+  density: {{statistics.density}}  # relationships / possible_relationships
+  avg_relationships_per_atomic: {{statistics.avg_per_atomic}}
+
+# Validation
+
+validation:
+  orphan_atomics: []  # Atomics with 0 relationships
+  broken_links: []    # References to non-existent atomics
+  circular_dependencies: []
+
+  status: 'pending'  # pending | pass | fail
+  validated_at: null
+  validated_by: null
+
+---
+
+# Neo4j Cypher Generation
+
+# This section is populated by MORPHEUS (Task 3.4)
+# Example Cypher query:
+
+```cypher
+// Create relationship
+MATCH (source:Concept {id: '{{source_id}}'})
+MATCH (target:Concept {id: '{{target_id}}'})
+MERGE (source)-[r:{{relationship_type}} {
+  description: '{{description}}',
+  created: datetime('{{timestamp}}'),
+  research: '{{research.name}}'
+}]->(target)
+RETURN source, r, target
+```
+
+---
+
+**Created**: {{timestamp}}
+**Rostro**: HYPATIA
+**Research**: {{research.name}}
+**Status**: {{validation.status}}

@@ -1,0 +1,213 @@
+# SALOMON Validation Checklist
+
+**Phase**: RQ2 Abstraction Layer Design
+**Rostro**: SALOMON (Architect)
+**Date**: 2025-01-23
+**Status**: 🟡 PENDING EXECUTION
+
+---
+
+## 📋 Validation Criteria
+
+### 1. Architecture Analysis (20 points)
+
+- [ ] **Dependency graph generated** (5 pts)
+  - Visual diagram of packages/keter/ dependencies
+  - Circular dependencies identified (if any)
+  - External dependencies cataloged
+
+- [ ] **Coupling metrics calculated** (5 pts)
+  - Instability (I = Ce / (Ce + Ca))
+  - Abstractness (A = Na / Nc)
+  - Distance from main sequence (D = |A + I - 1|)
+  - Target: D < 0.3 for all modules
+
+- [ ] **Interface boundaries documented** (5 pts)
+  - Public APIs identified per package
+  - Internal APIs marked private
+  - Breaking changes assessed if moved
+
+- [ ] **Design patterns cataloged** (5 pts)
+  - DI containers (inversify)
+  - Repository pattern usage
+  - Adapter pattern usage
+  - Service locator (if any)
+
+**Score**: ___/20
+
+---
+
+### 2. Abstraction Design (25 points)
+
+- [ ] **No external abstractions validated** (10 pts)
+  - Confirmed: 0 @aleia/daath runtime dependencies
+  - Confirmed: 0 @aleia/yesod SSR coupling
+  - Confirmed: 0 @aleia/ayin schema sync
+  - Rationale documented in ADR-004
+
+- [ ] **Minimal refactorings identified** (10 pts)
+  - Schema strings → config module (19 refs)
+  - Template paths → config module
+  - ENV vars → typed config
+  - Cost-benefit analysis per refactoring
+
+- [ ] **Config consolidation designed** (5 pts)
+  - 21 env vars grouped by domain
+  - Zod validation schemas
+  - Loading strategy (env → validated config)
+
+**Score**: ___/25
+
+---
+
+### 3. Interface Contracts (20 points)
+
+- [ ] **Core interfaces documented** (7 pts)
+  - IKeterCore: Policy engine, CMIS, lifecycle
+  - Inputs, outputs, errors specified
+  - Usage examples provided
+
+- [ ] **MCP interfaces documented** (7 pts)
+  - IKeterMCP: Tools, handlers, domain
+  - MCP protocol compliance
+  - Tool schemas validated
+
+- [ ] **Service interfaces documented** (6 pts)
+  - IKeterServices: Blockchain, embedder, monitor
+  - Dependencies specified
+  - Error handling documented
+
+**Score**: ___/20
+
+---
+
+### 4. Architectural Decision Records (20 points)
+
+- [ ] **ADR-003: Keter Modular Architecture** (7 pts)
+  - Context: Why packages/keter/{core,mcp,services}?
+  - Decision: Modular monorepo structure
+  - Consequences: Cohesion, coupling, maintainability
+  - Alternatives considered
+
+- [ ] **ADR-004: No External Abstractions** (7 pts)
+  - Context: RQ1 found 0 @aleia/* dependencies
+  - Decision: NO IDaathAdapter, IYesodSSR, etc.
+  - Consequences: Simpler migration, less code
+  - When to revisit this decision
+
+- [ ] **ADR-005: Config-Driven Design** (6 pts)
+  - Context: 21 env vars, multi-environment
+  - Decision: ENV-driven (not hardcoded)
+  - Consequences: Portability, testability
+  - Config validation strategy
+
+**Score**: ___/20
+
+---
+
+### 5. DSR Methodology Compliance (15 points)
+
+- [ ] **Design rigor** (5 pts)
+  - Evidence-based (RQ1 findings)
+  - Alternatives evaluated
+  - Trade-offs documented
+
+- [ ] **Artifact quality** (5 pts)
+  - Diagrams clear and accurate
+  - Code examples compilable
+  - Metrics reproducible
+
+- [ ] **Traceability** (5 pts)
+  - Links to RQ1 findings
+  - References to Sprint 1-2 docs
+  - Forward links to RQ3
+
+**Score**: ___/15
+
+---
+
+## 🎯 Scoring
+
+| Category | Points | Score | Status |
+|----------|--------|-------|--------|
+| Architecture Analysis | 20 | ___/20 | ⏳ |
+| Abstraction Design | 25 | ___/25 | ⏳ |
+| Interface Contracts | 20 | ___/20 | ⏳ |
+| ADRs | 20 | ___/20 | ⏳ |
+| DSR Compliance | 15 | ___/15 | ⏳ |
+| **TOTAL** | **100** | **___/100** | ⏳ |
+
+**Pass Threshold**: ≥80/100
+
+---
+
+## ✅ Approval Checklist
+
+- [ ] **Completeness**: All deliverables present
+  - existing-architecture.md
+  - minimal-refactorings.md
+  - no-external-abstractions.md
+  - config-consolidation.md
+  - interface-contracts.md
+  - ADR-003, ADR-004, ADR-005
+
+- [ ] **Quality**: Technical accuracy validated
+  - Dependency graph matches codebase
+  - Coupling metrics calculated correctly
+  - Interfaces match actual exports
+
+- [ ] **Consistency**: Aligns with RQ1 findings
+  - 0 external dependencies confirmed
+  - Modular structure validated
+  - Config-driven approach verified
+
+- [ ] **Actionability**: Clear path to RQ3
+  - Architecture understood
+  - Refactorings prioritized
+  - Migration strategy informed
+
+---
+
+## 🚫 Failure Modes (Auto-Reject)
+
+- [ ] **Missing deliverables**: <6/6 artifacts present
+- [ ] **Contradiction with RQ1**: Claims dependencies exist when RQ1 found 0
+- [ ] **Over-engineering**: Proposes complex abstractions for simple problems
+- [ ] **Incomplete ADRs**: Missing context, decision, or consequences
+- [ ] **No coupling metrics**: Claims architecture is good without data
+
+---
+
+## 📝 SALOMON Notes
+
+**Questions to Address**:
+1. Why was keter already modular? (Design intent?)
+2. Are there runtime dependencies we missed? (Hidden coupling?)
+3. Should we consolidate config? (Cost vs benefit?)
+4. What's the coupling between core/mcp/services? (Metrics?)
+5. What interfaces are public? (API surface?)
+
+**Observations**:
+- (To be filled during RQ2 execution)
+
+**Recommendations**:
+- (To be filled after analysis)
+
+---
+
+## 🎯 Final Decision
+
+- [ ] ✅ **APPROVED** - Proceed to RQ3 (Modular Package Architecture)
+- [ ] ⚠️ **APPROVED WITH CONDITIONS** - Minor revisions needed
+- [ ] ❌ **REJECTED** - Major issues, return to RQ2
+
+**Justification**: (To be filled)
+
+**Conditions** (if any): (To be filled)
+
+---
+
+**Validator**: SALOMON (Architect)
+**Date**: (To be filled upon completion)
+**Score**: ___/100
+**Status**: 🟡 PENDING EXECUTION

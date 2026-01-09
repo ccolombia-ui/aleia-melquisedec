@@ -10,10 +10,11 @@ Tests:
 - Status field validation
 """
 
-import pytest
-from pathlib import Path
 import sys
+from pathlib import Path
 from pathlib import Path as PathLib
+
+import pytest
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(PathLib(__file__).parent.parent))
@@ -44,7 +45,7 @@ class TestResearchValidator:
         """PROPOSITO.md with missing required fields should fail"""
         research_path = temp_research_dir / "DD-001-incomplete"
         research_path.mkdir()
-        (research_path / "PROPOSITO.md").write_text(invalid_proposito_content, encoding='utf-8')
+        (research_path / "PROPOSITO.md").write_text(invalid_proposito_content, encoding="utf-8")
 
         validator = ResearchValidator(research_path)
         result = validator.validate()
@@ -53,11 +54,13 @@ class TestResearchValidator:
         # Should have errors for missing fields
         assert any("falta campo" in error for error in validator.errors)
 
-    def test_proposito_without_yaml_generates_warning(self, temp_research_dir, proposito_without_yaml):
+    def test_proposito_without_yaml_generates_warning(
+        self, temp_research_dir, proposito_without_yaml
+    ):
         """PROPOSITO.md without YAML frontmatter should generate warning"""
         research_path = temp_research_dir / "DD-001-no-yaml"
         research_path.mkdir()
-        (research_path / "PROPOSITO.md").write_text(proposito_without_yaml, encoding='utf-8')
+        (research_path / "PROPOSITO.md").write_text(proposito_without_yaml, encoding="utf-8")
 
         validator = ResearchValidator(research_path)
         validator.validate()
@@ -80,12 +83,14 @@ initiated_by: HYPATIA
 
 # Test
 """
-        (research_path / "PROPOSITO.md").write_text(content, encoding='utf-8')
+        (research_path / "PROPOSITO.md").write_text(content, encoding="utf-8")
 
         validator = ResearchValidator(research_path)
         validator.validate()
 
-        assert any("Status" in warning and "no es estándar" in warning for warning in validator.warnings)
+        assert any(
+            "Status" in warning and "no es estándar" in warning for warning in validator.warnings
+        )
 
     def test_valid_folders_accepted(self, valid_research_structure):
         """Valid folder names should be accepted"""
@@ -123,7 +128,7 @@ invalid yaml structure [[[
 
 # Test
 """
-        (research_path / "PROPOSITO.md").write_text(content, encoding='utf-8')
+        (research_path / "PROPOSITO.md").write_text(content, encoding="utf-8")
 
         validator = ResearchValidator(research_path)
         validator.validate()
@@ -158,12 +163,12 @@ initiated_by: HYPATIA
 
 # Complete Research
 """
-        (research_path / "PROPOSITO.md").write_text(content, encoding='utf-8')
+        (research_path / "PROPOSITO.md").write_text(content, encoding="utf-8")
 
         validator = ResearchValidator(research_path)
         validator.validate()
 
         # Check that all required fields were validated
-        required_fields = ['id', 'version', 'created', 'status', 'purpose', 'initiated_by']
+        required_fields = ["id", "version", "created", "status", "purpose", "initiated_by"]
         for field in required_fields:
             assert any(field in info for info in validator.info)

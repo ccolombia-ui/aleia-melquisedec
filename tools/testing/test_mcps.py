@@ -11,13 +11,15 @@ Usage:
 """
 
 from __future__ import annotations
+
+import argparse
 import json
 import os
 import re
 import subprocess
-import argparse
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
+
 try:
     from dotenv import load_dotenv
 except Exception:
@@ -34,6 +36,7 @@ def read_mcp_file(path: Path) -> Dict[str, Any]:
 def resolve_env_value(value: str) -> (str, list):
     # Replace ${VAR} with environment value; return replaced string and missing vars
     missing = []
+
     def repl(m):
         var = m.group(1)
         val = os.environ.get(var)
@@ -41,6 +44,7 @@ def resolve_env_value(value: str) -> (str, list):
             missing.append(var)
             return ""
         return val
+
     out = re.sub(r"\$\{([^}]+)\}", repl, value)
     return out, missing
 
@@ -57,7 +61,12 @@ def run_check(name: str, spec: Dict[str, Any], timeout: int, verbose: bool) -> D
         env[k] = resolved
 
     if missing_vars:
-        return {"name": name, "status": "missing_env", "missing": sorted(set(missing_vars)), "cmd": cmd}
+        return {
+            "name": name,
+            "status": "missing_env",
+            "missing": sorted(set(missing_vars)),
+            "cmd": cmd,
+        }
 
     def try_run(test_args):
         try:
@@ -91,21 +100,41 @@ def run_check(name: str, spec: Dict[str, Any], timeout: int, verbose: bool) -> D
                     return {"name": name, "status": "exited_quickly", "rc": rc, "cmd": cmd}
                 except subprocess.TimeoutExpired:
                     proc.kill()
-                    return {"name": name, "status": "running", "note": "started and was running (killed)", "cmd": cmd}
+                    return {
+                        "name": name,
+                        "status": "running",
+                        "note": "started and was running (killed)",
+                        "cmd": cmd,
+                    }
             except FileNotFoundError as e:
                 return {"name": name, "status": "error", "error": str(e), "cmd": cmd}
             except Exception as e:
                 return {"name": name, "status": "error", "error": str(e), "cmd": cmd}
         else:
-            return {"name": name, "status": "ok", "check": "help", "output": r2.get("output"), "cmd": cmd}
+            return {
+                "name": name,
+                "status": "ok",
+                "check": "help",
+                "output": r2.get("output"),
+                "cmd": cmd,
+            }
     else:
-        return {"name": name, "status": "ok", "check": "version", "rc": r.get("rc"), "output": r.get("output"), "cmd": cmd}
+        return {
+            "name": name,
+            "status": "ok",
+            "check": "version",
+            "rc": r.get("rc"),
+            "output": r.get("output"),
+            "cmd": cmd,
+        }
 
 
 def main():
     p = argparse.ArgumentParser(description="Quick MCP servers tester")
     p.add_argument("--mcp-file", default=Path(".vscode/mcp.json"), help="Path to MCP JSON file")
-    p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT, help="Seconds for command timeout")
+    p.add_argument(
+        "--timeout", type=int, default=DEFAULT_TIMEOUT, help="Seconds for command timeout"
+    )
     p.add_argument("--verbose", action="store_true")
     p.add_argument("--env-file", default=Path(".env"), help="Path to .env file to auto-load")
     p.add_argument("--no-env", action="store_true", help="Do not auto-load .env even if present")
@@ -124,7 +153,7 @@ def main():
         results.append(res)
         status = res.get("status")
         if status == "ok":
-            print("✅ ok", f"({res.get('check')}: {res.get('output')})" if res.get('output') else "")
+            print("✅ ok", f"({res.get('check')}: {res.get('output')})" if res.get("output") else "")
         elif status == "missing_env":
             print("⚠️ missing env:", ",".join(res.get("missing")))
         elif status == "running":
@@ -137,10 +166,14 @@ def main():
     if missing_servers and not args.no_env:
         env_path = Path(args.env_file)
         if load_dotenv is None:
-            print("\npython-dotenv is not installed; cannot load .env automatically. Install python-dotenv or set env vars manually.")
+            print(
+                "\npython-dotenv is not installed; cannot load .env automatically. Install python-dotenv or set env vars manually."
+            )
         else:
             if env_path.exists():
-                print(f"\nLoading environment variables from {env_path} and retrying missing checks...")
+                print(
+                    f"\nLoading environment variables from {env_path} and retrying missing checks..."
+                )
                 load_dotenv(dotenv_path=str(env_path), override=False)
                 for idx, old in missing_servers:
                     name = old["name"]
@@ -166,7 +199,7 @@ def main():
         print(f" - {r['name']}: {r['status']}")
 
     # Exit with non-zero if any non-ok result
-    bad = [r for r in results if r['status'] not in ("ok", "running")]
+    bad = [r for r in results if r["status"] not in ("ok", "running")]
     if bad:
         raise SystemExit(1)
 

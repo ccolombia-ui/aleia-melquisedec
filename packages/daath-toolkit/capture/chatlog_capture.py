@@ -40,10 +40,11 @@ Uso:
 """
 
 import os
-import yaml
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Literal
+from typing import Dict, List, Literal, Optional
+
+import yaml
 
 
 class ChatlogCapture:
@@ -64,7 +65,7 @@ class ChatlogCapture:
         "HYPATIA": "02-hypatia.md",
         "SALOMON": "03-salomon.md",
         "MORPHEUS": "04-morpheus.md",
-        "ALMA": "05-alma.md"
+        "ALMA": "05-alma.md",
     }
 
     def __init__(self, output_path: str):
@@ -94,7 +95,7 @@ class ChatlogCapture:
         domain_id: str,
         prompts_used: Dict[str, str],  # {rostro: version}
         git_branch: Optional[str] = None,
-        git_commit: Optional[str] = None
+        git_commit: Optional[str] = None,
     ):
         """
         Inicializa nueva instance de investigación.
@@ -125,7 +126,7 @@ class ChatlogCapture:
                     "started_at": None,
                     "finished_at": None,
                     "checkpoints": [],
-                    "potential_lessons": []
+                    "potential_lessons": [],
                 }
                 for rostro, version in prompts_used.items()
             },
@@ -135,8 +136,8 @@ class ChatlogCapture:
             "git_tracking": {
                 "branch": git_branch,
                 "commit_at_start": git_commit,
-                "commit_at_end": None
-            }
+                "commit_at_end": None,
+            },
         }
 
         # Escribir metadata inicial
@@ -150,7 +151,7 @@ class ChatlogCapture:
 
     def _write_metadata(self):
         """Escribe metadata.yaml con formato correcto."""
-        with open(self.metadata_path, 'w', encoding='utf-8') as f:
+        with open(self.metadata_path, "w", encoding="utf-8") as f:
             yaml.dump(self.metadata, f, allow_unicode=True, sort_keys=False)
 
     def _init_full_transcript(self):
@@ -172,7 +173,7 @@ Para ver conversaciones por rostro, consulta `by-rostro/`.
 
 """
 
-        with open(self.transcript_path, 'w', encoding='utf-8') as f:
+        with open(self.transcript_path, "w", encoding="utf-8") as f:
             f.write(header)
 
     def _init_by_rostro_files(self, rostros: List[str]):
@@ -196,7 +197,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
 
 """
 
-            with open(filepath, 'w', encoding='utf-8') as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(header)
 
     # =========================================================================
@@ -209,7 +210,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         phase: str,
         speaker: Literal["user", "assistant", "system"],
         message: str,
-        timestamp: Optional[datetime] = None
+        timestamp: Optional[datetime] = None,
     ):
         """
         Registra mensaje en full-transcript.md y by-rostro/{rostro}.md.
@@ -229,41 +230,32 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             self.current_rostro = rostro
 
             # Actualizar started_at del rostro si es primera vez
-            if self.metadata['rostros_executed'][rostro]['started_at'] is None:
-                self.metadata['rostros_executed'][rostro]['started_at'] = timestamp.isoformat()
+            if self.metadata["rostros_executed"][rostro]["started_at"] is None:
+                self.metadata["rostros_executed"][rostro]["started_at"] = timestamp.isoformat()
                 self._write_metadata()
 
         # Formatear mensaje
         formatted = self._format_message(timestamp, rostro, phase, speaker, message)
 
         # Escribir en full-transcript
-        with open(self.transcript_path, 'a', encoding='utf-8') as f:
+        with open(self.transcript_path, "a", encoding="utf-8") as f:
             f.write(formatted + "\n\n")
 
         # Escribir en by-rostro
         if rostro in self.ROSTRO_FILES:
             rostro_file = self.by_rostro_path / self.ROSTRO_FILES[rostro]
-            with open(rostro_file, 'a', encoding='utf-8') as f:
+            with open(rostro_file, "a", encoding="utf-8") as f:
                 f.write(formatted + "\n\n")
 
     def _format_message(
-        self,
-        timestamp: datetime,
-        rostro: str,
-        phase: str,
-        speaker: str,
-        message: str
+        self, timestamp: datetime, rostro: str, phase: str, speaker: str, message: str
     ) -> str:
         """Formatea mensaje con metadata."""
 
         time_str = timestamp.strftime("%Y-%m-%d %H:%M:%S UTC")
 
         # Emoji según speaker
-        emoji = {
-            "user": "👤",
-            "assistant": "🤖",
-            "system": "⚙️"
-        }.get(speaker, "💬")
+        emoji = {"user": "👤", "assistant": "🤖", "system": "⚙️"}.get(speaker, "💬")
 
         return f"""### {emoji} {speaker.upper()} | {rostro} | {phase}
 
@@ -281,7 +273,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         checkpoint_name: str,
         passed: bool,
         errors: Optional[List[str]] = None,
-        timestamp: Optional[datetime] = None
+        timestamp: Optional[datetime] = None,
     ):
         """
         Registra resultado de checkpoint.
@@ -300,11 +292,11 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             "name": checkpoint_name,
             "passed": passed,
             "timestamp": timestamp.isoformat(),
-            "errors": errors or []
+            "errors": errors or [],
         }
 
         # Agregar a metadata
-        self.metadata['rostros_executed'][rostro]['checkpoints'].append(checkpoint_data)
+        self.metadata["rostros_executed"][rostro]["checkpoints"].append(checkpoint_data)
         self._write_metadata()
 
         # Registrar en transcript
@@ -322,13 +314,13 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             for error in errors:
                 message += f"- {error}\n"
 
-        with open(self.transcript_path, 'a', encoding='utf-8') as f:
+        with open(self.transcript_path, "a", encoding="utf-8") as f:
             f.write(message + "\n")
 
         # También en by-rostro
         if rostro in self.ROSTRO_FILES:
             rostro_file = self.by_rostro_path / self.ROSTRO_FILES[rostro]
-            with open(rostro_file, 'a', encoding='utf-8') as f:
+            with open(rostro_file, "a", encoding="utf-8") as f:
                 f.write(message + "\n")
 
     # =========================================================================
@@ -341,7 +333,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         lesson_text: str,
         confidence: float,
         applies_to_prompt: str,
-        timestamp: Optional[datetime] = None
+        timestamp: Optional[datetime] = None,
     ):
         """
         Registra potential lesson identificada durante ejecución.
@@ -355,11 +347,11 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             "text": lesson_text,
             "confidence": confidence,
             "applies_to_prompt": applies_to_prompt,
-            "timestamp": timestamp.isoformat()
+            "timestamp": timestamp.isoformat(),
         }
 
         # Agregar a metadata
-        self.metadata['rostros_executed'][rostro]['potential_lessons'].append(lesson_data)
+        self.metadata["rostros_executed"][rostro]["potential_lessons"].append(lesson_data)
         self._write_metadata()
 
         # Registrar en transcript
@@ -375,13 +367,13 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
 {lesson_text}
 """
 
-        with open(self.transcript_path, 'a', encoding='utf-8') as f:
+        with open(self.transcript_path, "a", encoding="utf-8") as f:
             f.write(message + "\n")
 
         # También en by-rostro
         if rostro in self.ROSTRO_FILES:
             rostro_file = self.by_rostro_path / self.ROSTRO_FILES[rostro]
-            with open(rostro_file, 'a', encoding='utf-8') as f:
+            with open(rostro_file, "a", encoding="utf-8") as f:
                 f.write(message + "\n")
 
     # =========================================================================
@@ -394,7 +386,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         output_path: str,
         version: str,
         rostro: str,
-        timestamp: Optional[datetime] = None
+        timestamp: Optional[datetime] = None,
     ):
         """Registra output producido durante instance."""
 
@@ -406,10 +398,10 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             "path": output_path,
             "version": version,
             "produced_by": rostro,
-            "timestamp": timestamp.isoformat()
+            "timestamp": timestamp.isoformat(),
         }
 
-        self.metadata['outputs_produced'].append(output_data)
+        self.metadata["outputs_produced"].append(output_data)
         self._write_metadata()
 
     # =========================================================================
@@ -422,7 +414,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         if timestamp is None:
             timestamp = datetime.now(timezone.utc)
 
-        self.metadata['rostros_executed'][rostro]['finished_at'] = timestamp.isoformat()
+        self.metadata["rostros_executed"][rostro]["finished_at"] = timestamp.isoformat()
         self._write_metadata()
 
         # Agregar nota en transcript
@@ -437,7 +429,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
 ---
 """
 
-        with open(self.transcript_path, 'a', encoding='utf-8') as f:
+        with open(self.transcript_path, "a", encoding="utf-8") as f:
             f.write(message + "\n")
 
     def finalize_instance(
@@ -445,7 +437,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         status: Literal["success", "failed", "partial"],
         git_commit_end: Optional[str] = None,
         rollback_reason: Optional[str] = None,
-        timestamp: Optional[datetime] = None
+        timestamp: Optional[datetime] = None,
     ):
         """
         Finaliza instance completa.
@@ -467,28 +459,24 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
             duration_formatted = "unknown"
 
         # Actualizar metadata
-        self.metadata['status'] = status
-        self.metadata['updated_at'] = timestamp.isoformat()
-        self.metadata['finished_at'] = timestamp.isoformat()
-        self.metadata['duration'] = duration_formatted
+        self.metadata["status"] = status
+        self.metadata["updated_at"] = timestamp.isoformat()
+        self.metadata["finished_at"] = timestamp.isoformat()
+        self.metadata["duration"] = duration_formatted
 
         if git_commit_end:
-            self.metadata['git_tracking']['commit_at_end'] = git_commit_end
+            self.metadata["git_tracking"]["commit_at_end"] = git_commit_end
 
         if rollback_reason:
-            self.metadata['rollback_info'] = {
+            self.metadata["rollback_info"] = {
                 "reason": rollback_reason,
-                "timestamp": timestamp.isoformat()
+                "timestamp": timestamp.isoformat(),
             }
 
         self._write_metadata()
 
         # Agregar footer en transcript
-        status_emoji = {
-            "success": "✅",
-            "failed": "❌",
-            "partial": "⚠️"
-        }.get(status, "🏁")
+        status_emoji = {"success": "✅", "failed": "❌", "partial": "⚠️"}.get(status, "🏁")
 
         footer = f"""
 ---
@@ -510,7 +498,7 @@ Este archivo contiene todas las conversaciones del rostro {rostro}.
         if rollback_reason:
             footer += f"**⚠️ Rollback**: {rollback_reason}\n"
 
-        with open(self.transcript_path, 'a', encoding='utf-8') as f:
+        with open(self.transcript_path, "a", encoding="utf-8") as f:
             f.write(footer)
 
 
@@ -526,13 +514,9 @@ if __name__ == "__main__":
     capture.start_instance(
         instance_id="DD-001-I001",
         domain_id="DD-001",
-        prompts_used={
-            "HYPATIA": "v1.0.0",
-            "SALOMON": "v1.0.0",
-            "ALMA": "v1.0.0"
-        },
+        prompts_used={"HYPATIA": "v1.0.0", "SALOMON": "v1.0.0", "ALMA": "v1.0.0"},
         git_branch="main",
-        git_commit="abc123def456"
+        git_commit="abc123def456",
     )
     print("✅ Instance iniciada")
 
@@ -541,29 +525,25 @@ if __name__ == "__main__":
         rostro="HYPATIA",
         phase="investigation",
         speaker="user",
-        message="Search for papers on semantic search published after 2020 with >100 citations"
+        message="Search for papers on semantic search published after 2020 with >100 citations",
     )
 
     capture.record_message(
         rostro="HYPATIA",
         phase="investigation",
         speaker="assistant",
-        message="I will search arXiv for papers on semantic search. Filtering by date and citations..."
+        message="I will search arXiv for papers on semantic search. Filtering by date and citations...",
     )
 
     # Checkpoint
-    capture.record_checkpoint(
-        rostro="HYPATIA",
-        checkpoint_name="citations-filtered",
-        passed=True
-    )
+    capture.record_checkpoint(rostro="HYPATIA", checkpoint_name="citations-filtered", passed=True)
 
     # Potential lesson
     capture.record_potential_lesson(
         rostro="HYPATIA",
         lesson_text="Filter papers by citation count (>100 for mature topics) to ensure quality and relevance.",
         confidence=0.95,
-        applies_to_prompt="HYPATIA-research-prompt"
+        applies_to_prompt="HYPATIA-research-prompt",
     )
 
     # Output producido
@@ -571,17 +551,14 @@ if __name__ == "__main__":
         output_name="research-summary.md",
         output_path="5-outputs/DD-001-semantic-search/research-summary.md",
         version="1.0.0",
-        rostro="HYPATIA"
+        rostro="HYPATIA",
     )
 
     # Finalizar rostro
     capture.finalize_rostro("HYPATIA")
 
     # Finalizar instance
-    capture.finalize_instance(
-        status="success",
-        git_commit_end="def456abc789"
-    )
+    capture.finalize_instance(status="success", git_commit_end="def456abc789")
 
     print("✅ Instance finalizada")
     print(f"📁 Chatlog guardado en: {capture.chatlog_path}")

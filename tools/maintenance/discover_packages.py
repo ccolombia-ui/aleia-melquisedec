@@ -44,7 +44,10 @@ class PackageDiscovery:
 
         for pyproject_path in pyproject_files:
             # Skip virtual environments and cache directories
-            if any(part in pyproject_path.parts for part in [".venv", "venv", "__pycache__", ".cache", "node_modules"]):
+            if any(
+                part in pyproject_path.parts
+                for part in [".venv", "venv", "__pycache__", ".cache", "node_modules"]
+            ):
                 continue
 
             package_info = self._parse_pyproject(pyproject_path)
@@ -163,9 +166,7 @@ class PackageDiscovery:
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Discover packages in ALEIA-MELQUISEDEC monorepo"
-    )
+    parser = argparse.ArgumentParser(description="Discover packages in ALEIA-MELQUISEDEC monorepo")
     parser.add_argument(
         "--format",
         choices=["text", "json"],

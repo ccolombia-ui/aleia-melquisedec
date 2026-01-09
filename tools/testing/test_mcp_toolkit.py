@@ -18,17 +18,19 @@ Uso:
 """
 
 from __future__ import annotations
+
+import argparse
 import json
 import subprocess
 import sys
-import argparse
 import time
-from typing import Dict, Any, List
 from pathlib import Path
+from typing import Any, Dict, List
 
 
 class Colors:
     """Colores ANSI para terminal"""
+
     GREEN = "\033[92m"
     YELLOW = "\033[93m"
     RED = "\033[91m"
@@ -73,18 +75,14 @@ class MCPToolkitTester:
         self.log_verbose(f"Ejecutando: {' '.join(cmd)}")
         try:
             result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=self.timeout,
-                encoding='utf-8'
+                cmd, capture_output=True, text=True, timeout=self.timeout, encoding="utf-8"
             )
 
             if result.returncode != 0:
                 return {
                     "success": False,
                     "error": result.stderr.strip() or result.stdout.strip(),
-                    "returncode": result.returncode
+                    "returncode": result.returncode,
                 }
 
             output = result.stdout.strip()
@@ -114,7 +112,9 @@ class MCPToolkitTester:
             self.log_verbose(result["output"])
             return True
         else:
-            self.log(f"{Colors.RED}❌ Docker MCP Toolkit no disponible: {result.get('error')}{Colors.RESET}")
+            self.log(
+                f"{Colors.RED}❌ Docker MCP Toolkit no disponible: {result.get('error')}{Colors.RESET}"
+            )
             return False
 
     def list_mcp_servers(self) -> List[Dict[str, Any]]:
@@ -123,12 +123,14 @@ class MCPToolkitTester:
         result = self.run_command(["docker", "mcp", "server", "ls"])
 
         if not result["success"]:
-            self.log(f"{Colors.RED}❌ Error listando servidores: {result.get('error')}{Colors.RESET}")
+            self.log(
+                f"{Colors.RED}❌ Error listando servidores: {result.get('error')}{Colors.RESET}"
+            )
             return []
 
         # Parsear la tabla de texto
         servers = []
-        lines = result["output"].split('\n')
+        lines = result["output"].split("\n")
 
         # Buscar línea de encabezado
         header_idx = -1
@@ -142,12 +144,12 @@ class MCPToolkitTester:
             return []
 
         # Parsear servidores (saltar header y separador)
-        for line in lines[header_idx + 2:]:
-            if not line.strip() or line.startswith('Tip:'):
+        for line in lines[header_idx + 2 :]:
+            if not line.strip() or line.startswith("Tip:"):
                 continue
 
             # Parsear usando espacios múltiples como delimitador
-            parts = [p.strip() for p in line.split('  ') if p.strip()]
+            parts = [p.strip() for p in line.split("  ") if p.strip()]
             if len(parts) >= 5:
                 server = {
                     "name": parts[0],
@@ -203,17 +205,15 @@ class MCPToolkitTester:
             "oauth": server["oauth"],
             "secrets": server["secrets"],
             "config": server["config"],
-            "checks": []
+            "checks": [],
         }
 
         # Check 1: Verificar si necesita configuración
         if "▲" in server["config"]:
             test_result["status"] = "needs_config"
-            test_result["checks"].append({
-                "check": "config",
-                "result": "required",
-                "message": "Requiere configuración"
-            })
+            test_result["checks"].append(
+                {"check": "config", "result": "required", "message": "Requiere configuración"}
+            )
             self.log(f"{Colors.YELLOW}  ⚠️  Requiere configuración{Colors.RESET}")
             self.metrics["skipped"] += 1
             return test_result
@@ -221,11 +221,9 @@ class MCPToolkitTester:
         # Check 2: Verificar si necesita secretos
         if "▲" in server["secrets"]:
             test_result["status"] = "needs_secrets"
-            test_result["checks"].append({
-                "check": "secrets",
-                "result": "required",
-                "message": "Requiere secretos"
-            })
+            test_result["checks"].append(
+                {"check": "secrets", "result": "required", "message": "Requiere secretos"}
+            )
             self.log(f"{Colors.YELLOW}  ⚠️  Requiere secretos{Colors.RESET}")
             self.metrics["skipped"] += 1
             return test_result
@@ -233,37 +231,35 @@ class MCPToolkitTester:
         # Check 3: Verificar detalles del servidor
         details = self.get_server_details(name)
         if details["success"]:
-            test_result["checks"].append({
-                "check": "details",
-                "result": "ok",
-                "message": "Detalles obtenidos"
-            })
+            test_result["checks"].append(
+                {"check": "details", "result": "ok", "message": "Detalles obtenidos"}
+            )
             self.log(f"{Colors.GREEN}  ✅ Detalles obtenidos{Colors.RESET}")
         else:
-            test_result["checks"].append({
-                "check": "details",
-                "result": "failed",
-                "message": details.get("error")
-            })
-            self.log(f"{Colors.RED}  ❌ Error obteniendo detalles: {details.get('error')}{Colors.RESET}")
+            test_result["checks"].append(
+                {"check": "details", "result": "failed", "message": details.get("error")}
+            )
+            self.log(
+                f"{Colors.RED}  ❌ Error obteniendo detalles: {details.get('error')}{Colors.RESET}"
+            )
 
         # Check 4: Verificar conectividad básica
         connectivity = self.check_server_connectivity(name)
         if connectivity["success"]:
-            test_result["checks"].append({
-                "check": "connectivity",
-                "result": "ok",
-                "message": "Servidor listado y disponible"
-            })
+            test_result["checks"].append(
+                {
+                    "check": "connectivity",
+                    "result": "ok",
+                    "message": "Servidor listado y disponible",
+                }
+            )
             self.log(f"{Colors.GREEN}  ✅ Disponible{Colors.RESET}")
             test_result["status"] = "ok"
             self.metrics["passed"] += 1
         else:
-            test_result["checks"].append({
-                "check": "connectivity",
-                "result": "failed",
-                "message": connectivity.get("error")
-            })
+            test_result["checks"].append(
+                {"check": "connectivity", "result": "failed", "message": connectivity.get("error")}
+            )
             self.log(f"{Colors.RED}  ❌ No disponible: {connectivity.get('error')}{Colors.RESET}")
             test_result["status"] = "failed"
             self.metrics["failed"] += 1
@@ -292,16 +288,18 @@ class MCPToolkitTester:
         self.log(f"  {Colors.YELLOW}⏭️  Omitidos: {self.metrics['skipped']}{Colors.RESET}")
 
         # Calcular porcentajes
-        if self.metrics['tested'] > 0:
-            success_rate = (self.metrics['passed'] / self.metrics['tested']) * 100
+        if self.metrics["tested"] > 0:
+            success_rate = (self.metrics["passed"] / self.metrics["tested"]) * 100
             self.log(f"\n{Colors.BOLD}Tasa de éxito: {success_rate:.1f}%{Colors.RESET}")
 
         # Estado de configuración
         config_completeness = 0
-        if self.metrics['enabled'] > 0:
-            configured = self.metrics['with_secrets'] + self.metrics['with_config']
-            config_completeness = (configured / (self.metrics['enabled'] * 2)) * 100
-            self.log(f"{Colors.BOLD}Completitud de configuración: {config_completeness:.1f}%{Colors.RESET}")
+        if self.metrics["enabled"] > 0:
+            configured = self.metrics["with_secrets"] + self.metrics["with_config"]
+            config_completeness = (configured / (self.metrics["enabled"] * 2)) * 100
+            self.log(
+                f"{Colors.BOLD}Completitud de configuración: {config_completeness:.1f}%{Colors.RESET}"
+            )
 
         self.log(f"\n{Colors.BOLD}{'='*80}{Colors.RESET}")
 
@@ -316,17 +314,41 @@ class MCPToolkitTester:
         self.log(f"\n{Colors.BOLD}📖 EXPLICACIÓN DE MÉTRICAS{Colors.RESET}\n")
 
         explanations = [
-            ("Total habilitados", "Número de servidores MCP activados en Docker Toolkit. Se activan con: docker mcp server enable <nombre>"),
-            ("Con secretos configurados", "Servidores con API keys/tokens configurados (✓ done). Se configuran con: docker mcp secret set <server> <key> <value>"),
-            ("Con configuración", "Servidores con configuración adicional completada (✓ done). Algunos requieren parámetros específicos"),
-            ("Requieren secretos", "Servidores que necesitan API keys (▲ required). No funcionarán hasta configurar secretos"),
-            ("Requieren configuración", "Servidores que necesitan configuración adicional (▲ required). Parámetros como URIs, rutas, etc."),
-            ("Probados", "Servidores que pasaron la validación inicial (tienen secretos/config necesarios)"),
+            (
+                "Total habilitados",
+                "Número de servidores MCP activados en Docker Toolkit. Se activan con: docker mcp server enable <nombre>",
+            ),
+            (
+                "Con secretos configurados",
+                "Servidores con API keys/tokens configurados (✓ done). Se configuran con: docker mcp secret set <server> <key> <value>",
+            ),
+            (
+                "Con configuración",
+                "Servidores con configuración adicional completada (✓ done). Algunos requieren parámetros específicos",
+            ),
+            (
+                "Requieren secretos",
+                "Servidores que necesitan API keys (▲ required). No funcionarán hasta configurar secretos",
+            ),
+            (
+                "Requieren configuración",
+                "Servidores que necesitan configuración adicional (▲ required). Parámetros como URIs, rutas, etc.",
+            ),
+            (
+                "Probados",
+                "Servidores que pasaron la validación inicial (tienen secretos/config necesarios)",
+            ),
             ("Exitosos", "Servidores que respondieron correctamente a las pruebas de conectividad"),
             ("Fallidos", "Servidores con errores en conectividad o configuración"),
             ("Omitidos", "Servidores no probados por falta de secretos/configuración"),
-            ("Tasa de éxito", "Porcentaje de servidores que funcionan correctamente del total probado"),
-            ("Completitud de configuración", "Porcentaje de configuración completa (secretos + config) del total posible"),
+            (
+                "Tasa de éxito",
+                "Porcentaje de servidores que funcionan correctamente del total probado",
+            ),
+            (
+                "Completitud de configuración",
+                "Porcentaje de configuración completa (secretos + config) del total posible",
+            ),
         ]
 
         for metric, explanation in explanations:
@@ -400,10 +422,12 @@ Comandos útiles de Docker MCP:
   docker mcp server show <name>           # Ver detalles
   docker mcp secret set <server> <key>    # Configurar secreto
   docker mcp config show                  # Ver configuración
-        """
+        """,
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Modo detallado")
-    parser.add_argument("--timeout", "-t", type=int, default=15, help="Timeout en segundos (default: 15)")
+    parser.add_argument(
+        "--timeout", "-t", type=int, default=15, help="Timeout en segundos (default: 15)"
+    )
 
     args = parser.parse_args()
 

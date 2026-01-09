@@ -8,12 +8,13 @@ Provides:
 - Sample PROPOSITO.md files
 """
 
-import pytest
-from pathlib import Path
-import tempfile
 import shutil
-from unittest.mock import Mock, MagicMock
+import tempfile
 from datetime import datetime
+from pathlib import Path
+from unittest.mock import MagicMock, Mock
+
+import pytest
 
 
 @pytest.fixture
@@ -81,15 +82,23 @@ def valid_research_structure(temp_research_dir, valid_proposito_content):
     research_path.mkdir()
 
     # PROPOSITO.md
-    (research_path / "PROPOSITO.md").write_text(valid_proposito_content, encoding='utf-8')
+    (research_path / "PROPOSITO.md").write_text(valid_proposito_content, encoding="utf-8")
 
     # Valid folders with content
-    folders = ['0-inbox', '1-literature', '2-atomic', '3-workbook', '4-dataset', '5-outputs', '_daath']
+    folders = [
+        "0-inbox",
+        "1-literature",
+        "2-atomic",
+        "3-workbook",
+        "4-dataset",
+        "5-outputs",
+        "_daath",
+    ]
     for folder in folders:
         folder_path = research_path / folder
         folder_path.mkdir()
         # Add dummy file to make folder non-empty
-        (folder_path / "README.md").write_text(f"# {folder}", encoding='utf-8')
+        (folder_path / "README.md").write_text(f"# {folder}", encoding="utf-8")
 
     return research_path
 
@@ -124,20 +133,12 @@ def mock_pinecone_client():
     mock_index = MagicMock()
     mock_index.upsert.return_value = {"upserted_count": 1}
     mock_index.query.return_value = {
-        "matches": [
-            {
-                "id": "test-id-1",
-                "score": 0.95,
-                "metadata": {"artifact_type": "concept"}
-            }
-        ]
+        "matches": [{"id": "test-id-1", "score": 0.95, "metadata": {"artifact_type": "concept"}}]
     }
     mock_index.delete.return_value = None
     mock_index.describe_index_stats.return_value = {
-        "namespaces": {
-            "DD-001.global": {"vector_count": 10}
-        },
-        "total_vector_count": 10
+        "namespaces": {"DD-001.global": {"vector_count": 10}},
+        "total_vector_count": 10,
     }
 
     mock_pc.Index.return_value = mock_index
@@ -152,9 +153,7 @@ def mock_openai_client():
 
     # Mock embeddings.create
     mock_embedding_response = Mock()
-    mock_embedding_response.data = [
-        Mock(embedding=[0.1] * 1536)  # Embedding de 1536 dimensiones
-    ]
+    mock_embedding_response.data = [Mock(embedding=[0.1] * 1536)]  # Embedding de 1536 dimensiones
     mock_client.embeddings.create.return_value = mock_embedding_response
 
     return mock_client
@@ -168,19 +167,16 @@ def sample_chatlog_metadata():
         "domain_id": "DD-001",
         "started_at": "2024-01-15T10:00:00Z",
         "status": "success",
-        "prompts_used": {
-            "HYPATIA": "v1.0.0",
-            "SALOMON": "v1.0.0"
-        },
+        "prompts_used": {"HYPATIA": "v1.0.0", "SALOMON": "v1.0.0"},
         "checkpoints": [
             {
                 "rostro": "HYPATIA",
                 "name": "citations-filtered",
                 "passed": True,
-                "timestamp": "2024-01-15T10:15:00Z"
+                "timestamp": "2024-01-15T10:15:00Z",
             }
         ],
-        "potential_lessons": []
+        "potential_lessons": [],
     }
 
 

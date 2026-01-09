@@ -87,6 +87,19 @@
 				"gateway",
 				"run"
 			]
+		},
+		"sequential-thinking": {
+		"command": "npx",
+		"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+		},
+		"smart-thinking": {
+		"command": "npx",
+		"args": ["-y", "@Leghis/smart-thinking"]
+		},
+		"maxential-thinking": {
+		"command": "npx",
+		"args": ["-y", "@bam-devcrew/maxential-thinking-mcp"]
+
 		}
 	},
 	"inputs": []

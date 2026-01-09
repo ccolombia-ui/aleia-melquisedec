@@ -13,10 +13,11 @@ Uso:
     python scripts/neo4j_schema.py --action=query --query=domains
 """
 
-from neo4j import GraphDatabase
-from typing import List, Dict, Optional
-from datetime import datetime
 import os
+from datetime import datetime
+from typing import Dict, List, Optional
+
+from neo4j import GraphDatabase
 
 
 class AutopoiesisSchema:
@@ -38,16 +39,12 @@ class AutopoiesisSchema:
         constraints = [
             # Dominios
             "CREATE CONSTRAINT domain_id_unique IF NOT EXISTS FOR (d:Domain) REQUIRE d.id IS UNIQUE",
-
             # Research Instances
             "CREATE CONSTRAINT instance_id_unique IF NOT EXISTS FOR (i:ResearchInstance) REQUIRE i.id IS UNIQUE",
-
             # Lessons
             "CREATE CONSTRAINT lesson_id_unique IF NOT EXISTS FOR (l:Lesson) REQUIRE l.id IS UNIQUE",
-
             # Prompt Types
             "CREATE CONSTRAINT prompt_type_id_unique IF NOT EXISTS FOR (p:PromptType) REQUIRE p.id IS UNIQUE",
-
             # Outputs
             "CREATE CONSTRAINT output_id_unique IF NOT EXISTS FOR (o:Output) REQUIRE o.id IS UNIQUE",
         ]
@@ -55,7 +52,9 @@ class AutopoiesisSchema:
         with self.driver.session() as session:
             for constraint in constraints:
                 session.run(constraint)
-                print(f"✅ Constraint creado: {constraint.split('FOR')[1].split('REQUIRE')[0].strip()}")
+                print(
+                    f"✅ Constraint creado: {constraint.split('FOR')[1].split('REQUIRE')[0].strip()}"
+                )
 
     def create_indexes(self):
         """Crea índices para queries frecuentes."""
@@ -63,14 +62,11 @@ class AutopoiesisSchema:
         indexes = [
             # Índices por domain_id (queries frecuentes)
             "CREATE INDEX domain_id_index IF NOT EXISTS FOR (n) ON (n.domain_id)",
-
             # Índices por status
             "CREATE INDEX instance_status_index IF NOT EXISTS FOR (i:ResearchInstance) ON (i.status)",
             "CREATE INDEX lesson_status_index IF NOT EXISTS FOR (l:Lesson) ON (l.status)",
-
             # Índices por rostro
             "CREATE INDEX lesson_rostro_index IF NOT EXISTS FOR (l:Lesson) ON (l.rostro)",
-
             # Índices por fecha
             "CREATE INDEX instance_created_index IF NOT EXISTS FOR (i:ResearchInstance) ON (i.started_at)",
             "CREATE INDEX lesson_extracted_index IF NOT EXISTS FOR (l:Lesson) ON (i.extracted_at)",
@@ -91,7 +87,7 @@ class AutopoiesisSchema:
         name: str,
         description: str,
         prompt_type_id: str,
-        prompt_version: str = "1.0.0"
+        prompt_version: str = "1.0.0",
     ) -> Dict:
         """Crea un Domain node."""
 
@@ -110,13 +106,16 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            result = session.run(query, {
-                "domain_id": domain_id,
-                "name": name,
-                "description": description,
-                "prompt_type_id": prompt_type_id,
-                "prompt_version": prompt_version
-            })
+            result = session.run(
+                query,
+                {
+                    "domain_id": domain_id,
+                    "name": name,
+                    "description": description,
+                    "prompt_type_id": prompt_type_id,
+                    "prompt_version": prompt_version,
+                },
+            )
             return result.single()[0]
 
     def create_research_instance(
@@ -125,7 +124,7 @@ class AutopoiesisSchema:
         name: str,
         domain_id: str,
         prompt_instance_id: str,
-        prompt_type_version: str
+        prompt_type_version: str,
     ) -> Dict:
         """Crea un ResearchInstance node y lo conecta a su Domain."""
 
@@ -152,13 +151,16 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            result = session.run(query, {
-                "instance_id": instance_id,
-                "name": name,
-                "domain_id": domain_id,
-                "prompt_instance_id": prompt_instance_id,
-                "prompt_type_version": prompt_type_version
-            })
+            result = session.run(
+                query,
+                {
+                    "instance_id": instance_id,
+                    "name": name,
+                    "domain_id": domain_id,
+                    "prompt_instance_id": prompt_instance_id,
+                    "prompt_type_version": prompt_type_version,
+                },
+            )
             return result.single()
 
     def create_lesson(
@@ -170,7 +172,7 @@ class AutopoiesisSchema:
         text: str,
         confidence: float,
         applies_to_prompt: str,
-        scope: str = "domain"
+        scope: str = "domain",
     ) -> Dict:
         """Crea un Lesson node y lo conecta a su ResearchInstance."""
 
@@ -201,16 +203,19 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            result = session.run(query, {
-                "lesson_id": lesson_id,
-                "instance_id": instance_id,
-                "domain_id": domain_id,
-                "rostro": rostro,
-                "text": text,
-                "confidence": confidence,
-                "applies_to_prompt": applies_to_prompt,
-                "scope": scope
-            })
+            result = session.run(
+                query,
+                {
+                    "lesson_id": lesson_id,
+                    "instance_id": instance_id,
+                    "domain_id": domain_id,
+                    "rostro": rostro,
+                    "text": text,
+                    "confidence": confidence,
+                    "applies_to_prompt": applies_to_prompt,
+                    "scope": scope,
+                },
+            )
             return result.single()
 
     def create_prompt_type(
@@ -219,7 +224,7 @@ class AutopoiesisSchema:
         domain_id: str,
         version: str,
         lessons_incorporated: int = 0,
-        changelog: str = ""
+        changelog: str = "",
     ) -> Dict:
         """Crea un PromptType node."""
 
@@ -241,22 +246,20 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            result = session.run(query, {
-                "prompt_id": prompt_id,
-                "domain_id": domain_id,
-                "version": version,
-                "lessons_incorporated": lessons_incorporated,
-                "changelog": changelog
-            })
+            result = session.run(
+                query,
+                {
+                    "prompt_id": prompt_id,
+                    "domain_id": domain_id,
+                    "version": version,
+                    "lessons_incorporated": lessons_incorporated,
+                    "changelog": changelog,
+                },
+            )
             return result.single()
 
     def create_output(
-        self,
-        output_id: str,
-        instance_id: str,
-        version: str,
-        path: str,
-        vector_namespace: str
+        self, output_id: str, instance_id: str, version: str, path: str, vector_namespace: str
     ) -> Dict:
         """Crea un Output node."""
 
@@ -280,13 +283,16 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            result = session.run(query, {
-                "output_id": output_id,
-                "instance_id": instance_id,
-                "version": version,
-                "path": path,
-                "vector_namespace": vector_namespace
-            })
+            result = session.run(
+                query,
+                {
+                    "output_id": output_id,
+                    "instance_id": instance_id,
+                    "version": version,
+                    "path": path,
+                    "vector_namespace": vector_namespace,
+                },
+            )
             return result.single()
 
     # =========================================================================
@@ -294,11 +300,7 @@ class AutopoiesisSchema:
     # =========================================================================
 
     def link_lesson_improves_prompt(
-        self,
-        lesson_id: str,
-        prompt_id: str,
-        from_version: str,
-        to_version: str
+        self, lesson_id: str, prompt_id: str, from_version: str, to_version: str
     ):
         """Crea relación IMPROVES entre Lesson y PromptType."""
 
@@ -320,18 +322,17 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "lesson_id": lesson_id,
-                "prompt_id": prompt_id,
-                "from_version": from_version,
-                "to_version": to_version
-            }).single()
+            return session.run(
+                query,
+                {
+                    "lesson_id": lesson_id,
+                    "prompt_id": prompt_id,
+                    "from_version": from_version,
+                    "to_version": to_version,
+                },
+            ).single()
 
-    def link_prompt_evolution(
-        self,
-        old_prompt_id: str,
-        new_prompt_id: str
-    ):
+    def link_prompt_evolution(self, old_prompt_id: str, new_prompt_id: str):
         """Crea relación EVOLVED_TO entre versiones de PromptType."""
 
         query = """
@@ -346,17 +347,11 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "old_prompt_id": old_prompt_id,
-                "new_prompt_id": new_prompt_id
-            }).single()
+            return session.run(
+                query, {"old_prompt_id": old_prompt_id, "new_prompt_id": new_prompt_id}
+            ).single()
 
-    def link_lesson_validated_in(
-        self,
-        lesson_id: str,
-        instance_id: str,
-        result: str = "success"
-    ):
+    def link_lesson_validated_in(self, lesson_id: str, instance_id: str, result: str = "success"):
         """Crea relación VALIDATED_IN entre Lesson y ResearchInstance."""
 
         query = """
@@ -379,17 +374,11 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "lesson_id": lesson_id,
-                "instance_id": instance_id,
-                "result": result
-            }).single()
+            return session.run(
+                query, {"lesson_id": lesson_id, "instance_id": instance_id, "result": result}
+            ).single()
 
-    def link_instance_used_prompt(
-        self,
-        instance_id: str,
-        prompt_id: str
-    ):
+    def link_instance_used_prompt(self, instance_id: str, prompt_id: str):
         """Crea relación USED_PROMPT entre ResearchInstance y PromptType."""
 
         query = """
@@ -404,10 +393,7 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "instance_id": instance_id,
-                "prompt_id": prompt_id
-            }).single()
+            return session.run(query, {"instance_id": instance_id, "prompt_id": prompt_id}).single()
 
     # =========================================================================
     # QUERIES ÚTILES
@@ -529,11 +515,7 @@ class AutopoiesisSchema:
     # UPDATES
     # =========================================================================
 
-    def complete_instance(
-        self,
-        instance_id: str,
-        status: str = "completed"
-    ):
+    def complete_instance(self, instance_id: str, status: str = "completed"):
         """Marcar instance como completada."""
 
         query = """
@@ -549,16 +531,9 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "instance_id": instance_id,
-                "status": status
-            }).single()
+            return session.run(query, {"instance_id": instance_id, "status": status}).single()
 
-    def reject_lesson(
-        self,
-        lesson_id: str,
-        reason: str
-    ):
+    def reject_lesson(self, lesson_id: str, reason: str):
         """Rechazar una lesson."""
 
         query = """
@@ -570,10 +545,7 @@ class AutopoiesisSchema:
         """
 
         with self.driver.session() as session:
-            return session.run(query, {
-                "lesson_id": lesson_id,
-                "reason": reason
-            }).single()
+            return session.run(query, {"lesson_id": lesson_id, "reason": reason}).single()
 
 
 # =============================================================================
@@ -622,7 +594,9 @@ if __name__ == "__main__":
                 results = schema.get_confidence_by_rostro()
                 print("\n⭐ Confidence por Rostro:")
                 for r in results:
-                    print(f"  {r['rostro']}: {r['avg_confidence']:.2f} ({r['validated_lessons']} lessons)")
+                    print(
+                        f"  {r['rostro']}: {r['avg_confidence']:.2f} ({r['validated_lessons']} lessons)"
+                    )
 
             elif args.query == "universal":
                 results = schema.get_universal_lessons()

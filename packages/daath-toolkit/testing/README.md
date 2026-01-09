@@ -58,30 +58,30 @@ testing/
 
 ### test_validate_research.py (10 tests)
 
-✅ `test_valid_research_passes_validation` - Estructura válida debe pasar  
-✅ `test_missing_proposito_fails` - Sin PROPOSITO.md debe fallar  
-✅ `test_proposito_with_missing_fields` - Campos faltantes debe fallar  
-✅ `test_proposito_without_yaml_generates_warning` - Sin YAML genera warning  
-✅ `test_invalid_status_generates_warning` - Status inválido genera warning  
-✅ `test_valid_folders_accepted` - Carpetas válidas aceptadas  
-✅ `test_info_messages_generated_for_valid_fields` - Info generado para campos válidos  
-✅ `test_yaml_parsing_error_detected` - YAML malformado detectado  
-✅ `test_empty_research_directory` - Directorio vacío falla  
-✅ `test_required_fields_all_validated` - Todos los campos requeridos validados  
+✅ `test_valid_research_passes_validation` - Estructura válida debe pasar
+✅ `test_missing_proposito_fails` - Sin PROPOSITO.md debe fallar
+✅ `test_proposito_with_missing_fields` - Campos faltantes debe fallar
+✅ `test_proposito_without_yaml_generates_warning` - Sin YAML genera warning
+✅ `test_invalid_status_generates_warning` - Status inválido genera warning
+✅ `test_valid_folders_accepted` - Carpetas válidas aceptadas
+✅ `test_info_messages_generated_for_valid_fields` - Info generado para campos válidos
+✅ `test_yaml_parsing_error_detected` - YAML malformado detectado
+✅ `test_empty_research_directory` - Directorio vacío falla
+✅ `test_required_fields_all_validated` - Todos los campos requeridos validados
 
 ### test_chatlog_capture.py (11 tests)
 
-✅ `test_initialization_creates_directories` - Inicialización crea directorios  
-✅ `test_start_instance_creates_metadata` - Start crea metadata.yaml  
-✅ `test_record_message_writes_to_transcript` - Mensajes escritos a transcript  
-✅ `test_record_message_separates_by_rostro` - Mensajes separados por rostro  
-✅ `test_record_checkpoint_adds_to_metadata` - Checkpoints agregados a metadata  
-✅ `test_record_potential_lesson_adds_to_metadata` - Lessons agregados a metadata  
-✅ `test_finalize_instance_updates_metadata` - Finalize actualiza metadata  
-✅ `test_multiple_messages_maintain_order` - Orden cronológico mantenido  
-✅ `test_empty_prompts_dict_handled` - Dict vacío manejado  
-✅ `test_git_metadata_stored_when_provided` - Git metadata almacenado  
-✅ `test_invalid_rostro_handled_gracefully` - Rostro conocido funciona  
+✅ `test_initialization_creates_directories` - Inicialización crea directorios
+✅ `test_start_instance_creates_metadata` - Start crea metadata.yaml
+✅ `test_record_message_writes_to_transcript` - Mensajes escritos a transcript
+✅ `test_record_message_separates_by_rostro` - Mensajes separados por rostro
+✅ `test_record_checkpoint_adds_to_metadata` - Checkpoints agregados a metadata
+✅ `test_record_potential_lesson_adds_to_metadata` - Lessons agregados a metadata
+✅ `test_finalize_instance_updates_metadata` - Finalize actualiza metadata
+✅ `test_multiple_messages_maintain_order` - Orden cronológico mantenido
+✅ `test_empty_prompts_dict_handled` - Dict vacío manejado
+✅ `test_git_metadata_stored_when_provided` - Git metadata almacenado
+✅ `test_invalid_rostro_handled_gracefully` - Rostro conocido funciona
 
 ### test_vector_store.py (14 tests - no ejecutados)
 

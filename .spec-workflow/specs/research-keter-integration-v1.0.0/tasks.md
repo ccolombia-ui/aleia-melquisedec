@@ -1,6 +1,7 @@
 # Research App Integration v1.0.0 - Tasks
 
 ## Overview
+
 Este task board implementa el análisis y decisión arquitectónica sobre integración de apps de investigación (caso: keter) en el ecosistema DAATH-ZEN.
 
 **Status**: 🟡 NOT STARTED
@@ -12,6 +13,7 @@ Este task board implementa el análisis y decisión arquitectónica sobre integr
 ## Phase 1: Discovery & Analysis 🔍
 
 ### TASK-1.1: Gather Keter Information
+
 **Owner**: Developer + User
 **Priority**: ⚡ CRITICAL (bloquea análisis)
 **Estimated Time**: 30 min
@@ -20,13 +22,15 @@ Este task board implementa el análisis y decisión arquitectónica sobre integr
 Obtener información estructural de keter ya que está fuera del workspace actual.
 
 **Acceptance Criteria**:
-- [ ] Usuario proporciona tree structure de keter
+
+- [ ] Construir tree structure de keter
 - [ ] requirements.txt o pyproject.toml obtenido
 - [ ] README o descripción del propósito disponible
 - [ ] Al menos 1 archivo .py de ejemplo revisado
 
 **Approach**:
-1. Solicitar al usuario: `tree C:\proyectos\aleia-bereshit\apps\keter /F > keter-structure.txt`
+
+1. Construir el arbol usando los mcp necesarios: `tree C:\proyectos\aleia-bereshit\apps\keter /F > keter-structure.txt`
 2. Solicitar archivos clave: requirements, README
 3. O usar terminal para copiar info si es posible
 
@@ -35,6 +39,7 @@ Obtener información estructural de keter ya que está fuera del workspace actua
 ---
 
 ### TASK-1.2: Analyze Keter Structure
+
 **Owner**: AI Agent
 **Priority**: HIGH
 **Estimated Time**: 45 min
@@ -44,12 +49,14 @@ Obtener información estructural de keter ya que está fuera del workspace actua
 Analizar la estructura, dependencias y propósito de keter usando el framework de análisis.
 
 **Acceptance Criteria**:
+
 - [ ] ComponentMetadata completo para keter
 - [ ] Scorecard multidimensional generado
 - [ ] Identificadas dependencies externas
 - [ ] Evaluado nivel de madurez (tests, docs)
 
 **Approach**:
+
 ```python
 # Ejecutar análisis estructurado
 analyzer = ComponentAnalyzer()
@@ -62,6 +69,7 @@ scorecard = metadata.to_scorecard()
 ---
 
 ### TASK-1.3: Apply Decision Tree to Keter
+
 **Owner**: AI Agent
 **Priority**: HIGH
 **Estimated Time**: 30 min
@@ -71,12 +79,14 @@ scorecard = metadata.to_scorecard()
 Aplicar el decision tree a keter para determinar placement recomendado.
 
 **Acceptance Criteria**:
+
 - [ ] Decision tree ejecutado paso a paso
 - [ ] Placement recommendation con confidence score
 - [ ] Rationale documentado para cada decisión
 - [ ] Action items identificados
 
 **Approach**:
+
 1. Evaluar cada criterio del decision tree
 2. Documentar en formato: "Criterio X → Resultado Y → Siguiente paso Z"
 3. Generar recomendación final
@@ -88,6 +98,7 @@ Aplicar el decision tree a keter para determinar placement recomendado.
 ## Phase 2: Architecture Documentation 📐
 
 ### TASK-2.1: Create ADR-002 Multi-Repo Strategy
+
 **Owner**: AI Agent
 **Priority**: ⚡ CRITICAL
 **Estimated Time**: 1 hour
@@ -96,12 +107,14 @@ Aplicar el decision tree a keter para determinar placement recomendado.
 Documentar la estrategia arquitectónica multi-repositorio como ADR formal.
 
 **Acceptance Criteria**:
+
 - [ ] ADR completo con 5 secciones estándar
 - [ ] Rationale basado en análisis de pensamiento complejo
 - [ ] Consequences (pros/cons) identificadas
 - [ ] Mitigation strategies para cons
 
 **Template**:
+
 ```markdown
 # ADR-002: Multi-Repository Architecture Strategy
 ## Status: Accepted
@@ -116,6 +129,7 @@ Documentar la estrategia arquitectónica multi-repositorio como ADR formal.
 ---
 
 ### TASK-2.2: Create Component Placement Guidelines
+
 **Owner**: AI Agent
 **Priority**: HIGH
 **Estimated Time**: 1 hour
@@ -124,12 +138,14 @@ Documentar la estrategia arquitectónica multi-repositorio como ADR formal.
 Crear decision tree visual y guidelines para clasificar componentes futuros.
 
 **Acceptance Criteria**:
+
 - [ ] Flowchart Mermaid del decision tree
 - [ ] Tabla de criterios y umbrales
 - [ ] 3 ejemplos aplicados (incluido keter)
 - [ ] FAQ con casos edge
 
 **Sections**:
+
 1. Introduction
 2. Decision Tree Flowchart (Mermaid)
 3. Criteria Explanation
@@ -141,6 +157,7 @@ Crear decision tree visual y guidelines para clasificar componentes futuros.
 ---
 
 ### TASK-2.3: Create New Research Repo Template
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 1 hour
@@ -149,6 +166,7 @@ Crear decision tree visual y guidelines para clasificar componentes futuros.
 Documentar template completo para nuevos repos de investigación.
 
 **Acceptance Criteria**:
+
 - [ ] Estructura de directorios completa
 - [ ] pyproject.toml template con daath-toolkit dependency
 - [ ] .gitignore, .pre-commit-config.yaml incluidos
@@ -156,6 +174,7 @@ Documentar template completo para nuevos repos de investigación.
 - [ ] GitHub Actions template básico
 
 **Structure**:
+
 ```
 aleia-{name}/
 ├── README.md (template)
@@ -179,6 +198,7 @@ aleia-{name}/
 ---
 
 ### TASK-2.4: Create Multi-Repo Spec Workflow Guidelines
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 45 min
@@ -187,6 +207,7 @@ aleia-{name}/
 Documentar cómo gestionar specs que involucran múltiples repositorios.
 
 **Acceptance Criteria**:
+
 - [ ] Tracking conventions definidas
 - [ ] 3 scenarios cubiertos (spec multi-repo, nuevo repo, cambios afectando múltiples)
 - [ ] Ejemplo práctico con tags `[REPO:...]`
@@ -199,6 +220,7 @@ Documentar cómo gestionar specs que involucran múltiples repositorios.
 ## Phase 3: Repository Cleanup 🧹
 
 ### TASK-3.1: Clarify apps/ Purpose in Melquisedec
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 30 min
@@ -207,12 +229,14 @@ Documentar cómo gestionar specs que involucran múltiples repositorios.
 Decidir y documentar el rol de `apps/` en melquisedec: ¿examples/ o mantener con README claro?
 
 **Acceptance Criteria**:
+
 - [ ] Decisión tomada (Opción A, B o C de design.md)
 - [ ] Si rename: ejecutar `git mv apps/ examples/`
 - [ ] README.md en carpeta actualizado
 - [ ] ARQUITECTURA_MONOREPO.md actualizado
 
 **Decision Options**:
+
 - **A**: Rename to `examples/`
 - **B**: Keep `apps/` but explicit README
 - **C**: Remove, move 00-template to packages/daath-toolkit/templates/
@@ -224,6 +248,7 @@ Decidir y documentar el rol de `apps/` en melquisedec: ¿examples/ o mantener co
 ---
 
 ### TASK-3.2: Update ARQUITECTURA_MONOREPO.md
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 30 min
@@ -233,12 +258,14 @@ Decidir y documentar el rol de `apps/` en melquisedec: ¿examples/ o mantener co
 Incorporar multi-repo strategy en documento de arquitectura principal.
 
 **Acceptance Criteria**:
+
 - [ ] Nueva sección: "Multi-Repository Strategy"
 - [ ] Referencia a ADR-002
 - [ ] Diagrama actualizado con repos externos
 - [ ] apps/ o examples/ clarificado
 
 **Changes**:
+
 - Add section after "Estructura Optimizada"
 - Update diagrams to show aleia-bereshit, aleia-{future}
 - Link to ADR-002 and guidelines
@@ -250,6 +277,7 @@ Incorporar multi-repo strategy en documento de arquitectura principal.
 ## Phase 4: Decision & Next Steps 🎯
 
 ### TASK-4.1: Document Keter Final Decision
+
 **Owner**: AI Agent + User Approval
 **Priority**: ⚡ CRITICAL
 **Estimated Time**: 30 min
@@ -259,12 +287,14 @@ Incorporar multi-repo strategy en documento de arquitectura principal.
 Basado en análisis, documentar decisión formal sobre el futuro de keter.
 
 **Acceptance Criteria**:
+
 - [ ] Decisión clara: A, B, C, o D (ver opciones abajo)
 - [ ] Rationale documentado
 - [ ] Action items específicos identificados
 - [ ] Review date establecida (si procede)
 
 **Decision Options** (from design.md):
+
 - **A**: Mantener como App en Bereshit
 - **B**: Convertir a Package (futuro spec)
 - **C**: Promover a Repo Independiente (aleia-keter)
@@ -275,6 +305,7 @@ Basado en análisis, documentar decisión formal sobre el futuro de keter.
 ---
 
 ### TASK-4.2: Create Implementation Roadmap (if applicable)
+
 **Owner**: AI Agent
 **Priority**: LOW (depends on decision)
 **Estimated Time**: 30 min
@@ -284,6 +315,7 @@ Basado en análisis, documentar decisión formal sobre el futuro de keter.
 Si la decisión requiere implementación (ej: packaging), crear roadmap de alto nivel.
 
 **Acceptance Criteria**:
+
 - [ ] Fases identificadas (ej: restructure → tests → package → publish)
 - [ ] Timeframe estimado
 - [ ] Dependencies y blockers
@@ -296,6 +328,7 @@ Si la decisión requiere implementación (ej: packaging), crear roadmap de alto 
 ---
 
 ### TASK-4.3: Update CONTRIBUTING.md
+
 **Owner**: AI Agent
 **Priority**: LOW
 **Estimated Time**: 20 min
@@ -305,6 +338,7 @@ Si la decisión requiere implementación (ej: packaging), crear roadmap de alto 
 Actualizar guía de contribución con nueva sección "Where to Contribute".
 
 **Acceptance Criteria**:
+
 - [ ] Nueva sección agregada
 - [ ] Link a component placement guidelines
 - [ ] Ejemplos de contribuciones por tipo (package, app, tool)
@@ -316,6 +350,7 @@ Actualizar guía de contribución con nueva sección "Where to Contribute".
 ## Phase 5: Validation & Documentation 📋
 
 ### TASK-5.1: Self-Validate Spec Multi-Repo Compliance
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 15 min
@@ -324,6 +359,7 @@ Actualizar guía de contribución con nueva sección "Where to Contribute".
 Verificar que este spec sigue sus propias guidelines para multi-repo.
 
 **Acceptance Criteria**:
+
 - [ ] Spec incluye tag `[MULTI-REPO: melquisedec, bereshit]` en header
 - [ ] Logs referencian repos externos correctamente
 - [ ] Implementation logs usan convención `[REPO:...]`
@@ -333,6 +369,7 @@ Verificar que este spec sigue sus propias guidelines para multi-repo.
 ---
 
 ### TASK-5.2: Generate Summary & Changelog
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 20 min
@@ -341,12 +378,14 @@ Verificar que este spec sigue sus propias guidelines para multi-repo.
 Crear resumen ejecutivo y actualizar CHANGELOG.md.
 
 **Acceptance Criteria**:
+
 - [ ] Executive summary en spec README
 - [ ] Bullet points de decisiones clave
 - [ ] Entry en `CHANGELOG.md` con fecha
 - [ ] Links a deliverables
 
 **CHANGELOG Entry**:
+
 ```markdown
 ## [1.1.0] - 2026-01-XX
 
@@ -369,6 +408,7 @@ Crear resumen ejecutivo y actualizar CHANGELOG.md.
 ---
 
 ### TASK-5.3: Create Spec Completion Report
+
 **Owner**: AI Agent
 **Priority**: LOW
 **Estimated Time**: 15 min
@@ -377,12 +417,14 @@ Crear resumen ejecutivo y actualizar CHANGELOG.md.
 Generar reporte final con métricas de completitud.
 
 **Acceptance Criteria**:
+
 - [ ] Todos los REQ-X validados
 - [ ] Deliverables checklist completo
 - [ ] Success criteria evaluados
 - [ ] Lessons learned capturados
 
 **Template**:
+
 ```markdown
 # Completion Report: Research App Integration v1.0.0
 
@@ -413,6 +455,7 @@ Generar reporte final con métricas de completitud.
 ## Meta Tasks 🔧
 
 ### META-1: Setup Spec Folder Structure
+
 **Owner**: AI Agent
 **Priority**: ⚡ IMMEDIATE
 **Estimated Time**: 5 min
@@ -421,6 +464,7 @@ Generar reporte final con métricas de completitud.
 Crear estructura de carpetas para organizar deliverables.
 
 **Structure**:
+
 ```
 research-app-integration-v1.0.0/
 ├── requirements.md
@@ -442,6 +486,7 @@ research-app-integration-v1.0.0/
 ---
 
 ### META-2: Create Spec README
+
 **Owner**: AI Agent
 **Priority**: MEDIUM
 **Estimated Time**: 15 min
@@ -450,6 +495,7 @@ research-app-integration-v1.0.0/
 Crear README.md del spec como punto de entrada.
 
 **Content**:
+
 - Purpose statement
 - Status badge
 - Quick links to requirements/design/tasks
@@ -495,6 +541,7 @@ graph TD
 ```
 
 **Legend**:
+
 - 🔴 Critical Path
 - ⚡ Immediate priority
 - 🟡 Can be parallelized
@@ -504,21 +551,25 @@ graph TD
 ## Execution Strategy
 
 ### Sprint 1: Discovery (Tasks 1.1-1.3)
+
 **Goal**: Entender keter y aplicar análisis
 **Duration**: 1 session (2 hours)
 **Output**: keter evaluation & decision
 
 ### Sprint 2: Documentation (Tasks 2.1-2.4)
+
 **Goal**: Crear artefactos arquitectónicos
 **Duration**: 1 session (2.5 hours)
 **Output**: 4 documentos guía
 
 ### Sprint 3: Cleanup (Tasks 3.1-3.2, 4.3)
+
 **Goal**: Actualizar repo melquisedec
 **Duration**: 1 session (1.5 hours)
 **Output**: Repo actualizado con nuevas guidelines
 
 ### Sprint 4: Finalization (Tasks 4.1-4.2, 5.1-5.3)
+
 **Goal**: Decisión final y cierre
 **Duration**: 1 session (1.5 hours)
 **Output**: Spec completo y validado
@@ -540,16 +591,19 @@ graph TD
 ## Notes
 
 ### Assumptions
+
 - Usuario tiene acceso a keter y puede proporcionar info
 - aleia-bereshit usa estructura compatible con análisis
 - Decisiones son reversibles (pueden reevaluarse)
 
 ### Constraints
+
 - No implementamos cambios en bereshit (fuera de scope)
 - No configuramos CI/CD multi-repo (v2.0.0)
 - No creamos tooling automatizado (repo generator) en v1.0.0
 
 ### Risks
+
 - **Risk**: Keter inaccesible → **Mitigation**: Análisis genérico + placeholder
 - **Risk**: Decisión controversial → **Mitigation**: Rationale transparente + review date
 - **Risk**: Guidelines demasiado rígidas → **Mitigation**: "Guidelines, not rules" clause
@@ -561,6 +615,7 @@ graph TD
 **Next Action**: Execute META-1 (setup structure) and TASK-1.1 (gather keter info)
 
 **Command for User**:
+
 ```powershell
 # Para obtener estructura de keter
 cd C:\proyectos\aleia-bereshit\apps\keter

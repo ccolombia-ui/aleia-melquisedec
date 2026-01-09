@@ -1,0 +1,10 @@
+# Este directorio almacenará las lessons learned de cada task
+
+# Estructura esperada:
+# - task-1-neo4j-vector-index.md
+# - task-2-llamaindex-pipeline.md
+# - task-3-docker-config.md
+# - task-4-schema-docs.md
+# - task-5-benchmarking.md
+# - task-6-consolidation.md
+# - summary.yaml (generado al final)
