@@ -28,6 +28,7 @@ Create `context.jsonld` file defining semantic web vocabulary for MELQUISEDEC sy
 - [ ] Validates in JSON-LD Playground (https://json-ld.org/playground/)
 - [ ] Includes @vocab for default namespace
 - [ ] Documents usage with 3 complete examples
+- [ ] Artifact generated from `daath-zen-req-template` and saved as `010-define/workbooks/REQ-001-context-validation.md` (includes `template_root: template-configurable_daath-zen-root.md`)
 
 **Dependencies**: None
 **Validation Method**: JSON-LD Playground validation + RDF triple generation test

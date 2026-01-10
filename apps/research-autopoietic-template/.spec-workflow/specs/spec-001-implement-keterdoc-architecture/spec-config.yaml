@@ -10,6 +10,8 @@ spec:
 
   # NEW: Reference to artifact template used
   artifact_template: '../../../_templates/daath-template/artifact-templates/by-type/issue-tpl.md'
+  daath_zen_template: '../../../_templates/daath-zen-patterns/daath-zen-req-template.md'
+  template_root: '../../../_templates/daath-zen-patterns/template-configurable_daath-zen-root.md'
   workflow_pattern: 'PATTERN-007-Problem-RBM-GAC'
 
   # Research lens (DSR | IMRAD | DDD | Social | None)
