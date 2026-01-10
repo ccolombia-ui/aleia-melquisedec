@@ -1,0 +1,498 @@
+# config.yaml-ld v1.0.0
+# Template Hierarchy Configuration for daath-zen templates
+# =========================================================
+# This file defines the inheritance structure for all template variants
+# Base template provides universal sections, variants add specific content
+
+"@context":
+  "@vocab": "http://melquisedec.org/template#"
+  "dc": "http://purl.org/dc/terms/"
+  "schema": "https://schema.org/"
+
+version: "1.0.0"
+created: "2026-01-10"
+maintainer: "MELQUISEDEC Architecture Team"
+schema_version: "keter-doc-protocol-v1.0.0"
+
+# ========================================
+# BASE TEMPLATE DEFINITION
+# ========================================
+template_hierarchy:
+  base:
+    name: "daath-zen-base"
+    version: "1.0.0"
+    file: "daath-zen-base.md"
+    description: "Universal template with HKM header, JSON-LD metadata, and common sections"
+
+    # Sections provided by base template
+    sections:
+      # Header sections (YAML frontmatter)
+      - name: "hkm_header"
+        mandatory: true
+        format: "yaml-frontmatter"
+        description: "YAML header with Keter-Doc metadata"
+        fields:
+          - spec_id
+          - title
+          - phase
+          - version
+          - created
+          - modified
+          - author
+          - rostro_primary
+          - status
+          - approval_required
+          - principles
+          - dc_title
+          - dc_description
+          - dc_subject
+          - dc_language
+          - dc_rights
+          - parent_issue
+          - related_specs
+          - dependencies
+
+      # JSON-LD metadata block
+      - name: "keter_protocol"
+        mandatory: true
+        format: "json-ld"
+        description: "JSON-LD metadata block for semantic interoperability"
+        schema: "urn:melquisedec:schema:keter-doc-protocol:v1.0.0"
+
+      # Metadata table
+      - name: "metadata_table"
+        mandatory: true
+        format: "markdown-table"
+        description: "Human-readable metadata table"
+        fields:
+          - Spec ID
+          - Nombre
+          - Versión
+          - Fecha
+          - Estado
+          - Autor
+          - Propósito
+
+      # Overview section
+      - name: "overview"
+        mandatory: true
+        format: "markdown"
+        description: "Document overview with problem statement and insight"
+        subsections:
+          - Problema Central
+          - Insight Crítico
+
+      # MELQUISEDEC principles
+      - name: "principles_applied"
+        mandatory: true
+        format: "markdown-list"
+        description: "List of MELQUISEDEC principles applied with descriptions"
+
+      # References section
+      - name: "references"
+        mandatory: false
+        format: "markdown"
+        description: "References to related documents and resources"
+
+      # Compilation footer
+      - name: "compilation_footer"
+        mandatory: true
+        format: "html-comment"
+        auto_generated: true
+        description: "Footer with compilation metadata and warnings"
+        fields:
+          - workbook_path
+          - compilation_timestamp
+          - compiler_version
+          - schema_version
+
+# ========================================
+# TEMPLATE VARIANTS
+# ========================================
+  variants:
+
+    # ----------------
+    # REQUIREMENTS
+    # ----------------
+    requirements:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-requirements.md"
+      document_type: "RequirementsDocument"
+      phase: "requirements"
+      description: "Requirements specification with RBM coherence matrix"
+
+      additional_sections:
+        # RBM Coherence Matrix
+        - name: "coherence_matrix"
+          position: "after:overview"
+          mandatory: true
+          format: "mermaid + markdown-table"
+          description: "RBM traceability matrix showing RF → RI → Rinm → REQ chain"
+          source: "workbook"
+          components:
+            - mermaid_diagram: "graph TB showing full RBM hierarchy"
+            - coherence_table: "table with columns [RF, RI, Rinm, REQ, Métricas]"
+
+        # User Stories
+        - name: "user_stories"
+          position: "after:coherence_matrix"
+          mandatory: true
+          format: "markdown"
+          description: "User stories in format: Como X, quiero Y, para que Z"
+          source: "workbook"
+          path_pattern: "ri-*/rinm-*/REQ-*-story.md"
+          criteria:
+            - Criterios de Aceptación (checklist)
+            - Relacionado (RI reference)
+
+        # Functional Requirements
+        - name: "functional_requirements"
+          position: "after:user_stories"
+          mandatory: true
+          format: "markdown"
+          description: "Detailed functional requirements"
+          source: "workbook"
+          path_pattern: "ri-*/rinm-*/REQ-*.md"
+          exclude_pattern: "*-story.md"
+          structure:
+            - Objetivo
+            - Especificación
+            - Criterios de Validación
+            - Priority (ALTA|MEDIA|BAJA)
+            - Resultado Intermedio (RI reference)
+            - Resultado Inmediato (Rinm reference)
+
+        # Non-Functional Requirements
+        - name: "non_functional_requirements"
+          position: "after:functional_requirements"
+          mandatory: false
+          format: "markdown"
+          description: "Performance, security, scalability requirements"
+          source: "workbook"
+          path_pattern: "nfr/*.md"
+
+    # ----------------
+    # DESIGN
+    # ----------------
+    design:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-design.md"
+      document_type: "DesignDocument"
+      phase: "design"
+      description: "Technical design with architecture and ADRs"
+
+      additional_sections:
+        # Architectural Overview
+        - name: "architectural_overview"
+          position: "after:overview"
+          mandatory: true
+          format: "mermaid + markdown"
+          description: "High-level architecture diagrams"
+          components:
+            - layer_diagram: "4-layer architecture (Tool → Template → Workbook → Atomic)"
+            - data_flow: "sequence diagram showing compilation pipeline"
+
+        # Architecture Decision Records
+        - name: "adr_decisions"
+          position: "after:architectural_overview"
+          mandatory: true
+          format: "markdown"
+          description: "ADRs documenting key design decisions"
+          source: "workbook"
+          path_pattern: "decisions/ADR-*.md"
+          structure:
+            - Status (Proposed|Accepted|Deprecated|Superseded)
+            - Context
+            - Decision
+            - Consequences
+
+        # Component Specifications
+        - name: "component_specifications"
+          position: "after:adr_decisions"
+          mandatory: true
+          format: "markdown"
+          description: "Detailed component specifications"
+          source: "generated"
+          components:
+            - Interfaces
+            - Data Structures
+            - API Specifications
+            - Error Handling
+
+        # Data Model
+        - name: "data_model"
+          position: "after:component_specifications"
+          mandatory: false
+          format: "mermaid + markdown"
+          description: "Entity-relationship diagrams and schemas"
+
+        # API Design
+        - name: "api_design"
+          position: "after:data_model"
+          mandatory: false
+          format: "openapi + markdown"
+          description: "API endpoint specifications"
+
+    # ----------------
+    # TASKS
+    # ----------------
+    tasks:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-tasks.md"
+      document_type: "TasksDocument"
+      phase: "tasks"
+      description: "Implementation tasks breakdown with _Prompt fields"
+
+      additional_sections:
+        # Task List
+        - name: "task_list"
+          position: "after:overview"
+          mandatory: true
+          format: "markdown-checklist"
+          description: "Atomic tasks with spec-workflow-mcp format"
+          source: "workbook"
+          structure:
+            - task_id: "X.Y format (e.g., 1.1, 1.2)"
+            - status: "[ ] pending | [-] in-progress | [x] completed"
+            - title: "Brief task description"
+            - file: "Target file path"
+            - requirements: "Comma-separated REQ IDs"
+            - estimation: "Hours estimate"
+            - priority: "ALTA|MEDIA|BAJA emoji"
+            - dependencies: "Task IDs this depends on"
+            - subtasks: "Numbered list of subtasks"
+            - validation: "How to verify completion"
+            - _prompt: |
+                Role: specialized developer role
+                Task: clear description with context
+                Restrictions: constraints and what not to do
+                Success: specific completion criteria
+
+        # Implementation Order
+        - name: "implementation_order"
+          position: "after:task_list"
+          mandatory: false
+          format: "mermaid-gantt"
+          description: "Gantt chart showing task timeline and dependencies"
+
+        # Progress Tracking
+        - name: "progress_tracking"
+          position: "after:implementation_order"
+          mandatory: true
+          format: "markdown"
+          description: "Commands for tracking progress with spec-workflow-mcp"
+
+        # Completion Criteria
+        - name: "completion_criteria"
+          position: "after:progress_tracking"
+          mandatory: true
+          format: "markdown"
+          description: "Phase completion definitions"
+
+    # ----------------
+    # PRODUCT (Steering)
+    # ----------------
+    product:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-product.md"
+      document_type: "SteeringDocument"
+      phase: "steering"
+      description: "Product vision and stakeholder requirements"
+
+      additional_sections:
+        # Vision Statement
+        - name: "vision_statement"
+          position: "after:overview"
+          mandatory: true
+          format: "markdown"
+          description: "Product vision and mission"
+
+        # Stakeholders
+        - name: "stakeholders"
+          position: "after:vision_statement"
+          mandatory: true
+          format: "markdown-table"
+          description: "Stakeholder identification and needs"
+          columns:
+            - Stakeholder
+            - Role
+            - Needs
+            - Success Criteria
+
+        # Success Criteria
+        - name: "success_criteria"
+          position: "after:stakeholders"
+          mandatory: true
+          format: "markdown-list"
+          description: "Measurable success criteria for the product"
+
+        # Constraints
+        - name: "constraints"
+          position: "after:success_criteria"
+          mandatory: false
+          format: "markdown"
+          description: "Business and technical constraints"
+
+    # ----------------
+    # TECH (Steering)
+    # ----------------
+    tech:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-tech.md"
+      document_type: "SteeringDocument"
+      phase: "steering"
+      description: "Technical architecture and standards"
+
+      additional_sections:
+        # Tech Stack
+        - name: "tech_stack"
+          position: "after:overview"
+          mandatory: true
+          format: "markdown-table"
+          description: "Technology stack definition"
+          columns:
+            - Layer
+            - Technology
+            - Version
+            - Purpose
+
+        # Architecture Principles
+        - name: "architecture_principles"
+          position: "after:tech_stack"
+          mandatory: true
+          format: "markdown-list"
+          description: "Guiding technical principles"
+
+        # Standards and Conventions
+        - name: "standards"
+          position: "after:architecture_principles"
+          mandatory: true
+          format: "markdown"
+          description: "Coding standards, naming conventions, best practices"
+
+        # Development Environment
+        - name: "dev_environment"
+          position: "after:standards"
+          mandatory: false
+          format: "markdown"
+          description: "Setup instructions for development environment"
+
+    # ----------------
+    # STRUCTURE (Steering)
+    # ----------------
+    structure:
+      extends: "base"
+      version: "1.0.0"
+      file: "daath-zen-structure.md"
+      document_type: "SteeringDocument"
+      phase: "steering"
+      description: "Project structure and organization"
+
+      additional_sections:
+        # Folder Structure
+        - name: "folder_structure"
+          position: "after:overview"
+          mandatory: true
+          format: "tree-diagram + markdown"
+          description: "Project directory structure"
+
+        # File Organization
+        - name: "file_organization"
+          position: "after:folder_structure"
+          mandatory: true
+          format: "markdown"
+          description: "File naming and organization conventions"
+
+        # Conventions
+        - name: "conventions"
+          position: "after:file_organization"
+          mandatory: true
+          format: "markdown-list"
+          description: "Naming conventions, patterns, anti-patterns"
+
+        # Monorepo Structure
+        - name: "monorepo_structure"
+          position: "after:conventions"
+          mandatory: false
+          format: "markdown"
+          description: "Monorepo organization and workspace configuration"
+
+# ========================================
+# TRANSCLUSION SETTINGS
+# ========================================
+transclusion:
+  enabled: true
+  syntax: "obsidian"  # ![[path]] or ![[path#section]]
+
+  patterns:
+    include_file: '!\[\[([^\]#]+)\]\]'
+    include_section: '!\[\[([^\]#]+)#([^\]]+)\]\]'
+    glob_pattern: '!\[\[([^\]]+/\*+[^\]]*)\]\]'
+
+  resolution:
+    base_path: "workbook"  # Relative to workbook root
+    recursive: true
+    max_depth: 3
+    cache_enabled: true
+    cache_ttl: 300  # seconds
+
+# ========================================
+# VALIDATION SETTINGS
+# ========================================
+validation:
+  keter_doc:
+    enabled: true
+    schema: "keter-doc-protocol-v1.0.0.jsonld"
+    strict_mode: true
+    required_fields:
+      - "@context"
+      - "@type"
+      - "@id"
+      - "title"
+      - "created"
+      - "phase"
+      - "version"
+
+  rbm_coherence:
+    enabled: true
+    check_orphans: true
+    check_breaks: true
+    coverage_threshold: 0.8  # 80% of products must have RI parent
+
+  neo4j_sync:
+    enabled: false  # Optional
+    validate_sync: false
+
+# ========================================
+# COMPILATION SETTINGS
+# ========================================
+compilation:
+  output_format: "markdown"
+  preserve_comments: false
+  add_footer: true
+  timestamp_format: "iso8601"
+
+  performance:
+    max_file_size: 10485760  # 10 MB
+    max_transclusion_depth: 5
+    timeout: 30  # seconds
+
+  logging:
+    level: "INFO"
+    file: "compilation.log"
+    console: true
+
+# ========================================
+# METADATA
+# ========================================
+"@id": "urn:melquisedec:config:template-hierarchy:v1.0.0"
+"@type": "TemplateConfiguration"
+"dc:created": "2026-01-10"
+"dc:modified": "2026-01-10"
+"dc:creator": "MELQUISEDEC Architecture Team"
+"dc:description": "Template hierarchy configuration for daath-zen templates with RBM integration"

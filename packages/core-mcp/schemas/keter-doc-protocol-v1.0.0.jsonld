@@ -1,0 +1,548 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:melquisedec:schema:keter-doc-protocol:v1.0.0",
+  "title": "Keter-Doc Protocol Schema v1.0.0",
+  "description": "JSON-LD schema for MELQUISEDEC research documentation protocol with RBM traceability",
+  "version": "1.0.0",
+  "created": "2026-01-10",
+  "maintainer": "MELQUISEDEC Architecture Team",
+
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "http://melquisedec.org/keter-doc#",
+    "dc": "http://purl.org/dc/terms/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "melq": "urn:melquisedec:",
+
+    "title": "dc:title",
+    "description": "dc:description",
+    "creator": {
+      "@id": "dc:creator",
+      "@type": "@id"
+    },
+    "created": {
+      "@id": "dc:created",
+      "@type": "xsd:dateTime"
+    },
+    "modified": {
+      "@id": "dc:modified",
+      "@type": "xsd:dateTime"
+    },
+    "subject": "dc:subject",
+    "language": "dc:language",
+    "format": "dc:format",
+    "rights": "dc:rights",
+    "type": "dc:type",
+    "contributor": {
+      "@id": "dc:contributor",
+      "@type": "@id"
+    },
+    "relation": {
+      "@id": "dc:relation",
+      "@type": "@id"
+    },
+
+    "name": "foaf:name",
+    "mbox": "foaf:mbox",
+
+    "ResearchSpecification": "melq:ResearchSpecification",
+    "RequirementsDocument": "melq:RequirementsDocument",
+    "DesignDocument": "melq:DesignDocument",
+    "TasksDocument": "melq:TasksDocument",
+    "SteeringDocument": "melq:SteeringDocument",
+    "WorkbookDocument": "melq:WorkbookDocument",
+    "LessonDocument": "melq:LessonDocument",
+
+    "specId": {
+      "@id": "melq:specId",
+      "@type": "xsd:string"
+    },
+    "phase": "melq:phase",
+    "version": "melq:version",
+    "status": "melq:status",
+    "approvalRequired": {
+      "@id": "melq:approvalRequired",
+      "@type": "xsd:boolean"
+    },
+    "rostroPrimary": "melq:rostroPrimary",
+    "parentIssue": {
+      "@id": "melq:parentIssue",
+      "@type": "@id"
+    },
+    "relatedSpecs": {
+      "@id": "melq:relatedSpecs",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "dependencies": {
+      "@id": "melq:dependencies",
+      "@type": "xsd:string",
+      "@container": "@list"
+    },
+    "principles": {
+      "@id": "melq:appliesPrinciple",
+      "@container": "@list"
+    },
+
+    "P1": "melq:principle:sintesis-metodologica",
+    "P2": "melq:principle:autopoiesis-por-diseno",
+    "P3": "melq:principle:issue-driven-research",
+    "P4": "melq:principle:documentacion-como-conocimiento",
+    "P5": "melq:principle:checkpoints-incrementales",
+    "P6": "melq:principle:persistencia-triple",
+    "P7": "melq:principle:recursion-fractal",
+    "P8": "melq:principle:tzimtzum-metodologico",
+    "P9": "melq:principle:inmutabilidad-temporal",
+    "P10": "melq:principle:transparencia-epistemica",
+
+    "Rostro_Yesod": "melq:rostro:yesod:fundamento",
+    "Rostro_Tiferet": "melq:rostro:tiferet:belleza",
+    "Rostro_Melquisedec": "melq:rostro:melquisedec:arquitecto",
+    "Rostro_Keter": "melq:rostro:keter:corona",
+    "Rostro_Daath": "melq:rostro:daath:conocimiento",
+
+    "ResultadoFinal": "melq:rbm:resultado-final",
+    "ResultadoIntermedio": "melq:rbm:resultado-intermedio",
+    "ResultadoInmediato": "melq:rbm:resultado-inmediato",
+    "Producto": "melq:rbm:producto",
+
+    "hasIntermediateResult": {
+      "@id": "melq:rbm:hasIntermediateResult",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "hasImmediateResult": {
+      "@id": "melq:rbm:hasImmediateResult",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "hasProduct": {
+      "@id": "melq:rbm:hasProduct",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "tracesTo": {
+      "@id": "melq:rbm:tracesTo",
+      "@type": "@id"
+    },
+
+    "compiledFrom": {
+      "@id": "melq:compilation:compiledFrom",
+      "@type": "@id"
+    },
+    "compilationTimestamp": {
+      "@id": "melq:compilation:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "compilerVersion": "melq:compilation:version",
+    "workbookPath": "melq:compilation:workbookPath"
+  },
+
+  "type": "object",
+  "required": ["@context", "@type", "@id", "title", "created", "phase", "version"],
+
+  "properties": {
+    "@context": {
+      "description": "JSON-LD context defining vocabularies and term mappings",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "object" },
+        { "type": "array" }
+      ]
+    },
+
+    "@type": {
+      "description": "Document type from MELQUISEDEC ontology",
+      "type": "string",
+      "enum": [
+        "ResearchSpecification",
+        "RequirementsDocument",
+        "DesignDocument",
+        "TasksDocument",
+        "SteeringDocument",
+        "WorkbookDocument",
+        "LessonDocument"
+      ]
+    },
+
+    "@id": {
+      "description": "Unique identifier using URN pattern",
+      "type": "string",
+      "pattern": "^urn:melquisedec:(spec|requirement|design|task|steering|workbook|lesson):[a-z0-9-]+$"
+    },
+
+    "title": {
+      "description": "Document title (Dublin Core)",
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200
+    },
+
+    "description": {
+      "description": "Brief document summary (Dublin Core)",
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 500
+    },
+
+    "creator": {
+      "description": "Document creator (person or agent)",
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "required": ["@type", "name"],
+          "properties": {
+            "@type": {
+              "type": "string",
+              "enum": ["foaf:Person", "foaf:Agent"]
+            },
+            "name": { "type": "string" },
+            "mbox": {
+              "type": "string",
+              "format": "email"
+            }
+          }
+        }
+      ]
+    },
+
+    "created": {
+      "description": "Creation date in ISO8601 format",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$"
+    },
+
+    "modified": {
+      "description": "Last modification date in ISO8601 format",
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$"
+    },
+
+    "subject": {
+      "description": "Keywords/tags for the document",
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+
+    "language": {
+      "description": "ISO 639-1 language code",
+      "type": "string",
+      "pattern": "^(es|en|es-MX|en-US)$",
+      "default": "es-MX"
+    },
+
+    "format": {
+      "description": "MIME type of the document",
+      "type": "string",
+      "enum": ["text/markdown", "application/json", "text/yaml"],
+      "default": "text/markdown"
+    },
+
+    "type": {
+      "description": "Dublin Core resource type",
+      "type": "string",
+      "enum": ["Text", "Dataset", "Software", "Documentation"],
+      "default": "Documentation"
+    },
+
+    "rights": {
+      "description": "License information",
+      "type": "string",
+      "default": "MIT License"
+    },
+
+    "contributor": {
+      "description": "Additional contributors",
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "required": ["@type", "name"],
+            "properties": {
+              "@type": { "type": "string" },
+              "name": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+
+    "relation": {
+      "description": "URIs of related documents",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+
+    "specId": {
+      "description": "Specification identifier (e.g., SPEC-001)",
+      "type": "string",
+      "pattern": "^SPEC-\\d{3}$"
+    },
+
+    "phase": {
+      "description": "Spec workflow phase",
+      "type": "string",
+      "enum": [
+        "requirements",
+        "design",
+        "tasks",
+        "implementation",
+        "completed",
+        "steering"
+      ]
+    },
+
+    "version": {
+      "description": "Document version (semantic versioning)",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+
+    "status": {
+      "description": "Document status",
+      "type": "string",
+      "enum": [
+        "draft",
+        "pending-approval",
+        "approved",
+        "needs-revision",
+        "implemented",
+        "deprecated"
+      ],
+      "default": "draft"
+    },
+
+    "approvalRequired": {
+      "description": "Whether document requires approval",
+      "type": "boolean",
+      "default": true
+    },
+
+    "rostroPrimary": {
+      "description": "Primary Rostro (face) archetype",
+      "type": "string",
+      "enum": [
+        "Rostro_Yesod",
+        "Rostro_Tiferet",
+        "Rostro_Melquisedec",
+        "Rostro_Keter",
+        "Rostro_Daath"
+      ]
+    },
+
+    "parentIssue": {
+      "description": "Parent issue URN",
+      "type": "string",
+      "pattern": "^urn:melquisedec:issue:[a-z0-9-]+$"
+    },
+
+    "relatedSpecs": {
+      "description": "Related specification URNs",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:melquisedec:spec:[a-z0-9-]+$"
+      }
+    },
+
+    "dependencies": {
+      "description": "External dependencies (packages, tools)",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+
+    "principles": {
+      "description": "MELQUISEDEC principles applied",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "P1", "P2", "P3", "P4", "P5",
+          "P6", "P7", "P8", "P9", "P10"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+
+    "compiledFrom": {
+      "description": "Workbook URN this document was compiled from",
+      "type": "string",
+      "pattern": "^urn:melquisedec:workbook:[a-z0-9-]+$"
+    },
+
+    "compilationTimestamp": {
+      "description": "When document was compiled",
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "compilerVersion": {
+      "description": "Version of compiler used",
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+
+    "workbookPath": {
+      "description": "Filesystem path to source workbook",
+      "type": "string"
+    },
+
+    "rbmChain": {
+      "description": "RBM traceability chain",
+      "type": "object",
+      "properties": {
+        "resultadoFinal": {
+          "type": "object",
+          "required": ["@id", "title"],
+          "properties": {
+            "@id": { "type": "string" },
+            "@type": { "const": "ResultadoFinal" },
+            "title": { "type": "string" },
+            "description": { "type": "string" }
+          }
+        },
+        "resultadosIntermedios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@id", "title"],
+            "properties": {
+              "@id": {
+                "type": "string",
+                "pattern": "^RI-\\d{3}$"
+              },
+              "@type": { "const": "ResultadoIntermedio" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "tracesTo": { "type": "string" }
+            }
+          }
+        },
+        "resultadosInmediatos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@id", "title", "tracesTo"],
+            "properties": {
+              "@id": {
+                "type": "string",
+                "pattern": "^Rinm-\\d{3}$"
+              },
+              "@type": { "const": "ResultadoInmediato" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "tracesTo": {
+                "type": "string",
+                "pattern": "^RI-\\d{3}$"
+              },
+              "metrics": {
+                "type": "object",
+                "properties": {
+                  "indicator": { "type": "string" },
+                  "target": { "type": "string" },
+                  "verification": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "productos": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["@id", "title", "tracesTo"],
+            "properties": {
+              "@id": {
+                "type": "string",
+                "pattern": "^REQ-\\d{3}-\\d{2}$"
+              },
+              "@type": { "const": "Producto" },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "tracesTo": {
+                "type": "string",
+                "pattern": "^Rinm-\\d{3}$"
+              },
+              "priority": {
+                "type": "string",
+                "enum": ["ALTA", "MEDIA", "BAJA", "CRÍTICA"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "URN_Pattern": {
+      "type": "string",
+      "pattern": "^urn:melquisedec:[a-z]+:[a-z0-9-]+$",
+      "description": "Standard URN format for MELQUISEDEC identifiers"
+    },
+
+    "ISO8601_DateTime": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{3})?Z$",
+      "description": "ISO8601 date-time format with optional milliseconds"
+    },
+
+    "SemanticVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic versioning: MAJOR.MINOR.PATCH"
+    }
+  },
+
+  "examples": [
+    {
+      "@context": "urn:melquisedec:schema:keter-doc-protocol:v1.0.0",
+      "@type": "RequirementsDocument",
+      "@id": "urn:melquisedec:spec:spec-001-requirements",
+      "title": "SPEC-001: Built Template spec-workflow - Requirements",
+      "description": "Requirements for template system with RBM integration",
+      "creator": {
+        "@type": "foaf:Agent",
+        "name": "GitHub Copilot (Claude Sonnet 4.5)"
+      },
+      "created": "2026-01-10T12:50:24Z",
+      "modified": "2026-01-10T15:30:00Z",
+      "subject": ["meta-specification", "template-system", "RBM", "autopoiesis"],
+      "language": "es-MX",
+      "format": "text/markdown",
+      "type": "Documentation",
+      "rights": "MIT License",
+      "specId": "SPEC-001",
+      "phase": "requirements",
+      "version": "1.0.0",
+      "status": "approved",
+      "approvalRequired": true,
+      "rostroPrimary": "Rostro_Melquisedec",
+      "parentIssue": "urn:melquisedec:issue:spec-001",
+      "relatedSpecs": [],
+      "dependencies": ["spec-workflow-mcp>=1.0.0", "obsidian>=1.5.0"],
+      "principles": ["P1", "P2", "P6", "P7"],
+      "compiledFrom": "urn:melquisedec:workbook:wb-rbm-spec-001",
+      "compilationTimestamp": "2026-01-10T18:45:00Z",
+      "compilerVersion": "1.0.0",
+      "workbookPath": "apps/R000-autopoietic-template/020-conceive/03-workbooks/wb-rbm-spec-001"
+    }
+  ]
+}
