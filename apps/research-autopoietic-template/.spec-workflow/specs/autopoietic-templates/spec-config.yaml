@@ -1,0 +1,322 @@
+# Spec Configuration - Research Autopoietic Templates
+# This file configures lenses, patterns, and rostros for the specification
+
+spec_id: "ISSUE-SPEC-001-design-autopoietic-templates"
+spec_name: "autopoietic-templates"
+version: "0.1.0"
+status: "active"
+priority: "high"
+
+# --- LENSES ---
+# Perspectivas metodológicas que guían el diseño
+lenses:
+  - id: "lens-dsr"
+    name: "Design Science Research"
+    description: "Crear artefactos (templates) como contribución científica"
+    principles:
+      - "Relevancia práctica: templates deben resolver problema real"
+      - "Rigor científico: decisiones basadas en evidencia"
+      - "Evaluación iterativa: validar con proyectos reales"
+      - "Contribución: templates como artefacto publicable"
+
+  - id: "lens-zettelkasten"
+    name: "Zettelkasten Method"
+    description: "Knowledge management vía atomics y connections"
+    principles:
+      - "Atomicity: cada nota (atomic) es unidad mínima de conocimiento"
+      - "Connectivity: atomics se linkan creando knowledge graph"
+      - "Progressive elaboration: conocimiento emerge de conexiones"
+      - "Permanence: atomics permanentes en triple persistencia"
+
+  - id: "lens-ddd"
+    name: "Domain-Driven Design"
+    description: "Patterns como bounded contexts con ubiquitous language"
+    principles:
+      - "Bounded contexts: cada pattern tiene scope definido"
+      - "Ubiquitous language: terminología consistente"
+      - "Strategic design: patterns se componen en templates"
+      - "Tactical patterns: scripts son building blocks"
+
+  - id: "lens-autopoiesis"
+    name: "Autopoiesis Theory"
+    description: "Templates que se auto-mantienen via feedback"
+    principles:
+      - "Self-production: feedback genera nuevas versiones"
+      - "Operational closure: patterns evolucionan internamente"
+      - "Structural coupling: templates se adaptan a entorno (proyectos)"
+      - "Conservation of organization: estructura 010-060 permanece"
+
+# --- PATTERNS ---
+# Patrones reutilizables aplicados en este spec
+patterns:
+  - id: "PATTERN-001"
+    name: "Six-Phase Lifecycle"
+    description: "Estructura 010-060 para research projects"
+    confidence: 0.85
+    evidence:
+      - "Usado en 3+ proyectos (keter, neo4j, este)"
+      - "ADR-001 justifica decisión"
+      - "Feedback positivo sobre claridad"
+    adrs:
+      - "ADR-001-monorepo-structure"
+
+  - id: "PATTERN-002"
+    name: "Issue-Spec as Source of Truth"
+    description: "ISSUE.yaml es documento principal, todo deriva de él"
+    confidence: 0.90
+    evidence:
+      - "Principio P3 del manifiesto"
+      - "spec-workflow-mcp implementa este patrón"
+      - "tasks.md se genera desde spec-config.yaml"
+    adrs:
+      - "ADR-002-keter-integration-decision"
+
+  - id: "PATTERN-007"
+    name: "Triple Persistence"
+    description: "Conocimiento en 3 formatos: markdown + graph + vector"
+    confidence: 0.75
+    evidence:
+      - "Principio P6 del manifiesto"
+      - "Neo4j + embeddings implementados en keter"
+      - "Permite búsqueda semántica + relacional"
+    adrs: []
+
+  - id: "PATTERN-012"
+    name: "Feedback Aggregator"
+    description: "Capturar mejoras de proyectos en 060-reflect/feedback-aggregator/"
+    confidence: 0.60
+    evidence:
+      - "Diseño propuesto en v4.3.1"
+      - "No validado empíricamente aún"
+      - "Basado en teoría autopoiesis"
+    adrs: []
+
+  - id: "PATTERN-015"
+    name: "Confidence Scoring"
+    description: "Patterns con scores (projects_validated / projects_total) * (adrs_count / 2)"
+    confidence: 0.70
+    evidence:
+      - "Propuesto en este spec"
+      - "Formula heurística, no validada"
+      - "Threshold: ≥0.80 = validated"
+    adrs: []
+
+# --- ROSTROS ---
+# Asignación de rostros a fases
+rostros:
+  "010-define":
+    name: "MELQUISEDEC"
+    role: "Definir problema y requirements"
+    outputs:
+      - "ISSUE.yaml"
+      - "requirements.md"
+      - "design.md"
+
+  "020-conceive":
+    name: "HYPATIA"
+    role: "Research y atomics"
+    outputs:
+      - "≥20 atomics sobre templates/autopoiesis"
+      - "Literature review (DSR, autopoiesis, DDD)"
+      - "Triple persistencia inicial"
+
+  "030-design":
+    name: "SALOMON"
+    role: "Arquitectura y decisiones"
+    outputs:
+      - "≥5 ADRs sobre templates"
+      - "Architecture diagrams"
+      - "Specifications detalladas"
+
+  "040-build":
+    name: "MORPHEUS"
+    role: "Implementación templates y scripts"
+    outputs:
+      - "Templates v4.3.1 completos"
+      - "≥6 scripts lifecycle"
+      - "Patterns con confidence scores"
+
+  "050-release":
+    name: "ALMA"
+    role: "Publishing y consolidación"
+    outputs:
+      - "050-release/outputs/ publicado"
+      - "Lessons consolidadas"
+      - "Documentación completa"
+
+  "060-reflect":
+    name: "MELQUISEDEC"
+    role: "Análisis y evolución"
+    outputs:
+      - "Autopoiesis analysis ejecutado"
+      - "Patterns actualizados con feedback"
+      - "New issues para v4.4.0"
+
+# --- CHECKPOINTS ---
+# Criterios de validación por fase
+checkpoints:
+  CK-01:
+    phase: "010-define"
+    criteria:
+      - "ISSUE.yaml completo y parseable"
+      - "requirements.md con RBM-GAC detallado (≥8 secciones)"
+      - "design.md con arquitectura + lifecycle + métricas"
+      - "Estructura carpetas 010-060 creada"
+      - ".spec-workflow/ y .melquisedec/ configurados"
+    validation_script: "validate-checkpoint.py --checkpoint CK-01"
+
+  CK-02:
+    phase: "020-conceive"
+    criteria:
+      - "≥20 atomics en 020-conceive/02-atomics/"
+      - "Literature review completo en 020-conceive/01-literature/"
+      - "Triple persistencia: markdown + Neo4j + vectors inicializado"
+      - "≥10 concepts en .melquisedec/domain/"
+    validation_script: "validate-checkpoint.py --checkpoint CK-02"
+
+  CK-03:
+    phase: "030-design"
+    criteria:
+      - "≥5 ADRs en 030-design/adrs/"
+      - "Architecture diagrams (mermaid) en 030-design/architecture/"
+      - "Specifications detalladas para ≥3 scripts"
+      - "Patterns actualizados con ADR references"
+    validation_script: "validate-checkpoint.py --checkpoint CK-03"
+
+  CK-04:
+    phase: "040-build"
+    criteria:
+      - "Templates v4.3.1 completos en 040-build/research/"
+      - "≥6 scripts implementados y testeados"
+      - "≥8 patterns con confidence scores"
+      - "Feedback aggregator funcional"
+    validation_script: "validate-checkpoint.py --checkpoint CK-04"
+
+  CK-05:
+    phase: "050-release"
+    criteria:
+      - "050-release/outputs/ publicado con templates + scripts + patterns + lenses"
+      - "≥2 proyectos adoptaron templates"
+      - "Lessons consolidadas por ALMA"
+      - "README.md con quick start completo"
+      - "Tiempo setup medido: objetivo ≤2h"
+    validation_script: "validate-checkpoint.py --checkpoint CK-05"
+
+# --- OUTPUTS ---
+# Estructura esperada de deliverables
+outputs:
+  templates:
+    path: "050-release/outputs/templates/research-autopoietic/"
+    versions:
+      - "v4.3.1"  # Base version
+      - "v4.3.2"  # Con feedback primer proyecto
+      - "v4.4.0"  # Breaking changes si necesario
+    contents:
+      - "Estructura carpetas 010-060"
+      - "ISSUE.yaml template"
+      - "requirements.md template"
+      - "design.md template"
+      - "spec-config.yaml template"
+      - ".spec-workflow/ structure"
+      - ".melquisedec/ structure"
+
+  scripts:
+    path: "050-release/outputs/scripts/"
+    list:
+      - name: "init-spec.py"
+        description: "Inicializa proyecto desde template"
+        usage: "python init-spec.py --name my-research --type autopoietic"
+
+      - name: "validate-checkpoint.py"
+        description: "Valida criterios checkpoint"
+        usage: "python validate-checkpoint.py --checkpoint CK-01"
+
+      - name: "consolidate-lessons.py"
+        description: "Agrega lessons de fase/checkpoint"
+        usage: "python consolidate-lessons.py --phase 020-conceive"
+
+      - name: "autopoiesis-analyze.py"
+        description: "Analiza feedback y actualiza patterns"
+        usage: "python autopoiesis-analyze.py --aggregate"
+
+      - name: "generate-tasks-md.py"
+        description: "Auto-genera tasks.md desde spec-config.yaml"
+        usage: "python generate-tasks-md.py --spec autopoietic-templates"
+
+      - name: "sync-triple-persistence.py"
+        description: "Sincroniza markdown → Neo4j → vectors"
+        usage: "python sync-triple-persistence.py --domain concepts"
+
+  patterns:
+    path: "050-release/outputs/patterns/"
+    format: "PATTERN-XXX.yaml"
+    fields:
+      - "id: PATTERN-XXX"
+      - "name: Descriptive name"
+      - "description: What problem it solves"
+      - "confidence: 0.00-1.00"
+      - "evidence: [list of validations]"
+      - "adrs: [list of ADR references]"
+      - "projects_validated: [list of projects]"
+
+  lenses:
+    path: "050-release/outputs/lenses/"
+    categories:
+      - "research-methodologies/"  # DSR, Zettelkasten, etc.
+      - "architecture-styles/"     # DDD, Event Sourcing, etc.
+      - "quality-attributes/"      # Performance, Maintainability, etc.
+
+# --- METRICS ---
+# Métricas rastreadas durante ejecución
+metrics:
+  completion:
+    "010-define": 40%
+    "020-conceive": 0%
+    "030-design": 0%
+    "040-build": 0%
+    "050-release": 0%
+    "060-reflect": 0%
+    overall: 7%
+
+  artifacts:
+    atomics: 0
+    adrs: 0
+    patterns: 5  # Los 5 patterns definidos arriba
+    scripts: 0
+    templates: 0
+
+  quality:
+    confidence_avg: 0.76  # Promedio de patterns actuales
+    projects_using: 0
+    feedback_received: 0
+    versions_released: 0
+
+# --- RELATIONSHIPS ---
+# Referencias a otros specs/proyectos
+relationships:
+  depends_on: []
+  provides_to:
+    - "research-keter-migration"
+    - "research-neo4j-llamaindex-architecture"
+    - "future research projects"
+  references:
+    - "docs/manifiesto/"
+    - "docs/architecture/ADR-001-monorepo-structure.md"
+    - ".spec-workflow/_meta/templates/research-autopoietic-template/unified-research-template-design-v4.3.1.md"
+
+# --- GENERATION CONFIG ---
+# Configuración para auto-generación tasks.md
+task_generation:
+  enabled: true
+  template: "tasks.md.jinja2"
+  group_by: "phase"
+  sort_by: "priority"
+  include_checkpoints: true
+  include_metrics: true
+
+---
+# Notes:
+# - Este archivo es leído por generate-tasks-md.py para crear tasks.md
+# - Patterns con confidence <0.60 no se usan en templates publicados
+# - Checkpoints deben validarse antes de avanzar a siguiente fase
+# - Metrics se actualizan manualmente o via scripts de análisis

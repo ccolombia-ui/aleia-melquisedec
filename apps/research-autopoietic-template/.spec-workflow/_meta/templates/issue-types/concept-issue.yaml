@@ -1,0 +1,85 @@
+# Issue Template: Concept (CONCEPT-XXX)
+#
+# Purpose: Define foundational concepts or atomic ideas
+# Workflow: Sub-Issue (no approval, no logging, 20-35 min)
+# Location: .spec-workflow/specs/CONCEPT-XXX/ISSUE.yaml
+# Workbook: 020-conceive/02-atomics/CONCEPT-XXX.md
+# Index: 020-conceive/concepts-index.md
+#
+# Variables to fill:
+#   {PREFIX} = "CONCEPT"
+#   {NUMBER} = "001", "002", "003"...
+#   {NAME} = Slug del concepto (ej: "autopoiesis")
+#   {CATEGORY} = foundational, praxis-rbm, methodology, architecture
+#   {PRIORITY} = high, medium, low
+#   {DEFINITION} = Definición corta del concepto
+#   {SOURCE} = Fuente bibliográfica o author (si aplica)
+#   {EXAMPLE_1}, {EXAMPLE_2}, ... = Ejemplos de aplicación
+
+# ISSUE METADATA
+id: "{PREFIX}-{NUMBER}-{NAME}"
+type: "concept"
+category: "{CATEGORY}"  # foundational | praxis-rbm | methodology | architecture
+priority: "{PRIORITY}"  # high | medium | low
+status: "draft"         # draft | in-progress | review | completed | blocked
+
+# CONCEPT DEFINITION
+concept:
+  definition: "{DEFINITION}"
+  # Ejemplo: "Sistema que se auto-crea, auto-organiza y auto-mejora recursivamente (Maturana & Varela, 1980)"
+
+  source: "{SOURCE}"
+  # Ejemplo: "Maturana & Varela - Autopoiesis and Cognition (1980)"
+  # Si es concepto original: "Original concept - Research autopoietic-templates"
+
+  examples:
+    - "{EXAMPLE_1}"
+    # Ejemplo: "Templates que se mejoran mediante feedback de proyectos"
+    - "{EXAMPLE_2}"
+    # Ejemplo: "Patterns que actualizan confidence scores con validación empírica"
+    - "{EXAMPLE_3}"
+    # Ejemplo: "Lenses que adaptan emphasis según tipo de investigación"
+
+# RELATIONSHIPS (Zettelkasten-style bidirectional links)
+relationships:
+  derives_from:
+    # Conceptos fuente de los que deriva este concepto
+    - "{CONCEPT_XXX}"
+    # Ejemplo: ["CONCEPT-015", "CONCEPT-016"]
+
+  informs:
+    # Conceptos que derivan de este concepto
+    - "{CONCEPT_YYY}"
+    # Ejemplo: ["CONCEPT-019", "CONCEPT-020"]
+
+  related:
+    # Conceptos relacionados (no jerárquico)
+    - "{CONCEPT_ZZZ}"
+    # Ejemplo: ["CONCEPT-021"]
+
+# DEPENDENCIES (bidirectional links with other issue types)
+dependencies:
+  literature: []
+    # Literatura que fundamenta este concepto
+    # Ejemplo: ["LIT-006", "LIT-007"]
+
+  requirements: []
+    # Requerimientos que usan este concepto
+    # Ejemplo: ["REQ-007"]
+
+  designs: []
+    # Diseños que implementan este concepto
+    # Ejemplo: ["DESIGN-002"]
+
+# TAGS (for semantic search)
+tags:
+  - "{TAG_1}"  # Ejemplo: "autopoiesis"
+  - "{TAG_2}"  # Ejemplo: "templates"
+  - "{TAG_3}"  # Ejemplo: "feedback-loops"
+
+# WORKFLOW STATUS
+tasks_generated: false
+
+# WORKBOOK PATH
+workbook: "020-conceive/02-atomics/{PREFIX}-{NUMBER}-{NAME}.md"
+# Ejemplo: "020-conceive/02-atomics/CONCEPT-017-autopoiesis.md"

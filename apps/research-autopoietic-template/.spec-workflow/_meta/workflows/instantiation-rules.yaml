@@ -1,0 +1,336 @@
+# Instantiation Rules - Reglas para Instanciar Issues desde Templates
+#
+# Define cómo aplicar template-base.yaml + config-{type}.yaml para crear issues
+#
+# Proceso:
+#   1. Identificar tipo de issue (requirement, concept, literature, design, implementation)
+#   2. Cargar template-base.yaml
+#   3. Cargar config-{type}.yaml correspondiente
+#   4. Aplicar variables (type, number, name, priority, etc.)
+#   5. Aplicar contexto (territory, persona, proceso, momento)
+#   6. Validar según validation rules del config
+#   7. Generar ISSUE.yaml
+#   8. Generar workbook desde workbook_template
+#   9. Actualizar índice correspondiente
+---
+mapping:
+  # Mapeo de tipo → config file
+  requirement: "configs/requirement-config.yaml"
+  concept: "configs/concept-config.yaml"
+  literature: "configs/literature-config.yaml"
+  design: "configs/design-config.yaml"
+  implementation: "configs/implementation-config.yaml"
+
+workflow_mapping:
+  # Mapeo de tipo → workflow pattern
+  requirement: "sub-issue"
+  concept: "sub-issue"
+  literature: "sub-issue"
+  design: "sub-issue"
+  implementation: "implementation"  # Usa workflow IMPL (logging MANDATORY)
+
+  # Workflows especiales
+  main_specification: "main-spec"  # Para especificaciones completas (8 semanas)
+  steering_document: "steering"    # OPCIONAL para proyectos grandes
+
+# INSTANTIATION STEPS (cómo crear un issue)
+instantiation_steps:
+  step_1:
+    name: "Load template base"
+    file: "template-base.yaml"
+    action: "Parse YAML to dictionary"
+
+  step_2:
+    name: "Load type config"
+    file: "configs/{type}-config.yaml"
+    action: "Parse YAML to dictionary"
+
+  step_3:
+    name: "Apply variables"
+    variables:
+      - type: "requirement | concept | literature | design | implementation"
+      - number: "001, 002, 003, ..."
+      - name: "slug-of-artifact"
+      - category: "From config.spec_fields or user input"
+      - priority: "high | medium | low"
+      - status: "draft | in-progress | review | completed | blocked"
+    action: "Replace {variable} in template with actual values"
+
+  step_4:
+    name: "Apply context"
+    context_variables:
+      - territory: "From config.workflow_defaults.territory or user override"
+      - persona: "From config.workflow_defaults.persona or user override"
+      - proceso: "From config.workflow_defaults.proceso or user override"
+      - momento: "From config.workflow_defaults.momento or user override"
+    action: "Set context section in template"
+
+  step_5:
+    name: "Merge spec fields"
+    action: |
+      template.spec = config.spec_fields
+      Apply any user-provided values to spec fields
+
+  step_6:
+    name: "Validate"
+    validation_rules: "From config.validation"
+    action: |
+      For each rule in config.validation:
+        Check if rule is satisfied
+        If not, raise ValidationError(rule.message)
+
+  step_7:
+    name: "Generate ISSUE.yaml"
+    path_pattern: ".spec-workflow/{type}-{number}-{name}/ISSUE.yaml"
+    action: "Write merged template to file"
+
+  step_8:
+    name: "Generate workbook"
+    path_pattern: "From config.workbook_pattern"
+    template: "From config.workbook_template"
+    action: |
+      workbook = config.workbook_template.format(**variables)
+      write(workbook_path, workbook)
+
+  step_9:
+    name: "Update index"
+    index_mapping:
+      requirement: "010-define/INDICE-REQUIREMENTS.md"
+      concept: "020-conceive/INDICE-CONCEPTS.md"
+      literature: "020-conceive/INDICE-LITERATURE.md"
+      design: "030-design/INDICE-DESIGNS.md"
+      implementation: "030-design/INDICE-IMPLEMENTATIONS.md"
+    action: |
+      Add link to new issue in corresponding index
+      Format: - [[{id}]]: {name} (Status: {status}, Priority: {priority})
+
+# VALIDATION RULES (generales para todos los tipos)
+general_validation:
+  - rule: "type_valid"
+    check: "type in ['requirement', 'concept', 'literature', 'design', 'implementation']"
+    message: "Type must be one of: requirement, concept, literature, design, implementation"
+
+  - rule: "number_format"
+    check: "number matches pattern \\d{3}"
+    message: "Number must be 3 digits (001, 002, 003, ...)"
+
+  - rule: "name_slug"
+    check: "name matches pattern [a-z0-9-]+"
+    message: "Name must be lowercase slug (e.g., 'template-system')"
+
+  - rule: "priority_valid"
+    check: "priority in ['high', 'medium', 'low']"
+    message: "Priority must be: high, medium, or low"
+
+  - rule: "status_valid"
+    check: "status in ['draft', 'in-progress', 'review', 'completed', 'blocked']"
+    message: "Status must be: draft, in-progress, review, completed, or blocked"
+
+# TYPE-SPECIFIC VALIDATION (desde configs)
+type_specific_validation:
+  requirement:
+    - "outcomes_measurable"
+    - "gap_defined"
+    - "goal_achievable"
+    - "methodology_specified"
+
+  concept:
+    - "definition_atomic"
+    - "source_cited"
+    - "examples_concrete"
+    - "bidirectional_links"
+
+  literature:
+    - "bibliographic_complete"
+    - "citation_formatted"
+    - "extraction_objectives_clear"
+    - "quality_assessed"
+
+  design:
+    - "implements_requirements"
+    - "bounded_context_defined"
+    - "contracts_explicit"
+    - "decisions_documented"
+    - "artifacts_specified"
+    - "test_strategy_defined"
+
+  implementation:
+    - "design_specified"
+    - "test_coverage_minimum"
+    - "logging_executed"  # ⚠️ CRITICAL
+    - "artifacts_logged"
+    - "algorithm_documented"
+    - "inputs_outputs_explicit"
+
+# METHODOLOGY COHERENCE (mapeo tipo → metodología)
+methodology_mapping:
+  requirement:
+    methodology: "RBM (Results-Based Management)"
+    source: "UNDP Results-Based Management Handbook"
+    key_principles:
+      - "Gap → Goal → Outcomes"
+      - "Outcomes must be measurable (SMART)"
+      - "Clear problem statement"
+
+  concept:
+    methodology: "Zettelkasten (Luhmann)"
+    source: "Niklas Luhmann, 'Communicating with Slip Boxes'"
+    key_principles:
+      - "Atomic ideas (one concept = one note)"
+      - "Bidirectional links"
+      - "Progressive elaboration"
+
+  literature:
+    methodology: "Systematic Literature Review (SLR)"
+    source: "Kitchenham & Charters, 'Guidelines for SLR in SE'"
+    key_principles:
+      - "Complete bibliographic data"
+      - "Clear extraction objectives"
+      - "Quality assessment"
+
+  design:
+    methodology: "DDD + DSR"
+    source: "Eric Evans (DDD) + Hevner et al. (DSR)"
+    key_principles:
+      - "Bounded contexts (DDD)"
+      - "Explicit contracts"
+      - "Architecture decision records (ADRs)"
+      - "Artifact-oriented (DSR)"
+
+  implementation:
+    methodology: "DSR + TDD"
+    source: "Hevner et al. (DSR) + Kent Beck (TDD)"
+    key_principles:
+      - "Build → Evaluate → Iterate (DSR)"
+      - "Test first, implement, refactor (TDD)"
+      - "Coverage ≥80%"
+      - "Logging MANDATORY"
+
+# CONTEXT VARIABLES (territorio, persona, proceso, momento)
+context_configuration:
+  territory:
+    description: "¿Dónde se ejecuta el workflow?"
+    type: "string"
+    examples:
+      - ".spec-workflow/{spec-name}/"
+      - "010-define/workbooks/"
+      - "020-conceive/02-atomics/"
+      - "030-design/implementations/"
+    source: "config.workflow_defaults.territory or user override"
+
+  persona:
+    description: "¿Quién ejecuta el workflow?"
+    type: "string"
+    options:
+      - "AI Agent"
+      - "User"
+      - "MCP tool"
+      - "Automated script"
+    source: "config.workflow_defaults.persona or user override"
+
+  proceso:
+    description: "¿Cómo se ejecuta el workflow?"
+    type: "string"
+    examples:
+      - "create_file → validate"
+      - "approval_loop → proceed"
+      - "implement → test → log"
+      - "fill_workbook → update_index"
+    source: "config.workflow_defaults.proceso or user override"
+
+  momento:
+    description: "¿Cuándo se ejecuta el workflow?"
+    type: "string"
+    options:
+      - "immediate"
+      - "after_approval"
+      - "batch"
+      - "scheduled"
+      - "sequential"
+    source: "config.workflow_defaults.momento or user override"
+
+# ERROR HANDLING
+error_handling:
+  - error: "ValidationError"
+    when: "Validation rule fails"
+    action: "Raise error with rule.message, stop instantiation"
+
+  - error: "ConfigNotFound"
+    when: "config-{type}.yaml not found"
+    action: "Raise error 'Config not found for type: {type}'"
+
+  - error: "TemplateNotFound"
+    when: "template-base.yaml not found"
+    action: "Raise error 'Template base not found'"
+
+  - error: "InvalidVariables"
+    when: "Required variables missing"
+    action: "Raise error 'Missing required variables: {missing_vars}'"
+
+  - error: "IndexNotFound"
+    when: "Index file not found for type"
+    action: "Create index file with header, then proceed"
+
+# SPECIAL CASE: IMPLEMENTATION LOGGING
+implementation_logging:
+  critical_requirement: |
+    ⚠️ LOGGING ES MANDATORY PARA IMPLEMENTATIONS
+
+    Validation step debe verificar que:
+    1. mcp_spec-workflow_log-implementation fue ejecutado
+    2. artifacts no está vacío
+    3. summary describe lo implementado
+    4. filesModified o filesCreated no están vacíos
+    5. statistics incluye linesAdded/linesRemoved
+
+  logging_tool: "mcp_spec-workflow_log-implementation"
+
+  required_artifacts:
+    - apiEndpoints: "{method, path, purpose, requestFormat, responseFormat, location}"
+    - components: "{name, type, purpose, location, props, exports}"
+    - functions: "{name, purpose, location, signature, isExported}"
+    - classes: "{name, purpose, location, methods, isExported}"
+    - integrations: "{description, frontendComponent, backendEndpoint, dataFlow}"
+
+  validation_before_complete:
+    - "Check if log entry exists in implementation-log.json"
+    - "If not found, raise ValidationError('Logging not executed')"
+    - "If found but artifacts empty, raise ValidationError('Artifacts not logged')"
+
+# EXAMPLE USAGE (Pseudocode)
+example_usage: |
+  # Create REQ-001: Template System
+
+  variables = {
+    "type": "requirement",
+    "number": "001",
+    "name": "template-system",
+    "category": "architecture",
+    "priority": "high",
+    "status": "draft"
+  }
+
+  context = {
+    "territory": "010-define/workbooks/",
+    "persona": "AI Agent",
+    "proceso": "create_issue",
+    "momento": "immediate"
+  }
+
+  # Step 1-2: Load template and config
+  template = load("template-base.yaml")
+  config = load("configs/requirement-config.yaml")
+
+  # Step 3-5: Apply variables and merge
+  issue = template.apply(config, variables, context)
+
+  # Step 6: Validate
+  validate(issue, config.validation)
+
+  # Step 7-8: Generate files
+  create_file(".spec-workflow/REQ-001-template-system/ISSUE.yaml", issue)
+  create_file("010-define/workbooks/REQ-001-template-system.md", config.workbook_template.format(**variables))
+
+  # Step 9: Update index
+  update_index("010-define/INDICE-REQUIREMENTS.md", "REQ-001")
+---

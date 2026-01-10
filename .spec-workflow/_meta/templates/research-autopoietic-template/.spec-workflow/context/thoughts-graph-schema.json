@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.0.0",
+  "description": "JSON schema for thoughts graph structure",
+  "nodes": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": ["id", "label", "type", "checkpoint"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for thought node",
+          "pattern": "^thought-\\d{3}$"
+        },
+        "label": {
+          "type": "string",
+          "description": "Short label for visualization",
+          "maxLength": 100
+        },
+        "content": {
+          "type": "string",
+          "description": "Full content of thought"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["concept", "observation", "analysis", "decision", "lesson"],
+          "description": "Type of thought node"
+        },
+        "checkpoint": {
+          "type": "string",
+          "enum": ["CK-01", "CK-02", "CK-03", "CK-04", "POST-CK-04"],
+          "description": "Which checkpoint this thought belongs to"
+        },
+        "phase": {
+          "type": "string",
+          "enum": ["MELQUISEDEC", "HYPATIA", "SALOMON", "MORPHEUS", "ALMA", "DAATH"],
+          "description": "DAATH-ZEN rostro associated with thought"
+        },
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "confidence": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Confidence level in this thought"
+            },
+            "relevance": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Relevance to problem statement"
+            },
+            "quality": {
+              "type": "number",
+              "minimum": 0.0,
+              "maximum": 1.0,
+              "description": "Overall quality of thought"
+            }
+          },
+          "required": ["confidence", "relevance", "quality"]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags for categorization"
+        },
+        "synthesis_from": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "File paths to source materials"
+          }
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When thought was created"
+        }
+      }
+    }
+  },
+  "edges": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "required": ["source", "target", "type", "strength"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source thought ID",
+          "pattern": "^thought-\\d{3}$"
+        },
+        "target": {
+          "type": "string",
+          "description": "Target thought ID",
+          "pattern": "^thought-\\d{3}$"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "supports",
+            "contradicts",
+            "refines",
+            "branches",
+            "derives",
+            "associates",
+            "exemplifies",
+            "generalizes",
+            "compares",
+            "contrasts",
+            "questions",
+            "extends",
+            "analyzes",
+            "synthesizes",
+            "applies",
+            "evaluates"
+          ],
+          "description": "Type of connection between thoughts"
+        },
+        "strength": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Strength of connection (0=weak, 1=strong)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Why this connection exists"
+        },
+        "bidirectional": {
+          "type": "boolean",
+          "description": "Whether connection is bidirectional",
+          "default": false
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Confidence in this connection"
+        }
+      }
+    }
+  },
+  "metadata": {
+    "type": "object",
+    "required": ["created", "checkpoint", "total_nodes", "total_edges"],
+    "properties": {
+      "created": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When graph was created"
+      },
+      "checkpoint": {
+        "type": "string",
+        "enum": ["CK-01", "CK-02", "CK-03", "CK-04", "POST-CK-04"]
+      },
+      "total_nodes": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "total_edges": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "density": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "description": "Graph density (actual edges / possible edges)"
+      },
+      "avg_confidence": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0
+      },
+      "avg_relevance": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0
+      },
+      "avg_quality": {
+        "type": "number",
+        "minimum": 0.0,
+        "maximum": 1.0
+      }
+    }
+  }
+}

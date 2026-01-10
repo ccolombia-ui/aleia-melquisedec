@@ -1,0 +1,227 @@
+# Workflow Patterns - Configuración de Flujos de Trabajo
+#
+# Define cómo se ejecutan los diferentes workflows según el tipo de issue
+# Variables configurables: territorio, persona, proceso, momento
+#
+# Workflows disponibles:
+#   - Sub-Issue: Sin approval, sin logging (20-35 min)
+#   - Main Spec: Con approval CON, sin logging (8 semanas)
+#   - IMPL: Sin approval, logging MANDATORY (5 horas)
+#   - Steering: Con approval CON, sin logging, OPCIONAL (1 semana)
+---
+patterns:
+  sub-issue:
+    name: "Sub-Issue Workflow"
+    description: "Workflow rápido para requerimientos, conceptos, literatura, diseños"
+    approval_required: false
+    logging_required: false
+    timing: "20-35 min"
+
+    applies_to:
+      - requirement
+      - concept
+      - literature
+      - design
+
+    phases:
+      - phase: "create"
+        steps:
+          - "Generar ISSUE.yaml desde template-base + config"
+          - "Crear workbook en territorio especificado"
+          - "Actualizar índice correspondiente"
+        timing: "5-10 min"
+
+      - phase: "fill"
+        steps:
+          - "AI Agent o User llena workbook"
+          - "Validar según validation rules del config"
+        timing: "10-20 min"
+
+      - phase: "finalize"
+        steps:
+          - "Marcar como completed"
+          - "Actualizar dependencias en otros issues"
+        timing: "5 min"
+
+    configuration:
+      territory: "{type_specific}"  # Ejemplo: 010-define/ para requirements
+      persona: "AI Agent or User"
+      proceso: "create_issue → fill_workbook → validate"
+      momento: "immediate"
+
+  main-spec:
+    name: "Main Spec Workflow"
+    description: "Workflow completo para especificaciones grandes (8 semanas)"
+    approval_required: true
+    approval_mode: "CON"  # Con polling loop
+    logging_required: false
+    timing: "8 semanas"
+
+    applies_to:
+      - main_specification
+
+    phases:
+      - phase: "requirements"
+        duration: "2 semanas"
+        outputs: ["REQ-001", "REQ-002", "REQ-003", "..."]
+        approval: "required_at_end"
+
+      - phase: "design"
+        duration: "3 semanas"
+        outputs: ["DESIGN-001", "DESIGN-002", "..."]
+        approval: "required_at_end"
+
+      - phase: "tasks"
+        duration: "1 semana"
+        outputs: ["TASKS.md con breakdown"]
+        approval: "required_at_end"
+
+      - phase: "implementation"
+        duration: "2 semanas"
+        outputs: ["IMPL-001", "IMPL-002", "..."]
+        approval: "not_required"  # Pero logging SÍ es MANDATORY
+
+    configuration:
+      territory: ".spec-workflow/{spec-name}/"
+      persona: "AI Agent (con supervisión User)"
+      proceso: "phase_by_phase → approval_after_each"
+      momento: "sequential (8 semanas)"
+
+  implementation:
+    name: "Implementation Workflow (IMPL)"
+    description: "Workflow para implementaciones con logging MANDATORY"
+    approval_required: false
+    logging_required: true  # ⚠️ MANDATORY - No es opcional
+    logging_tool: "mcp_spec-workflow_log-implementation"
+    timing: "5 horas"
+
+    applies_to:
+      - implementation
+
+    phases:
+      - phase: "create"
+        steps:
+          - "Generar IMPL-XXX-{name}.yaml"
+          - "Crear workbook de implementación"
+        timing: "10 min"
+
+      - phase: "implement"
+        steps:
+          - "Escribir código según diseño"
+          - "Ejecutar tests (coverage ≥80%)"
+          - "Documentar inline"
+        timing: "4 horas"
+
+      - phase: "log"
+        steps:
+          - "MANDATORY: Llamar mcp_spec-workflow_log-implementation"
+          - "Registrar artifacts (APIs, components, functions, classes, integrations)"
+          - "Incluir filesModified, filesCreated, statistics"
+        timing: "20 min"
+        mandatory_validation:
+          - "artifacts must not be empty"
+          - "summary must describe what was implemented"
+          - "statistics must include linesAdded/linesRemoved"
+
+      - phase: "finalize"
+        steps:
+          - "Actualizar issue status a completed"
+          - "Verificar que log fue registrado"
+        timing: "10 min"
+
+    configuration:
+      territory: "030-design/implementations/"
+      persona: "AI Agent"
+      proceso: "implement → test → log (MANDATORY)"
+      momento: "immediate"
+
+    critical_requirement: |
+      ⚠️ LOGGING ES MANDATORY PARA IMPLEMENTATIONS
+
+      Sin logging completo, future AI agents:
+      - Crearán APIs duplicadas
+      - Reimplementarán componentes existentes
+      - Duplicarán funciones de utilidad
+      - Romperán patrones de integración
+
+      El logging debe incluir:
+      - apiEndpoints: {method, path, purpose, requestFormat, responseFormat, location}
+      - components: {name, type, purpose, location, props, exports}
+      - functions: {name, purpose, location, signature, isExported}
+      - classes: {name, purpose, location, methods, isExported}
+      - integrations: {description, frontendComponent, backendEndpoint, dataFlow}
+
+  steering:
+    name: "Steering Document Workflow"
+    description: "OPCIONAL - Para proyectos grandes que necesitan product.md, tech.md, structure.md"
+    approval_required: true
+    approval_mode: "CON"
+    logging_required: false
+    timing: "1 semana"
+    optional: true
+
+    applies_to:
+      - steering_document
+
+    phases:
+      - phase: "product"
+        outputs: ["product.md"]
+        approval: "required"
+
+      - phase: "tech"
+        outputs: ["tech.md"]
+        approval: "required"
+
+      - phase: "structure"
+        outputs: ["structure.md"]
+        approval: "required"
+
+    configuration:
+      territory: ".spec-workflow/_meta/"
+      persona: "AI Agent"
+      proceso: "create_steering_docs → approval_per_doc"
+      momento: "before_main_spec (opcional)"
+
+# INSTANTIATION RULES (cómo se aplican estos patterns)
+instantiation:
+  rule_1: "Al crear issue, identificar tipo (requirement, concept, design, implementation)"
+  rule_2: "Mapear tipo → pattern correspondiente (Sub-Issue, Implementation, etc.)"
+  rule_3: "Aplicar configuration del pattern (territorio, persona, proceso, momento)"
+  rule_4: "Validar timing esperado vs timing real"
+  rule_5: "Para IMPL: Validar que logging se ejecutó (MANDATORY)"
+
+# CONFIGURATION VARIABLES (territorio, persona, proceso, momento)
+variables:
+  territory:
+    description: "¿Dónde se ejecuta el workflow?"
+    examples:
+      - ".spec-workflow/{spec-name}/"
+      - "010-define/workbooks/"
+      - "020-conceive/02-atomics/"
+      - "030-design/implementations/"
+
+  persona:
+    description: "¿Quién ejecuta el workflow?"
+    options:
+      - "AI Agent"
+      - "User"
+      - "MCP tool"
+      - "Automated script"
+
+  proceso:
+    description: "¿Cómo se ejecuta el workflow?"
+    examples:
+      - "create_file → validate"
+      - "approval_loop → proceed"
+      - "implement → test → log"
+      - "fill_workbook → update_index"
+
+  momento:
+    description: "¿Cuándo se ejecuta el workflow?"
+    options:
+      - "immediate"
+      - "after_approval"
+      - "batch"
+      - "scheduled"
+      - "sequential"
+---

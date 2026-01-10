@@ -1,0 +1,363 @@
+---
+# P3: Issue-Driven Everything
+# Spec principal para implementar arquitectura KeterDoc con YAML-LD
+
+id: ISSUE-SPEC-001-implement-keterdoc-architecture
+type: architecture-migration
+status: active
+priority: crítica
+created: 2026-01-10
+
+# Título y contexto
+title: "Implementar Arquitectura KeterDoc con YAML-LD y Sistema de Templates"
+context: |
+  El manifesto MELQUISEDEC v4.0.0 documenta (3212 líneas) un sistema completo:
+  - KeterDoc/HKM metadata standard (575 líneas)
+  - Output Triple (MD + Neo4j + Vectors) (1121 líneas)
+  - Autopoiesis system (chatlog + lessons) (1491 líneas)
+  - 10 Principios Fundacionales (P1-P10)
+
+  PERO: research-autopoietic-template NO implementa esta arquitectura.
+
+  GAP: 5 componentes críticos faltantes:
+  1. KeterDoc/HKM metadata (NO implementado)
+  2. Template-per-artifact system (28+ templates, NO existe)
+  3. Lens-specific variants (DSR ≠ IMRAD ≠ DDD, NO diferenciados)
+  4. YAML-LD semantic web (simple YAML, NO semántico)
+  5. Workflow-pattern configuration (NO implementado)
+
+  Este spec implementa la arquitectura documentada mediante 7 fases (10 semanas).
+
+# Problema (RBM-GAC format)
+problem:
+  gap: |
+    research-autopoietic-template usa ISSUE.yaml con estructura custom,
+    template-base.yaml genérico con variables {type}, simple YAML sin
+    semantic web features, y NO implementa KeterDoc standard.
+
+    Herramientas (Obsidian, spec-workflow-mcp) usan Markdown con frontmatter,
+    no YAML standalone.
+
+    Manifesto documenta 28+ tipos de artifacts, pero solo existe 1 template
+    genérico. Documenta 4 lenses (DSR, IMRAD, DDD, Social), pero NO hay
+    templates lens-specific.
+
+  goal: |
+    Migrar a YAML-LD + KeterDoc architecture siguiendo manifesto:
+
+    - ISSUE.yaml → ISSUE.md con YAML-LD frontmatter
+    - Crear 28+ artifact-specific templates (concept, analysis, decision...)
+    - Crear 4 lens variants × 6 core templates = 24 templates
+    - Definir @context.jsonld para semantic web (RDF triples)
+    - Implementar workflow-pattern system con confidence scores
+    - Integrar Neo4j RDF import (manifesto Output Triple)
+    - Validar con pilot migration + tools (Obsidian, spec-workflow-mcp)
+    - Crear 20 specs adicionales cubriendo 6 módulos manifesto (Phase 7)
+
+  outcomes:
+    measurable:
+      - "100% artifacts con KeterDoc metadata (id, is_a, dc, seci)"
+      - "30 templates creados (6 base + 24 lens variants)"
+      - "10 workflow patterns con confidence scores"
+      - "@context.jsonld validado en JSON-LD playground"
+      - "RDF triples importan a Neo4j sin errores"
+      - "Pilot project pasa validate-keterdoc-compliance.py 100%"
+      - "21 specs creados (spec-001 + 20 manifesto-wide)"
+      - "Master index muestra results chain completa"
+
+    qualitative:
+      - "Desarrolladores: templates simplifican creación"
+      - "Obsidian users: funciona nativamente sin adapters"
+      - "AI agents: metadata es machine-readable"
+      - "Sistema: coherencia visible desde master index"
+
+# Metodologías aplicadas (P1)
+methodologies:
+  - DSR (Design Science Research)     # Construyendo artifact: KeterDoc system
+  - Semantic Web                      # YAML-LD, RDF, ontologies
+  - Knowledge Management              # SECI Model, Dublin Core
+  - Autopoiesis                       # Chatlog → lessons → pattern evolution
+
+# Rostros asignados
+rostros:
+  orchestration: MELQUISEDEC       # Coordinar 7 phases
+  research: HYPATIA                # Leer 3212 líneas manifesto
+  synthesis: SALOMON               # Identificar 5 gaps, diseñar arquitectura
+  design: MORPHEUS                 # Diseñar templates, @context, patterns
+  implementation: MORPHEUS         # Scripts Python, migration tools
+  testing: ALMA                    # Validation, Neo4j integration, pilot
+  documentation: ALMA              # Guides, quickstart, examples
+
+# Salidas esperadas (P6: Output Triple)
+outputs:
+  050_release:
+    # Phase 1-2: Templates
+    - path: "artifact-templates/by-type/"
+      type: "base_templates"
+      format: "markdown"
+      count: 28
+      description: "concept-tpl.md, analysis-tpl.md, decision-tpl.md..."
+
+    - path: "artifact-templates/by-lens/"
+      type: "lens_variants"
+      format: "markdown"
+      count: 24
+      description: "concept-dsr-tpl.md, concept-imrad-tpl.md..."
+
+    # Phase 1: Context
+    - path: "context.jsonld"
+      type: "yaml_ld_context"
+      format: "json"
+      description: "Semantic web vocabulary definition"
+
+    # Phase 3: Patterns
+    - path: "patterns/"
+      type: "workflow_patterns"
+      format: "yaml"
+      count: 10
+      description: "PATTERN-000.yaml through PATTERN-009.yaml"
+
+    - path: "config/artifact-workflows.yaml"
+      type: "workflow_mapping"
+      format: "yaml"
+      description: "Artifact type → pattern mapping"
+
+    # Phase 4: Tools
+    - path: "tools/keterdoc/"
+      type: "migration_tools"
+      format: "python"
+      count: 4
+      description: "convert, generate, validate, extract scripts"
+
+    # Phase 5: Neo4j
+    - path: "tools/neo4j/"
+      type: "neo4j_integration"
+      format: "python"
+      count: 2
+      description: "yaml-ld-to-rdf, import-rdf-to-neo4j"
+
+    - path: "tools/neo4j/semantic-queries/"
+      type: "query_examples"
+      format: "cypher"
+      count: 10
+      description: "Example Neo4j queries"
+
+    # Phase 6: Pilot
+    - path: "research-autopoietic-template/ISSUE.md"
+      type: "migrated_issue"
+      format: "markdown"
+      description: "ISSUE.yaml → ISSUE.md with YAML-LD"
+
+    # Phase 7: Manifesto specs
+    - path: ".spec-workflow/specs/spec-002/ through spec-021/"
+      type: "manifesto_specs"
+      format: "spec_folders"
+      count: 20
+      description: "One spec per manifesto module section"
+
+    - path: "docs/manifesto/00-master-index.md"
+      type: "master_index"
+      format: "markdown"
+      description: "Results chain + conceptualization map"
+
+    # Documentation
+    - path: "docs/guides/KETERDOC-QUICKSTART.md"
+      type: "user_guide"
+      format: "markdown"
+
+    - path: "docs/guides/LENS-SELECTION-GUIDE.md"
+      type: "user_guide"
+      format: "markdown"
+
+    - path: "docs/guides/PATTERN-SYSTEM.md"
+      type: "user_guide"
+      format: "markdown"
+
+    - path: "docs/guides/NEO4J-INTEGRATION.md"
+      type: "user_guide"
+      format: "markdown"
+
+# Triple Permanencia (P6)
+triple_persistence:
+  markdown: "All templates in artifact-templates/"
+  neo4j: "RDF triples in .output-triple/rdf/"
+  vector: "Embeddings for semantic search"
+
+# Métricas de progreso
+metrics:
+  completion:
+    phase_1_fundamentos: 0%          # @context + 6 base templates
+    phase_2_lens_integration: 0%     # 24 lens variants
+    phase_3_workflow_patterns: 0%    # 10 patterns
+    phase_4_migration_tools: 0%      # 4 scripts
+    phase_5_neo4j_integration: 0%    # 2 scripts + queries
+    phase_6_pilot_migration: 0%      # Validate migration
+    phase_7_manifesto_specs: 0%      # 20 additional specs
+
+  quality:
+    templates_created: 0
+    patterns_defined: 0
+    scripts_working: 0
+    validation_pass_rate: 0
+    neo4j_query_time_ms: 0
+    specs_created: 1  # This one (spec-001)
+
+# Checkpoints habilitados (P5)
+checkpoints:
+  - id: CK-01
+    phase: "Phase 1: Fundamentos"
+    criteria:
+      - "@context.jsonld validates in JSON-LD playground"
+      - "6 base templates created with KeterDoc frontmatter"
+      - "KETERDOC-QUICKSTART.md guide complete"
+
+  - id: CK-02
+    phase: "Phase 2-3: Templates + Patterns"
+    criteria:
+      - "24 lens variants created"
+      - "10 PATTERN-*.yaml files with confidence scores"
+      - "LENS-SELECTION-GUIDE.md complete"
+
+  - id: CK-03
+    phase: "Phase 4-5: Tools + Neo4j"
+    criteria:
+      - "7 scripts working on test data"
+      - "RDF triples import to Neo4j successfully"
+      - "NEO4J-INTEGRATION.md guide complete"
+
+  - id: CK-04
+    phase: "Phase 6: Pilot Migration"
+    criteria:
+      - "ISSUE.yaml → ISSUE.md migrated"
+      - "20+ artifacts migrated to new templates"
+      - "validate-keterdoc-compliance.py passes 100%"
+      - "lesson-002-migration-validation.md complete"
+
+  - id: CK-05
+    phase: "Phase 7: Manifesto Coherence"
+    criteria:
+      - "21 specs created (spec-001 through spec-021)"
+      - "Master index shows complete results chain"
+      - "Conceptualization map visualizes system"
+      - "lesson-003-manifesto-coherence.md complete"
+
+# 7-Phase Plan (10 weeks)
+phases:
+  phase_1:
+    name: "Fundamentos"
+    duration: "Weeks 1-2"
+    deliverables:
+      - "context.jsonld"
+      - "6 base templates"
+      - "KETERDOC-QUICKSTART.md"
+
+  phase_2:
+    name: "Lens Integration"
+    duration: "Weeks 3-4"
+    deliverables:
+      - "24 lens variants"
+      - "LENS-SELECTION-GUIDE.md"
+
+  phase_3:
+    name: "Workflow Patterns"
+    duration: "Week 5"
+    deliverables:
+      - "10 PATTERN-*.yaml"
+      - "artifact-workflows.yaml"
+      - "PATTERN-SYSTEM.md"
+
+  phase_4:
+    name: "Migration Tools"
+    duration: "Week 6"
+    deliverables:
+      - "4 Python scripts"
+      - "Test suite >80% coverage"
+
+  phase_5:
+    name: "Neo4j Integration"
+    duration: "Week 7"
+    deliverables:
+      - "2 Python scripts"
+      - "10 semantic queries"
+      - "NEO4J-INTEGRATION.md"
+
+  phase_6:
+    name: "Pilot Migration"
+    duration: "Week 8"
+    deliverables:
+      - "Migrated ISSUE.md"
+      - "20+ migrated artifacts"
+      - "lesson-002-migration-validation.md"
+
+  phase_7:
+    name: "Manifesto-Wide Specs"
+    duration: "Weeks 9-10"
+    deliverables:
+      - "20 specs (spec-002 through spec-021)"
+      - "Master index with results chain"
+      - "Conceptualization map"
+      - "lesson-003-manifesto-coherence.md"
+    modules:
+      - "01-fundamentos: 4 specs (visual identity, árbol vida, rostros, principios)"
+      - "02-arquitectura: 5 specs (research instance, checkpoints, API, autopoiesis, validation)"
+      - "03-workflow: 4 specs (kanban, trazabilidad, versionamiento, MCPs)"
+      - "04-implementacion: 3 specs (wizard, lessons automation, checklist)"
+      - "05-casos-estudio: 2 specs (CASO-01, CASO-02 documentation)"
+      - "06-referencias: 1 spec (glosario searchable)"
+      - "Master Index: 1 spec (results chain + conceptualization map)"
+
+# Referencias
+references:
+  - "docs/manifiesto/02-arquitectura/03-templates-hkm.md"
+  - "docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md"
+  - "docs/manifiesto/02-arquitectura/05-autopoiesis-system.md"
+  - "docs/manifiesto/01-fundamentos/04-principios-fundacionales.md"
+  - "060-reflect/lessons/lesson-001-keterdoc-architecture-gap.md"
+  - "060-reflect/chatlog/session-001-keterdoc-gap-analysis/full-transcript.md"
+
+# Estado actual
+current_phase: "Phase 1: Fundamentos"
+next_milestone: "CK-01: @context validated + 6 base templates"
+blockers: []
+
+# Feedback loop (P10)
+feedback_to_template: true
+generates_new_issues: true  # Phase 7 generates 20 new specs
+
+# Confidence assessment
+confidence:
+  overall: 0.95
+  rationale: |
+    Based on 3212 lines of manifesto documentation read.
+    5 critical gaps clearly identified with evidence.
+    Architecture aligned with documented standards (Dublin Core, SECI, YAML-LD).
+    Incremental migration reduces risk.
+    Autopoiesis protocol followed (chatlog → lesson → spec).
+
+  risks:
+    - name: "YAML-LD complexity"
+      probability: "medium"
+      impact: "high"
+      mitigation: "Start simple, expand gradually"
+
+    - name: "Template proliferation"
+      probability: "high"
+      impact: "medium"
+      mitigation: "Start with 6 base + 6 DSR, expand based on demand"
+
+    - name: "Breaking changes"
+      probability: "high"
+      impact: "critical"
+      mitigation: "Maintain backward compatibility, migrate incrementally"
+
+    - name: "Neo4j performance"
+      probability: "low"
+      impact: "medium"
+      mitigation: "Test with 1000+ artifacts, optimize queries"
+
+    - name: "Scope creep (21 specs)"
+      probability: "high"
+      impact: "high"
+      mitigation: "Phase 7 is incremental, can defer non-critical specs"
+
+---

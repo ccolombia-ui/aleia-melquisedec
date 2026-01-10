@@ -1,0 +1,66 @@
+# Issue Template: Requirement (REQ-XXX)
+#
+# Purpose: Define functional or non-functional requirements
+# Workflow: Sub-Issue (no approval, no logging, 20-35 min)
+# Location: .spec-workflow/specs/REQ-XXX/ISSUE.yaml
+# Workbook: 010-define/workbooks/REQ-XXX.md
+# Index: 010-define/requirements.md
+#
+# Variables to fill:
+#   {PREFIX} = "REQ"
+#   {NUMBER} = "001", "002", "003"...
+#   {NAME} = Slug del requerimiento (ej: "template-system")
+#   {CATEGORY} = functional, non-functional, foundational
+#   {PRIORITY} = high, medium, low
+#   {GAP} = Descripción del problema/gap
+#   {GOAL} = Objetivo del requerimiento
+#   {OUTCOME_1}, {OUTCOME_2}, ... = Resultados esperados
+#   {CONCEPT_XXX} = Conceptos relacionados (opcional)
+#   {LIT_XXX} = Literatura relacionada (opcional)
+
+# ISSUE METADATA
+id: "{PREFIX}-{NUMBER}-{NAME}"
+type: "requirement"
+category: "{CATEGORY}"  # functional | non-functional | foundational
+priority: "{PRIORITY}"  # high | medium | low
+status: "draft"         # draft | in-progress | review | completed | blocked
+
+# PROBLEM DEFINITION (RBM-GAC Model)
+problem:
+  gap: "{GAP}"
+  # Ejemplo: "No hay sistema estandarizado para gestionar templates configurables"
+
+  goal: "{GOAL}"
+  # Ejemplo: "Crear arquitectura de templates que soporte configuración por tipo de issue"
+
+  outcomes:
+    - "{OUTCOME_1}"
+    # Ejemplo: "5 templates YAML creados (REQ, CONCEPT, LIT, DESIGN, IMPL)"
+    - "{OUTCOME_2}"
+    # Ejemplo: "Sistema de instanciación documentado con diagramas"
+    - "{OUTCOME_3}"
+    # Ejemplo: "≥3 issues creados usando templates para validación"
+
+# DEPENDENCIES (bidirectional links)
+dependencies:
+  concepts: []
+    # Ejemplo: ["CONCEPT-017", "CONCEPT-018"]
+
+  literature: []
+    # Ejemplo: ["LIT-003"]
+
+  designs: []
+    # Usar cuando este REQ es implementado por un DESIGN
+    # Ejemplo: ["DESIGN-003"]
+
+  requirements: []
+    # Usar cuando este REQ depende de otro REQ
+    # Ejemplo: ["REQ-001"]
+
+# WORKFLOW STATUS
+tasks_generated: false
+# Cambiar a true cuando se generen tareas (Main Spec workflow solamente)
+
+# WORKBOOK PATH
+workbook: "010-define/workbooks/{PREFIX}-{NUMBER}-{NAME}.md"
+# Ejemplo: "010-define/workbooks/REQ-001-template-system.md"

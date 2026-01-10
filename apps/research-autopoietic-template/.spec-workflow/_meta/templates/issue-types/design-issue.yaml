@@ -1,0 +1,133 @@
+# Issue Template: Design (DESIGN-XXX)
+#
+# Purpose: Architectural design of components, patterns, integrations
+# Workflow: Sub-Issue (no approval, no logging, 3-4 hours)
+# Location: .spec-workflow/specs/DESIGN-XXX/ISSUE.yaml
+# Workbook: 030-design/workbooks/DESIGN-XXX.md
+# Index: 030-design/architecture-index.md
+#
+# Variables to fill:
+#   {PREFIX} = "DESIGN"
+#   {NUMBER} = "001", "002", "003"...
+#   {NAME} = Slug del diseño (ej: "triple-persistence")
+#   {CATEGORY} = architecture, pattern, integration, system
+#   {PRIORITY} = high, medium, low
+#   {COMPONENT} = Nombre del componente
+#   {PURPOSE} = Propósito del diseño
+#   {DECISION_1}, {DECISION_2}, ... = Decisiones arquitectónicas clave
+#   {ADR_XXX} = ADRs relacionados
+#   {REQ_XXX} = Requerimientos implementados
+
+# ISSUE METADATA
+id: "{PREFIX}-{NUMBER}-{NAME}"
+type: "design"
+category: "{CATEGORY}"  # architecture | pattern | integration | system
+priority: "{PRIORITY}"  # high | medium | low
+status: "draft"         # draft | in-progress | review | completed | blocked
+
+# DESIGN SPECIFICATION
+design:
+  component: "{COMPONENT}"
+  # Ejemplo: "Triple Persistence System"
+
+  purpose: "{PURPOSE}"
+  # Ejemplo: "Sincronizar conocimiento en 3 formatos: markdown + Neo4j + embeddings"
+
+  key_decisions:
+    - "{DECISION_1}"
+    # Ejemplo: "Markdown es source of truth (immutability)"
+    - "{DECISION_2}"
+    # Ejemplo: "Neo4j para relaciones complejas y queries recursivos"
+    - "{DECISION_3}"
+    # Ejemplo: "Vector embeddings para similarity search y semantic retrieval"
+    - "{DECISION_4}"
+    # Ejemplo: "Sync unidireccional: MD → Neo4j + Vectors (no reverse sync)"
+
+# ARCHITECTURAL DECISIONS (ADRs)
+adrs:
+  - "{ADR_XXX}"
+  # Ejemplo: "ADR-001" - Triple Persistence Architecture
+  - "{ADR_YYY}"
+  # Ejemplo: "ADR-009" - Neo4j Schema Design
+  - "{ADR_ZZZ}"
+  # Ejemplo: "ADR-010" - Vector Embedding Strategy
+
+# IMPLEMENTATION REQUIREMENTS
+implements:
+  # Lista de REQ-XXX que este diseño implementa
+  - "{REQ_XXX}"
+  # Ejemplo: "REQ-004" - Triple Persistence Sync
+  - "{REQ_YYY}"
+  # Ejemplo: "REQ-012" - Graph Queries
+  - "{REQ_ZZZ}"
+  # Ejemplo: "REQ-013" - Semantic Search
+
+# RELATED CONCEPTS
+related_concepts:
+  # Conceptos fundacionales que aplica este diseño
+  - "{CONCEPT_XXX}"
+  # Ejemplo: "CONCEPT-016" - Triple Persistence
+  - "{CONCEPT_YYY}"
+  # Ejemplo: "CONCEPT-027" - Neo4j Integration
+
+# TECHNOLOGY STACK (opcional)
+technology:
+  languages:
+    - "{LANG_1}"  # Ejemplo: "Python 3.11+"
+    - "{LANG_2}"  # Ejemplo: "Cypher"
+
+  frameworks:
+    - "{FRAMEWORK_1}"  # Ejemplo: "neo4j-python-driver"
+    - "{FRAMEWORK_2}"  # Ejemplo: "sentence-transformers"
+
+  databases:
+    - "{DB_1}"  # Ejemplo: "Neo4j 5.x"
+    - "{DB_2}"  # Ejemplo: "ChromaDB"
+
+# DESIGN ARTIFACTS (outputs)
+artifacts:
+  diagrams:
+    - "{DIAGRAM_1}"  # Ejemplo: "Architecture diagram (C4 model)"
+    - "{DIAGRAM_2}"  # Ejemplo: "Sequence diagram (sync process)"
+    - "{DIAGRAM_3}"  # Ejemplo: "Neo4j schema diagram"
+
+  specifications:
+    - "{SPEC_1}"  # Ejemplo: "API specification (REST endpoints)"
+    - "{SPEC_2}"  # Ejemplo: "Data model (entities + relationships)"
+
+# VALIDATION CRITERIA
+validation:
+  criteria:
+    - "{CRITERION_1}"
+    # Ejemplo: "Markdown files remain unchanged (source of truth)"
+    - "{CRITERION_2}"
+    # Ejemplo: "Neo4j graph reflects all MD relationships"
+    - "{CRITERION_3}"
+    # Ejemplo: "Vector search returns relevant results (precision ≥80%)"
+
+  test_scenarios:
+    - "{SCENARIO_1}"
+    # Ejemplo: "Sync 100 MD files → verify Neo4j nodes created"
+    - "{SCENARIO_2}"
+    # Ejemplo: "Update MD file → verify Neo4j updates propagate"
+    - "{SCENARIO_3}"
+    # Ejemplo: "Query similar documents → verify vector similarity ≥0.8"
+
+# DEPENDENCIES (bidirectional links)
+dependencies:
+  concepts: []
+    # Ejemplo: ["CONCEPT-016", "CONCEPT-027"]
+
+  requirements: []
+    # Ejemplo: ["REQ-004", "REQ-012", "REQ-013"]
+
+  literature: []
+    # Papers que fundamentan decisiones arquitectónicas
+    # Ejemplo: ["LIT-015", "LIT-017"]
+
+# WORKFLOW STATUS
+tasks_generated: false
+
+# WORKBOOK PATH
+design_doc: "030-design/workbooks/{PREFIX}-{NUMBER}-{NAME}.md"
+# Ejemplo: "030-design/workbooks/DESIGN-001-triple-persistence.md"

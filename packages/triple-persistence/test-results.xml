@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="0.825" timestamp="2026-01-10T03:35:00.503460-05:00" hostname="emco_bigdata"><testcase classname="" name="tests.test_ingestion" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\proyectos\aleia-melquisedec\packages\triple-persistence\tests\test_ingestion.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.venv\Lib\site-packages\_pytest\python.py:507: in importtestmodule
+    mod = import_path(
+.venv\Lib\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Users\CARLOSCAMILOMADERASE\anaconda3\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1331: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:935: in _load_unlocked
+    ???
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:197: in exec_module
+    exec(co, module.__dict__)
+tests\test_ingestion.py:13: in &lt;module&gt;
+    from triple_persistence.ingestion import TriplePersistencePipeline
+triple_persistence\__init__.py:6: in &lt;module&gt;
+    from .models import Document, Chunk, IngestionConfig, QueryRequest, QueryResponse, QueryResult
+triple_persistence\models.py:4: in &lt;module&gt;
+    from pydantic import BaseModel, Field
+E   ModuleNotFoundError: No module named 'pydantic'</error></testcase><testcase classname="" name="tests.test_retriever" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\proyectos\aleia-melquisedec\packages\triple-persistence\tests\test_retriever.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.venv\Lib\site-packages\_pytest\python.py:507: in importtestmodule
+    mod = import_path(
+.venv\Lib\site-packages\_pytest\pathlib.py:587: in import_path
+    importlib.import_module(module_name)
+C:\Users\CARLOSCAMILOMADERASE\anaconda3\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;frozen importlib._bootstrap&gt;:1387: in _gcd_import
+    ???
+&lt;frozen importlib._bootstrap&gt;:1360: in _find_and_load
+    ???
+&lt;frozen importlib._bootstrap&gt;:1331: in _find_and_load_unlocked
+    ???
+&lt;frozen importlib._bootstrap&gt;:935: in _load_unlocked
+    ???
+.venv\Lib\site-packages\_pytest\assertion\rewrite.py:197: in exec_module
+    exec(co, module.__dict__)
+tests\test_retriever.py:12: in &lt;module&gt;
+    from triple_persistence.models import QueryRequest, QueryResponse, QueryResult
+triple_persistence\__init__.py:6: in &lt;module&gt;
+    from .models import Document, Chunk, IngestionConfig, QueryRequest, QueryResponse, QueryResult
+triple_persistence\models.py:4: in &lt;module&gt;
+    from pydantic import BaseModel, Field
+E   ModuleNotFoundError: No module named 'pydantic'</error></testcase></testsuite></testsuites>

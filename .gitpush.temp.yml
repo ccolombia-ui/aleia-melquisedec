@@ -1,0 +1,10 @@
+stages:
+  pre_commit: true
+  tests: false
+  branch_validate: false
+  commit: true
+  push: true
+  post_push: false
+minimal: false
+non_interactive: true
+commit_message: "feat(triple-persistence): add QA suite and document analysis; coverage >85%"

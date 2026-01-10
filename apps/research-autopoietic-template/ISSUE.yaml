@@ -1,0 +1,160 @@
+---
+# P3: Issue-Driven Everything
+# Este es el issue-spec principal que define toda la investigación
+
+id: ISSUE-SPEC-001-design-autopoietic-templates
+type: research
+status: active
+priority: high
+created: 2026-01-09
+
+# Título y contexto
+title: "Diseñar sistema de templates autopoiéticos para metodología MELQUISEDEC"
+context: |
+  La metodología MELQUISEDEC v4.0.0 define 10 principios fundacionales,
+  pero necesita templates concretos que implementen estos principios.
+  Esta investigación diseña templates versionados que:
+  1. Se auto-mejoran mediante lessons learned (P2: Autopoiesis)
+  2. Persisten conocimiento en triple formato (P6: Trazabilidad)
+  3. Validan mediante checkpoints (P5: Validación Continua)
+  4. Son configurables mediante lenses (P1: Síntesis Metodológica)
+
+# Problema (RBM-GAC format)
+problem:
+  gap: |
+    Actualmente no existe un sistema de templates autopoiéticos que:
+    - Evolucionen basados en feedback de múltiples proyectos
+    - Gestionen conocimiento cross-specs mediante patterns
+    - Versionan templates con confidence scores
+
+  goal: |
+    Diseñar e implementar un sistema donde:
+    - Templates se versionan (v4.3.1, v4.3.2...)
+    - Patterns evolucionan con confidence scores (0.0-1.0)
+    - Scripts gestionan lifecycle completo (init, validate, consolidate)
+    - Feedback de proyectos actualiza templates automáticamente
+
+  outcomes:
+    measurable:
+      - "Templates versionados con ≥3 versiones publicadas"
+      - "≥8 patterns con confidence scores validados"
+      - "≥6 scripts Python funcionando en ≥2 proyectos"
+      - "Tiempo de setup reducido de 8h → 2h"
+
+    qualitative:
+      - "Consistencia cross-proyecto en estructura y nomenclatura"
+      - "Trazabilidad completa de decisiones de diseño (ADRs)"
+      - "Documentación clara de autopoiesis (cómo evoluciona)"
+
+# Metodologías aplicadas (P1)
+methodologies:
+  - DSR (Design Science Research)        # Para diseño de artefactos
+  - Zettelkasten                         # Para conceptos atómicos
+  - DDD (Domain-Driven Design)           # Para modelado de dominio
+  - Autopoiesis (Maturana & Varela)      # Para auto-mejora
+
+# Rostros asignados
+rostros:
+  010_define: MELQUISEDEC      # Estructurar problema RBM-GAC
+  020_conceive: HYPATIA         # Investigar metodologías existentes
+  030_design: SALOMON           # Diseñar arquitectura de templates
+  040_build: MORPHEUS           # Implementar scripts y templates
+  050_release: ALMA             # Publicar outputs + lessons
+  060_reflect: MELQUISEDEC      # Analizar feedback, evolucionar
+
+# Salidas esperadas (P6: Output Triple)
+outputs:
+  050_release:
+    - path: "050-release/outputs/templates/"
+      type: "templates_versionados"
+      format: "markdown"
+      description: "Templates research-autopoietic/v4.3.1/"
+
+    - path: "050-release/outputs/scripts/"
+      type: "herramientas_python"
+      format: "python"
+      description: "Scripts para init, validate, consolidate, analyze"
+
+    - path: "050-release/outputs/patterns/"
+      type: "patrones_workflow"
+      format: "yaml"
+      description: "PATTERN-XXX.yaml con confidence scores"
+
+    - path: "050-release/outputs/lenses/"
+      type: "familias_lenses"
+      format: "yaml"
+      description: "Lenses por familia (research, architecture, quality)"
+
+# Triple Permanencia (P6)
+triple_persistence:
+  markdown: "020-conceive/02-atomics/*.md"
+  neo4j: "Cypher scripts en .melquisedec/domain/cypher/"
+  vector: "Embeddings en .melquisedec/domain/embeddings/"
+
+# Métricas de progreso
+metrics:
+  completion:
+    010_define: 0%      # RBM-GAC, requirements.md
+    020_conceive: 0%    # Literature, atomics, datasets
+    030_design: 0%      # Architecture, ADRs, specs
+    040_build: 0%       # Prototypes, implementations
+    050_release: 0%     # Outputs publicados
+    060_reflect: 0%     # Lessons, new issues
+
+  quality:
+    atomics_count: 0
+    adrs_count: 0
+    patterns_validated: 0
+    scripts_tested: 0
+
+# Checkpoints habilitados (P5)
+checkpoints:
+  - id: CK-01
+    phase: "010-define"
+    criteria:
+      - "requirements.md completo con RBM-GAC"
+      - "design.md con arquitectura inicial"
+      - "ISSUE.yaml validado"
+
+  - id: CK-02
+    phase: "020-conceive"
+    criteria:
+      - "≥20 atomic concepts documentados"
+      - "≥5 metodologías investigadas"
+      - "Triple persistencia configurada"
+
+  - id: CK-03
+    phase: "030-design"
+    criteria:
+      - "≥5 ADRs documentando decisiones clave"
+      - "Arquitectura de templates definida"
+      - "Specs de scripts completadas"
+
+  - id: CK-04
+    phase: "040-build"
+    criteria:
+      - "≥6 scripts Python implementados"
+      - "Templates v4.3.1 creados"
+      - "≥3 patterns con confidence ≥0.80"
+
+  - id: CK-05
+    phase: "050-release"
+    criteria:
+      - "Outputs publicados en 050-release/"
+      - "lessons-consolidated.md completo"
+      - "Documentación de uso lista"
+
+# Referencias
+references:
+  - "docs/manifiesto/bereshit-v3.0.0.md"
+  - "docs/manifiesto/01-fundamentos/04-principios-fundacionales.md"
+  - ".spec-workflow/_meta/templates/research-autopoietic-template/unified-research-template-design-v4.3.1.md"
+
+# Estado actual
+current_phase: "010-define"
+next_milestone: "CK-01: Complete requirements.md"
+blockers: []
+
+# Feedback loop (P10)
+feedback_to_template: true
+generates_new_issues: true

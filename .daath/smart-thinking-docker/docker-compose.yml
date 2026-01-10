@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  smart-thinking:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smart-thinking-mcp
+    image: daath-zen/smart-thinking:latest
+    environment:
+      - DISABLE_TELEMETRY=true
+      - TELEMETRY_DISABLED=1
+      - DO_NOT_TRACK=1
+      - SMART_THINKING_DATA_DIR=/data/sessions
+    volumes:
+      # Persistencia de sesiones
+      - ../../.daath/smart-thinking-sessions:/data/sessions
+    restart: unless-stopped
+    # Modo stdio para MCP (no exponer puerto HTTP)
+    stdin_open: true
+    tty: true
+    networks:
+      - daath-network
+
+networks:
+  daath-network:
+    name: daath-zen-network
+    external: true

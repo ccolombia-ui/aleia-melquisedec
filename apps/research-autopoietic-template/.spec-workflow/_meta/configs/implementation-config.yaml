@@ -1,0 +1,301 @@
+# Configuración para Issues de tipo: IMPLEMENTATION
+#
+# Metodología: Design Science Research (DSR) + Test-Driven Development (TDD)
+# - DSR: Build → Evaluate → Iterate
+# - TDD: Test first, implement, refactor
+#
+# Referencias:
+#   - Hevner et al., "Design Science in Information Systems Research"
+#   - Kent Beck, "Test Driven Development: By Example"
+#   - Martin Fowler, "Refactoring: Improving the Design of Existing Code"
+#
+# Coherencia metodológica:
+#   ✓ Artefacto implementado (algorithm, component, system)
+#   ✓ Test coverage ≥80% (quality assurance)
+#   ✓ Logging MANDATORY (knowledge base para future agents)
+#
+# ⚠️ CRITICAL: LOGGING ES MANDATORY PARA IMPLEMENTATIONS
+#   Sin logging, future AI agents:
+#   - Crearán APIs duplicadas
+#   - Reimplementarán componentes existentes
+#   - Duplicarán funciones de utilidad
+#   - Romperán patrones de integración
+---
+type: "implementation"
+methodology: "DSR + TDD"  # Design Science Research + Test-Driven Development
+
+# WORKBOOK PATTERN
+workbook_pattern: "030-design/implementations/{id}.md"
+
+# SPEC STRUCTURE para implementations
+spec_fields:
+  implementation:
+    algorithm: "string"           # ¿Qué algoritmo/lógica se implementa?
+    purpose: "string"             # ¿Para qué existe esta implementación?
+    complexity: "string"          # Complejidad temporal/espacial (Big-O)
+
+  inputs:
+    parameters: "array"           # Parámetros de entrada (nombre, tipo, descripción)
+    preconditions: "array"        # Precondiciones que deben cumplirse
+
+  outputs:
+    returns: "array"              # Valores de retorno (tipo, descripción)
+    side_effects: "array"         # Side effects (I/O, state changes)
+    postconditions: "array"       # Postcondiciones garantizadas
+
+  testing:
+    test_coverage: "integer"      # Percentage (target ≥80%)
+    test_framework: "string"      # pytest, jest, etc.
+    test_cases: "array"           # Lista de test cases
+
+  logging:
+    mandatory: true               # ⚠️ ALWAYS TRUE - No es opcional
+    tool: "mcp_spec-workflow_log-implementation"
+    artifacts_required:           # Artifacts que DEBEN registrarse
+      - "apiEndpoints"            # APIs creadas/modificadas
+      - "components"              # Componentes UI reutilizables
+      - "functions"               # Utility functions
+      - "classes"                 # Clases implementadas
+      - "integrations"            # Frontend-backend integrations
+
+# DEPENDENCIES STRUCTURE
+dependency_types:
+  - designs: "array"              # Diseños que esta implementación realiza
+  - requirements: "array"         # Requirements implementados (indirectamente vía design)
+
+# VALIDATION RULES
+validation:
+  - rule: "design_specified"
+    message: "Debe especificar qué DESIGN implementa"
+
+  - rule: "test_coverage_minimum"
+    message: "Test coverage debe ser ≥80%"
+
+  - rule: "logging_executed"
+    message: "⚠️ CRITICAL: Debe ejecutar mcp_spec-workflow_log-implementation MANDATORY"
+
+  - rule: "artifacts_logged"
+    message: "Artifacts logged debe incluir: apiEndpoints, components, functions, classes, integrations (según aplique)"
+
+  - rule: "algorithm_documented"
+    message: "Algorithm y complexity deben estar documentados"
+
+  - rule: "inputs_outputs_explicit"
+    message: "Inputs (parameters, preconditions) y outputs (returns, postconditions) deben ser explícitos"
+
+# WORKFLOW DEFAULTS
+workflow_defaults:
+  territory: "030-design/implementations/"
+  persona: "AI Agent"
+  proceso: "implement → test → log (MANDATORY)"
+  momento: "immediate"
+
+# LOGGING CONFIGURATION (MANDATORY)
+logging_configuration:
+  tool: "mcp_spec-workflow_log-implementation"
+
+  parameters_required:
+    - specName: "Nombre de la spec"
+    - taskId: "ID de la task (e.g., '1', '1.2', '3.1.4')"
+    - summary: "Resumen de lo implementado"
+    - filesModified: "array"
+    - filesCreated: "array"
+    - statistics:
+        linesAdded: "integer"
+        linesRemoved: "integer"
+    - artifacts:
+        apiEndpoints: "array"    # method, path, purpose, requestFormat, responseFormat, location
+        components: "array"      # name, type, purpose, location, props, exports
+        functions: "array"       # name, purpose, location, signature, isExported
+        classes: "array"         # name, purpose, location, methods, isExported
+        integrations: "array"    # description, frontendComponent, backendEndpoint, dataFlow
+
+  validation_before_log:
+    - "artifacts must not be empty"
+    - "summary must describe what was implemented"
+    - "filesModified or filesCreated must not be empty"
+    - "statistics.linesAdded must be > 0"
+
+  critical_requirement: |
+    ⚠️ LOGGING ES MANDATORY PARA IMPLEMENTATIONS
+
+    Sin logging completo, future AI agents:
+    - Crearán APIs duplicadas
+    - Reimplementarán componentes existentes
+    - Duplicarán funciones de utilidad
+    - Romperán patrones de integración
+
+    El logging crea una knowledge base searchable que permite:
+    - grep/ripgrep para buscar implementaciones existentes
+    - Descubrir APIs antes de crear duplicados
+    - Encontrar componentes reutilizables
+    - Mantener patrones consistentes
+
+# TEMPLATE para workbook
+workbook_template: |
+  # {id}: {name}
+
+  ## Metadata
+  - **Tipo**: Implementation
+  - **Metodología**: DSR + TDD
+  - **Status**: Draft
+  - **Prioridad**: {priority}
+
+  ## Implementation Overview
+
+  ### Algorithm
+  <!-- ¿Qué algoritmo/lógica se implementa? -->
+
+  ### Purpose
+  <!-- ¿Para qué existe esta implementación? -->
+
+  ### Complexity
+  <!-- Temporal: O(?), Espacial: O(?) -->
+  - **Time**:
+  - **Space**:
+
+  ## Inputs
+
+  ### Parameters
+  <!-- Parámetros de entrada -->
+  ```typescript
+  function implementation(
+    param1: Type1,  // Description
+    param2: Type2   // Description
+  ): ReturnType
+  ```
+
+  ### Preconditions
+  <!-- ¿Qué debe ser cierto antes de ejecutar? -->
+  -
+
+  ## Outputs
+
+  ### Returns
+  <!-- ¿Qué devuelve? -->
+  - **Type**:
+  - **Description**:
+
+  ### Side Effects
+  <!-- I/O, state changes, etc. -->
+  -
+
+  ### Postconditions
+  <!-- ¿Qué garantiza después de ejecutar? -->
+  -
+
+  ## Testing (TDD)
+
+  ### Test Framework
+  <!-- pytest, jest, etc. -->
+
+  ### Test Cases
+  <!-- Lista de test cases -->
+  1. **Test**:
+     - **Input**:
+     - **Expected Output**:
+     - **Status**: ✅ / ❌
+
+  2. **Test**:
+     - **Input**:
+     - **Expected Output**:
+     - **Status**: ✅ / ❌
+
+  ### Coverage
+  - **Target**: ≥80%
+  - **Actual**: <!-- Completar después de implementar -->
+
+  ## Implementation Details
+
+  ### Files Created
+  <!-- Lista de archivos creados -->
+  -
+
+  ### Files Modified
+  <!-- Lista de archivos modificados -->
+  -
+
+  ### Statistics
+  - **Lines Added**:
+  - **Lines Removed**:
+  - **Files Changed**:
+
+  ## ⚠️ LOGGING (MANDATORY)
+
+  ### Artifacts Logged
+  <!-- CRITICAL: Debe ejecutar mcp_spec-workflow_log-implementation -->
+
+  #### API Endpoints
+  <!-- Si se crearon/modificaron APIs -->
+  - **Method**:
+  - **Path**:
+  - **Purpose**:
+  - **Location**:
+
+  #### Components
+  <!-- Si se crearon componentes reutilizables -->
+  - **Name**:
+  - **Type**:
+  - **Purpose**:
+  - **Location**:
+
+  #### Functions
+  <!-- Si se crearon utility functions -->
+  - **Name**:
+  - **Purpose**:
+  - **Signature**:
+  - **Location**:
+
+  #### Classes
+  <!-- Si se crearon clases -->
+  - **Name**:
+  - **Purpose**:
+  - **Methods**:
+  - **Location**:
+
+  #### Integrations
+  <!-- Si se crearon integraciones frontend-backend -->
+  - **Description**:
+  - **Frontend Component**:
+  - **Backend Endpoint**:
+  - **Data Flow**:
+
+  ### Logging Execution
+  ```bash
+  # MANDATORY: Ejecutar después de implementar
+  mcp_spec-workflow_log-implementation(
+    specName: "{spec-name}",
+    taskId: "{task-id}",
+    summary: "Brief summary",
+    filesModified: [...],
+    filesCreated: [...],
+    statistics: { linesAdded: X, linesRemoved: Y },
+    artifacts: { ... }
+  )
+  ```
+
+  ## Dependencies
+
+  ### Implements Design
+  <!-- Diseño que esta implementación realiza -->
+  - [[DESIGN-XXX]]:
+
+  ### Implements Requirements (indirectly)
+  <!-- Requirements implementados vía design -->
+  - [[REQ-XXX]] → [[DESIGN-YYY]] → [[IMPL-ZZZ]]
+
+  ## Validation Checklist
+  - [ ] Design especificado
+  - [ ] Algorithm documentado
+  - [ ] Complexity calculada
+  - [ ] Inputs/outputs explícitos
+  - [ ] Test coverage ≥80%
+  - [ ] Tests passing
+  - [ ] ⚠️ LOGGING EXECUTED (MANDATORY)
+  - [ ] Artifacts logged (APIs, components, functions, classes, integrations)
+  - [ ] Files modified/created documented
+  - [ ] Statistics recorded (lines added/removed)
+
+  ## Notes
+  <!-- Notas adicionales, trade-offs, future improvements -->
+---

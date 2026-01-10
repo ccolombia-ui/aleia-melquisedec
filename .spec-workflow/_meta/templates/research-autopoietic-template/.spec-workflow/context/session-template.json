@@ -1,0 +1,49 @@
+{
+  "session_id": "[GENERATED_BY_SMART_THINKING_MCP]",
+  "checkpoint": "CK-XX",
+  "phase": "MELQUISEDEC | HYPATIA | SALOMON | MORPHEUS | ALMA | DAATH",
+  "started": "YYYY-MM-DDTHH:MM:SSZ",
+  "updated": "YYYY-MM-DDTHH:MM:SSZ",
+  "thoughts": [
+    {
+      "id": "thought-001",
+      "content": "[Descripción del pensamiento]",
+      "timestamp": "YYYY-MM-DDTHH:MM:SSZ",
+      "metrics": {
+        "confidence": 0.85,
+        "relevance": 0.9,
+        "quality": 0.8
+      },
+      "tags": ["concept", "hypatia", "seci-combination"]
+    }
+  ],
+  "connections": [
+    {
+      "source": "thought-001",
+      "target": "thought-002",
+      "type": "supports | contradicts | refines | branches | derives | associates | exemplifies | generalizes | compares | contrasts | questions | extends | analyzes | synthesizes | applies | evaluates",
+      "strength": 0.85,
+      "description": "[Por qué esta conexión existe]",
+      "bidirectional": false
+    }
+  ],
+  "metadata": {
+    "total_thoughts": 15,
+    "total_connections": 22,
+    "avg_confidence": 0.78,
+    "avg_relevance": 0.82,
+    "avg_quality": 0.75,
+    "graph_density": 0.195
+  },
+  "context": {
+    "epic_name": "[Nombre de la épica]",
+    "synthesis_from": [
+      "../../01-literature/source-X.md",
+      "../../02-atomics/combination/concept-Y.md"
+    ],
+    "objectives": [
+      "Sintetizar conceptos de literatura",
+      "Identificar patrones emergentes"
+    ]
+  }
+}

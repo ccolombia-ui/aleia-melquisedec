@@ -13,14 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/frameworks/llamaindex.md",
+                "file": "apps/research-autopoietic-template/010-define/INDICE-COMPLETO-ARTEFACTOS.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "llamaindex"
-            },
-            "group": "bbc797db0fd41ff3"
+              "title": "INDICE-COMPLETO-ARTEFACTOS"
+            }
           },
           {
             "id": "8a37f441e9e5b14c",
@@ -35,28 +34,6 @@
               "icon": "lucide-file",
               "title": "03-cinco-rostros"
             }
-          }
-        ]
-      },
-      {
-        "id": "89266ec43c173082",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "6fe13c6984b572d5",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/frameworks/llamaindex.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "Esquema de llamaindex"
-            },
-            "group": "bbc797db0fd41ff3"
           }
         ]
       }
@@ -242,46 +219,54 @@
       "smart-connections:Smart Connections: Open random connection": false
     }
   },
-  "active": "69621fe1295a4d41",
+  "active": "c5a493fad22a9415",
   "lastOpenFiles": [
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/code-patterns/pattern_1_adapter_multi_provider_embeddings.py.isorted",
-    "tests/integration/test_neo4j_graphrag_retrievers.py",
-    "packages/daath-toolkit/retrievers/neo4j_graphrag_retrievers.py",
-    "packages/daath-toolkit/retrievers/__init__.py",
-    "packages/daath-toolkit/retrievers",
-    "docs/manifiesto/99-meta/validacion-estructura.py.isorted",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/code-patterns/pattern_3_embedding_first_cypher_ingestion.py.isorted",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/code-patterns/pattern_2_idempotent_schema_creation.py.isorted",
-    "_templates/app-spec-template/_meta/orchestrator.md",
-    "_templates/app-spec-template/_meta/templates/SPEC-MCP.md.template",
-    "_templates/app-spec-template/_meta/templates/SPEC-WORKFLOWS.md.template",
-    "_templates/app-spec-template/_meta/templates/SPEC-ADAPTERS.md.template",
-    "_templates/app-spec-template/tasks.md",
-    "_templates/app-spec-template/README.md",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/validation-checkpoint.md",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/comparative-analysis.md",
-    "_templates/research-implementation-template/design.md",
-    "_templates/research-implementation-template/requirements.md",
-    "_templates/research-implementation-template/10-config/README.md",
-    "_templates/research-implementation-template/09-tests/README.md",
-    "_templates/research-implementation-template/08-workflows/README.md",
-    "_templates/research-implementation-template/07-architecture/interfaces/README.md",
-    "_templates/research-implementation-template/07-architecture/infrastructure/README.md",
-    "_templates/research-implementation-template/07-architecture/application/README.md",
-    "_templates/research-implementation-template/07-architecture/domain/README.md",
-    "_templates/research-implementation-template/README.md",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/neo4j-operations/hybrid-query-patterns.md",
-    "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/frameworks/genai-stack.md",
+    "apps/research-autopoietic-template/010-define/PROPUESTA-CORREGIDA-SPEC-POR-SECCION.md",
+    "packages/triple-persistence/QUALITY-REPORT.md",
+    "packages/triple-persistence/ANALYZE-DOCUMENT.md",
+    "packages/triple-persistence/examples/05_analyze_manifiesto.py",
+    "apps/research-autopoietic-template/010-define/ANALISIS-GAPS-Y-RECOMENDACIONES.md",
+    "_lab/genai-stack/loader.py",
+    "packages/triple-persistence/run-tests.ps1",
+    "packages/triple-persistence/sonar-project.properties",
+    "packages/triple-persistence/pyproject.toml",
+    "packages/triple-persistence/tests/fixtures/README.md",
+    "packages/triple-persistence/tests/fixtures",
+    "packages/triple-persistence/tests/conftest.py",
+    "packages/triple-persistence/tests/test_retriever.py",
+    "packages/triple-persistence/tests/test_ingestion.py",
+    "packages/triple-persistence/tests",
+    "packages/triple-persistence/QUICKSTART-MVP.md",
+    "docs/guides/CORRECCION-ollama-genai-stack.md",
+    "docs/guides/genai-stack-explicacion-dummies.md",
+    "packages/triple-persistence/examples/README.md",
+    "docs/guides/triple-persistence-quickstart.md",
+    "_lab/genai-stack/images/datamodel.png",
+    "_lab/genai-stack/running_on_wsl.md",
+    "_lab/genai-stack/readme.md",
+    "_lab/genai-stack/front-end/src/assets/images/me.jpeg",
+    "_lab/genai-stack/front-end/src/assets/images/bot.jpeg",
+    "_lab/genai-stack/front-end/src/assets/svelte.svg",
+    "_lab/genai-stack/front-end/public/vite.svg",
+    "_lab/genai-stack/front-end/README.md",
+    "_lab/genai-stack/CONTRIBUTING.md",
+    "packages/triple-persistence/README.md",
+    "apps/research-autopoietic-template/040-build/mvp-triple-persistence.md",
+    "apps/research-autopoietic-template/010-define/workbooks/REQ-001-template-system.md",
+    "apps/research-autopoietic-template/010-define/ANALISIS-GAP-TEMPLATES-ISSUES.md",
+    "apps/research-autopoietic-template/010-define/DIAGRAMAS-WORKFLOW-MCP.md",
+    "apps/research-autopoietic-template/010-define/ISSUE-DRIVEN-SPEC-WORKFLOW-INTEGRATION.md",
+    "apps/research-autopoietic-template/010-define/GAP-ANALYSIS-SPEC-WORKFLOW-INTEGRATION.md",
     "apps/research-neo4j-llamaindex-architecture/01-design/state-of-art/frameworks/llamaindex.md",
-    "docs/manifiesto/04-implementacion/04-memoria-y-persistencia-triple.md",
-    "_templates/tasks copy.md",
-    "apps/research-keter-migration/01-design/abstraction-layers/minimal-refactorings.md",
-    "apps/research-keter-migration/01-design/abstraction-layers/existing-architecture.md",
-    "apps/research-keter-migration/01-design/RQ2-KICKOFF.md",
-    "apps/research-keter-migration/00-problem/RQ1-COMPLETE.md",
-    "apps/research-keter-migration/SETUP_COMPLETE.md",
+    "apps/research-autopoietic-template/010-define/ANALISIS-APPROACH-ATOMICO.md",
+    "apps/research-autopoietic-template/010-define/image/INDICE-COMPLETO-ARTEFACTOS/1768018594258.png",
+    "apps/research-autopoietic-template/010-define/image/INDICE-COMPLETO-ARTEFACTOS/1768018502401.png",
+    "apps/research-autopoietic-template/010-define/image/INDICE-COMPLETO-ARTEFACTOS/1768018483520.png",
+    "apps/research-autopoietic-template/010-define/image/INDICE-COMPLETO-ARTEFACTOS/1768018471218.png",
+    "apps/research-autopoietic-template/010-define/INDICE-COMPLETO-ARTEFACTOS.md",
+    "apps/research-autopoietic-template/010-define/inputs/raw-manifiesto.md",
+    "apps/research-autopoietic-template/010-define/raw-manifiesto.md",
     "htmlcov/favicon_32_cb_c827f16f.png",
-    "htmlcov/keybd_closed_cb_900cfef5.png",
     "Sin título.canvas"
   ]
 }

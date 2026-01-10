@@ -1,0 +1,199 @@
+# Issue Template: Implementation (IMPL-XXX)
+#
+# Purpose: Specification for scripts, templates, patterns, or lenses
+# Workflow: Sub-Issue + MANDATORY logging (5 hours: spec + code + logging)
+# Location: .spec-workflow/specs/IMPL-XXX/ISSUE.yaml
+# Spec: 040-build/specifications/IMPL-XXX.md
+# Code: 040-build/scripts/ OR templates/ OR patterns/ OR lenses/
+# Index: 040-build/implementation-index.md
+#
+# ⚠️ CRITICAL: IMPL-XXX is the ONLY issue type that requires logging
+#              Must call mcp_spec-workflow2_log-implementation() after code completion
+#
+# Variables to fill:
+#   {PREFIX} = "IMPL"
+#   {NUMBER} = "001", "002", "003"...
+#   {NAME} = Slug de la implementación (ej: "init-spec-py")
+#   {CATEGORY} = script, template, pattern, lens
+#   {PRIORITY} = high, medium, low
+#   {IMPL_NAME} = Nombre del archivo/componente
+#   {IMPL_TYPE} = Python Script, YAML Template, Pattern, Lens
+#   {PURPOSE} = Propósito de la implementación
+#   {ALGORITHM_STEP_X} = Pasos del algoritmo (para scripts)
+#   {INPUT_X} = Inputs esperados
+#   {OUTPUT_X} = Outputs generados
+#   {DESIGN_XXX} = DESIGN que implementa
+#   {TEST_COVERAGE} = Target de cobertura (≥80%)
+
+# ISSUE METADATA
+id: "{PREFIX}-{NUMBER}-{NAME}"
+type: "implementation"
+category: "{CATEGORY}"  # script | template | pattern | lens
+priority: "{PRIORITY}"  # high | medium | low
+status: "not-started"   # not-started | in-progress | review | completed | blocked
+
+# IMPLEMENTATION SPECIFICATION
+implementation:
+  name: "{IMPL_NAME}"
+  # Ejemplo: "init-spec.py"
+
+  type: "{IMPL_TYPE}"
+  # Python Script | YAML Template | Pattern | Lens
+
+  purpose: "{PURPOSE}"
+  # Ejemplo: "Inicializar nueva spec (8 pasos, 4.2s)"
+
+  # For SCRIPTS (category: script)
+  algorithm:
+    - "{ALGORITHM_STEP_1}"
+    # Ejemplo: "Parse command-line arguments (--name, --type, --lens)"
+    - "{ALGORITHM_STEP_2}"
+    # Ejemplo: "Create directory structure 010-060"
+    - "{ALGORITHM_STEP_3}"
+    # Ejemplo: "Apply ISSUE.yaml template with provided parameters"
+    - "{ALGORITHM_STEP_4}"
+    # Ejemplo: "Generate spec-config.yaml with patterns and lens"
+    - "{ALGORITHM_STEP_5}"
+    # Ejemplo: "Initialize phase state files (.melquisedec/)"
+    - "{ALGORITHM_STEP_6}"
+    # Ejemplo: "Create .melquisedec/ cache directory"
+    - "{ALGORITHM_STEP_7}"
+    # Ejemplo: "Validate structure completeness"
+    - "{ALGORITHM_STEP_8}"
+    # Ejemplo: "Report success with timing (expected ~4.2s)"
+
+  # For TEMPLATES (category: template)
+  # template_variables:
+  #   - "{VAR_1}: Description"
+  #   - "{VAR_2}: Description"
+
+  # For PATTERNS (category: pattern)
+  # pattern_structure:
+  #   - "id, name, version, status, confidence"
+  #   - "description, when_to_use"
+  #   - "dependencies, workflow, validation, metrics"
+
+  # For LENSES (category: lens)
+  # lens_family:
+  #   - "research | architecture | quality"
+
+  inputs:
+    - "{INPUT_1}"
+    # Ejemplo: "--name: Spec name (slug format)"
+    - "{INPUT_2}"
+    # Ejemplo: "--type: research | architecture | quality"
+    - "{INPUT_3}"
+    # Ejemplo: "--lens: Primary lens (DSR, IMRAD, DDD, SOCIAL)"
+
+  outputs:
+    - "{OUTPUT_1}"
+    # Ejemplo: "Complete 6-phase directory structure (010-060)"
+    - "{OUTPUT_2}"
+    # Ejemplo: "ISSUE.yaml populated with provided parameters"
+    - "{OUTPUT_3}"
+    # Ejemplo: "spec-config.yaml with patterns and lens configuration"
+
+# IMPLEMENTS (DESIGN specifications)
+implements:
+  - "{DESIGN_XXX}"
+  # Ejemplo: "DESIGN-003" - Template System Architecture
+
+# DEPENDENCIES (other IMPL-XXX)
+dependencies:
+  - "{IMPL_XXX}"
+  # Ejemplo: "IMPL-002" - ISSUE.yaml template
+  - "{IMPL_YYY}"
+  # Ejemplo: "IMPL-030" - spec-config.yaml template
+
+# TESTING & QUALITY
+testing:
+  test_coverage: "{TEST_COVERAGE}"
+  # For scripts: "≥80%"
+  # For templates: "N/A (template)"
+  # For patterns: "Validated in ≥3 specs"
+  # For lenses: "Validated in ≥2 specs"
+
+  test_scenarios:
+    - "{SCENARIO_1}"
+    # Ejemplo: "Initialize spec with DSR lens → verify structure"
+    - "{SCENARIO_2}"
+    # Ejemplo: "Initialize spec with IMRAD lens → verify structure"
+    - "{SCENARIO_3}"
+    # Ejemplo: "Validate all templates are populated correctly"
+
+# FILE LOCATIONS
+files:
+  specification: "040-build/specifications/{PREFIX}-{NUMBER}-{NAME}.md"
+  # Ejemplo: "040-build/specifications/IMPL-001-init-spec-py.md"
+
+  code: "040-build/{CATEGORY}/{FILE_PATH}"
+  # For scripts: "040-build/scripts/init/init-spec.py"
+  # For templates: "040-build/templates/ISSUE.yaml"
+  # For patterns: "040-build/patterns/PATTERN-001.yaml"
+  # For lenses: "040-build/lenses/LENS-DSR.yaml"
+
+# ⚠️ CRITICAL: MANDATORY LOGGING
+#
+# After implementation is complete, MUST call:
+#
+# mcp_spec-workflow2_log-implementation(
+#   specName: "autopoietic-templates",
+#   taskId: "{PREFIX}-{NUMBER}",
+#   summary: "Brief summary of what was implemented",
+#   artifacts: {
+#     apiEndpoints: [],      # If API endpoints were created
+#     components: [],        # If UI components were created
+#     functions: [],         # If utility functions were created
+#     classes: [],           # If classes were created
+#     integrations: []       # If integrations were implemented
+#   },
+#   filesModified: ["list", "of", "modified", "files"],
+#   filesCreated: ["list", "of", "created", "files"],
+#   statistics: {
+#     linesAdded: 680,       # Total lines added
+#     linesRemoved: 0        # Total lines removed
+#   }
+# )
+#
+# This creates a log entry in Implementation Logs/YYYY-MM-DD-HH-MM-SS.md
+# which is searchable by future AI agents to avoid duplication.
+#
+# Example:
+# mcp_spec-workflow2_log-implementation(
+#   specName: "autopoietic-templates",
+#   taskId: "IMPL-001",
+#   summary: "Script to initialize spec structure (8 steps, 4.2s)",
+#   artifacts: {
+#     functions: [
+#       {
+#         name: "parse_args",
+#         purpose: "Parse CLI arguments",
+#         location: "scripts/init/init-spec.py:45",
+#         signature: "(argv: List[str]) -> Dict",
+#         isExported: false
+#       },
+#       {
+#         name: "create_directory_structure",
+#         purpose: "Create 6-phase directory structure",
+#         location: "scripts/init/init-spec.py:112",
+#         signature: "(base_path: Path, phases: List[str]) -> None",
+#         isExported: false
+#       }
+#     ]
+#   },
+#   filesCreated: ["040-build/scripts/init/init-spec.py"],
+#   filesModified: [],
+#   statistics: {
+#     linesAdded: 680,
+#     linesRemoved: 0
+#   }
+# )
+
+# WORKFLOW STATUS
+tasks_generated: false
+implementation_logged: false
+# ⚠️ Set to true after log-implementation() succeeds
+
+# WORKBOOK PATH
+specification: "040-build/specifications/{PREFIX}-{NUMBER}-{NAME}.md"
+# Ejemplo: "040-build/specifications/IMPL-001-init-spec-py.md"

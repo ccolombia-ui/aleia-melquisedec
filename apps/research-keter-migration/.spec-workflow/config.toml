@@ -1,0 +1,24 @@
+# spec-workflow-mcp Configuration
+# Research: Keter Migration to MELQUISEDEC
+# DAATH-ZEN v2.0.0 Integration
+
+[project]
+name = "research-keter-migration"
+version = "1.0.0"
+description = "DSR Research: Estrategia migración Keter desde aleia-bereshit"
+type = "research"  # research | library | application
+
+[workflow]
+# Estados personalizados para DSR + DAATH-ZEN
+approval_required = true
+auto_archive = false
+
+[dashboard]
+port = 5000
+language = "es"
+
+[paths]
+# Rutas relativas al directorio .spec-workflow
+specs = "specs"
+steering = "steering"
+templates = "artifact-templates"

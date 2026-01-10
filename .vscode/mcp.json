@@ -1,5 +1,25 @@
 {
 	"servers": {
+		"spec-workflow-root": {
+			"type": "stdio",
+			"command": "npx",
+			"args": ["-y", "@pimzino/spec-workflow-mcp@latest", "c:/proyectos/aleia-melquisedec"],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
+		"spec-workflow-keter-migration": {
+			"type": "stdio",
+			"command": "npx",
+			"args": ["-y", "@pimzino/spec-workflow-mcp@latest", "c:/proyectos/aleia-melquisedec/apps/research-keter-migration"],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
+		},
 		"filesystem": {
 			"type": "stdio",
 			"command": "cmd",
@@ -66,13 +86,8 @@
 		},
 		"playwright": {
 			"type": "stdio",
-			"command": "cmd",
-			"args": [
-				"/c",
-				"pnpm",
-				"dlx",
-				"@microsoft/mcp-server-playwright"
-			],
+			"command": "npx",
+			"args": ["-y", "@playwright/mcp@latest"],
 			"env": {
 				"DISABLE_TELEMETRY": "true",
 				"TELEMETRY_DISABLED": "1",
@@ -86,20 +101,40 @@
 				"mcp",
 				"gateway",
 				"run"
-			]
+			],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
 		},
 		"sequential-thinking": {
-		"command": "npx",
-		"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+			"type": "stdio",
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
 		},
 		"smart-thinking": {
-		"command": "npx",
-		"args": ["-y", "@Leghis/smart-thinking"]
+			"type": "stdio",
+			"command": "docker",
+			"args": ["exec", "-i", "smart-thinking-mcp", "smart-thinking-mcp"],
+			"env": {
+				"DISABLE_TELEMETRY": "true"
+			}
 		},
 		"maxential-thinking": {
-		"command": "npx",
-		"args": ["-y", "@bam-devcrew/maxential-thinking-mcp"]
-
+			"type": "stdio",
+			"command": "npx",
+			"args": ["-y", "@bam-devcrew/maxential-thinking-mcp@2.0.1"],
+			"env": {
+				"DISABLE_TELEMETRY": "true",
+				"TELEMETRY_DISABLED": "1",
+				"DO_NOT_TRACK": "1"
+			}
 		}
 	},
 	"inputs": []

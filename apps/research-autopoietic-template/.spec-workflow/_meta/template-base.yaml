@@ -1,0 +1,99 @@
+# Template Base - Sistema Configurable de Issues
+#
+# Filosofía: UNA plantilla genérica + configuraciones por tipo
+# Inspirado en: Design Science Research + Domain-Driven Design + RBM
+#
+# Variables configurables:
+#   {type}: requirement | concept | literature | design | implementation
+#   {number}: 001, 002, 003...
+#   {name}: Slug del artefacto
+#   {category}: Categoría específica del tipo (desde config-{type}.yaml)
+#   {priority}: high | medium | low
+#   {status}: draft | in-progress | review | completed | blocked
+#
+# Configuración se carga desde: .spec-workflow/_meta/configs/{type}-config.yaml
+# Workflow se ejecuta según: .spec-workflow/_meta/workflows/workflow-patterns.yaml
+
+---
+# METADATA BASE (común a todos los tipos)
+id: "{type}-{number}-{name}"
+type: "{type}"
+category: "{category}"
+priority: "{priority}"
+status: "draft"
+
+# SPEC CONFIGURABLE (estructura depende del tipo)
+# Esta sección se llena dinámicamente desde config-{type}.yaml
+# Ejemplo:
+#   - Para type=requirement → problem: {gap, goal, outcomes}
+#   - Para type=concept → concept: {definition, source, examples}
+#   - Para type=design → design: {component, purpose, key_decisions}
+spec: {}
+
+# DEPENDENCIES (común a todos, pero tipos específicos)
+# Estructura se define en config-{type}.yaml
+dependencies: {}
+
+# WORKFLOW METADATA
+tasks_generated: false
+
+# WORKBOOK PATH (configurable por tipo)
+# Se define en config-{type}.yaml como workbook_pattern
+# Ejemplo:
+#   - requirement → "010-define/workbooks/{id}.md"
+#   - concept → "020-conceive/02-atomics/{id}.md"
+workbook: "{workbook_path}"
+
+# CONTEXT (territorio, persona, proceso, momento)
+# Permite configuración específica por contexto de ejecución
+context:
+  territory: "{territory}"  # Dónde: .spec-workflow/, 010-define/, etc.
+  persona: "{persona}"      # Quién: AI Agent, User, MCP tool
+  proceso: "{proceso}"      # Cómo: create_file, approval, logging
+  momento: "{momento}"      # Cuándo: immediate, after_approval, batch
+---
+
+# INSTRUCCIONES DE USO:
+#
+# 1. Cargar config del tipo:
+#    config = load(f".spec-workflow/_meta/configs/{type}-config.yaml")
+#
+# 2. Aplicar config a este template:
+#    template = load("template-base.yaml")
+#    issue = template.apply(config, variables)
+#
+# 3. Generar artefactos:
+#    create_file(issue.issue_path, issue.yaml)
+#    create_file(issue.workbook_path, issue.workbook_template)
+#
+# 4. Actualizar índice:
+#    update_index(issue.index_path, issue.id)
+
+# COHERENCIA METODOLÓGICA:
+#
+# Cada tipo de artefacto se fundamenta en metodología robusta:
+#
+# requirement:
+#   - Metodología: RBM (Results-Based Management)
+#   - Estructura: Gap → Goal → Outcomes
+#   - Validación: Outcomes medibles
+#
+# concept:
+#   - Metodología: Zettelkasten (Luhmann)
+#   - Estructura: Atomic idea + bidirectional links
+#   - Validación: Definición clara + ejemplos
+#
+# literature:
+#   - Metodología: Systematic Literature Review
+#   - Estructura: Bibliographic + extraction targets
+#   - Validación: Citas verificables
+#
+# design:
+#   - Metodología: DDD (Domain-Driven Design) + DSR
+#   - Estructura: Component + decisions + ADRs
+#   - Validación: Implementa requirements
+#
+# implementation:
+#   - Metodología: DSR (Design Science Research)
+#   - Estructura: Algorithm + inputs/outputs + test coverage
+#   - Validación: Tests ≥80%, logging MANDATORY

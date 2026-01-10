@@ -1,0 +1,128 @@
+# Configuración para Issues de tipo: REQUIREMENT
+#
+# Metodología: Results-Based Management (RBM)
+# - Gap: Qué falta o qué problema existe
+# - Goal: Qué queremos lograr
+# - Outcomes: Resultados medibles esperados
+#
+# Referencias:
+#   - UNDP Results-Based Management Handbook
+#   - W.K. Kellogg Foundation Logic Model Development Guide
+#
+# Coherencia metodológica:
+#   ✓ Orientado a resultados medibles
+#   ✓ Separación clara entre gap actual y estado deseado
+#   ✓ Outcomes verificables empíricamente
+---
+type: "requirement"
+methodology: "RBM"  # Results-Based Management
+
+# WORKBOOK PATTERN
+# Variables disponibles: {id}, {type}, {number}, {name}
+workbook_pattern: "010-define/workbooks/{id}.md"
+
+# SPEC STRUCTURE para requirements
+spec_fields:
+  problem:
+    gap: "string"        # ¿Qué falta o qué problema existe actualmente?
+    goal: "string"       # ¿Qué queremos lograr al resolver este requerimiento?
+    outcomes: "array"    # ¿Qué resultados medibles esperamos? (cada uno debe ser SMART)
+
+  approach:
+    methodology: "string"     # ¿Qué metodología guía la solución? (RBM, DDD, DSR, etc.)
+    key_concepts: "array"     # ¿Qué conceptos fundamentales aplican?
+    constraints: "array"      # ¿Qué limitaciones o restricciones existen?
+
+# DEPENDENCIES STRUCTURE
+dependency_types:
+  - concepts: "array"      # Conceptos que este requerimiento necesita
+  - literature: "array"    # Papers/fuentes que fundamentan el requerimiento
+  - designs: "array"       # Diseños necesarios para resolver este requerimiento
+
+# VALIDATION RULES (serán aplicadas al instanciar)
+validation:
+  - rule: "outcomes_measurable"
+    message: "Cada outcome debe ser medible (SMART: Specific, Measurable, Achievable, Relevant, Time-bound)"
+
+  - rule: "gap_defined"
+    message: "El gap debe describir claramente el estado actual problemático"
+
+  - rule: "goal_achievable"
+    message: "El goal debe ser realista y alcanzable dado el contexto del proyecto"
+
+  - rule: "methodology_specified"
+    message: "Debe especificarse la metodología que guiará la solución (RBM, DDD, DSR, etc.)"
+
+# WORKFLOW DEFAULTS
+workflow_defaults:
+  territory: "010-define/"
+  persona: "AI Agent"
+  proceso: "create_issue"
+  momento: "immediate"
+
+# TEMPLATE para workbook (Markdown)
+workbook_template: |
+  # {id}: {name}
+
+  ## Metadata
+  - **Tipo**: Requirement
+  - **Metodología**: RBM (Results-Based Management)
+  - **Status**: Draft
+  - **Prioridad**: {priority}
+
+  ## Problem Statement
+
+  ### Gap Analysis (¿Qué falta?)
+  <!-- Describe el estado actual problemático -->
+
+  ### Goal (¿Qué queremos lograr?)
+  <!-- Describe el estado deseado -->
+
+  ### Expected Outcomes (Resultados medibles)
+  <!-- Lista outcomes SMART -->
+  1.
+  2.
+  3.
+
+  ## Approach
+
+  ### Methodology
+  <!-- ¿Qué metodología guiará la solución? -->
+
+  ### Key Concepts
+  <!-- Conceptos fundamentales que aplican -->
+  -
+  -
+
+  ### Constraints
+  <!-- Limitaciones o restricciones -->
+  -
+  -
+
+  ## Dependencies
+
+  ### Required Concepts
+  <!-- Conceptos que este req necesita -->
+  -
+
+  ### Supporting Literature
+  <!-- Papers/fuentes que fundamentan -->
+  -
+
+  ### Necessary Designs
+  <!-- Diseños que resolverán este req -->
+  -
+
+  ## Task Breakdown (Generado automáticamente)
+  <!-- Se genera al crear diseños e implementaciones -->
+
+  ## Validation Checklist
+  - [ ] Outcomes son medibles (SMART)
+  - [ ] Gap claramente definido
+  - [ ] Goal es alcanzable
+  - [ ] Metodología especificada
+  - [ ] Dependencies identificadas
+
+  ## Notes
+  <!-- Notas adicionales -->
+---

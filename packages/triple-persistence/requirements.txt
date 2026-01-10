@@ -1,0 +1,31 @@
+# Triple Persistence - Production Dependencies
+
+# Core Framework
+llama-index-core==0.14.6
+llama-index-vector-stores-neo4jvector==0.5.0
+llama-index-embeddings-ollama==0.5.0
+llama-index-llms-ollama==0.5.0
+
+# Neo4j
+neo4j==5.15.0
+
+# FastAPI
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Utilities
+python-dotenv==1.0.0
+httpx==0.26.0
+pyyaml==6.0.1
+
+# Markdown processing
+markdown-it-py==3.0.0
+pymdown-extensions==10.7
+
+# Logging
+structlog==24.1.0
+
+# Date/Time
+python-dateutil==2.8.2

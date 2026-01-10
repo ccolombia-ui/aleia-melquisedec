@@ -1,0 +1,248 @@
+# Configuración para Issues de tipo: DESIGN
+#
+# Metodología: Domain-Driven Design (DDD) + Design Science Research (DSR)
+# - DDD: Bounded contexts, ubiquitous language, aggregate design
+# - DSR: Artifacts, evaluation criteria, iteration cycles
+#
+# Referencias:
+#   - Eric Evans, "Domain-Driven Design"
+#   - Vaughn Vernon, "Implementing Domain-Driven Design"
+#   - Hevner et al., "Design Science in Information Systems Research"
+#
+# Coherencia metodológica:
+#   ✓ Arquitectura basada en dominios (DDD)
+#   ✓ Contratos explícitos (interfaces, schemas)
+#   ✓ Tests como especificación (TDD/BDD)
+#   ✓ Patrones documentados (Design Patterns)
+---
+type: "design"
+methodology: "DDD + DSR"  # Domain-Driven Design + Design Science Research
+
+# WORKBOOK PATTERN
+workbook_pattern: "030-design/workbooks/{id}.md"
+
+# SPEC STRUCTURE para designs
+spec_fields:
+  design:
+    component: "string"           # ¿Qué componente/módulo/sistema se diseña?
+    purpose: "string"             # ¿Para qué existe este componente?
+    bounded_context: "string"     # ¿En qué bounded context vive? (DDD)
+
+  architecture:
+    patterns: "array"             # Design patterns aplicados (Factory, Strategy, etc.)
+    components: "array"           # Subcomponentes que componen este diseño
+    dependencies: "array"         # Dependencias externas (librerías, servicios)
+
+  contracts:
+    inputs: "array"               # ¿Qué recibe? (parámetros, schemas)
+    outputs: "array"              # ¿Qué produce? (resultados, schemas)
+    interfaces: "array"           # Interfaces públicas expuestas
+
+  key_decisions:
+    decisions: "array"            # ADRs (Architecture Decision Records)
+    trade_offs: "array"           # Trade-offs considerados (performance vs maintainability, etc.)
+    alternatives: "array"         # Alternativas consideradas y por qué se descartaron
+
+  testing:
+    test_strategy: "string"       # TDD, BDD, Property-based testing
+    test_cases: "array"           # Casos de prueba principales
+    coverage_target: "integer"    # Target de coverage (default 80%)
+
+  artifacts:
+    intermediate: "array"         # Artefactos intermedios necesarios (schemas, configs, etc.)
+    final: "string"               # Artefacto final que produce este diseño
+
+# DEPENDENCIES STRUCTURE
+dependency_types:
+  - requirements: "array"         # Requerimientos que este diseño implementa
+  - concepts: "array"             # Conceptos aplicados en el diseño
+  - literature: "array"           # Papers que fundamentan decisiones de diseño
+  - implementations: "array"      # Implementaciones derivadas de este diseño
+
+# VALIDATION RULES
+validation:
+  - rule: "implements_requirements"
+    message: "Debe especificar qué requirements implementa"
+
+  - rule: "bounded_context_defined"
+    message: "Debe definir bounded context (DDD) donde vive el componente"
+
+  - rule: "contracts_explicit"
+    message: "Inputs/outputs/interfaces deben ser explícitos (schemas, tipos)"
+
+  - rule: "decisions_documented"
+    message: "Key decisions deben estar documentadas con justificación"
+
+  - rule: "artifacts_specified"
+    message: "Debe especificar artefactos intermedios y final"
+
+  - rule: "test_strategy_defined"
+    message: "Debe definir estrategia de testing (TDD, BDD, etc.)"
+
+# WORKFLOW DEFAULTS
+workflow_defaults:
+  territory: "030-design/workbooks/"
+  persona: "AI Agent"
+  proceso: "design_component"
+  momento: "after_requirements"
+
+# TEMPLATE para workbook
+workbook_template: |
+  # {id}: {name}
+
+  ## Metadata
+  - **Tipo**: Design
+  - **Metodología**: DDD + DSR
+  - **Status**: Draft
+  - **Prioridad**: {priority}
+  - **Bounded Context**: <!-- ¿En qué bounded context vive? -->
+
+  ## Design Overview
+
+  ### Component
+  <!-- ¿Qué componente/módulo/sistema se diseña? -->
+
+  ### Purpose
+  <!-- ¿Para qué existe este componente? ¿Qué problema resuelve? -->
+
+  ## Architecture
+
+  ### Design Patterns Applied
+  <!-- Factory, Strategy, Observer, etc. -->
+  1.
+  2.
+
+  ### Components
+  <!-- Subcomponentes que componen este diseño -->
+  ```mermaid
+  graph TD
+      A[Component A] --> B[Component B]
+      A --> C[Component C]
+  ```
+
+  ### Dependencies
+  <!-- Dependencias externas (librerías, servicios) -->
+  -
+
+  ## Contracts
+
+  ### Inputs
+  <!-- ¿Qué recibe? (parámetros, schemas) -->
+  ```yaml
+  input_schema:
+    field1: type
+    field2: type
+  ```
+
+  ### Outputs
+  <!-- ¿Qué produce? (resultados, schemas) -->
+  ```yaml
+  output_schema:
+    result: type
+  ```
+
+  ### Interfaces
+  <!-- Interfaces públicas expuestas -->
+  ```typescript
+  interface ComponentInterface {
+    method1(): ReturnType;
+    method2(param: Type): ReturnType;
+  }
+  ```
+
+  ## Key Decisions (ADRs)
+
+  ### Decision 1
+  - **Context**: <!-- ¿Qué necesitábamos decidir? -->
+  - **Decision**: <!-- ¿Qué decidimos? -->
+  - **Rationale**: <!-- ¿Por qué? -->
+  - **Consequences**: <!-- ¿Qué implicaciones tiene? -->
+
+  ### Trade-offs Considered
+  <!-- Performance vs Maintainability, etc. -->
+  -
+
+  ### Alternatives Considered
+  <!-- ¿Qué otras opciones evaluamos y por qué las descartamos? -->
+  -
+
+  ## Testing Strategy
+
+  ### Approach
+  <!-- TDD, BDD, Property-based testing -->
+
+  ### Test Cases
+  <!-- Casos de prueba principales -->
+  1.
+  2.
+  3.
+
+  ### Coverage Target
+  <!-- Default: 80% -->
+  - **Target**: 80%
+
+  ## Artifacts
+
+  ### Intermediate Artifacts
+  <!-- Artefactos necesarios para llegar al final -->
+  1.
+  2.
+
+  ### Final Artifact
+  <!-- Artefacto final que produce este diseño -->
+  -
+
+  ## Tasks Breakdown (Workflows Configurables)
+
+  <!-- Para cada artefacto intermedio, especificar workflow -->
+
+  ### Task 1: Crear [artefacto 1]
+  - **Territorio**:
+  - **Persona**:
+  - **Proceso**:
+  - **Momento**:
+
+  ### Task 2: Crear [artefacto 2]
+  - **Territorio**:
+  - **Persona**:
+  - **Proceso**:
+  - **Momento**:
+
+  ### Task 3: Crear [artefacto final]
+  - **Territorio**:
+  - **Persona**:
+  - **Proceso**:
+  - **Momento**:
+
+  ## Dependencies
+
+  ### Implements Requirements
+  <!-- Requerimientos que este diseño resuelve -->
+  - [[REQ-XXX]]:
+
+  ### Applies Concepts
+  <!-- Conceptos aplicados -->
+  - [[CONCEPT-XXX]]:
+
+  ### Based on Literature
+  <!-- Papers que fundamentan decisiones -->
+  - [[LIT-XXX]]:
+
+  ### Implementations
+  <!-- Implementaciones derivadas -->
+  - [[IMPL-XXX]]:
+
+  ## Validation Checklist
+  - [ ] Requirements implementados especificados
+  - [ ] Bounded context definido
+  - [ ] Contracts explícitos (inputs, outputs, interfaces)
+  - [ ] Key decisions documentadas
+  - [ ] Trade-offs considerados
+  - [ ] Artifacts especificados (intermediate + final)
+  - [ ] Test strategy definida
+  - [ ] Coverage target establecido (≥80%)
+  - [ ] Tasks breakdown con territorio/persona/proceso/momento
+
+  ## Notes & Diagrams
+  <!-- Diagramas adicionales, notas de diseño -->
+---

@@ -1,0 +1,151 @@
+# Configuración para Issues de tipo: LITERATURE
+#
+# Metodología: Systematic Literature Review (SLR)
+# - Bibliographic data: Datos completos de la fuente
+# - Extraction targets: Qué se extrae del paper/libro
+# - Quality assessment: Evaluación de relevancia y calidad
+#
+# Referencias:
+#   - Kitchenham & Charters, "Guidelines for Systematic Literature Reviews in Software Engineering"
+#   - Petersen et al., "Guidelines for Conducting Systematic Mapping Studies"
+#
+# Coherencia metodológica:
+#   ✓ Datos bibliográficos completos (citables)
+#   ✓ Objetivos de extracción claros
+#   ✓ Evaluación de calidad y relevancia
+---
+type: "literature"
+methodology: "Systematic Literature Review"
+
+# WORKBOOK PATTERN
+workbook_pattern: "020-conceive/03-literatura/{id}.md"
+
+# SPEC STRUCTURE para literature
+spec_fields:
+  bibliographic:
+    title: "string"           # Título del paper/libro
+    authors: "array"          # Lista de autores
+    year: "integer"           # Año de publicación
+    venue: "string"           # Journal/Conference/Publisher
+    doi: "string"             # DOI o URL permanente
+    citation: "string"        # Formato de citación (APA, IEEE, etc.)
+
+  extraction:
+    objectives: "array"       # ¿Qué queremos extraer? (conceptos, patrones, resultados)
+    key_findings: "array"     # Hallazgos principales del paper
+    relevance: "string"       # ¿Por qué es relevante para nuestro proyecto?
+
+  assessment:
+    quality_score: "integer"  # 1-5 (5 = alta calidad, metodología robusta)
+    relevance_score: "integer" # 1-5 (5 = altamente relevante para proyecto)
+    notes: "string"           # Notas adicionales sobre calidad/relevancia
+
+# DEPENDENCIES STRUCTURE
+dependency_types:
+  - concepts: "array"         # Conceptos que se extraen de esta literatura
+  - requirements: "array"     # Requerimientos que fundamenta esta literatura
+  - designs: "array"          # Diseños influenciados por esta literatura
+
+# VALIDATION RULES
+validation:
+  - rule: "bibliographic_complete"
+    message: "Datos bibliográficos deben estar completos (title, authors, year, venue, doi)"
+
+  - rule: "citation_formatted"
+    message: "Debe incluir citación en formato estándar (APA, IEEE, etc.)"
+
+  - rule: "extraction_objectives_clear"
+    message: "Objetivos de extracción deben ser claros y específicos"
+
+  - rule: "quality_assessed"
+    message: "Debe incluir quality_score (1-5) y justificación"
+
+# WORKFLOW DEFAULTS
+workflow_defaults:
+  territory: "020-conceive/03-literatura/"
+  persona: "AI Agent or User"
+  proceso: "extract_literature"
+  momento: "immediate"
+
+# TEMPLATE para workbook
+workbook_template: |
+  # {id}: {name}
+
+  ## Metadata
+  - **Tipo**: Literature
+  - **Metodología**: Systematic Literature Review
+  - **Status**: Draft
+  - **Prioridad**: {priority}
+
+  ## Bibliographic Data
+
+  ### Citation
+  <!-- Formato de citación completo (APA, IEEE, etc.) -->
+
+  ### Details
+  - **Title**:
+  - **Authors**:
+  - **Year**:
+  - **Venue**: <!-- Journal, Conference, Publisher -->
+  - **DOI**: <!-- https://doi.org/... -->
+  - **URL**: <!-- Si no tiene DOI -->
+
+  ## Extraction Objectives
+  <!-- ¿Qué queremos extraer de este paper/libro? -->
+
+  ### Objective 1
+  - **Target**: <!-- ¿Qué concepto/patrón/resultado buscamos? -->
+  - **Location**: <!-- Sección/página donde se encuentra -->
+  - **Extraction**: <!-- Qué extrajimos -->
+
+  ### Objective 2
+  <!-- Si aplica -->
+
+  ## Key Findings
+  <!-- Hallazgos principales del paper relevantes para nuestro proyecto -->
+
+  1.
+  2.
+  3.
+
+  ## Relevance to Project
+  <!-- ¿Por qué este paper es relevante? ¿Qué problema ayuda a resolver? -->
+
+  ## Quality Assessment
+
+  ### Quality Score
+  <!-- 1-5 (5 = metodología robusta, resultados reproducibles) -->
+  - **Score**:
+  - **Justification**:
+
+  ### Relevance Score
+  <!-- 1-5 (5 = altamente relevante para proyecto) -->
+  - **Score**:
+  - **Justification**:
+
+  ## Extracted Concepts
+  <!-- Conceptos que se derivan de esta literatura -->
+  - [[CONCEPT-XXX]]:
+
+  ## Informs Requirements
+  <!-- Requerimientos que esta literatura fundamenta -->
+  - [[REQ-XXX]]:
+
+  ## Informs Designs
+  <!-- Diseños influenciados por esta literatura -->
+  - [[DESIGN-XXX]]:
+
+  ## Notes & Quotes
+  <!-- Citas relevantes del paper -->
+
+  > "Quote"
+  > — (Author, Year, p. XX)
+
+  ## Validation Checklist
+  - [ ] Datos bibliográficos completos
+  - [ ] Citación en formato estándar
+  - [ ] Objetivos de extracción claros
+  - [ ] Quality assessment realizado
+  - [ ] Key findings documentados
+  - [ ] Relevancia justificada
+---

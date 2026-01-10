@@ -1,0 +1,121 @@
+# Configuración para Issues de tipo: CONCEPT
+#
+# Metodología: Zettelkasten (Luhmann)
+# - Atomic idea: Un concepto = una idea atómica
+# - Bidirectional links: Conexiones explícitas entre conceptos
+# - Progressive elaboration: Se puede expandir con el tiempo
+#
+# Referencias:
+#   - Niklas Luhmann, "Communicating with Slip Boxes"
+#   - Sönke Ahrens, "How to Take Smart Notes"
+#
+# Coherencia metodológica:
+#   ✓ Ideas atómicas (un concepto, una definición clara)
+#   ✓ Enlaces bidireccionales para formar red de conocimiento
+#   ✓ Ejemplos concretos que ilustren aplicación
+---
+type: "concept"
+methodology: "Zettelkasten"  # Luhmann atomic notes
+
+# WORKBOOK PATTERN
+workbook_pattern: "020-conceive/02-atomics/{id}.md"
+
+# SPEC STRUCTURE para concepts
+spec_fields:
+  concept:
+    definition: "string"    # ¿Qué es este concepto? (definición atómica y clara)
+    source: "string"        # ¿De dónde viene? (autor original, paper, teoría)
+    examples: "array"       # ¿Cómo se aplica? (ejemplos concretos)
+
+  relationships:
+    derives_from: "array"   # Conceptos padres (de dónde deriva este concepto)
+    informs: "array"        # Conceptos hijos (qué conceptos se derivan de este)
+    related: "array"        # Conceptos hermanos (conceptos relacionados horizontalmente)
+
+  tags: "array"             # Etiquetas para búsqueda semántica
+
+# DEPENDENCIES STRUCTURE
+dependency_types:
+  - literature: "array"     # Papers/fuentes que definen o explican el concepto
+  - concepts: "array"       # Otros conceptos necesarios para entender este
+
+# VALIDATION RULES
+validation:
+  - rule: "definition_atomic"
+    message: "La definición debe ser atómica (un concepto claro, no mezclar múltiples ideas)"
+
+  - rule: "source_cited"
+    message: "Debe citarse la fuente original del concepto (autor, paper, libro)"
+
+  - rule: "examples_concrete"
+    message: "Debe incluir al menos un ejemplo concreto de aplicación"
+
+  - rule: "bidirectional_links"
+    message: "Si deriva de otro concepto, ese concepto debe listarte en 'informs'"
+
+# WORKFLOW DEFAULTS
+workflow_defaults:
+  territory: "020-conceive/02-atomics/"
+  persona: "AI Agent"
+  proceso: "create_atomic_note"
+  momento: "immediate"
+
+# TEMPLATE para workbook (Zettelkasten-style)
+workbook_template: |
+  # {id}: {name}
+
+  ## Metadata
+  - **Tipo**: Concept (Atomic Note)
+  - **Metodología**: Zettelkasten
+  - **Status**: Draft
+  - **Tags**: <!-- #tag1 #tag2 #tag3 -->
+
+  ## Definition (¿Qué es?)
+  <!-- Definición atómica y clara del concepto -->
+
+  ## Source (¿De dónde viene?)
+  <!-- Autor original, paper, libro, teoría -->
+  - **Author**:
+  - **Reference**:
+  - **Year**:
+
+  ## Examples (¿Cómo se aplica?)
+  <!-- Ejemplos concretos -->
+
+  ### Example 1
+  <!-- Contexto, aplicación, resultado -->
+
+  ### Example 2
+  <!-- Si aplica -->
+
+  ## Relationships (Red de conocimiento)
+
+  ### Derives From (Conceptos padres)
+  <!-- Este concepto deriva de: -->
+  - [[CONCEPT-XXX]]:
+
+  ### Informs (Conceptos hijos)
+  <!-- Este concepto informa a: -->
+  - [[CONCEPT-YYY]]:
+
+  ### Related (Conceptos hermanos)
+  <!-- Conceptos relacionados horizontalmente: -->
+  - [[CONCEPT-ZZZ]]:
+
+  ## Supporting Literature
+  <!-- Papers, libros que profundizan el concepto -->
+  - [[LIT-XXX]]:
+
+  ## Visual Representation (Opcional)
+  <!-- Diagrama, mermaid, ilustración -->
+
+  ## Notes & Expansions
+  <!-- Ideas para expandir este concepto -->
+
+  ## Validation Checklist
+  - [ ] Definición es atómica
+  - [ ] Fuente citada correctamente
+  - [ ] Al menos 1 ejemplo concreto
+  - [ ] Enlaces bidireccionales verificados
+  - [ ] Tags relevantes asignados
+---

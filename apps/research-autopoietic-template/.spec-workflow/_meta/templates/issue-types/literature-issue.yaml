@@ -1,0 +1,114 @@
+# Issue Template: Literature (LIT-XXX)
+#
+# Purpose: Document academic papers, books, articles, code sources
+# Workflow: Sub-Issue (no approval, no logging, 1-2 hours for reading + notes)
+# Location: .spec-workflow/specs/LIT-XXX/ISSUE.yaml
+# Notes: 020-conceive/01-literature/LIT-XXX.md
+# Index: 020-conceive/literature-index.md
+#
+# Variables to fill:
+#   {PREFIX} = "LIT"
+#   {NUMBER} = "001", "002", "003"...
+#   {NAME} = Slug del paper (ej: "hevner-dsr")
+#   {PAPER_TITLE} = Título del paper
+#   {AUTHORS} = Autores del paper
+#   {YEAR} = Año de publicación
+#   {DOI} = DOI, ISBN, o URL
+#   {AREA} = Área temática (Design Science, Autopoiesis, Knowledge Management, etc.)
+#   {RELEVANCE} = Framework, Foundation, Supporting, Methodology
+#   {READING_STATUS} = to-read, reading, completed
+
+# ISSUE METADATA
+id: "{PREFIX}-{NUMBER}-{NAME}"
+type: "literature"
+category: "paper"  # paper | book | article | code-source
+priority: "high"   # Todas las literaturas son de prioridad basada en relevancia
+status: "draft"    # draft | in-progress | review | completed
+
+# BIBLIOGRAPHIC INFORMATION
+bibliographic:
+  title: "{PAPER_TITLE}"
+  # Ejemplo: "Design Science in Information Systems Research"
+
+  authors:
+    - "{AUTHOR_1}"
+    # Ejemplo: "Alan R. Hevner"
+    - "{AUTHOR_2}"
+    # Ejemplo: "Salvatore T. March"
+    - "{AUTHOR_3}"
+    # Ejemplo: "Jinsoo Park"
+    # ... más autores según corresponda
+
+  year: {YEAR}
+  # Ejemplo: 2004
+
+  doi: "{DOI}"
+  # Ejemplo: "10.2307/25148625"
+  # O URL: "https://www.jstor.org/stable/25148625"
+  # O ISBN: "978-0-XXX-XXXXX-X"
+
+  area: "{AREA}"
+  # Ejemplo: "Design Science"
+  # Opciones: Design Science, Autopoiesis, Knowledge Management, Domain-Driven Design,
+  #           RBM, Software Engineering, ADRs & Living Docs
+
+  relevance: "{RELEVANCE}"
+  # Framework: Define marco metodológico completo
+  # Foundation: Fundamenta un concepto clave
+  # Supporting: Soporta argumentación específica
+  # Methodology: Describe metodología aplicable
+
+# READING TRACKING
+reading:
+  status: "{READING_STATUS}"
+  # to-read: Pendiente de lectura
+  # reading: En proceso de lectura
+  # completed: Lectura completada con notas
+
+  started_date: null
+  # Llenar cuando status → reading: "YYYY-MM-DD"
+
+  completed_date: null
+  # Llenar cuando status → completed: "YYYY-MM-DD"
+
+  estimated_hours: 2
+  # Tiempo estimado de lectura + notas (1-2 horas típicamente)
+
+# EXTRACTION TARGETS
+extraction:
+  concepts_to_extract:
+    - "{CONCEPT_TARGET_1}"
+    # Ejemplo: "Design Science Research phases"
+    - "{CONCEPT_TARGET_2}"
+    # Ejemplo: "Artifact evaluation criteria"
+    - "{CONCEPT_TARGET_3}"
+    # Ejemplo: "DSR vs Natural Science"
+
+  key_citations:
+    - "{CITATION_1}"
+    # Ejemplo: "Page 75: 'Design science creates and evaluates IT artifacts'"
+    - "{CITATION_2}"
+    # Ejemplo: "Figure 2: DSR Framework with 7 guidelines"
+
+# DEPENDENCIES (bidirectional links)
+dependencies:
+  concepts: []
+    # Conceptos que se derivarán de este paper
+    # Ejemplo: ["CONCEPT-001", "CONCEPT-002"]
+
+  requirements: []
+    # Requerimientos que fundamenta este paper
+    # Ejemplo: ["REQ-001"]
+
+# TAGS (for semantic search)
+tags:
+  - "{TAG_1}"  # Ejemplo: "design-science"
+  - "{TAG_2}"  # Ejemplo: "research-methodology"
+  - "{TAG_3}"  # Ejemplo: "artifact-evaluation"
+
+# WORKFLOW STATUS
+tasks_generated: false
+
+# NOTES PATH
+notes_file: "020-conceive/01-literature/{PREFIX}-{NUMBER}-{NAME}.md"
+# Ejemplo: "020-conceive/01-literature/LIT-001-hevner-dsr.md"

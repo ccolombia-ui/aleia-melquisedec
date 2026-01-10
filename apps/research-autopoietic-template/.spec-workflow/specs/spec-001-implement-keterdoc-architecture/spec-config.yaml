@@ -1,0 +1,113 @@
+# Spec Configuration for spec-001-implement-keterdoc-architecture
+# Following spec-workflow-mcp format
+
+spec:
+  id: 'spec-001-implement-keterdoc-architecture'
+  title: 'Implement KeterDoc Architecture with YAML-LD and Template System'
+  version: '1.0.0'
+  status: 'active'  # active | completed | archived
+  type: 'architecture-migration'  # architecture | feature | refactor | research
+
+  # NEW: Reference to artifact template used
+  artifact_template: '../../../_templates/daath-template/artifact-templates/by-type/issue-tpl.md'
+  workflow_pattern: 'PATTERN-007-Problem-RBM-GAC'
+
+  # Research lens (DSR | IMRAD | DDD | Social | None)
+  lens: 'DSR'  # Design Science Research - building artifact
+
+  # Estimated effort and timeline
+  effort_estimate_hours: 400  # 10 weeks × 40 hours/week
+  start_date: '2026-01-13'  # Monday Week 1
+  target_completion: '2026-03-21'  # Friday Week 10
+
+  # Assigned rostros (MELQUISEDEC | HYPATIA | SALOMON | MORPHEUS | ALMA)
+  rostros:
+    - MELQUISEDEC  # Orchestration
+    - HYPATIA      # Research & documentation reading
+    - SALOMON      # Synthesis & validation
+    - MORPHEUS     # Design & patterns
+    - ALMA         # Execution & testing
+
+  # Priority (crítica | alta | media | baja)
+  priority: 'crítica'
+
+  # Checkpoints (CK-01 to CK-05)
+  checkpoints:
+    - CK-01  # After Phase 1: @context validated
+    - CK-02  # After Phase 3: Templates created
+    - CK-03  # After Phase 5: Neo4j integration working
+    - CK-04  # After Phase 6: Pilot migration validated
+    - CK-05  # After Phase 7: All 21 specs created
+
+  # Dependencies
+  depends_on:
+    - '060-reflect/lessons/lesson-001-keterdoc-architecture-gap.md'
+    - 'docs/manifiesto/02-arquitectura/03-templates-hkm.md'
+    - 'docs/manifiesto/02-arquitectura/04-sincronizacion-knowledge.md'
+
+  blocks: []  # No blockers initially
+
+  # Outputs expected
+  outputs:
+    templates:
+      - 'artifact-templates/by-type/'  # 28+ templates
+      - 'artifact-templates/by-lens/'  # 24 lens variants
+    configs:
+      - 'context.jsonld'
+      - 'config/artifact-workflows.yaml'
+      - 'patterns/PATTERN-*.yaml'  # 10 patterns
+    tools:
+      - 'tools/keterdoc/'  # 4 scripts
+      - 'tools/neo4j/'     # 2 scripts
+    specs:
+      - '.spec-workflow/specs/spec-002/'  # 20 additional specs
+      - '.spec-workflow/specs/spec-021/'  # Master index
+    docs:
+      - 'docs/guides/KETERDOC-QUICKSTART.md'
+      - 'docs/guides/LENS-SELECTION-GUIDE.md'
+      - 'docs/guides/PATTERN-SYSTEM.md'
+      - 'docs/guides/NEO4J-INTEGRATION.md'
+      - 'docs/manifiesto/00-master-index.md'  # NEW
+      - 'docs/manifiesto/00-conceptualization-map.mermaid'  # NEW
+
+  # Success metrics
+  metrics:
+    template_coverage:
+      target: 28
+      unit: 'templates'
+    lens_variants:
+      target: 24
+      unit: 'templates'
+    validation_pass_rate:
+      target: 95
+      unit: 'percent'
+    neo4j_query_time:
+      target: 1000
+      unit: 'milliseconds'
+    manifesto_specs:
+      target: 21
+      unit: 'specs'
+
+  # Validation criteria
+  validation:
+    - '@context validates in JSON-LD playground'
+    - 'All 30 templates have KeterDoc frontmatter examples'
+    - '10 PATTERN-*.yaml files with confidence scores'
+    - 'All 7 scripts run without errors on test data'
+    - 'RDF triples import to Neo4j successfully'
+    - 'Pilot project passes validate-keterdoc-compliance.py'
+    - '21 specs created covering all 6 manifesto modules'
+    - 'Master index shows complete results chain'
+
+  # Tags for searchability
+  tags:
+    - keterdoc
+    - yaml-ld
+    - templates
+    - semantic-web
+    - neo4j
+    - autopoiesis
+    - architecture
+    - migration
+    - manifesto
+    - coherence
