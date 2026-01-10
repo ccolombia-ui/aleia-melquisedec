@@ -1,7 +1,5 @@
 ---
-'@context':
-  '@vocab': 'https://schema.org/'
-  dc: 'http://purl.org/dc/terms/'
+'@context': '../../context.jsonld'
 '@type': 'TemplateRoot'
 '@id': 'https://melquisedec.org/templates/daath-zen-root'
 dc:title: 'template-configurable_daath-zen-root'

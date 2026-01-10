@@ -1,0 +1,52 @@
+{
+  "@context": {
+    "@vocab": "https://melquisedec.org/vocab/",
+    "mel": "https://melquisedec.org/vocab/",
+    "dc": "http://purl.org/dc/terms/",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "id": "@id",
+    "type": "@type",
+
+    "is_a": {
+      "@id": "rdf:type",
+      "@type": "@id"
+    },
+
+    "dc:title": { "@type": "xsd:string" },
+    "dc:creator": { "@container": "@list" },
+    "dc:date": { "@type": "xsd:date" },
+    "dc:subject": { "@container": "@set" },
+    "dc:source": { "@container": "@list" },
+
+    "seci": {
+      "@id": "mel:seci",
+      "@type": "@id"
+    },
+    "derives_from": {
+      "@id": "mel:derivesFrom",
+      "@type": "@id",
+      "@container": "@list"
+    },
+    "informs": {
+      "@id": "mel:informs",
+      "@type": "@id",
+      "@container": "@list"
+    },
+
+    "artifact_template": {
+      "@id": "mel:artifactTemplate",
+      "@type": "@id"
+    },
+    "workflow_pattern": {
+      "@id": "mel:workflowPattern",
+      "@type": "@id"
+    },
+    "lens": { "@id": "mel:lens" },
+
+    "version": { "@id": "mel:version" },
+    "permalink": { "@id": "mel:permalink" }
+  }
+}

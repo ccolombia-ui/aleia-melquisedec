@@ -2,6 +2,14 @@
 
 **Purpose:** Provide a compact checklist and instructions for HYPATIA (manifesto authors) to review DAATH-ZEN templates and REQ artifacts.
 
+**Intro:** This review focuses on manifesto coherence, metadata validity, result mapping and whether the templates enable clear causality mapping in RBM-GAC. Reviewers should provide concrete changes or an approval decision.
+
+**Acceptance Criteria for Review:**
+- [ ] Templates declared `stable` or `experimental` with justification
+- [ ] Manifesto coherence comments resolved or annotated
+- [ ] Any required field additions proposed with rationale and example
+- [ ] Follow-up tasks assigned with owners and target dates
+
 **Files to review:**
 - `_templates/daath-zen-patterns/template-configurable_daath-zen-root.md`
 - `_templates/daath-zen-patterns/daath-zen-req-template.md` (v0.1.0-experimental)

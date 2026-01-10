@@ -47,7 +47,15 @@ FR-003.1: Define required enrichment fields (e.g., dc:subject, seci:phase, confi
 
 This requirement defines the metadata fields and examples required to enrich embeddings and RDF triples so they become more useful for semantic search and knowledge graph construction.
 
-## 5. Next Steps
+## 5. Deliverables & Owner
+
+- Owner: SALOMON
+- Deliverables:
+  - A canonical list of enrichment fields with examples (file: `docs/guides/METADATA-ENRICHMENT.md`)
+  - A short experiment report comparing embedding retrieval (Jupyter notebook)
+  - Validation tests integrated into `tools/validate-frontmatter.py`
+
+## 6. Next Steps
 
 - Draft a list of required enrichment fields and examples
 - Implement a small experiment comparing retrieval quality before/after enrichment

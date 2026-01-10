@@ -39,7 +39,15 @@ Need to support multiple research and generation lenses (DSR, IMRAD, DDD) throug
 
 Provide a small set of lens templates and documentation that can be plugged into artifact templates and selected per-spec based on research objectives. This reduces ambiguity for authors and ensures outputs are comparable.
 
-## 3. Next Steps
+## 3. Deliverables & Owner
+
+- Owner: MORPHEUS
+- Deliverables:
+  - Lens taxonomy document (`docs/guides/LENS-TAXONOMY.md`)
+  - Two lens templates (DSR, IMRAD) in `_templates/daath-zen-patterns/`
+  - Evaluation checklist to select lens per spec
+
+## 4. Next Steps
 
 - Define lens taxonomy and minimal example templates for DSR and IMRAD
 - Provide evaluation criteria to select the appropriate lens for each spec
