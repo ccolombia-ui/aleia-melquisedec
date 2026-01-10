@@ -178,13 +178,13 @@ graph TD
         RINM[Resultado Inmediato<br/>Components/Deliverables]
         PROD[Products<br/>Concrete Files]
         ACT[Activities<br/>Operations]
-        
+
         RF --> RI
         RI --> RINM
         RINM --> PROD
         PROD --> ACT
     end
-    
+
     subgraph "spec-workflow-mcp Artifacts"
         PRODUCTO[producto.md<br/>Product Vision, Stakeholders]
         REQ[requirements.md<br/>Functional Reqs, User Stories]
@@ -193,25 +193,25 @@ graph TD
         TECH[tech.md<br/>Tech Stack, Dependencies]
         STRUCT[structure.md<br/>Directory Tree, Modules]
     end
-    
+
     subgraph "DDD Bounded Contexts"
         SPEC_CTX[Spec Management Context<br/>Entities: Specification, Requirement]
         DESIGN_CTX[Design Context<br/>Entities: ADR, Component]
         TEMPLATE_CTX[Template Context<br/>Entities: Template, Placeholder]
     end
-    
+
     RF -.maps to.-> PRODUCTO
     RI -.maps to.-> REQ
     RINM -.maps to.-> DESIGN
     RINM -.maps to.-> TASKS
     PROD -.maps to.-> TASKS
     ACT -.maps to.-> TASKS
-    
+
     REQ -.belongs to.-> SPEC_CTX
     DESIGN -.belongs to.-> DESIGN_CTX
     TECH -.belongs to.-> DESIGN_CTX
     STRUCT -.belongs to.-> DESIGN_CTX
-    
+
     style RF fill:#ff9999
     style RI fill:#ffcc99
     style RINM fill:#ffff99
@@ -329,7 +329,7 @@ import yaml
 class WorkbookCompiler:
     """
     Compiles IMRAD workbooks to spec-workflow artifacts.
-    
+
     Workflow:
         1. Parse workbook structure (01-08 files)
         2. Extract knowledge (Requirements from 04-results-analysis.md)
@@ -337,23 +337,23 @@ class WorkbookCompiler:
         4. Render templates (Jinja2)
         5. Validate output (keter-doc, RBM, Neo4j)
     """
-    
+
     def __init__(self, workbook_dir: Path, templates_dir: Path):
         self.workbook_dir = workbook_dir
         self.templates_dir = templates_dir
         self.env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(str(templates_dir))
         )
-    
+
     def compile_requirements(self) -> str:
         """
         Compile requirements.md from workbook.
-        
+
         Sources:
             - 01-introduction.md → Overview section
             - 04-results-analysis.md → Functional Requirements
             - 08-references.md → References section
-        
+
         Validation:
             - Every REQ-* has source in workbook
             - All User Stories have acceptance criteria
@@ -369,10 +369,10 @@ class WorkbookCompiler:
         references = self._parse_markdown(
             self.workbook_dir / "08-references.md"
         )
-        
+
         # Validate sources
         self._validate_requirements_sources(analysis, references)
-        
+
         # Render template
         template = self.env.get_template("requirements.md.j2")
         output = template.render(
@@ -381,13 +381,13 @@ class WorkbookCompiler:
             user_stories=analysis["user_stories"],
             references=references["bibliography"]
         )
-        
+
         return output
-    
+
     def compile_design(self) -> str:
         """
         Compile design.md from workbook.
-        
+
         Sources:
             - 02-methods.md → Methodology section
             - 03-results.md → Bounded Contexts diagrams
@@ -395,7 +395,7 @@ class WorkbookCompiler:
             - 08-references.md → Literature citations
         """
         # Similar structure...
-        
+
     def _validate_requirements_sources(
         self,
         analysis: Dict,
@@ -403,12 +403,12 @@ class WorkbookCompiler:
     ) -> None:
         """
         Validate that all requirements have sources.
-        
+
         Rules:
             1. Every REQ-* must cite workbook section or reference
             2. User Stories must have rationale from analysis
             3. NFRs must cite standards or best practices
-        
+
         Raises:
             ValidationError: If any requirement lacks source
         """
@@ -483,27 +483,27 @@ sequenceDiagram
     participant Templates as Jinja2 Templates
     participant Artifacts as Spec Artifacts<br/>(requirements.md, etc.)
     participant Validators
-    
+
     User->>Workbook: 1. Investigar dominio (DDD, IMRAD)
     Workbook-->>User: 8 archivos 01-08.md
-    
+
     User->>Compiler: 2. compile(workbook_dir)
     Compiler->>Workbook: 3. Parse archivos IMRAD
     Workbook-->>Compiler: Structured data
-    
+
     Compiler->>Compiler: 4. Validate sources (trazabilidad)
-    
+
     Compiler->>Templates: 5. Load template.j2
     Templates-->>Compiler: Template cargado
-    
+
     Compiler->>Compiler: 6. Render con Jinja2
-    
+
     Compiler->>Artifacts: 7. Write output
     Artifacts-->>Compiler: File created
-    
+
     Compiler->>Validators: 8. Validate artifact
     Validators-->>Compiler: ✅ Valid
-    
+
     Compiler-->>User: ✅ Compilation complete
 ```
 
@@ -1537,6 +1537,90 @@ Fase de sync a Neo4j es asíncrona y non-blocking. Si falla, log warning pero no
 - ✅ Compilación funciona sin Neo4j disponible
 - ⚠️ Metadata en Neo4j puede estar desactualizada
 - ⚠️ Errores de Neo4j no bloquean workflow
+
+---
+
+### ADR-007: HYPATIA→SALOMÓN Pipeline para Fundamentar Artefactos
+
+**Status**: Accepted
+**Date**: 2026-01-10
+
+**Context**:
+El diseño original de Phase 2 tenía una falla epistemológica crítica: **la Task 2.1 "Investigación IMRAD" no especificaba DÓNDE obtener el conocimiento**. El prompt decía "conduct IMRAD investigation" pero no indicaba fuentes concretas de información. Esto resultaría en contenido **INVENTADO** ("Based on my understanding...") en lugar de **FUNDAMENTADO** en literatura real.
+
+**Problem Statement**:
+> "SI NO HACEMOS LA INVESTIGACIÓN INICIAL, LA PARTE2 QUE ES LO QUE TENEMOS ACTUALMENTE, SERA INVENTADO"
+
+Sin un knowledge base previo, cualquier síntesis sería especulación sin fundamento verificable.
+
+**Decision**:
+Implementar pipeline de dos fases inspirado en MELQUISEDEC 5 Rostros:
+
+1. **HYPATIA (Rostro de Investigación Rigurosa)** - Task 2.1: Knowledge Acquisition
+   - Download literatura real (DDD books, ISO standards, IMRAD papers, spec-workflow-mcp code)
+   - Atomic analysis: Extraer 50+ conceptos atómicos con definiciones y citas
+   - Generate embeddings con Ollama (nomic-embed-text, 768 dim)
+   - Construct GraphRAG en Neo4j con relationships (Concept)-[:CITED_IN]->(Source)
+   - Almacenar en `artefactos-conocimiento/` (literature/, concepts/, frameworks/, embeddings/, graphs/)
+
+2. **SALOMÓN (Rostro de Síntesis Arquitectónica)** - Tasks 2.2-2.6: IMRAD Synthesis
+   - Query GraphRAG para concepts relevantes
+   - Semantic search en embeddings para contexto
+   - Synthesize IMRAD workbooks con citas inline a artefactos-conocimiento/
+   - **Agregar sección 07-decisiones.md** con ADRs fundamentados (cada ADR cita source + page number)
+   - Validator automático confirma ZERO unsourced claims
+
+**Architecture**:
+
+```
+[HYPATIA Phase]
+Literature Sources → Atomic Analysis → Embeddings (Ollama) → GraphRAG (Neo4j)
+                                                 ↓
+                                    artefactos-conocimiento/
+                                      ├── literature/
+                                      ├── concepts/
+                                      ├── frameworks/
+                                      ├── embeddings/
+                                      └── graphs/
+
+[SALOMÓN Phase]
+GraphRAG Queries → Semantic Search → IMRAD Synthesis → 07-decisiones.md → Validation
+                                                   ↓
+                                         Fundamented Artifacts
+                                         (all claims cited)
+```
+
+**Validation Principle**:
+```python
+def validate_sources(workbook_file):
+    claims = extract_claims(workbook_file)
+    for claim in claims:
+        if not has_citation(claim):
+            raise ValidationError(f"Claim '{claim}' lacks source citation")
+        if "based on my understanding" in claim.lower():
+            raise ValidationError("Unsourced speculation detected")
+```
+
+**Consequences**:
+- ✅ All content traceable to real sources (Evans 2003, ISO 21838, spec-workflow-mcp code)
+- ✅ Zero invented content - everything cited
+- ✅ GraphRAG enables semantic concept retrieval
+- ✅ 07-decisiones.md provides fundamented ADRs for conclusions
+- ✅ Validator prevents unsourced claims from passing
+- ⚠️ +10 hours time investment for HYPATIA knowledge acquisition
+- ⚠️ Requires Ollama + Neo4j infrastructure
+- ⚠️ Initial setup complexity higher (literature download, embedding generation)
+- ✅ **Epistemological Integrity**: Distinción clara entre conocimiento (HYPATIA) y síntesis (SALOMÓN)
+
+**Implementation Components**:
+1. `hypatia_engine.py`: download_literature(), atomic_analysis(), generate_embeddings(), build_graphrag()
+2. `salomon_writer.py`: write_introduction(), write_decisiones() - both query knowledge base
+3. `source_validator.py`: validate_sources(), check_citations()
+
+**Related**:
+- REQ-001-04a (HYPATIA Knowledge Acquisition)
+- REQ-001-04b (SALOMÓN IMRAD Synthesis)
+- US-007a, US-007b
 
 ---
 

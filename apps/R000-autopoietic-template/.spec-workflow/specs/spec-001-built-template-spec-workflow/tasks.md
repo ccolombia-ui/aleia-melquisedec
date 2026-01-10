@@ -4,18 +4,20 @@
 
 Este documento desglosa la implementación de SPEC-001 en tareas específicas y medibles compatible con spec-workflow-mcp.
 
-**Total Estimado**: 5 semanas (100-120 horas de desarrollo)
+**Total Estimado**: 5.5 semanas (110-130 horas de desarrollo)
+
 - Phase 1: Base Infrastructure - 15 horas ✅ COMPLETADO
-- Phase 2: Research Foundation - 26 horas (3 días) - **NUEVA FASE**
+- Phase 2: Research Foundation (HYPATIA→SALOMÓN) - 34 horas (4.25 días) - **NUEVA FASE REESTRUCTURADA**
 - Phase 3: Template System - 17 horas
 - Phase 4: Compilation Pipeline - 18 horas
 - Phase 5: Validation & Quality - 14 horas
 - Phase 6: Integration & Deployment - 10 horas
 - Phase 7: Documentation & Testing - 20 horas
 
-**Note**: Phase 2 es una fase de investigación formal agregada para fundamentar los artefactos desde conocimiento de dominio usando DDD, ingeniería de contextos e ISO para ontologías, en lugar de inventar contenido sin fundamento epistemológico.
+**Note**: Phase 2 implementa pipeline HYPATIA→SALOMÓN: primero adquirir conocimiento de dominio (literatura, análisis atómico, GraphRAG), luego sintetizar en IMRAD workbooks. Esto previene "invención" de contenido sin fundamento epistemológico - todo debe ser rastreable a fuentes reales.
 
 **References:**
+
 - [Requirements](./requirements.md) - Requisitos funcionales y no funcionales
 - [Design](./design.md) - Arquitectura y decisiones de diseño
 - [Tech Steering](../../steering/tech.md) - Stack técnico (si existe)
@@ -26,7 +28,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 
 ### 1. Base Infrastructure
 
-- [x] 1.1. Crear Schema JSON-LD Keter-Doc
+- [X] 1.1. Crear Schema JSON-LD Keter-Doc
+
   - **File**: `packages/core-mcp/schemas/keter-doc-protocol-v1.0.0.jsonld`
   - **Requirements**: REQ-001-01
   - **Estimación**: 3 horas
@@ -43,8 +46,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     jsonld validate keter-doc-protocol-v1.0.0.jsonld
     ```
   - **_Prompt**: Role: Schema Architect | Task: Create JSON-LD schema v1.0.0 with complete MELQUISEDEC ontology (10 principles, 5 Rostros), Dublin Core compliance, and URN validation patterns | Restrictions: Must validate against JSON-LD 1.1 spec, include all metadata fields from requirements.md REQ-001-01 | Success: Schema validates, includes all required vocabularies, URN patterns work, dates require ISO8601 format
+- [X] 1.2. Crear Template Base daath-zen-base.md
 
-- [x] 1.2. Crear Template Base daath-zen-base.md
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md`
   - **Requirements**: REQ-002-01
   - **Estimación**: 4 horas
@@ -58,8 +61,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Agregar sección Principios Aplicados
     - Agregar footer de compilación (auto-generated)
   - **_Prompt**: Role: Template Designer | Task: Create base template with HKM header, JSON-LD metadata block, metadata table, Overview section, Principios section, and compilation footer | Restrictions: All placeholders must be documented, format must be valid Markdown, footer must warn against manual editing | Success: Template validates with markdownlint, all placeholders defined, compilation metadata present
+- [X] 1.3. Crear Configuración de Herencia config.yaml-ld
 
-- [x] 1.3. Crear Configuración de Herencia config.yaml-ld
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/config.yaml-ld`
   - **Requirements**: REQ-002-02
   - **Estimación**: 3 horas
@@ -77,8 +80,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     python -c "import yaml; print(yaml.safe_load(open('config.yaml-ld')))"
     ```
   - **_Prompt**: Role: Configuration Engineer | Task: Define template hierarchy in YAML-LD format with base template and 6 variants extending it, include section definitions and workbook path patterns | Restrictions: Valid YAML syntax, all 6 variants must extend base, path patterns use glob syntax | Success: YAML validates, base points to correct file, all variants defined with correct inheritance, path patterns work
+- [X] 1.4. Implementar TemplateHierarchy Class
 
-- [x] 1.4. Implementar TemplateHierarchy Class
   - **File**: `packages/daath-toolkit/templates/template_hierarchy.py`, `packages/daath-toolkit/templates/__init__.py`, `tests/test_template_hierarchy.py`
   - **Requirements**: REQ-002-01, REQ-002-02
   - **Estimación**: 5 horas
@@ -97,138 +100,202 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     ```
   - **_Prompt**: Role: Python Developer | Task: Implement TemplateHierarchy class that loads config.yaml-ld, resolves template inheritance (base + variant merge), implements LRU cache, and includes complete type hints | Restrictions: Must use Python 3.10+, cache should improve performance, all public methods must have docstrings | Success: Loads config without errors, resolves inheritance correctly, cache works, 5+ unit tests pass with >80% coverage, mypy passes with no errors
 
-### 2. Research Foundation - Domain Knowledge
+### 2. Research Foundation (HYPATIA→SALOMÓN Pipeline)
 
-**Objetivo**: Investigación formal para fundamentar los artefactos de spec-workflow-mcp desde conocimiento de dominio usando DDD, ingeniería de contextos e ISO para gestión de ontologías.
+**Objetivo**: Pipeline de dos fases para fundamentar artefactos en conocimiento de dominio REAL. **HYPATIA** (Rostro de Investigación) adquiere conocimiento, **SALOMÓN** (Rostro de Síntesis) lo sintetiza en artefactos.
 
-**Metodología**: Workbook de Investigación IMRAD (Introduction, Methods, Results, Analysis, Discussion) para comprender artefactos, conceptos clave y estrategias de diligenciamiento.
+**Metodología**:
+1. **Phase 2.1 - HYPATIA**: Knowledge Acquisition → Literatura, análisis atómico, embeddings, GraphRAG
+2. **Phase 2.2-2.6 - SALOMÓN**: IMRAD Synthesis → Sintetizar con citas a fuentes reales
 
 **Ubicación**: `apps/R000-autopoietic-template/_melquisedec/domain/`
 
-- [ ] 2.1. Investigación de Artefactos spec-workflow-mcp (IMRAD)
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/wb-001-spec-workflow-artifacts/`
-  - **Requirements**: REQ-001-02 (nuevo)
-  - **Estimación**: 8 horas (1 día)
-  - **Prioridad**: 🔴 CRÍTICA
+**Estimación Total**: 34 horas (4.25 días) - incremento de 8 horas vs versión original
+
+---
+
+- [ ] 2.1. HYPATIA: Knowledge Acquisition & GraphRAG Construction
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/artefactos-conocimiento/`
+  - **Requirements**: REQ-001-04a (nuevo)
+  - **Estimación**: 10 horas (1.25 días)
+  - **Prioridad**: 🔴 CRÍTICA (bloquea todo SALOMÓN)
   - **Dependencias**: 1.4
   - **Subtareas**:
-    - **Introduction**: Definir preguntas de investigación sobre artefactos (requirements.md, design.md, tasks.md, producto.md, tech.md, structure.md)
-    - **Methods**: Análisis de código fuente del dashboard, revisión de documentación oficial, análisis de ejemplos existentes
-    - **Results**: Documentar estructura esperada de cada artefacto, secciones requeridas/opcionales, formatos, validaciones
-    - **Analysis**: Identificar conceptos clave (bounded contexts, entities, value objects, aggregates) usando DDD
-    - **Discussion**: Estrategia para diligenciar artefactos desde conocimiento de dominio vs inventar contenido
+    - **Literature Search & Download**:
+      - DDD: Buscar y descargar Evans (2003) "Domain-Driven Design", Vernon (2013) "Implementing DDD"
+      - ISO: Descargar ISO/IEC 21838-1:2019, ISO/IEC 21838-2:2019 (BFO)
+      - IMRAD: Sollaci & Pereira (2004) "IMRAD structure paper"
+      - Code: Clonar repo spec-workflow-mcp, analizar código fuente del dashboard
+    - **Atomic Analysis** (extraer conceptos de fuentes):
+      - Para cada PDF: extract text → semantic chunking → LLM identify concepts
+      - Para code: AST parsing → identify patterns (schemas, validators)
+      - Crear markdown por concepto en `concepts/` con definición + fuente
+      - Documentar frameworks en `frameworks/` (DDD strategic, DDD tactical, IMRAD, RBM)
+    - **Semantic Chunking & Embeddings**:
+      - Chunk literatura con LangChain RecursiveCharacterTextSplitter (512 tokens)
+      - Generate embeddings con Ollama (model: nomic-embed-text, dim: 768)
+      - Store embeddings en `embeddings/literature-chunks-embeddings.json`
+    - **GraphRAG Construction** (Neo4j):
+      - Diseñar schema: (Concept)-[:PART_OF]->(Framework), (Concept)-[:CITED_IN]->(Source), (Concept)-[:RELATES_TO]->(Artifact)
+      - Ingestar conceptos a Neo4j con source attribution
+      - Crear relaciones semánticas entre conceptos
+      - Implementar queries de retrieval (semantic search, concept traversal)
   - **Entregables**:
-    - `01-introduction.md` - Preguntas de investigación
-    - `02-methods.md` - Metodología de análisis
-    - `03-results.md` - Hallazgos estructurados
-    - `04-analysis.md` - Análisis DDD + ISO ontologías
-    - `05-discussion.md` - Estrategias de diligenciamiento
-    - `06-conclusions.md` - Conclusiones y recomendaciones
-    - `07-references.md` - Referencias citadas
+    - `artefactos-conocimiento/literature/` - 10+ fuentes organizadas por categoría (ddd/, iso/, imrad/, spec-workflow-mcp/)
+    - `artefactos-conocimiento/concepts/` - 50+ definiciones atómicas en markdown
+    - `artefactos-conocimiento/frameworks/` - 5+ frameworks documentados
+    - `artefactos-conocimiento/embeddings/` - Vectors de todos los chunks literarios
+    - `artefactos-conocimiento/graphs/schema.cypher` - Schema de Neo4j
+    - `artefactos-conocimiento/graphs/ingestion-queries.cypher` - Scripts de ingesta
+    - `artefactos-conocimiento/graphs/semantic-queries.cypher` - Queries de ejemplo
+    - `artefactos-conocimiento/README.md` - Guía de uso del knowledge base
   - **Validación**:
-    - Todas las preguntas de investigación respondidas
-    - Bounded contexts identificados para cada artefacto
-    - Mapeo claro entre dominio y artefactos
-  - **_Prompt**: Role: Research Investigator + DDD Expert | Task: Conduct formal IMRAD investigation of spec-workflow-mcp artifacts using DDD (bounded contexts, entities, value objects), context engineering, and ISO ontology management to understand what each artifact IS, what concepts it contains, and HOW to populate it from domain knowledge | Research Questions: 1) What sections does dashboard expect in each artifact? 2) What are the core domain concepts in each artifact? 3) How do artifacts map to RBM chain (RF→RI→Rinm→Products)? 4) What is the strategy to populate artifacts from research vs invention? | Methods: Source code analysis of spec-workflow-mcp dashboard, official documentation review, example analysis, DDD bounded context mapping | Restrictions: Must follow IMRAD structure strictly, must identify bounded contexts for each artifact, must provide clear domain-to-artifact mapping, must cite all sources | Success: All research questions answered, bounded contexts mapped, clear strategy documented for populating each artifact from domain knowledge, ISO ontology alignment demonstrated
+    - [ ] 10+ literatura sources descargadas y catalogadas en literature/
+    - [ ] 50+ conceptos atómicos extraídos con definiciones claras
+    - [ ] Embeddings generados para todos los chunks (verificar con similarity search test)
+    - [ ] GraphRAG operativo en Neo4j (test con 5 queries de ejemplo)
+    - [ ] Semantic search funciona (top-k retrieval <100ms)
+    - [ ] README documenta cómo consultar knowledge base
+  - **_Prompt**: Role: HYPATIA - Research Investigator + Knowledge Engineer | Task: Conduct comprehensive knowledge acquisition for spec-workflow-mcp domain by: 1) Searching and downloading key literature (DDD books via Semantic Scholar/Z-Library, ISO standards from official sources, IMRAD papers from PubMed, spec-workflow-mcp repo from GitHub), 2) Performing atomic analysis to extract 50+ core concepts with LLM (for each source: extract text → semantic chunking → identify atomic concepts → save as markdown in concepts/ with definition, source citation, related concepts), 3) Creating semantic chunks with embeddings using Ollama nomic-embed-text model (chunk size 512, overlap 50), 4) Constructing GraphRAG in Neo4j with concept relationships (schema: Concept nodes with PART_OF Framework, CITED_IN Source, RELATES_TO Artifact edges), 5) Implementing retrieval patterns for semantic search | Tools: Semantic Scholar API for papers, GitHub API for repo clone, PyPDF2/pdfplumber for text extraction, LangChain SemanticChunker, Ollama Python client, Neo4j Python driver | Deliverables: Complete artefactos-conocimiento/ folder with literature/ (10+ sources), concepts/ (50+ atomic definitions), frameworks/ (5+ documented), embeddings/ (all chunk vectors), graphs/ (Neo4j schema + queries), README.md (usage guide) | Restrictions: MUST cite ALL sources with page/line numbers, NO invented concepts without source, embeddings MUST use nomic-embed-text model, Neo4j schema MUST support semantic queries, all concepts MUST be traceable to source | Success Criteria: 10+ literature sources downloaded and organized, 50+ atomic concepts extracted with clear definitions and sources, embeddings generated for all chunks and searchable, GraphRAG operational with 5 test queries working (<100ms latency), semantic search retrieves relevant concepts with >0.8 similarity, README provides clear instructions for querying knowledge base
 
-- [ ] 2.2. Mapeo RBM → Artefactos (Domain Model)
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/models/rbm-artifact-mapping.md`
-  - **Requirements**: REQ-001-03 (nuevo)
+---
+
+- [ ] 2.2. SALOMÓN: IMRAD Investigation (Fundamentada en Knowledge Base)
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-workflow-artifacts-investigation/`
+  - **Requirements**: REQ-001-04b (renombrado)
+  - **Estimación**: 8 horas (1 día)
+  - **Prioridad**: 🔴 CRÍTICA
+  - **Dependencias**: 2.1 (HYPATIA knowledge base DEBE estar completo)
+  - **Subtareas**:
+    - **01-introduction.md**: Query GraphRAG por conceptos relacionados a artifacts + semantic search para contexto
+    - **02-methods.md**: Citar frameworks/ para metodologías (DDD, IMRAD) usadas en investigación
+    - **03-results.md**: Sintetizar hallazgos desde atomic-analysis/ de spec-workflow-mcp code + literature/
+    - **04-analysis.md**: Use GraphRAG para encontrar patrones conceptuales + embeddings para similarity
+    - **05-discussion.md**: Synthesize estrategias desde múltiples fuentes en literature/
+    - **06-conclusions.md**: Decisiones fundamentadas en evidencia del knowledge base
+    - **07-decisiones.md**: ← **NUEVO** - ADRs con justificación completa en literature/ y concepts/
+    - **08-references.md**: Bibliografía completa con todos los sources citados
+  - **Entregables**:
+    - `01-introduction.md` - Con citas a concepts/ (ej: "According to [ddd-bounded-context](../artefactos-conocimiento/concepts/ddd-bounded-context.md)...")
+    - `02-methods.md` - Con referencias a frameworks/ (ej: "Following DDD Strategic Design [1]...")
+    - `03-results.md` - Con links a atomic-analysis/ (ej: "Dashboard code analysis shows [2]...")
+    - `04-analysis.md` - Documentar GraphRAG queries usadas (ej: "MATCH (c:Concept)-[:RELATES_TO]->(a:Artifact)...")
+    - `05-discussion.md` - Síntesis de múltiples fuentes con attribution
+    - `06-conclusions.md` - Hallazgos validados contra knowledge base
+    - **07-decisiones.md** - ADRs fundamentados (ej: "ADR-001: Use DDD Bounded Contexts - Based on Evans (2003, p.345)...")
+    - `08-references.md` - Bibliografía COMPLETA en formato académico
+  - **Validación**:
+    - [ ] Cada claim tiene citation a artefactos-conocimiento/ (zero "based on my understanding")
+    - [ ] **07-decisiones.md existe y contiene ADRs fundamentados con sources**
+    - [ ] GraphRAG queries documentadas en 04-analysis.md
+    - [ ] Semantic search usage logged (qué queries, qué resultados)
+    - [ ] Validator automático confirma zero unsourced claims
+    - [ ] 08-references.md contiene ALL sources citados en workbooks
+  - **_Prompt**: Role: SALOMÓN - Synthesis Architect | Task: Conduct IMRAD investigation of spec-workflow-mcp artifacts using HYPATIA knowledge base (from task 2.1), synthesize findings with COMPLETE source attribution ensuring ZERO invented content | Methodology: For each IMRAD section: 1) Query GraphRAG for relevant concepts (MATCH queries on Neo4j), 2) Perform semantic search in embeddings for supporting evidence (Ollama similarity search), 3) Cite atomic-analysis files from literature/spec-workflow-mcp/, 4) Synthesize findings with inline citations [concept-name], 5) Document GraphRAG queries used, 6) Create NEW section 07-decisiones.md with fundamented ADRs (each ADR MUST cite literature source with page number), 7) Generate complete bibliography in 08-references.md | Input Required: artefactos-conocimiento/ knowledge base from task 2.1 MUST be complete | Restrictions: EVERY claim MUST cite source (literature/X, concepts/Y, atomic-analysis/Z), MUST create 07-decisiones.md with ADRs citing page numbers, NO speculation without evidence, NO "based on my understanding" phrases, USE GraphRAG for discovery not invention, DOCUMENT all queries in 04-analysis.md | Deliverables: 8 IMRAD workbooks (01-08) with complete source attribution, 07-decisiones.md with fundamented ADRs, GraphRAG query log in 04-analysis.md, semantic search trace, 08-references.md with academic bibliography | Success Criteria: All 8 workbooks completed with proper IMRAD structure, 07-decisiones.md contains 5+ ADRs each citing specific literature sources with page numbers, every statement has verifiable citation, GraphRAG queries documented and reproducible, semantic search usage traced, automated validator confirms zero unsourced claims, bibliography is complete and properly formatted
+
+---
+
+- [ ] 2.3. SALOMÓN: Mapeo RBM → Artefactos (Domain Model Fundamentado)
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/models/rbm-artifacts-mapping.md`
+  - **Requirements**: REQ-001-05
   - **Estimación**: 4 horas (0.5 día)
   - **Prioridad**: 🔴 CRÍTICA
-  - **Dependencias**: 1.5.1
+  - **Dependencias**: 2.2 (IMRAD workbooks)
   - **Subtareas**:
-    - Modelar cadena causal: Resultado Final → Resultados Intermedios → Resultados Inmediatos → Productos → Actividades
-    - Mapear RF → producto.md (visión, stakeholders, success criteria)
-    - Mapear RI → features → requirements.md (user stories, functional requirements)
-    - Mapear Rinm → productos internos → design.md (componentes, arquitectura)
-    - Mapear Actividades → tasks.md (implementación)
-    - Identificar bounded contexts por nivel RBM
-    - Crear diagrama C4 del modelo de dominio
+    - Query concepts/ para definiciones de RBM (Resultado Final, Resultado Intermedio, Resultado Inmediato)
+    - Mapear RF → producto.md citando concepts/rbm-resultado-final.md
+    - Mapear RI → requirements.md citando DDD bounded contexts
+    - Mapear Rinm → design.md usando concepts/ddd-aggregate.md
+    - Crear diagrama C4 Level 2 (Container) del modelo
+    - Identificar bounded contexts por nivel RBM con citas a Evans (2003)
   - **Entregables**:
-    - `rbm-artifact-mapping.md` - Mapeo completo con diagramas
-    - `rbm-domain-model.puml` - Diagrama PlantUML del modelo
-    - `bounded-contexts.md` - Contextos limitados identificados
+    - `rbm-artifacts-mapping.md` - Mapeo completo con citations
+    - Diagrama Mermaid de RBM chain embedded
+    - Bounded contexts table con references
   - **Validación**:
-    - Cadena RBM completamente mapeada a artefactos
-    - Diagrama C4 Level 2 (Container) creado
-    - Bounded contexts claramente definidos
-  - **_Prompt**: Role: Domain Modeler + RBM Expert | Task: Create formal domain model mapping RBM chain (Resultado Final → RI → Rinm → Products → Activities) to spec-workflow-mcp artifacts using DDD bounded contexts and C4 architecture diagrams | Deliverables: Complete mapping document showing how each RBM level generates specific artifact content, C4 diagrams (Context + Container levels), bounded context definitions | Restrictions: Must use DDD terminology (bounded contexts, aggregates, entities), must create visual diagrams (Mermaid/PlantUML), must show bidirectional traceability (artifact ← domain → RBM) | Success: RF maps to producto.md clearly, RI maps to features in requirements.md, Rinm maps to components in design.md, Activities map to tasks.md, bounded contexts defined per RBM level, C4 diagrams complete and understandable
+    - [ ] Cada mapeo cita concept relevante en artefactos-conocimiento/
+    - [ ] Diagrama C4 muestra bounded contexts claramente
+    - [ ] Citas a Evans (2003) para DDD patterns
+  - **_Prompt**: Role: SALOMÓN - Domain Modeler | Task: Create formal RBM→Artifacts mapping using concepts from HYPATIA knowledge base, query concepts/ for RBM definitions, map each RBM level to artifacts with citations, create C4 diagram, identify bounded contexts per RBM level citing Evans (2003) | Restrictions: MUST cite concepts/ for all RBM terms, MUST reference DDD literature for bounded context definitions, diagrams MUST be embedded (Mermaid/PlantUML), zero speculation | Success: Complete mapping with all citations traceable, C4 diagram clear, bounded contexts defined with literature references
 
-- [ ] 2.3. Prototipo Workbook Fundamentado (Ejemplo Concreto)
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/examples/wb-rbm-spec-001-prototype/`
-  - **Requirements**: REQ-001-04 (nuevo)
+---
+
+- [ ] 2.4. SALOMÓN: Prototipo Workbook Fundamentado
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/`
+  - **Requirements**: REQ-001-06
   - **Estimación**: 8 horas (1 día)
   - **Prioridad**: 🟡 ALTA
-  - **Dependencias**: 1.5.2
+  - **Dependencias**: 2.3
   - **Subtareas**:
-    - Crear workbook prototipo para SPEC-001 mismo usando estructura RBM
-    - Crear carpeta `resultado_final/` con visión del sistema de templates
-    - Crear carpetas `ri-001-base-infrastructure/`, `ri-002-template-system/`
-    - Dentro de cada RI, crear carpetas `rinm-XXX-<nombre>/`
-    - Dentro de cada Rinm, crear archivos de productos `PROD-XXX-<tipo>.md`
-    - Para cada producto, incluir: investigación de dominio (literature, atomic, analysis), decisiones (ADRs), referencias
-    - Crear script de compilación que genera `producto.md` desde workbook
+    - Crear workbook prototipo para SPEC-001 con estructura RBM
+    - Cada producto (PROD-XXX.md) DEBE citar artefactos-conocimiento/
+    - Implementar compiler/ script que valida sources antes de compilar
+    - Script DEBE verificar que cada claim tiene citation
   - **Entregables**:
-    - `wb-rbm-spec-001-prototype/` - Workbook completo estructurado
-    - `compile-producto.py` - Script que compila workbook → producto.md
-    - `producto-compiled.md` - Ejemplo de producto.md generado
+    - Workbook completo con source attribution
+    - `compiler/compile.py` - Con source validation
+    - `compiler/tests/test_source_validation.py` - Tests de validator
   - **Validación**:
-    - Workbook sigue estructura RBM estricta
-    - Cada producto tiene fundamento en investigación de dominio
-    - Script de compilación funciona sin errores
-    - producto.md generado es coherente y fundamentado
-  - **_Prompt**: Role: Research Workbook Architect | Task: Create prototype RBM workbook for SPEC-001 itself showing how artifacts emerge from domain knowledge, include resultado_final/, ri-XXX/, rinm-XXX/, and PROD-XXX.md files with domain research (literature, atomic analysis, decisions/ADRs), implement compilation script that generates producto.md from workbook | Structure: resultado_final/vision.md, ri-001-base-infrastructure/rinm-001-keter-doc/PROD-001-json-ld-schema.md (includes: domain research, atomic analysis of JSON-LD spec, ADR for vocabulary choices, references), compile-producto.py that aggregates vision + features | Restrictions: Must follow strict RBM hierarchy, each product must cite domain sources (not invented), compilation must be reproducible, output must be valid producto.md for spec-workflow-mcp | Success: Workbook demonstrates knowledge-driven approach, compilation script works, generated producto.md is coherent and well-founded, clear difference between researched vs invented content
+    - [ ] Cada PROD-XXX.md cita sources
+    - [ ] Compiler valida sources antes de output
+    - [ ] Tests de validation pass
+  - **_Prompt**: Role: SALOMÓN - Workbook Architect | Task: Create prototype RBM workbook for SPEC-001 where EVERY product cites artefactos-conocimiento/, implement compiler with source validation that fails if unsourced claims detected | Restrictions: NO product without citations, compiler MUST validate sources, tests MUST verify validation | Success: Workbook demonstrates knowledge-driven approach, compilation validates sources, tests confirm validation works
 
-- [ ] 2.4. Ontología de Conceptos (ISO/IEC 21838 Compliance)
+---
+
+- [ ] 2.5. SALOMÓN: Ontología ISO/IEC 21838 (Alineada con ISO Real)
+
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/ontologies/spec-workflow-ontology.ttl`
-  - **Requirements**: REQ-001-05 (nuevo)
+  - **Requirements**: REQ-001-07
   - **Estimación**: 4 horas (0.5 día)
-  - **Prioridad**: 🟢 MEDIA
-  - **Dependencias**: 1.5.2
-  - **Subtareas**:
-    - Definir ontología formal de conceptos en Turtle (TTL) siguiendo ISO/IEC 21838
-    - Clases: Artifact, Requirement, Design, Task, Product, Tech, Structure
-    - Propiedades: hasSection, mapsToRBMLevel, hasContext, fundamentedBy
-    - Individuos: requirements.md, design.md, tasks.md, etc.
-    - Alineamiento con Dublin Core y MELQUISEDEC vocabularies
-    - Validar contra reasoner (Pellet o HermiT)
-  - **Entregables**:
-    - `spec-workflow-ontology.ttl` - Ontología formal
-    - `ontology-diagram.png` - Diagrama visual de la ontología
-    - `ontology-validation-report.md` - Reporte de validación
-  - **Validación**:
-    - Ontología válida según ISO/IEC 21838
-    - Reasoner no encuentra inconsistencias
-    - Alineada con vocabularios existentes (Dublin Core, MELQUISEDEC)
-  - **_Prompt**: Role: Ontology Engineer | Task: Create formal ontology of spec-workflow-mcp concepts using OWL/Turtle format compliant with ISO/IEC 21838 standard, define classes (Artifact, Requirement, Design, Task, Product, Tech, Structure), properties (hasSection, mapsToRBMLevel, hasContext, fundamentedBy), individuals (requirements.md, design.md, tasks.md instances), align with Dublin Core and MELQUISEDEC vocabularies | Restrictions: Must follow ISO/IEC 21838 guidelines, must validate with reasoner (Pellet/HermiT), must include visual diagram, must be machine-readable (TTL format) | Success: Ontology validates without errors, reasoner finds no inconsistencies, alignment with existing vocabularies demonstrated, concepts clearly defined with descriptions and examples
-
-- [ ] 2.5. Actualizar Templates con Domain Insights
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md` (v1.1)
-  - **Requirements**: REQ-002-03 (nuevo)
-  - **Estimación**: 2 horas (0.25 día)
   - **Prioridad**: 🟡 ALTA
-  - **Dependencias**: 1.5.1, 1.5.2, 1.5.3, 1.5.4
+  - **Dependencias**: 2.2
   - **Subtareas**:
-    - Agregar sección "Knowledge Sources" en base template
-    - Agregar placeholders para {{domain_literature_refs}}
-    - Agregar placeholders para {{bounded_context_ref}}
-    - Agregar placeholders para {{adr_refs}}
-    - Actualizar config.yaml-ld con metadatos de investigación
-    - Agregar validación de que artefactos referencian fuentes de dominio
+    - Usar ISO specs descargados en literature/iso-standards/
+    - Alinear con BFO (Basic Formal Ontology) según ISO/IEC 21838-2
+    - Cada clase DEBE citar ISO spec con section number
+    - Validar con reasoner (HermiT o Pellet)
   - **Entregables**:
-    - `daath-zen-base.md` v1.1 - Base template actualizado
-    - `config.yaml-ld` v1.1 - Config con metadatos de investigación
-    - `template-changelog.md` - Changelog explicando cambios v1.0 → v1.1
+    - `spec-workflow-ontology.ttl` - Con comments citando ISO sections
+    - `ontology-validation-report.md` - Reasoner output
   - **Validación**:
-    - Templates incluyen secciones para referenciar investigación
-    - Config valida presencia de referencias de dominio
-    - Changelog documenta razonamiento de cambios
-  - **_Prompt**: Role: Template Evolution Engineer | Task: Update base template (v1.0 → v1.1) and config based on insights from Phase 1.5 research, add "Knowledge Sources" section, add placeholders for domain literature references ({{domain_literature_refs}}), bounded context references ({{bounded_context_ref}}), ADR references ({{adr_refs}}), update config.yaml-ld to require domain source citations, add validation that artifacts reference research | Restrictions: Must maintain backward compatibility where possible, must document all changes in changelog with rationale, new placeholders must be clearly documented | Success: Templates enforce knowledge-driven approach, validation checks for domain references, changelog clearly explains evolution from v1.0, updated templates compile without errors
+    - [ ] Cada clase tiene rdfs:comment citando ISO spec
+    - [ ] Reasoner valida sin errores
+    - [ ] Alineación con BFO verificada
+  - **_Prompt**: Role: SALOMÓN - Ontology Engineer | Task: Create ISO/IEC 21838 compliant ontology using downloaded ISO specs from literature/iso-standards/, align with BFO per ISO/IEC 21838-2, cite ISO sections in rdfs:comment for each class, validate with reasoner | Restrictions: MUST cite ISO spec sections, MUST align with BFO, MUST validate with reasoner, NO invented ontology concepts | Success: Ontology cites ISO sections, reasoner validates, BFO alignment clear
+
+---
+
+- [ ] 2.6. SALOMÓN: Actualización de Templates con Trazabilidad
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md` (v1.1)
+  - **Requirements**: REQ-001-08
+  - **Estimación**: 2 horas (0.25 día)
+  - **Prioridad**: 🟡 MEDIA
+  - **Dependencias**: 2.1-2.5
+  - **Subtareas**:
+    - Agregar sección "🔬 Knowledge Sources" que referencia artefactos-conocimiento/
+    - Placeholders: {{WORKBOOK_NAME}}, {{BOUNDED_CONTEXTS}}, {{ONTOLOGY_CLASSES}}
+    - Actualizar TemplateValidator para verificar citations
+  - **Entregables**:
+    - Templates v1.1 con Knowledge Sources section
+    - Validator updated con source checking
+  - **Validación**:
+    - [ ] Templates incluyen Knowledge Sources section
+    - [ ] Validator detecta missing citations
+    - [ ] Tests verify citation validation
+  - **_Prompt**: Role: SALOMÓN - Template Engineer | Task: Update templates to include "Knowledge Sources" section pointing to artefactos-conocimiento/, add placeholders for workbook/BC/ontology references, update TemplateValidator to check citations | Restrictions: Templates MUST enforce citations, validator MUST detect unsourced content | Success: Templates have Knowledge Sources, validator works, tests pass
+
+---
 
 ### 3. Template System
 
-- [ ] 2.1. Crear Template daath-zen-requirements.md
+- [ ] 3.1. Crear Template daath-zen-requirements.md
+
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-requirements.md`
   - **Requirements**: REQ-003-01
   - **Estimación**: 4 horas
@@ -243,8 +310,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Agregar sección Dependencies
     - Configurar placeholders para workbook refs
   - **_Prompt**: Role: Requirements Template Designer | Task: Create requirements variant extending base template, add RBM sections (Coherence Matrix with Mermaid diagram, User Stories, Functional/Non-Functional Requirements, Dependencies), configure placeholders for workbook transclusions | Restrictions: Must extend daath-zen-base, RBM format must follow design.md specifications, all workbook refs must use transclusion syntax | Success: Template extends base correctly, all RBM sections present, placeholders documented, format compatible with spec-workflow-mcp
+- [ ] 3.2. Crear Template daath-zen-design.md
 
-- [ ] 2.2. Crear Template daath-zen-design.md
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-design.md`
   - **Requirements**: REQ-003-02
   - **Estimación**: 3 horas
@@ -258,8 +325,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Agregar sección Data Model
     - Agregar sección API Design
   - **_Prompt**: Role: Design Template Architect | Task: Create design variant with architecture sections (Overview, ADRs, Component Design, Data Model, API Design), support Mermaid diagrams, reference requirements via transclusion | Restrictions: Must extend daath-zen-base, ADR format must follow standard template, components must link to requirements | Success: Template complete, architecture sections documented, Mermaid diagrams supported, requirement traceability enabled
+- [ ] 3.3. Crear Template daath-zen-tasks.md
 
-- [ ] 2.3. Crear Template daath-zen-tasks.md
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-tasks.md`
   - **Requirements**: REQ-003-03
   - **Estimación**: 3 horas
@@ -273,8 +340,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Agregar sección Gantt Chart
   - **Validación**: Debe parsear correctamente con spec-workflow-mcp
   - **_Prompt**: Role: Task Template Specialist | Task: Create tasks variant with spec-workflow-mcp compatible format (checkboxes with X.Y. notation, File/Requirements/_Prompt fields), include Gantt chart section, support task dependencies | Restrictions: CRITICAL - Format must be `- [ ] X.Y. Title` with dot after number, must include all required spec-workflow-mcp fields, _Prompt must have Role|Task|Restrictions|Success structure | Success: Format parses correctly in spec-workflow-mcp, all required fields present, tasks are actionable and measurable
+- [ ] 3.4. Crear Templates de Steering (product, tech, structure)
 
-- [ ] 2.4. Crear Templates de Steering (product, tech, structure)
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-product.md`, `daath-zen-tech.md`, `daath-zen-structure.md`
   - **Requirements**: REQ-003-04
   - **Estimación**: 3 horas
@@ -285,8 +352,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Crear template tech (stack, architecture principles, standards)
     - Crear template structure (folder structure, conventions)
   - **_Prompt**: Role: Steering Document Architect | Task: Create 3 steering templates (product: vision/stakeholders/success criteria; tech: stack/principles/standards; structure: folders/conventions), each extending base template | Restrictions: Each template must be concise (<2000 words), support transclusions, follow MELQUISEDEC principles | Success: 3 templates created, each addresses its specific concern, all extend base template, compatible with spec-workflow-mcp steering docs
+- [ ] 3.5. Tests de Template System
 
-- [ ] 2.5. Tests de Template System
   - **File**: `tests/test_templates.py`
   - **Requirements**: REQ-006-01
   - **Estimación**: 4 horas
@@ -307,6 +374,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 ### 4. Compilation Pipeline
 
 - [ ] 3.1. Implementar Workbook Parser
+
   - **File**: `packages/daath-toolkit/compilation/workbook_parser.py`, `tests/test_workbook_parser.py`
   - **Requirements**: REQ-004-01
   - **Estimación**: 6 horas
@@ -323,8 +391,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     pytest tests/test_workbook_parser.py -v --cov
     ```
   - **_Prompt**: Role: Parser Engineer | Task: Implement WorkbookParser that scans workbook directory structure, extracts metadata from YAML files, builds hierarchical product tree (RI → Rinm → REQ), validates structure against schema | Restrictions: Must handle nested directories, graceful error handling, validate required files exist | Success: Parses valid workbooks without errors, detects invalid structures, builds correct hierarchy, 8+ tests pass with >85% coverage
-
 - [ ] 3.2. Implementar Transclusion Processor
+
   - **File**: `packages/daath-toolkit/compilation/transclusion_processor.py`, `tests/test_transclusion_processor.py`
   - **Requirements**: REQ-004-02
   - **Estimación**: 4 horas
@@ -338,8 +406,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Manejar transclusions recursivas
     - Escribir 10 tests unitarios
   - **_Prompt**: Role: Transclusion Engine Developer | Task: Implement processor that resolves template transclusions ({{include}}, {{list}}), supports glob patterns, caches file reads, handles recursive inclusions, prevents infinite loops | Restrictions: Must support both single file and wildcard patterns, cache should be LRU-based, detect circular dependencies | Success: Resolves transclusions correctly, wildcard patterns work, recursive transclusions handled, cache improves performance, 10+ tests pass with >85% coverage
-
 - [ ] 3.3. Implementar Coherence Matrix Builder
+
   - **File**: `packages/daath-toolkit/compilation/coherence_builder.py`, `tests/test_coherence_builder.py`
   - **Requirements**: REQ-004-03
   - **Estimación**: 5 horas
@@ -352,8 +420,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Calcular métricas (cobertura, órfanos)
     - Detectar inconsistencias
   - **_Prompt**: Role: Traceability Engineer | Task: Implement builder that generates RBM coherence matrix from product tree - creates Mermaid diagram showing RI→Rinm→REQ relationships, generates traceability table, calculates coverage metrics, detects orphan requirements | Restrictions: Mermaid syntax must be valid, table must show all relationships, metrics must be accurate | Success: Matrix generated correctly, Mermaid diagram renders, table complete, metrics accurate, detects orphans and inconsistencies
-
 - [ ] 3.4. Implementar Template Renderer
+
   - **File**: `packages/daath-toolkit/compilation/template_renderer.py`, `tests/test_template_renderer.py`
   - **Requirements**: REQ-004-04
   - **Estimación**: 4 horas
@@ -366,8 +434,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Soporte para loops {{#each}}...{{/each}}
     - Escape de caracteres especiales
   - **_Prompt**: Role: Template Engine Developer | Task: Implement renderer using Jinja2 or similar that replaces placeholders, handles conditionals and loops, escapes special characters, produces clean Markdown output | Restrictions: Must preserve Markdown format integrity, handle missing variables gracefully, sanitize user input | Success: Renders templates correctly, all placeholder types work, conditionals/loops functional, output is valid Markdown
-
 - [ ] 3.5. Implementar SpecCompiler Orchestrator
+
   - **File**: `packages/daath-toolkit/compilation/spec_compiler.py`, `tests/test_spec_compiler.py`, `tools/compile_spec_from_workbook.py`
   - **Requirements**: REQ-004-05
   - **Estimación**: 6 horas
@@ -389,6 +457,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 ### 5. Validation System
 
 - [ ] 4.1. Implementar Keter-Doc Validator
+
   - **File**: `packages/daath-toolkit/validation/keter_doc_validator.py`, `tests/test_keter_doc_validator.py`
   - **Requirements**: REQ-005-01
   - **Estimación**: 5 horas
@@ -405,8 +474,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     pytest tests/test_keter_doc_validator.py -v --cov
     ```
   - **_Prompt**: Role: Validation Engineer | Task: Implement validator that checks compiled specs against keter-doc schema - validates HKM header completeness, JSON-LD metadata structure, URN formats, required fields presence, generates detailed validation report | Restrictions: Must validate against JSON-LD 1.1 spec, error messages must be specific and actionable, validation should be <500ms | Success: Detects all schema violations, error messages are clear, valid specs pass, invalid specs fail with actionable feedback, performance <500ms
-
 - [ ] 4.2. Implementar RBM Coherence Validator
+
   - **File**: `packages/daath-toolkit/validation/rbm_validator.py`, `tests/test_rbm_validator.py`
   - **Requirements**: REQ-005-02
   - **Estimación**: 4 horas
@@ -419,8 +488,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Validar métricas de cobertura
     - Generar reporte de coherencia
   - **_Prompt**: Role: Coherence Analyst | Task: Implement validator that analyzes RBM coherence matrix - detects orphan requirements without parent RI, identifies RI without requirements, validates coverage metrics meet thresholds, generates coherence report | Restrictions: Must check bidirectional relationships, coverage thresholds configurable, report must highlight issues clearly | Success: Detects all coherence issues, orphans identified, coverage calculated correctly, report is actionable, validation <1s
-
 - [ ] 4.3. Implementar Neo4j Sync Validator (Opcional)
+
   - **File**: `packages/daath-toolkit/validation/neo4j_validator.py`, `tests/test_neo4j_validator.py`
   - **Requirements**: REQ-005-03
   - **Estimación**: 4 horas
@@ -433,8 +502,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Validar sincronización exitosa
     - Escribir 6 tests (requiere Neo4j de prueba)
   - **_Prompt**: Role: Graph Database Engineer | Task: Implement optional validator that syncs compiled specs to Neo4j - creates nodes for RI/Rinm/REQ entities, establishes traceability relationships, validates sync success, handles connection errors gracefully | Restrictions: Must be optional (works without Neo4j), use neo4j-driver library, parameterized queries to prevent injection, graceful degradation if Neo4j unavailable | Success: Creates correct node structure, relationships accurate, sync validation works, handles errors gracefully, 6+ tests pass with Neo4j testcontainer
-
 - [ ] 4.4. Integration Tests para Validation System
+
   - **File**: `tests/integration/test_validation_integration.py`
   - **Requirements**: REQ-006-01
   - **Estimación**: 2 horas
@@ -449,6 +518,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 ### 6. Documentation & Examples
 
 - [ ] 5.1. Crear Guía de Uso de Templates
+
   - **File**: `apps/R000-autopoietic-template/_melquisedec/docs/GUIA-TEMPLATES.md`
   - **Requirements**: REQ-007-01
   - **Estimación**: 3 horas
@@ -461,8 +531,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Explicar herencia y customización
     - Troubleshooting común
   - **_Prompt**: Role: Technical Writer | Task: Create comprehensive template usage guide - explain template hierarchy (base + variants), document all available placeholders, provide concrete usage examples, explain inheritance and customization, include troubleshooting section | Restrictions: Must be <3000 words, include code examples, diagrams if helpful, beginner-friendly language | Success: Guide is clear and complete, covers all 6 templates, examples work, troubleshooting addresses common issues
-
 - [ ] 5.2. Crear Guía de Creación de Workbook
+
   - **File**: `apps/R000-autopoietic-template/_melquisedec/docs/GUIA-WORKBOOK.md`
   - **Requirements**: REQ-007-02
   - **Estimación**: 3 horas
@@ -475,8 +545,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Mostrar ejemplo paso a paso
     - Best practices y anti-patterns
   - **_Prompt**: Role: Methodology Expert | Task: Create workbook creation guide - explain directory structure and file formats, document RI→Rinm→REQ hierarchy, provide step-by-step example, share best practices and common pitfalls | Restrictions: Must be <3000 words, include visual diagrams, practical examples, actionable advice | Success: Guide enables users to create valid workbooks, structure is clear, examples are complete, best practices are actionable
-
 - [ ] 5.3. Crear Workbook de Ejemplo (Autenticación)
+
   - **File**: `apps/R000-autopoietic-template/020-conceive/03-workbooks/wb-rbm-example-auth/*`
   - **Requirements**: REQ-007-03
   - **Estimación**: 4 horas
@@ -497,6 +567,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 ### 7. Testing & Deployment
 
 - [ ] 6.1. Integration Tests Completos
+
   - **File**: `tests/integration/test_full_compilation.py`, `test_template_system_integration.py`
   - **Requirements**: REQ-006-01
   - **Estimación**: 5 horas
@@ -513,8 +584,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     pytest tests/integration/ -v --cov --cov-report=html
     ```
   - **_Prompt**: Role: Integration Test Specialist | Task: Write comprehensive end-to-end integration tests - compile example workbook with all variants, validate full pipeline, test error handling edge cases, run performance benchmarks | Restrictions: Must achieve >80% total coverage, tests must be reproducible, use fixtures for test data, include performance assertions | Success: 12+ integration tests pass, coverage >80%, all variants compile successfully, performance targets met, edge cases handled
-
 - [ ] 6.2. Performance Benchmarks
+
   - **File**: `tests/benchmarks/test_compilation_performance.py`, `test_validation_performance.py`
   - **Requirements**: REQ-006-02
   - **Estimación**: 3 horas
@@ -530,8 +601,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     pytest tests/benchmarks/ -v --benchmark-only
     ```
   - **_Prompt**: Role: Performance Engineer | Task: Create benchmark suite measuring compilation time (50 products <5s), keter-doc validation (<500ms), RBM coherence validation (<1s), template loading (<100ms), generate performance report | Restrictions: Use pytest-benchmark, run on consistent hardware, document results, fail if targets not met | Success: All benchmarks pass performance targets, results documented, suite runs reliably, performance regressions detected
-
 - [ ] 6.3. Documentation Final
+
   - **File**: `apps/R000-autopoietic-template/_melquisedec/README.md`, `DEPLOYMENT.md`
   - **Requirements**: REQ-007-04
   - **Estimación**: 2 horas
@@ -543,8 +614,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Agregar troubleshooting section
     - Agregar links a todas las guías
   - **_Prompt**: Role: Documentation Lead | Task: Create main README with system overview, quick start guide, links to detailed guides, examples, troubleshooting; create DEPLOYMENT guide with installation steps, configuration, validation, troubleshooting | Restrictions: README must be clear and inviting, DEPLOYMENT must be step-by-step, links must work, include prerequisites | Success: README is comprehensive and clear, DEPLOYMENT steps work reliably, all links functional, troubleshooting addresses common issues
-
 - [ ] 6.4. Package y Deployment
+
   - **File**: `packages/daath-toolkit/setup.py`, `pyproject.toml`, `README.md`
   - **Requirements**: REQ-008-01
   - **Estimación**: 3 horas
@@ -563,8 +634,8 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     python -c "from daath_toolkit.compilation import SpecCompiler"
     ```
   - **_Prompt**: Role: Package Engineer | Task: Create Python package setup with setup.py (dependencies), pyproject.toml (build config), package README (installation, usage), validate build process, deploy to repository | Restrictions: Follow Python packaging best practices, specify exact dependency versions, README must be pip-installable, package must be importable | Success: Package builds without errors, installs cleanly, imports work, README is clear, deployed successfully
-
 - [ ] 6.5. Validation Post-Deployment
+
   - **File**: None (validation checklist)
   - **Requirements**: REQ-008-02
   - **Estimación**: 2 horas
@@ -606,11 +677,13 @@ manage-tasks --specName spec-001-built-template-spec-workflow --action next-pend
 ## Implementation Notes
 
 ### Task Status Convention
+
 - `- [ ]` : Pending (not started)
 - `- [-]` : In Progress (actively working)
 - `- [x]` : Completed (done and logged)
 
 ### Logging Implementation
+
 After completing each task, use the log-implementation tool:
 
 ```bash
@@ -627,31 +700,37 @@ log-implementation \
 ### Completion Criteria
 
 **Phase 1 Complete** when tasks 1.1-1.4 are all [x] and:
+
 - Schema validates
 - Base template exists
 - Config parses correctly
 - TemplateHierarchy class works with tests >80% coverage
 
 **Phase 2 Complete** when tasks 2.1-2.5 are all [x] and:
+
 - All 6 templates created
 - Inheritance works
 - Tests pass with >80% coverage
 
 **Phase 3 Complete** when tasks 3.1-3.5 are all [x] and:
+
 - CLI compiles workbooks successfully
 - Performance <5s for 50 products
 - Integration tests pass
 
 **Phase 4 Complete** when tasks 4.1-4.4 are all [x] and:
+
 - All validators operational
 - Error detection comprehensive
 - Tests pass >80% coverage
 
 **Phase 5 Complete** when tasks 5.1-5.3 are all [x] and:
+
 - Both guides written and clear
 - Example workbook compiles
 
 **Phase 6 Complete** when tasks 6.1-6.5 are all [x] and:
+
 - All tests pass
 - Benchmarks meet targets
 - Package deployed

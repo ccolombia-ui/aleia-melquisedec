@@ -135,19 +135,48 @@ SPEC-001 es arquitectura lingüística: define el vocabulario antes de escribir 
 
 ---
 
-## 🔬 Phase 1.5: Research Foundation User Stories
+## 🔬 Phase 2: Research Foundation User Stories (HYPATIA→SALOMÓN Pipeline)
 
-### US-007: Como arquitecto, quiero investigación IMRAD de artefactos spec-workflow-mcp
-**Para que** comprenda formalmente QUÉ son los artefactos y CÓMO poblarlos desde dominio
+### US-007a: Como investigador HYPATIA, quiero knowledge base adquirida desde fuentes reales
+**Para que** SALOMÓN pueda sintetizar con citas a literatura real, NO contenido inventado
 
 **Criterios de Aceptación**:
-- [ ] 7 workbooks IMRAD (01-introduction through 07-references) completados con 200+ líneas cada uno
-- [ ] Preguntas de investigación respondidas con evidencia (código del dashboard, literatura DDD)
-- [ ] Diagramas de bounded contexts usando notación DDD estándar
-- [ ] Mapeo RBM → Artefactos con ejemplos concretos de SPEC-001
-- [ ] Referencias bibliográficas formales (Evans, Vernon, ISO/IEC 21838)
+- [ ] 10+ fuentes literarias descargadas y catalogadas en `artefactos-conocimiento/literature/` (DDD: Evans 2003, Vernon 2013; ISO: 21838-1/2; IMRAD papers; spec-workflow-mcp code)
+- [ ] 50+ conceptos atómicos extraídos con LLM en `artefactos-conocimiento/concepts/` (cada uno con definición, fuente, página, conceptos relacionados)
+- [ ] Embeddings generados con Ollama nomic-embed-text (768 dim) en `artefactos-conocimiento/embeddings/`
+- [ ] GraphRAG operativo en Neo4j con schema (Concept)-[:PART_OF]->(Framework), (Concept)-[:CITED_IN]->(Source), (Concept)-[:RELATES_TO]->(Artifact)
+- [ ] 5+ frameworks documentados (DDD Strategic, DDD Tactical, IMRAD, RBM, ISO BFO) en `artefactos-conocimiento/frameworks/`
+- [ ] Semantic search funciona: top-k retrieval < 100ms con >0.8 similarity
+- [ ] README documenta cómo consultar knowledge base (GraphRAG queries, semantic search)
 
-**Relacionado**: RI-001.5 (Research Foundation)
+**Validación**:
+- Test: Query GraphRAG para "bounded context" retorna definición de Evans (2003) con página
+- Test: Semantic search para "artifact validation" retorna chunks relevantes de spec-workflow-mcp code
+- Test: GraphRAG traversal encuentra relaciones Concept → Framework → Source correctamente
+
+**Relacionado**: RI-001 (Research Foundation / HYPATIA Knowledge Acquisition)
+
+---
+
+### US-007b: Como arquitecto SALOMÓN, quiero investigación IMRAD fundamentada en knowledge base
+**Para que** cada claim en artefactos tenga citation a fuentes REALES en artefactos-conocimiento/
+
+**Criterios de Aceptación**:
+- [ ] 8 workbooks IMRAD completados (01-introduction.md hasta 08-references.md) con estructura correcta
+- [ ] Cada claim tiene inline citation a artefactos-conocimiento/ (ej: "According to [ddd-bounded-context](../artefactos-conocimiento/concepts/ddd-bounded-context.md)...")
+- [ ] **07-decisiones.md existe** con 5+ ADRs, cada ADR cita fuente con página (ej: "Based on Evans 2003, p.345...")
+- [ ] 04-analysis.md documenta GraphRAG queries usadas (con resultados)
+- [ ] 04-analysis.md documenta semantic search queries (con scores)
+- [ ] 08-references.md contiene bibliografía completa en formato académico
+- [ ] Validator automático confirma ZERO unsourced claims (falla si encuentra "based on my understanding")
+
+**Validación**:
+- Test: Validator detecta claim sin citation y falla
+- Test: Todos los ADRs en 07-decisiones.md citan fuentes verificables
+- Test: GraphRAG queries reproducibles en Neo4j
+- Test: Semantic search traces muestran similarity scores >0.75
+
+**Relacionado**: RI-001 (Research Foundation / SALOMÓN IMRAD Synthesis)
 
 ---
 
@@ -160,8 +189,9 @@ SPEC-001 es arquitectura lingüística: define el vocabulario antes de escribir 
 - [ ] Matriz de mapeo: RBM Level × Artefacto × Bounded Context × Entity
 - [ ] Modelo soporta generación automática de artefactos desde workbooks
 - [ ] Archivo `_melquisedec/domain/models/rbm-artifacts-mapping.md` completo con ejemplos
+- [ ] **Cada mapeo cita concepts/ de knowledge base** (ej: "Bounded Context defined in [concepts/ddd-bounded-context.md]...")
 
-**Relacionado**: RI-001.5 (Research Foundation / Domain Model)
+**Relacionado**: RI-001 (Research Foundation / Domain Model)
 
 ---
 
@@ -170,13 +200,19 @@ SPEC-001 es arquitectura lingüística: define el vocabulario antes de escribir 
 
 **Criterios de Aceptación**:
 - [ ] Workbook prototipo para SPEC-001 en `_melquisedec/domain/workbooks/spec-001-prototype/`
-- [ ] 8 archivos IMRAD (01-08.md) con estructura completa (Introduction → References)
+- [ ] Cada PROD-XXX.md DEBE citar artefactos-conocimiento/ (zero claims inventados)
 - [ ] Script `compile.py` funcional que genera requirements.md, design.md, tasks.md
+- [ ] **Compiler valida sources ANTES de output** (falla si hay unsourced claims)
 - [ ] Tests de compilador con 80%+ coverage
 - [ ] Artefactos compilados pasan validación del dashboard spec-workflow-mcp
-- [ ] TODO contenido en artefactos tiene fuente rastreable en workbook
+- [ ] TODO contenido en artefactos tiene fuente rastreable en knowledge base
 
-**Relacionado**: RI-001.5 (Research Foundation / Workbook-to-Artifact Pipeline)
+**Validación**:
+- Test: Compiler rechaza PROD-XXX.md con claims sin citation
+- Test: Artefactos generados pasan validator de sources
+- Test: Toda assertion tiene link a artefactos-conocimiento/
+
+**Relacionado**: RI-001 (Research Foundation / Workbook-to-Artifact Pipeline)
 
 ---
 
@@ -185,18 +221,40 @@ SPEC-001 es arquitectura lingüística: define el vocabulario antes de escribir 
 
 **Criterios de Aceptación**:
 - [ ] Ontología en OWL/Turtle alineada con BFO (Basic Formal Ontology)
+- [ ] **Cada clase tiene rdfs:comment citando ISO spec con section number** (ej: "Defined per ISO/IEC 21838-2:2019, Section 4.2")
 - [ ] Clases definidas: Artifact, Requirement, DesignDecision, Task, BoundedContext
 - [ ] Propiedades definidas: hasRequirement, satisfies, produces, maps_to_artifact
 - [ ] Reasoner (HermiT o Pellet) valida consistencia sin contradicciones
 - [ ] Queries SPARQL pueden extraer mapeo RBM → Artefactos
 - [ ] Archivo `_melquisedec/domain/ontologies/spec-workflow-ontology.ttl` completo
 
-**Relacionado**: RI-001.5 (Research Foundation / Formal Ontology)
+**Validación**:
+- Test: Reasoner valida sin errores
+- Test: Cada clase tiene citation a ISO standard descargado en literature/iso-standards/
+- Test: Alignment con BFO verificado
+
+**Relacionado**: RI-001 (Research Foundation / Formal Ontology)
 
 ---
 
 ### US-011: Como desarrollador, quiero templates con trazabilidad epistemológica
 **Para que** cada claim en artefactos tenga fuente en workbook de dominio
+
+**Criterios de Aceptación**:
+- [ ] Templates incluyen sección "🔬 Knowledge Sources" referenciando artefactos-conocimiento/
+- [ ] Placeholders para knowledge references funcionan ({{WORKBOOK_NAME}}, {{BOUNDED_CONTEXTS}}, {{ONTOLOGY_CLASSES}})
+- [ ] **TemplateValidator detecta claims sin fuente y falla compilación**
+- [ ] Tests cubren escenarios de trazabilidad válida e inválida
+- [ ] Documentación explica formato de citas a knowledge base (path, concept name, line number)
+
+**Validación**:
+- Test: Validator rechaza artefacto con claim sin citation
+- Test: Placeholders se resuelven correctamente a knowledge base paths
+- Test: Templates generados pasan source validation
+
+**Relacionado**: RI-001 (Research Foundation / Traceable Templates)
+
+---
 
 **Criterios de Aceptación**:
 - [ ] Templates incluyen sección "🔬 Knowledge Sources" referenciando workbooks
@@ -577,11 +635,11 @@ def compile_requirements(workbook_dir: Path) -> str:
     """Compila requirements.md desde workbook IMRAD"""
     env = jinja2.Environment(loader=jinja2.FileSystemLoader("templates"))
     template = env.get_template("requirements.md.j2")
-    
+
     # Extraer datos del workbook
     introduction = parse_markdown(workbook_dir / "01-introduction.md")
     atomic_requirements = parse_markdown(workbook_dir / "04-results-analysis.md")
-    
+
     # Renderizar
     return template.render(
         title=introduction["problem"],
@@ -795,11 +853,11 @@ def validate_knowledge_sources(self, document: str) -> ValidationResult:
     """Valida que todo contenido tenga fuente en workbooks"""
     claims = extract_claims(document)
     sources = extract_sources(document)
-    
+
     for claim in claims:
         if not has_source(claim, sources):
             return ValidationError(f"Claim '{claim}' no tiene fuente en workbook")
-    
+
     return ValidationSuccess()
 ```
 
