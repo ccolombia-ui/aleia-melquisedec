@@ -25,26 +25,26 @@ manifesto_coherence:
     rationale: 'Lens variants are required to support different research modes.'
 ---
 
-# REQ-008: Lens Variants - Practical Guide
+# REQ-008: variantes de lens - Practical Guide
 
-**Priority**: Medium
+**Priority**: Medio
 **Type**: Guidelines
-**Effort**: 8 hours
+**Effort**: 8 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Provide practical lens variants and evaluation criteria to select appropriate lens per spec.
+Provide practical variantes de lens and evaluation criteria to select appropriate lens per spec.
 
-## 2. Summary
+## 2. Resumen
 
-Start with two canonical lens variants (DSR and IMRAD) and expand based on feedback. Document evaluation criteria and include simple decision trees to pick lens per research question.
+Start with two canonical variantes de lens (DSR and IMRAD) and expand based on feedback. Documentar evaluation criteria and include simple decision trees to pick lens per research question.
 
 ## 3. Next Steps
 
 - Draft DSR and IMRAD lens templates
-- Create a short decision guide (flowchart)
-- Validate with two pilot specs
+- Crear a short decision guide (flowchart)
+- Validar with two pilot specs
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

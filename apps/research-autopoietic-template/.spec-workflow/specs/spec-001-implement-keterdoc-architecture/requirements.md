@@ -26,8 +26,42 @@ The detailed requirements have been migrated to `010-define/workbooks/` as atomi
 | [REQ-008](workbooks/REQ-008-lens-variants.md) | Lens Variants - Practical Guide | Medium | Draft | workbooks/REQ-008-lens-variants.md |
 | [REQ-009](workbooks/REQ-009-validation-scripts.md) | Validation Scripts for Template & Frontmatter | High | Draft | workbooks/REQ-009-validation-scripts.md |
 | [REQ-010](workbooks/REQ-010-neo4j-integration.md) | Neo4j Integration - RDF ingestion and mapping | High | Draft | workbooks/REQ-010-neo4j-integration.md |
+| [REQ-011](workbooks/REQ-011-create-ddd-lens-variants-6-templates.md) | Create DDD Lens Variants (6 templates) | High | Draft | workbooks/REQ-011-create-ddd-lens-variants-6-templates.md |
+| [REQ-012](workbooks/REQ-012-create-social-lens-variants-6-templates.md) | Create Social Lens Variants (6 templates) | Medium | Draft | workbooks/REQ-012-create-social-lens-variants-6-templates.md |
+| [REQ-013](workbooks/REQ-013-document-lens-selection-guide.md) | Document Lens Selection Guide | High | Draft | workbooks/REQ-013-document-lens-selection-guide.md |
+| [REQ-014](workbooks/REQ-014-define-artifact-workflow-mapping.md) | Define Artifact-Workflow Mapping | Critical | Draft | workbooks/REQ-014-define-artifact-workflow-mapping.md |
+| [REQ-015](workbooks/REQ-015-create-pattern---output-triple-pattern-000.md) | Create Pattern - Output Triple (PATTERN-000) | Critical | Draft | workbooks/REQ-015-create-pattern---output-triple-pattern-000.md |
+| [REQ-016](workbooks/REQ-016-create-patterns-001-009-9-patterns.md) | Create Patterns 001-009 (9 patterns) | High | Draft | workbooks/REQ-016-create-patterns-001-009-9-patterns.md |
+| [REQ-017](workbooks/REQ-017-document-pattern-system.md) | Document Pattern System | High | Draft | workbooks/REQ-017-document-pattern-system.md |
+| [REQ-018](workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md) | Script - Convert ISSUE.yaml to ISSUE.md | Critical | Draft | workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md |
+| [REQ-019](workbooks/REQ-019-script---generate-artifact-from-template.md) | Script - Generate Artifact from Template | Critical | Draft | workbooks/REQ-019-script---generate-artifact-from-template.md |
+| [REQ-020](workbooks/REQ-020-script---validate-keterdoc-compliance.md) | Script - Validate KeterDoc Compliance | Critical | Draft | workbooks/REQ-020-script---validate-keterdoc-compliance.md |
+| [REQ-021](workbooks/REQ-021-script---extract-seci-relationships.md) | Script - Extract SECI Relationships | High | Draft | workbooks/REQ-021-script---extract-seci-relationships.md |
+| [REQ-022](workbooks/REQ-022-test-suite-for-all-tools.md) | Test Suite for All Tools | High | Draft | workbooks/REQ-022-test-suite-for-all-tools.md |
+| [REQ-023](workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md) | Script - YAML-LD to RDF Triples | Critical | Draft | workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md |
+| [REQ-024](workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md) | Script - Import RDF Triples to Neo4j | Critical | Draft | workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md |
+| [REQ-025](workbooks/REQ-025-create-semantic-query-examples.md) | Create Semantic Query Examples | High | Draft | workbooks/REQ-025-create-semantic-query-examples.md |
+| [REQ-026](workbooks/REQ-026-document-neo4j-integration-guide.md) | Document Neo4j Integration Guide | High | Draft | workbooks/REQ-026-document-neo4j-integration-guide.md |
+| [REQ-027](workbooks/REQ-027-backup-current-template.md) | Backup Current Template | Critical | Draft | workbooks/REQ-027-backup-current-template.md |
+| [REQ-028](workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md) | Migrate ISSUE.yaml to ISSUE.md | Critical | Draft | workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md |
+| [REQ-029](workbooks/REQ-029-migrate-existing-artifacts.md) | Migrate Existing Artifacts | High | Draft | workbooks/REQ-029-migrate-existing-artifacts.md |
+| [REQ-030](workbooks/REQ-030-test-obsidian-integration.md) | Test Obsidian Integration | High | Draft | workbooks/REQ-030-test-obsidian-integration.md |
+| [REQ-031](workbooks/REQ-031-test-spec-workflow-mcp-integration.md) | Test spec-workflow-mcp Integration | High | Draft | workbooks/REQ-031-test-spec-workflow-mcp-integration.md |
+| [REQ-032](workbooks/REQ-032-generate-neo4j-knowledge-graph.md) | Generate Neo4j Knowledge Graph | High | Draft | workbooks/REQ-032-generate-neo4j-knowledge-graph.md |
+| [REQ-033](workbooks/REQ-033-run-full-validation-suite.md) | Run Full Validation Suite | Critical | Draft | workbooks/REQ-033-run-full-validation-suite.md |
+| [REQ-034](workbooks/REQ-034-extract-lesson-002-migration-validation.md) | Extract lesson-002-migration-validation | High | Draft | workbooks/REQ-034-extract-lesson-002-migration-validation.md |
+| [REQ-035](workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md) | Create Module 01-fundamentos Specs (4 specs) | High | Draft | workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md |
+| [REQ-036](workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md) | Create Module 02-arquitectura Specs (5 specs) | High | Draft | workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md |
+| [REQ-037](workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md) | Create Module 03-workflow Specs (4 specs) | High | Draft | workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md |
+| [REQ-038](workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md) | Create Module 04-implementacion Specs (3 specs) | Medium | Draft | workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md |
+| [REQ-039](workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md) | Create Module 05-casos-estudio Specs (2 specs) | Low | Draft | workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md |
+| [REQ-040](workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md) | Create Module 06-referencias Specs (1 spec) | Low | Draft | workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md |
+| [REQ-041](workbooks/REQ-041-create-master-index-spec-021.md) | Create Master Index (spec-021) | Critical | Draft | workbooks/REQ-041-create-master-index-spec-021.md |
+| [REQ-042](workbooks/REQ-042-generate-implementation-status-tracker.md) | Generate Implementation Status Tracker | High | Draft | workbooks/REQ-042-generate-implementation-status-tracker.md |
+| [REQ-043](workbooks/REQ-043-validate-complete-system-coherence.md) | Validate Complete System Coherence | Critical | Draft | workbooks/REQ-043-validate-complete-system-coherence.md |
+| [REQ-044](workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md) | Extract lesson-003-manifesto-coherence | High | Draft | workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md |
 
-> **Note:** Remaining REQ-011..REQ-052 will be migrated into `workbooks/` incrementally. Use the `REQ-template.md` as the canonical template for new REQ artifacts.
+> **Note:** REQ-045..REQ-052 pendientes (8 requirements adicionales de Phase 7). Total: 52 requirements para spec-001.
 
 ## Next Steps and Migration Plan
 

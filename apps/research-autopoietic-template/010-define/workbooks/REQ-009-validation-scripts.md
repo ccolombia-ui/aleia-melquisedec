@@ -25,16 +25,16 @@ manifesto_coherence:
     rationale: 'Validation scripts required to ensure KeterDoc compliance.'
 ---
 
-# REQ-009: Validation Scripts for Template & Frontmatter
+# REQ-009: Validation Scripts for Plantilla & Frontmatter
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Tooling
-**Effort**: 10 hours
+**Effort**: 10 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Add scripts to validate YAML-LD frontmatter, JSON-LD expansion, and required fields automatically in CI.
+Add scripts to Validar YAML-LD frontmatter, JSON-LD expansion, and required fields automatically in CI.
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

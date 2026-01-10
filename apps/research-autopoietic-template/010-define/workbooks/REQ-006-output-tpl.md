@@ -25,26 +25,26 @@ manifesto_coherence:
     rationale: 'Output template for deliverables.'
 ---
 
-# REQ-006: Create Base Template - Output Artifact
+# REQ-006: Crear Base Plantilla - Output Artifact
 
-**Priority**: High
-**Type**: Template
-**Effort**: 8 hours
+**Priority**: Alto
+**Type**: Plantilla
+**Effort**: 8 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Deliverable outputs must conform to a template to enable consistent publication, indexing, and ingestion.
+Entregable outputs must conform to a Plantilla to enable consistent publication, indexing, and ingestion.
 
-## 2. Summary
+## 2. Resumen
 
-An output template will standardize metadata and sections for datasets, tools, and papers to make them easier to index and reuse.
+An output Plantilla will standardize Metadatos and secciones for datasets, tools, and papers to make them easier to index and reuse.
 
 ## 3. Next Steps
 
-- Create example output artifacts
+- Crear example output artifacts
 - Add guidance on licensing and provenance fields
 - Ensure outputs include `generated_from` and `template_root` for traceability
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

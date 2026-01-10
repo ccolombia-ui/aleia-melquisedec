@@ -27,14 +27,14 @@ manifesto_coherence:
 
 # REQ-010: Neo4j Integration - RDF ingestion and mapping
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Integration
-**Effort**: 16 hours
+**Effort**: 16 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Implement scripts and mapping rules to import RDF triples generated from artifacts into Neo4j.
+Implement scripts and mapping rules to import RDF triples Generado Desde artifacts into Neo4j.
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

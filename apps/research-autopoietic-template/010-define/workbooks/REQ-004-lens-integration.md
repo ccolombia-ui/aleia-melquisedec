@@ -25,19 +25,19 @@ manifesto_coherence:
     rationale: 'Lens variants must be documented and referenced in templates.'
 ---
 
-# REQ-004: Lens Integration - Lens Variants System
+# REQ-004: Lens Integration - variantes de lens System
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Architecture
-**Effort**: 12 hours
+**Effort**: 12 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Need to support multiple research and generation lenses (DSR, IMRAD, DDD) through template variants.
+Need to support multiple research and generation lenses (DSR, IMRAD, DDD) hasta Plantilla variants.
 
-## 2. Summary
+## 2. Resumen
 
-Provide a small set of lens templates and documentation that can be plugged into artifact templates and selected per-spec based on research objectives. This reduces ambiguity for authors and ensures outputs are comparable.
+Provide a small set of lens templates and Documentación that can be plugged into artifact templates and selected per-spec based on research objectives. This reduces ambiguity for authors and ensures outputs are comparable.
 
 ## 3. Deliverables & Owner
 
@@ -55,4 +55,4 @@ Provide a small set of lens templates and documentation that can be plugged into
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

@@ -25,27 +25,27 @@ manifesto_coherence:
     rationale: 'Metadata fields needed to enrich embeddings and RDF triples.'
 ---
 
-# REQ-003: Metadata Enrichment for Embeddings and Graphs
+# REQ-003: Metadatos Enrichment for Embeddings and Graphs
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Architecture
-**Effort**: 12 hours
+**Effort**: 12 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Artifacts lack consistent metadata that improves embedding quality and graph linkage.
+Artifacts lack consistent Metadatos that improves embedding quality and graph linkage.
 
-## 2. Requirement Specification
+## 2. Especificación del Requerimiento
 
 FR-003.1: Define required enrichment fields (e.g., dc:subject, seci:phase, confidence_score).
 
-## 3. Acceptance Criteria
+## 3. Criterios de Aceptación
 
 - AC-003.1: Enriched artifacts show measurable improvement in embedding retrieval (baseline to be defined)
 
-## 4. Summary
+## 4. Resumen
 
-This requirement defines the metadata fields and examples required to enrich embeddings and RDF triples so they become more useful for semantic search and knowledge graph construction.
+This requirement defines the Metadatos fields and examples required to enrich embeddings and RDF triples so they become more useful for semantic search and grafo de conocimiento construction.
 
 ## 5. Deliverables & Owner
 
@@ -63,4 +63,4 @@ This requirement defines the metadata fields and examples required to enrich emb
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

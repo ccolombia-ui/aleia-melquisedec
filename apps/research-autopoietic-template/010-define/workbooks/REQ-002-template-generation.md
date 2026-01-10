@@ -25,40 +25,40 @@ manifesto_coherence:
     rationale: 'Template creation and KeterDoc compliance.'
 ---
 
-# REQ-002: Create Base Template - Concept & Generation Tools
+# REQ-002: Crear Base Plantilla - Concept & Generation Tools
 
-**Priority**: Critical
-**Type**: Template
-**Effort**: 8 hours
+**Priority**: Crítico
+**Type**: Plantilla
+**Effort**: 8 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-We require a base concept template and a generator CLI so that new artifacts can be produced consistently and with valid YAML-LD frontmatter.
+We require a base concept Plantilla and a generator CLI so that new artifacts can be produced consistently and with valid YAML-LD frontmatter.
 
-## 2. Requirement Specification
+## 2. Especificación del Requerimiento
 
 FR-002.1: Create `artifact-templates/by-type/concept-tpl.md` with YAML-LD frontmatter and example content.
 
 FR-002.2: Provide a CLI (or python script) to generate artifacts from DAATH-ZEN templates (see tools/generate_from_daath_template.py).
 
-## 3. Acceptance Criteria
+## 3. Criterios de Aceptación
 
-- AC-002.1: Template file exists and validates as YAML-LD
-- AC-002.2: Generator script can produce a valid concept artifact file when invoked with minimal parameters
+- AC-002.1: Plantilla Archivo exists and validates as YAML-LD
+- AC-002.2: Generator Script can produce a valid concept artifact Archivo when invoked with minimal parameters
 
-## 4. Implementation Guidance
+## 4. Guía de Implementación
 
 Use `tools/generate_from_daath_template.py` as the baseline generator and add validations.
 
-## 5. Dependencies and Constraints
+## 5. Dependencias y Restricciones
 
 Depends on: REQ-001 (context.jsonld)
 
 ## 6. Verification Plan
 
-- Use JSON-LD Playground to validate generated concept artifact
+- Use JSON-LD Playground to Validar Generado concept artifact
 - Run generator with example: `python tools/generate_from_daath_template.py _templates/daath-zen-patterns/daath-zen-req-template.md REQ-002=...`
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*

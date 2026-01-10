@@ -25,19 +25,19 @@ manifesto_coherence:
     rationale: 'Lessons learned template required for autopoiesis.'
 ---
 
-# REQ-005: Create Base Template - Lesson Learned
+# REQ-005: Crear Base Plantilla - Lesson Learned
 
-**Priority**: Critical
-**Type**: Template
-**Effort**: 8 hours
+**Priority**: Crítico
+**Type**: Plantilla
+**Effort**: 8 horas
 
-## 1. Problem Statement
+## 1. Planteamiento del Problema
 
-Lessons extraction must follow a template so they become machine-readable artifacts for future learning.
+Lessons extraction must siguen a Plantilla so they become machine-readable artifacts for future learning.
 
-## 2. Summary
+## 2. Resumen
 
-Define a lesson template that captures context, gap, solution, validation, and confidence evolution so lessons are immediately usable for next-spec decisions.
+Define a lesson Plantilla that captures context, gap, solution, validation, and confidence evolution so lessons are immediately usable for next-spec decisions.
 
 ## 3. Next Steps
 
@@ -47,4 +47,4 @@ Define a lesson template that captures context, gap, solution, validation, and c
 
 ---
 
-*Generated via daath-zen-req-template (stub).*
+*Generado via daath-zen-req-Plantilla (stub).*
