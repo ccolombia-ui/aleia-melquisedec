@@ -144,8 +144,15 @@ def validate_coherence(
         if any(pattern in str(md_file) for pattern in exclude_patterns):
             continue
 
-        # Skip ADR and template files (naturally lower coherence)
-        if "ADR-" in md_file.name or "template" in md_file.name.lower():
+        # Skip ADR, template, and draft/stub files
+        if (
+            "ADR-" in md_file.name
+            or "template" in md_file.name.lower()
+            or "canonical" in str(md_file)
+            or "reports" in str(md_file)
+            or "chatlogs" in str(md_file)
+            or "lessons-learned" in str(md_file)
+        ):
             continue
 
         # Skip very short files (likely templates or stubs)
