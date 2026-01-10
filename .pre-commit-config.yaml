@@ -70,6 +70,29 @@ repos:
   #       args: ['--config=.markdownlint.json']
   #       exclude: (CHANGELOG\.md|docs/.*\.md|apps/.*\.md|\.spec-workflow/.*\.md|_templates/.*\.md)
 
+  # Custom quality hooks
+  - repo: local
+    hooks:
+      # Canonical_for uniqueness validation
+      - id: check-canonical-uniqueness
+        name: Validate canonical_for uniqueness
+        entry: python tools/quality/check_canonical_uniqueness.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit]
+        files: \.md$
+        verbose: true
+
+      # Document coherence validation
+      - id: check-coherence
+        name: Validate document coherence
+        entry: python tools/quality/check_coherence.py
+        language: python
+        pass_filenames: false
+        stages: [pre-commit]
+        files: \.md$
+        verbose: true
+
   # Custom hooks (temporarily disabled due to encoding issues)
   # TODO: Fix validate_doc_links.py Unicode encoding and add --check flag to cleanup script
   # - repo: local

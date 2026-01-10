@@ -1,0 +1,131 @@
+name: Quality Gates
+
+# Run quality checks on all pull requests and main branch commits
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - '**.md'
+      - '**.py'
+      - '.github/workflows/quality-gates.yml'
+      - 'tools/quality/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '**.md'
+      - '**.py'
+
+jobs:
+  canonical-uniqueness:
+    name: Validate canonical_for Uniqueness
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run canonical_for uniqueness check
+        run: |
+          python tools/quality/check_canonical_uniqueness.py
+        continue-on-error: false
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-uniqueness-report
+          path: |
+            *.log
+          retention-days: 30
+
+  coherence-check:
+    name: Validate Document Coherence
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit for diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run coherence check
+        run: |
+          python tools/quality/check_coherence.py
+        continue-on-error: false
+
+      - name: Comment on PR (if failed)
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Document Coherence Check Failed**\n\nSome documents have coherence scores below the 0.2 threshold. This may indicate:\n- Disjointed sections that should be split into separate documents\n- Missing transitions between topics\n- Unrelated content mixed together\n\nPlease review the workflow logs for details.'
+            })
+
+  manifesto-coverage:
+    name: Validate Manifesto Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run manifesto coverage check
+        run: |
+          python tools/quality/check_manifesto_coverage.py
+        continue-on-error: true  # Warning-only initially
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manifesto-coverage-report
+          path: |
+            manifesto-coverage-*.json
+          retention-days: 30
+
+  quality-summary:
+    name: Quality Summary
+    runs-on: ubuntu-latest
+    needs: [canonical-uniqueness, coherence-check, manifesto-coverage]
+    if: always()
+
+    steps:
+      - name: Check job results
+        run: |
+          echo "Quality Gate Results:"
+          echo "- Canonical uniqueness: ${{ needs.canonical-uniqueness.result }}"
+          echo "- Coherence check: ${{ needs.coherence-check.result }}"
+          echo "- Manifesto coverage: ${{ needs.manifesto-coverage.result }}"
+
+          if [ "${{ needs.canonical-uniqueness.result }}" != "success" ] || [ "${{ needs.coherence-check.result }}" != "success" ]; then
+            echo "❌ Quality gates failed"
+            exit 1
+          else
+            echo "✅ All quality gates passed"
+          fi
