@@ -19,7 +19,7 @@ Los documentos de especificación cumplen con el formato mínimo requerido y est
 - ✅ Idioma: Español
 - ✅ 44/52 requisitos documentados (REQ-001..REQ-044)
 
-### 2. design.md  
+### 2. design.md
 - ✅ Título principal con formato `# Documento de Diseño: spec-name`
 - ✅ Sección "Resumen del Diseño" presente
 - ✅ Diagramas de arquitectura (Mermaid)
@@ -125,5 +125,5 @@ El spec-001 cumple con **todos los requisitos mínimos** de formato establecidos
 
 ---
 
-*Generado por: GitHub Copilot (Claude Sonnet 4.5)*  
+*Generado por: GitHub Copilot (Claude Sonnet 4.5)*
 *Validación basada en: [spec-workflow-mcp documentation](https://context7.com/pimzino/spec-workflow-mcp)*
