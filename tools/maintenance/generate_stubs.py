@@ -40,7 +40,29 @@ def slugify(text: str) -> str:
 
 def main():
     root_dir = Path(__file__).resolve().parent.parent.parent
-    manifesto_path = root_dir / "docs" / "manifiesto" / "bereshit-v3.0.0.md"
+
+    # Priority list for manifesto source
+    candidates = [
+        root_dir
+        / "apps"
+        / "research-autopoietic-template"
+        / "010-define"
+        / "inputs"
+        / "raw-manifiesto.md",
+        root_dir / "docs" / "manifiesto" / "README.md",
+        root_dir / "docs" / "manifiesto" / "bereshit-v3.0.0.md",
+    ]
+
+    manifesto_path = None
+    for p in candidates:
+        if p.exists():
+            manifesto_path = p
+            break
+
+    if not manifesto_path:
+        print("Error: Could not find manifesto source file")
+        return
+
     canonical_dir = root_dir / "canonical"
     canonical_dir.mkdir(exist_ok=True)
 

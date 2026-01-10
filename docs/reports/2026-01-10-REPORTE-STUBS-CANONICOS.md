@@ -8,20 +8,20 @@
 
 ## 1. ¿Qué acabamos de hacer? (Versión para Dummies)
 
-Imagina que MELQUISEDEC es una constitución gigante. Hasta ahora, teníamos la constitución escrita (`docs/manifiesto/bereshit-v3.0.0.md`), pero nadie había creado las **leyes específicas** que explican cómo aplicar cada artículo. Todo estaba mezclado.
+Imagina que MELQUISEDEC es una constitución viva que evoluciona. Inicialmente usamos una versión antigua (`bereshit`), pero nos dimos cuenta de que la "verdad actual" está en `raw-manifiesto.md` (v4.3.1) y su estructura modular.
 
 Lo que hicimos fue:
-1.  **Leer la Constitución**: Escaneamos automáticamente el Manifiesto.
-2.  **Identificar Vacíos**: Encontramos qué secciones no tenían un documento "oficial".
-3.  **Crear Carpetas Vacías (Stubs)**: Generamos los primeros 10 archivos "oficiales" en la carpeta `canonical/`.
+1.  **Leer la Fuente Real**: Escaneamos `apps/.../raw-manifiesto.md` (v4.3.1) que contiene la unificación de PRAXIS + RBM.
+2.  **Identificar Vacíos Reales**: Encontramos qué conceptos de la nueva arquitectura (Autopoiesis, Spec-Workflow link) faltaban.
+3.  **Expandir el Canon**: A los stubs iniciales (Metadata, HKM), sumamos los nuevos conceptos estructurales.
 
 ### Antes vs. Después
 
 | Antes | Después |
 | :--- | :--- |
-| El conocimiento estaba disperso en cientos de archivos `.md`. | Tenemos una carpeta central `canonical/` que actúa como índice maestro. |
-| Si querías saber qué es "HKM Header", tenías que buscar en 10 sitios. | Ahora vas a `canonical/hkm-header.md` y ahí estará la definición oficial. |
-| Riesgo de contradicción alto. | "Single Source of Truth" (Fuente Única de Verdad). |
+| Basado en v3.0.0 (Bereshit). | Basado en v4.0.0+ (Unified Design + Manifiesto Modular). |
+| Faltaban conceptos clave como "Spec-Workflow" o "PRAXIS". | Se integran los nuevos paradigmas de arquitectura. |
+| Riesgo de desactualización. | Alineado con la última versión de desarrollo (`raw-manifiesto`). |
 
 ---
 
@@ -55,18 +55,21 @@ graph TD
     style C2 fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-## 3. Los 10 Primeros Stubs Generados
+## 3. Stubs Generados (Consolidado Fase 1)
 
-Estos son los documentos "semilla" que se han creado automáticamente. Actualmente son borradores (`status: draft`).
+Documentos "semilla" generados a partir de `raw-manifiesto.md` (v4.3.1) y legado:
 
-1.  `canonical/manifiesto-melquisedec-v300.md` (La raíz de todo)
-2.  `canonical/changelog.md`
-3.  `canonical/v300-2026-01-04-major-update-ejemplos-prácticos-refactorizados.md`
-4.  `canonical/v210-2025-12-20.md`
-5.  `canonical/v200-2025-12-10.md`
-6.  `canonical/v100-2025-12-01.md`
-7.  `canonical/metadata.md`
-8.  `canonical/hkm-header.md` (Crucial para estandarización de documentos)
+**Nuevos Conceptos (Arquitectura v4+):**
+1.  `canonical/unified-research-template-design-v431.md`
+2.  `canonical/praxis-rbm-meta-framework-autopoiético-para-investigación.md`
+3.  `canonical/el-puente-manifiesto-daath-zen-root-spec-workflow-mcp.md` (Crucial: Define la integración técnica)
+4.  `canonical/narrativa-para-dummies.md`
+5.  `canonical/visión-un-meta-framework-autopoiético.md`
+
+**Conceptos Fundacionales (Legado v3):**
+6.  `canonical/manifiesto-melquisedec-v300.md`
+7.  `canonical/hkm-header.md`
+8.  `canonical/metadata.md`
 9.  `canonical/dublin-core-iso-15836.md`
 10. `canonical/iso-30401-context.md`
 
@@ -74,14 +77,14 @@ Estos son los documentos "semilla" que se han creado automáticamente. Actualmen
 
 ```mermaid
 pie
-    title Cobertura del Manifiesto
-    "Cubierto (Stubs)" : 10
-    "Pendiente" : 105
+    title Cobertura del Nuevo Manifiesto (v4.3.1)
+    "Cubierto (Stubs)" : 20
+    "Pendiente" : 1857
 ```
 
-- **Total de Secciones detects:** 115
-- **Stubs Creados:** 10
-- **Cobertura Actual:** ~8.7%
+- **Total de Secciones:** 1877 (¡Creció masivamente por el detalle del raw-manifiesto!)
+- **Stubs Creados:** ~20 (acumulados)
+- **Estrategia:** No cubrir todo. Usar la "Ley de Pareto" (80/20). Solo estandarizar lo que se usa repetidamente.
 
 ## 5. Recomendaciones para Proceder
 
