@@ -1,65 +1,65 @@
-# Requirements: spec-001-implement-keterdoc-architecture
+# Requisitos: spec-001-implement-keterdoc-architecture
 
-## 📋 Requirements Overview
+## 📋 Resumen de Requisitos
 
-**Purpose**: Define detailed requirements for KeterDoc architecture implementation following RBM-GAC (Results-Based Management - Goals, Activities, Context) methodology.
+**Propósito**: Definir requisitos detallados para la implementación de la arquitectura KeterDoc siguiendo la metodología RBM-GAC (Gestión Basada en Resultados - Metas, Actividades, Contexto).
 
-**Source**: Derived from lesson-001-keterdoc-architecture-gap.md and 3212 lines of manifesto documentation.
+**Fuente**: Derivado de lesson-001-keterdoc-architecture-gap.md y 3212 líneas de documentación del manifiesto.
 
-**Structure**: 7 phases × multiple requirements per phase = 52 total requirements
+**Estructura**: 7 fases × múltiples requisitos por fase = 52 requisitos totales
 
 ---
 
-## Requirements Index (Hub-note)
+## Índice de Requisitos (Hub-note)
 
-The detailed requirements have been migrated to `010-define/workbooks/` as atomic REQ-XXX.md files following the DAATH-ZEN configurable template pattern.
+Los requisitos detallados han sido migrados a `010-define/workbooks/` como archivos atómicos REQ-XXX.md siguiendo el patrón de plantillas configurables DAATH-ZEN.
 
-| ID | Title | Priority | Status | Path |
-|----|-------|----------|--------|------|
-| [REQ-001](workbooks/REQ-001-context-validation.md) | Define YAML-LD @context Vocabulary | Critical | Draft | workbooks/REQ-001-context-validation.md |
-| [REQ-002](workbooks/REQ-002-template-generation.md) | Create Base Template - Concept & Generator | Critical | Draft | workbooks/REQ-002-template-generation.md |
-| [REQ-003](workbooks/REQ-003-metadata-enrichment.md) | Metadata Enrichment for Embeddings and Graphs | High | Draft | workbooks/REQ-003-metadata-enrichment.md |
-| [REQ-004](workbooks/REQ-004-lens-integration.md) | Lens Integration - Lens Variants System | High | Draft | workbooks/REQ-004-lens-integration.md |
-| [REQ-005](workbooks/REQ-005-lesson-tpl.md) | Create Base Template - Lesson Learned | Critical | Draft | workbooks/REQ-005-lesson-tpl.md |
-| [REQ-006](workbooks/REQ-006-output-tpl.md) | Create Base Template - Output Artifact | High | Draft | workbooks/REQ-006-output-tpl.md |
-| [REQ-007](workbooks/REQ-007-implementation-logs.md) | Implementation Logs and Validation Checklist | High | Draft | workbooks/REQ-007-implementation-logs.md |
-| [REQ-008](workbooks/REQ-008-lens-variants.md) | Lens Variants - Practical Guide | Medium | Draft | workbooks/REQ-008-lens-variants.md |
-| [REQ-009](workbooks/REQ-009-validation-scripts.md) | Validation Scripts for Template & Frontmatter | High | Draft | workbooks/REQ-009-validation-scripts.md |
-| [REQ-010](workbooks/REQ-010-neo4j-integration.md) | Neo4j Integration - RDF ingestion and mapping | High | Draft | workbooks/REQ-010-neo4j-integration.md |
-| [REQ-011](workbooks/REQ-011-create-ddd-lens-variants-6-templates.md) | Create DDD Lens Variants (6 templates) | High | Draft | workbooks/REQ-011-create-ddd-lens-variants-6-templates.md |
-| [REQ-012](workbooks/REQ-012-create-social-lens-variants-6-templates.md) | Create Social Lens Variants (6 templates) | Medium | Draft | workbooks/REQ-012-create-social-lens-variants-6-templates.md |
-| [REQ-013](workbooks/REQ-013-document-lens-selection-guide.md) | Document Lens Selection Guide | High | Draft | workbooks/REQ-013-document-lens-selection-guide.md |
-| [REQ-014](workbooks/REQ-014-define-artifact-workflow-mapping.md) | Define Artifact-Workflow Mapping | Critical | Draft | workbooks/REQ-014-define-artifact-workflow-mapping.md |
-| [REQ-015](workbooks/REQ-015-create-pattern---output-triple-pattern-000.md) | Create Pattern - Output Triple (PATTERN-000) | Critical | Draft | workbooks/REQ-015-create-pattern---output-triple-pattern-000.md |
-| [REQ-016](workbooks/REQ-016-create-patterns-001-009-9-patterns.md) | Create Patterns 001-009 (9 patterns) | High | Draft | workbooks/REQ-016-create-patterns-001-009-9-patterns.md |
-| [REQ-017](workbooks/REQ-017-document-pattern-system.md) | Document Pattern System | High | Draft | workbooks/REQ-017-document-pattern-system.md |
-| [REQ-018](workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md) | Script - Convert ISSUE.yaml to ISSUE.md | Critical | Draft | workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md |
-| [REQ-019](workbooks/REQ-019-script---generate-artifact-from-template.md) | Script - Generate Artifact from Template | Critical | Draft | workbooks/REQ-019-script---generate-artifact-from-template.md |
-| [REQ-020](workbooks/REQ-020-script---validate-keterdoc-compliance.md) | Script - Validate KeterDoc Compliance | Critical | Draft | workbooks/REQ-020-script---validate-keterdoc-compliance.md |
-| [REQ-021](workbooks/REQ-021-script---extract-seci-relationships.md) | Script - Extract SECI Relationships | High | Draft | workbooks/REQ-021-script---extract-seci-relationships.md |
-| [REQ-022](workbooks/REQ-022-test-suite-for-all-tools.md) | Test Suite for All Tools | High | Draft | workbooks/REQ-022-test-suite-for-all-tools.md |
-| [REQ-023](workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md) | Script - YAML-LD to RDF Triples | Critical | Draft | workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md |
-| [REQ-024](workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md) | Script - Import RDF Triples to Neo4j | Critical | Draft | workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md |
-| [REQ-025](workbooks/REQ-025-create-semantic-query-examples.md) | Create Semantic Query Examples | High | Draft | workbooks/REQ-025-create-semantic-query-examples.md |
-| [REQ-026](workbooks/REQ-026-document-neo4j-integration-guide.md) | Document Neo4j Integration Guide | High | Draft | workbooks/REQ-026-document-neo4j-integration-guide.md |
-| [REQ-027](workbooks/REQ-027-backup-current-template.md) | Backup Current Template | Critical | Draft | workbooks/REQ-027-backup-current-template.md |
-| [REQ-028](workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md) | Migrate ISSUE.yaml to ISSUE.md | Critical | Draft | workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md |
-| [REQ-029](workbooks/REQ-029-migrate-existing-artifacts.md) | Migrate Existing Artifacts | High | Draft | workbooks/REQ-029-migrate-existing-artifacts.md |
-| [REQ-030](workbooks/REQ-030-test-obsidian-integration.md) | Test Obsidian Integration | High | Draft | workbooks/REQ-030-test-obsidian-integration.md |
-| [REQ-031](workbooks/REQ-031-test-spec-workflow-mcp-integration.md) | Test spec-workflow-mcp Integration | High | Draft | workbooks/REQ-031-test-spec-workflow-mcp-integration.md |
-| [REQ-032](workbooks/REQ-032-generate-neo4j-knowledge-graph.md) | Generate Neo4j Knowledge Graph | High | Draft | workbooks/REQ-032-generate-neo4j-knowledge-graph.md |
-| [REQ-033](workbooks/REQ-033-run-full-validation-suite.md) | Run Full Validation Suite | Critical | Draft | workbooks/REQ-033-run-full-validation-suite.md |
-| [REQ-034](workbooks/REQ-034-extract-lesson-002-migration-validation.md) | Extract lesson-002-migration-validation | High | Draft | workbooks/REQ-034-extract-lesson-002-migration-validation.md |
-| [REQ-035](workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md) | Create Module 01-fundamentos Specs (4 specs) | High | Draft | workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md |
-| [REQ-036](workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md) | Create Module 02-arquitectura Specs (5 specs) | High | Draft | workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md |
-| [REQ-037](workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md) | Create Module 03-workflow Specs (4 specs) | High | Draft | workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md |
-| [REQ-038](workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md) | Create Module 04-implementacion Specs (3 specs) | Medium | Draft | workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md |
-| [REQ-039](workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md) | Create Module 05-casos-estudio Specs (2 specs) | Low | Draft | workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md |
-| [REQ-040](workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md) | Create Module 06-referencias Specs (1 spec) | Low | Draft | workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md |
-| [REQ-041](workbooks/REQ-041-create-master-index-spec-021.md) | Create Master Index (spec-021) | Critical | Draft | workbooks/REQ-041-create-master-index-spec-021.md |
-| [REQ-042](workbooks/REQ-042-generate-implementation-status-tracker.md) | Generate Implementation Status Tracker | High | Draft | workbooks/REQ-042-generate-implementation-status-tracker.md |
-| [REQ-043](workbooks/REQ-043-validate-complete-system-coherence.md) | Validate Complete System Coherence | Critical | Draft | workbooks/REQ-043-validate-complete-system-coherence.md |
-| [REQ-044](workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md) | Extract lesson-003-manifesto-coherence | High | Draft | workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md |
+| ID | Título | Prioridad | Estado | Ruta |
+|----|--------|-----------|--------|------|
+| [REQ-001](workbooks/REQ-001-context-validation.md) | Definir Vocabulario YAML-LD @context | Crítico | Borrador | workbooks/REQ-001-context-validation.md |
+| [REQ-002](workbooks/REQ-002-template-generation.md) | Crear Plantilla Base - Concepto y Generador | Crítico | Borrador | workbooks/REQ-002-template-generation.md |
+| [REQ-003](workbooks/REQ-003-metadata-enrichment.md) | Enriquecimiento de Metadatos para Embeddings y Grafos | Alto | Borrador | workbooks/REQ-003-metadata-enrichment.md |
+| [REQ-004](workbooks/REQ-004-lens-integration.md) | Integración de Lentes - Sistema de Variantes | Alto | Borrador | workbooks/REQ-004-lens-integration.md |
+| [REQ-005](workbooks/REQ-005-lesson-tpl.md) | Crear Plantilla Base - Lección Aprendida | Crítico | Borrador | workbooks/REQ-005-lesson-tpl.md |
+| [REQ-006](workbooks/REQ-006-output-tpl.md) | Crear Plantilla Base - Artefacto de Salida | Alto | Borrador | workbooks/REQ-006-output-tpl.md |
+| [REQ-007](workbooks/REQ-007-implementation-logs.md) | Registros de Implementación y Lista de Validación | Alto | Borrador | workbooks/REQ-007-implementation-logs.md |
+| [REQ-008](workbooks/REQ-008-lens-variants.md) | Variantes de Lentes - Guía Práctica | Medio | Borrador | workbooks/REQ-008-lens-variants.md |
+| [REQ-009](workbooks/REQ-009-validation-scripts.md) | Scripts de Validación para Plantillas y Frontmatter | Alto | Borrador | workbooks/REQ-009-validation-scripts.md |
+| [REQ-010](workbooks/REQ-010-neo4j-integration.md) | Integración Neo4j - Ingestión y mapeo RDF | Alto | Borrador | workbooks/REQ-010-neo4j-integration.md |
+| [REQ-011](workbooks/REQ-011-create-ddd-lens-variants-6-templates.md) | Create DDD Lens Variants (6 templates) | Alto | Borrador | workbooks/REQ-011-create-ddd-lens-variants-6-templates.md |
+| [REQ-012](workbooks/REQ-012-create-social-lens-variants-6-templates.md) | Create Social Lens Variants (6 templates) | Medio | Borrador | workbooks/REQ-012-create-social-lens-variants-6-templates.md |
+| [REQ-013](workbooks/REQ-013-document-lens-selection-guide.md) | Document Lens Selection Guide | Alto | Borrador | workbooks/REQ-013-document-lens-selection-guide.md |
+| [REQ-014](workbooks/REQ-014-define-artifact-workflow-mapping.md) | Define Artifact-Workflow Mapping | Crítico | Borrador | workbooks/REQ-014-define-artifact-workflow-mapping.md |
+| [REQ-015](workbooks/REQ-015-create-pattern---output-triple-pattern-000.md) | Create Pattern - Output Triple (PATTERN-000) | Crítico | Borrador | workbooks/REQ-015-create-pattern---output-triple-pattern-000.md |
+| [REQ-016](workbooks/REQ-016-create-patterns-001-009-9-patterns.md) | Create Patterns 001-009 (9 patterns) | Alto | Borrador | workbooks/REQ-016-create-patterns-001-009-9-patterns.md |
+| [REQ-017](workbooks/REQ-017-document-pattern-system.md) | Document Pattern System | Alto | Borrador | workbooks/REQ-017-document-pattern-system.md |
+| [REQ-018](workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md) | Script - Convert ISSUE.yaml to ISSUE.md | Crítico | Borrador | workbooks/REQ-018-script---convert-issue.yaml-to-issue.md.md |
+| [REQ-019](workbooks/REQ-019-script---generate-artifact-from-template.md) | Script - Generate Artifact from Template | Crítico | Borrador | workbooks/REQ-019-script---generate-artifact-from-template.md |
+| [REQ-020](workbooks/REQ-020-script---validate-keterdoc-compliance.md) | Script - Validate KeterDoc Compliance | Crítico | Borrador | workbooks/REQ-020-script---validate-keterdoc-compliance.md |
+| [REQ-021](workbooks/REQ-021-script---extract-seci-relationships.md) | Script - Extract SECI Relationships | Alto | Borrador | workbooks/REQ-021-script---extract-seci-relationships.md |
+| [REQ-022](workbooks/REQ-022-test-suite-for-all-tools.md) | Test Suite for All Tools | Alto | Borrador | workbooks/REQ-022-test-suite-for-all-tools.md |
+| [REQ-023](workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md) | Script - YAML-LD to RDF Triples | Crítico | Borrador | workbooks/REQ-023-script---yaml-ld-to-rdf-triples.md |
+| [REQ-024](workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md) | Script - Import RDF Triples to Neo4j | Crítico | Borrador | workbooks/REQ-024-script---import-rdf-triples-to-neo4j.md |
+| [REQ-025](workbooks/REQ-025-create-semantic-query-examples.md) | Create Semantic Query Examples | Alto | Borrador | workbooks/REQ-025-create-semantic-query-examples.md |
+| [REQ-026](workbooks/REQ-026-document-neo4j-integration-guide.md) | Document Neo4j Integration Guide | Alto | Borrador | workbooks/REQ-026-document-neo4j-integration-guide.md |
+| [REQ-027](workbooks/REQ-027-backup-current-template.md) | Backup Current Template | Crítico | Borrador | workbooks/REQ-027-backup-current-template.md |
+| [REQ-028](workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md) | Migrate ISSUE.yaml to ISSUE.md | Crítico | Borrador | workbooks/REQ-028-migrate-issue.yaml-to-issue.md.md |
+| [REQ-029](workbooks/REQ-029-migrate-existing-artifacts.md) | Migrate Existing Artifacts | Alto | Borrador | workbooks/REQ-029-migrate-existing-artifacts.md |
+| [REQ-030](workbooks/REQ-030-test-obsidian-integration.md) | Test Obsidian Integration | Alto | Borrador | workbooks/REQ-030-test-obsidian-integration.md |
+| [REQ-031](workbooks/REQ-031-test-spec-workflow-mcp-integration.md) | Test spec-workflow-mcp Integration | Alto | Borrador | workbooks/REQ-031-test-spec-workflow-mcp-integration.md |
+| [REQ-032](workbooks/REQ-032-generate-neo4j-knowledge-graph.md) | Generate Neo4j Knowledge Graph | Alto | Borrador | workbooks/REQ-032-generate-neo4j-knowledge-graph.md |
+| [REQ-033](workbooks/REQ-033-run-full-validation-suite.md) | Run Full Validation Suite | Crítico | Borrador | workbooks/REQ-033-run-full-validation-suite.md |
+| [REQ-034](workbooks/REQ-034-extract-lesson-002-migration-validation.md) | Extract lesson-002-migration-validation | Alto | Borrador | workbooks/REQ-034-extract-lesson-002-migration-validation.md |
+| [REQ-035](workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md) | Create Module 01-fundamentos Specs (4 specs) | Alto | Borrador | workbooks/REQ-035-create-module-01-fundamentos-specs-4-specs.md |
+| [REQ-036](workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md) | Create Module 02-arquitectura Specs (5 specs) | Alto | Borrador | workbooks/REQ-036-create-module-02-arquitectura-specs-5-specs.md |
+| [REQ-037](workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md) | Create Module 03-workflow Specs (4 specs) | Alto | Borrador | workbooks/REQ-037-create-module-03-workflow-specs-4-specs.md |
+| [REQ-038](workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md) | Create Module 04-implementacion Specs (3 specs) | Medio | Borrador | workbooks/REQ-038-create-module-04-implementacion-specs-3-specs.md |
+| [REQ-039](workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md) | Create Module 05-casos-estudio Specs (2 specs) | Bajo | Borrador | workbooks/REQ-039-create-module-05-casos-estudio-specs-2-specs.md |
+| [REQ-040](workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md) | Create Module 06-referencias Specs (1 spec) | Bajo | Borrador | workbooks/REQ-040-create-module-06-referencias-specs-1-spec.md |
+| [REQ-041](workbooks/REQ-041-create-master-index-spec-021.md) | Create Master Index (spec-021) | Crítico | Borrador | workbooks/REQ-041-create-master-index-spec-021.md |
+| [REQ-042](workbooks/REQ-042-generate-implementation-status-tracker.md) | Generate Implementation Status Tracker | Alto | Borrador | workbooks/REQ-042-generate-implementation-status-tracker.md |
+| [REQ-043](workbooks/REQ-043-validate-complete-system-coherence.md) | Validate Complete System Coherence | Crítico | Borrador | workbooks/REQ-043-validate-complete-system-coherence.md |
+| [REQ-044](workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md) | Extract lesson-003-manifesto-coherence | Alto | Borrador | workbooks/REQ-044-extract-lesson-003-manifesto-coherence.md |
 
 > **Note:** REQ-045..REQ-052 pendientes (8 requirements adicionales de Phase 7). Total: 52 requirements para spec-001.
 
@@ -76,7 +76,7 @@ The detailed requirements have been migrated to `010-define/workbooks/` as atomi
 
 ### REQ-001: Define YAML-LD @context Vocabulary
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Architecture
 **Effort**: 16 hours
 
@@ -99,7 +99,7 @@ Create `context.jsonld` file defining semantic web vocabulary for MELQUISEDEC sy
 
 ### REQ-002: Create Base Template - Concept
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Template
 **Effort**: 8 hours
 
@@ -121,7 +121,7 @@ Create artifact-templates/by-type/concept-tpl.md following KeterDoc standard.
 
 ### REQ-003: Create Base Template - Analysis
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 8 hours
 
@@ -142,7 +142,7 @@ Create artifact-templates/by-type/analysis-tpl.md for analytical artifacts.
 
 ### REQ-004: Create Base Template - Decision
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 8 hours
 
@@ -163,7 +163,7 @@ Create artifact-templates/by-type/decision-tpl.md for architectural decisions (A
 
 ### REQ-005: Create Base Template - Experiment
 
-**Priority**: Medium
+**Priority**: Medio
 **Type**: Template
 **Effort**: 8 hours
 
@@ -184,7 +184,7 @@ Create artifact-templates/by-type/experiment-tpl.md for empirical experiments.
 
 ### REQ-006: Create Base Template - Output
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 8 hours
 
@@ -205,7 +205,7 @@ Create artifact-templates/by-type/output-tpl.md for deliverable outputs (papers,
 
 ### REQ-007: Create Base Template - Lesson
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Template
 **Effort**: 8 hours
 
@@ -226,7 +226,7 @@ Create artifact-templates/by-type/lesson-tpl.md for lessons learned (autopoiesis
 
 ### REQ-008: Document Template Usage Guide
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -250,7 +250,7 @@ Create docs/guides/KETERDOC-QUICKSTART.md explaining KeterDoc system usage.
 
 ### REQ-009: Create DSR Lens Variants (6 templates)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 24 hours
 
@@ -274,7 +274,7 @@ Create Design Science Research lens variants for 6 base templates.
 
 ### REQ-010: Create IMRAD Lens Variants (6 templates)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 24 hours
 
@@ -297,7 +297,7 @@ Create IMRAD (Introduction, Methods, Results, And Discussion) lens variants.
 
 ### REQ-011: Create DDD Lens Variants (6 templates)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Template
 **Effort**: 24 hours
 
@@ -320,7 +320,7 @@ Create Domain-Driven Design lens variants for software-focused research.
 
 ### REQ-012: Create Social Lens Variants (6 templates)
 
-**Priority**: Medium
+**Priority**: Medio
 **Type**: Template
 **Effort**: 24 hours
 
@@ -343,7 +343,7 @@ Create Social Science lens variants for qualitative research.
 
 ### REQ-013: Document Lens Selection Guide
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -367,7 +367,7 @@ Create docs/guides/LENS-SELECTION-GUIDE.md to help choose appropriate lens.
 
 ### REQ-014: Define Artifact-Workflow Mapping
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Configuration
 **Effort**: 8 hours
 
@@ -388,7 +388,7 @@ Create config/artifact-workflows.yaml mapping artifact types to workflow pattern
 
 ### REQ-015: Create Pattern - Output Triple (PATTERN-000)
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Configuration
 **Effort**: 4 hours
 
@@ -402,7 +402,7 @@ Create patterns/PATTERN-000-output-triple.yaml for foundational Output Triple wo
   pattern:
     id: 'PATTERN-000-output-triple'
     version: '1.0.0'
-    confidence: 0.90  # High confidence - documented in manifesto
+    confidence: 0.90  # Alto confidence - documented in manifesto
     description: 'Write to Markdown + Neo4j + Vector Store simultaneously'
     steps:
       - name: 'Write Markdown file'
@@ -423,7 +423,7 @@ Create patterns/PATTERN-000-output-triple.yaml for foundational Output Triple wo
 
 ### REQ-016 through REQ-024: Create Patterns 001-009
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Configuration
 **Effort**: 36 hours (4 hours × 9 patterns)
 
@@ -455,7 +455,7 @@ Create 9 additional workflow patterns for different artifact types.
 
 ### REQ-025: Document Pattern System
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -478,7 +478,7 @@ Create docs/guides/PATTERN-SYSTEM.md explaining workflow pattern usage and evolu
 
 ### REQ-026: Script - Convert ISSUE.yaml to ISSUE.md
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Tool
 **Effort**: 12 hours
 
@@ -501,7 +501,7 @@ Create tools/keterdoc/convert-issue-yaml-to-md.py for automated migration.
 
 ### REQ-027: Script - Generate Artifact from Template
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Tool
 **Effort**: 12 hours
 
@@ -527,7 +527,7 @@ Create tools/keterdoc/generate-artifact-from-template.py for quick artifact crea
 
 ### REQ-028: Script - Validate KeterDoc Compliance
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Tool
 **Effort**: 12 hours
 
@@ -554,7 +554,7 @@ Create tools/keterdoc/validate-keterdoc-compliance.py for CI/CD validation.
 
 ### REQ-029: Script - Extract SECI Relationships
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Tool
 **Effort**: 8 hours
 
@@ -577,7 +577,7 @@ Create tools/keterdoc/extract-seci-relationships.py to build dependency graph.
 
 ### REQ-030: Test Suite for All Tools
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Testing
 **Effort**: 8 hours
 
@@ -602,7 +602,7 @@ Create tests/keterdoc/ with comprehensive unit tests for all 4 scripts.
 
 ### REQ-031: Script - YAML-LD to RDF Triples
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Tool
 **Effort**: 16 hours
 
@@ -629,7 +629,7 @@ Create tools/neo4j/yaml-ld-to-rdf-triples.py to convert YAML-LD to RDF.
 
 ### REQ-032: Script - Import RDF Triples to Neo4j
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Tool
 **Effort**: 16 hours
 
@@ -654,7 +654,7 @@ Create tools/neo4j/import-rdf-to-neo4j.py for RDF → Neo4j import.
 
 ### REQ-033: Create Semantic Query Examples
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -685,7 +685,7 @@ Create tools/neo4j/semantic-queries/ with 10 example Cypher queries.
 
 ### REQ-034: Document Neo4j Integration Guide
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -709,7 +709,7 @@ Create docs/guides/NEO4J-INTEGRATION.md explaining complete Neo4j workflow.
 
 ### REQ-035: Backup Current Template
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Safety
 **Effort**: 2 hours
 
@@ -729,7 +729,7 @@ Create complete backup of research-autopoietic-template before migration.
 
 ### REQ-036: Migrate ISSUE.yaml to ISSUE.md
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Migration
 **Effort**: 4 hours
 
@@ -750,7 +750,7 @@ Convert research-autopoietic-template/ISSUE.yaml → ISSUE.md.
 
 ### REQ-037: Migrate Existing Artifacts
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Migration
 **Effort**: 16 hours
 
@@ -773,7 +773,7 @@ Convert 20+ existing artifacts to new templates.
 
 ### REQ-038: Test Obsidian Integration
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Testing
 **Effort**: 4 hours
 
@@ -796,7 +796,7 @@ Verify ISSUE.md and artifacts work natively in Obsidian.
 
 ### REQ-039: Test spec-workflow-mcp Integration
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Testing
 **Effort**: 4 hours
 
@@ -817,7 +817,7 @@ Verify spec-workflow-mcp processes ISSUE.md correctly.
 
 ### REQ-040: Generate Neo4j Knowledge Graph
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Testing
 **Effort**: 4 hours
 
@@ -841,7 +841,7 @@ Import all migrated artifacts to Neo4j and verify relationships.
 
 ### REQ-041: Run Full Validation Suite
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Testing
 **Effort**: 4 hours
 
@@ -862,7 +862,7 @@ Execute all validation scripts on migrated project.
 
 ### REQ-042: Extract lesson-002-migration-validation
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Autopoiesis
 **Effort**: 8 hours
 
@@ -890,7 +890,7 @@ Document lessons learned from pilot migration.
 
 ### REQ-043: Create Module 01-fundamentos Specs (4 specs)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Specification
 **Effort**: 32 hours (8 hours × 4 specs)
 
@@ -931,7 +931,7 @@ Create implementation specs for manifesto module 01-fundamentos.
 
 ### REQ-044: Create Module 02-arquitectura Specs (5 specs)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Specification
 **Effort**: 40 hours (8 hours × 5 specs)
 
@@ -954,7 +954,7 @@ Create implementation specs for manifesto module 02-arquitectura.
 
 ### REQ-045: Create Module 03-workflow Specs (4 specs)
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Specification
 **Effort**: 32 hours
 
@@ -976,7 +976,7 @@ Create implementation specs for manifesto module 03-workflow.
 
 ### REQ-046: Create Module 04-implementacion Specs (3 specs)
 
-**Priority**: Medium
+**Priority**: Medio
 **Type**: Specification
 **Effort**: 24 hours
 
@@ -997,7 +997,7 @@ Create implementation specs for manifesto module 04-implementacion.
 
 ### REQ-047: Create Module 05-casos-estudio Specs (2 specs)
 
-**Priority**: Low
+**Priority**: Bajo
 **Type**: Documentation
 **Effort**: 16 hours
 
@@ -1017,7 +1017,7 @@ Create documentation specs for manifesto module 05-casos-estudio.
 
 ### REQ-048: Create Module 06-referencias Specs (1 spec)
 
-**Priority**: Low
+**Priority**: Bajo
 **Type**: Tool
 **Effort**: 8 hours
 
@@ -1036,7 +1036,7 @@ Create tool spec for manifesto module 06-referencias.
 
 ### REQ-049: Create Master Index (spec-021) 🎯 CRITICAL
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Documentation + Architecture
 **Effort**: 16 hours
 
@@ -1062,7 +1062,7 @@ Rebuild docs/manifiesto/00-master-index.md with results chain and conceptualizat
 
 ### REQ-050: Generate Implementation Status Tracker
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Documentation
 **Effort**: 8 hours
 
@@ -1084,7 +1084,7 @@ Create docs/guides/MANIFESTO-IMPLEMENTATION-STATUS.md for tracking.
 
 ### REQ-051: Validate Complete System Coherence
 
-**Priority**: Critical
+**Priority**: Crítico
 **Type**: Testing
 **Effort**: 8 hours
 
@@ -1107,7 +1107,7 @@ Run comprehensive validation across all 21 specs and 6 modules.
 
 ### REQ-052: Extract lesson-003-manifesto-coherence
 
-**Priority**: High
+**Priority**: Alto
 **Type**: Autopoiesis
 **Effort**: 8 hours
 
@@ -1145,7 +1145,7 @@ Document lessons learned from Phase 7 (manifesto-wide implementation).
 - Phase 6: 8 requirements, 46 hours
 - Phase 7: 10 requirements, 80 hours
 
-**Critical Path**:
+**Crítico Path**:
 REQ-001 (@context) → REQ-002-007 (templates) → REQ-009-012 (lens variants) → REQ-014-024 (patterns) → REQ-026-030 (tools) → REQ-031-034 (Neo4j) → REQ-035-042 (pilot) → REQ-043-048 (module specs) → **REQ-049 (master index)** → REQ-051 (validation)
 
 **Success**: All 52 requirements met, system coherence validated, autopoiesis active.

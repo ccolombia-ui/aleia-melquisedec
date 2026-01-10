@@ -1,35 +1,35 @@
-# Tasks: spec-001-implement-keterdoc-architecture
+# Tareas: spec-001-implement-keterdoc-architecture
 
-## Phase 1: Foundations (REQ-001..REQ-010)
+## Fase 1: Fundamentos (REQ-001..REQ-010)
 
-### REQ-001: Define YAML-LD @context Vocabulary
-- [x] **Task 1.1**: Create `apps/research-autopoietic-template/.spec-workflow/context.jsonld`
-    - [x] Define namespaces: `mel`, `dc`, `rdf`, `rdfs`, `xsd`
-    - [x] Define term mappings: `seci`, `derives_from`, `informs`, etc.
-    - [x] Define `artifact_template` and `lens` properties
-    - [x] **Verification**: Validate JSON syntax
-- [x] **Task 1.2**: Create online validation example (JSON-LD Playground)
-    - [x] Create a snippet `examples/req-001-example.jsonld` (Created 3 artifacts instead)
-    - [ ] Document validation steps in `Implementation Logs`
-- [x] **Task 1.3**: Update Root Template with local @context reference
-    - [x] Modify `_templates/daath-zen-patterns/template-configurable_daath-zen-root.md`
-    - [x] Ensure `@context` points to the local file (for now) or URL
+### REQ-001: Definir Vocabulario YAML-LD @context
+- [x] **Tarea 1.1**: Crear `apps/research-autopoietic-template/.spec-workflow/context.jsonld`
+    - [x] Definir espacios de nombres: `mel`, `dc`, `rdf`, `rdfs`, `xsd`
+    - [x] Definir mapeos de términos: `seci`, `derives_from`, `informs`, etc.
+    - [x] Definir propiedades `artifact_template` y `lens`
+    - [x] **Verificación**: Validar sintaxis JSON
+- [x] **Tarea 1.2**: Crear ejemplo de validación en línea (JSON-LD Playground)
+    - [x] Crear snippet `examples/req-001-example.jsonld` (Se crearon 3 artefactos en su lugar)
+    - [ ] Documentar pasos de validación en `Implementation Logs`
+- [x] **Tarea 1.3**: Actualizar Plantilla Raíz con referencia local @context
+    - [x] Modificar `_templates/daath-zen-patterns/template-configurable_daath-zen-root.md`
+    - [x] Asegurar que `@context` apunte al archivo local (por ahora) o URL
 
-### REQ-002: Base Template & Generator
-- [ ] **Task 2.1**: Refine `tools/generate_from_daath_template.py`
-    - [ ] Implement argument parsing (FILE, ID, TITLE)
-    - [ ] Implement Jinja2-like variable replacement or Regex replacement
-    - [ ] Handle `result_type` mapping
-- [ ] **Task 2.2**: Create `daath-zen-req-template.md` (Already done? Verify)
-    - [ ] Ensure it uses the new `@context`
-    - [ ] Validate inheritance from `template-configurable_daath-zen-root.md`
+### REQ-002: Plantilla Base y Generador
+- [ ] **Tarea 2.1**: Refinar `tools/generate_from_daath_template.py`
+    - [ ] Implementar análisis de argumentos (FILE, ID, TITLE)
+    - [ ] Implementar reemplazo de variables tipo Jinja2 o Regex
+    - [ ] Manejar mapeo de `result_type`
+- [ ] **Tarea 2.2**: Crear `daath-zen-req-template.md` (¿Ya hecho? Verificar)
+    - [ ] Asegurar que use el nuevo `@context`
+    - [ ] Validar herencia de `template-configurable_daath-zen-root.md`
 
-### REQ-003: Metadata Enrichment
-- [ ] **Task 3.1**: Define "Metadata Quality" metrics
-    - [ ] Add `quality_score` to frontmatter?
-    - [ ] Check mapping to `associated_causes`
+### REQ-003: Enriquecimiento de Metadatos
+- [ ] **Tarea 3.1**: Definir métricas de "Calidad de Metadatos"
+    - [ ] ¿Agregar `quality_score` al frontmatter?
+    - [ ] Verificar mapeo a `associated_causes`
 
 ---
 
-## Phase 2: Patterns & Tools (REQ-011..)
-*To be expanded after Phase 1*
+## Fase 2: Patrones y Herramientas (REQ-011..)
+*Por expandir después de la Fase 1*

@@ -1,12 +1,12 @@
-# Design Document: spec-001-implement-keterdoc-architecture
+# Documento de Diseño: spec-001-implement-keterdoc-architecture
 
-## 🎯 Design Overview
+## 🎯 Resumen del Diseño
 
-**Purpose**: Define detailed architecture, implementation approach, and technical decisions for KeterDoc system with YAML-LD, templates, and Neo4j integration.
+**Propósito**: Definir la arquitectura detallada, enfoque de implementación y decisiones técnicas para el sistema KeterDoc con YAML-LD, plantillas e integración Neo4j.
 
-**Approach**: Incremental, phase-by-phase implementation with continuous validation and autopoiesis feedback loops.
+**Enfoque**: Implementación incremental fase por fase con validación continua y bucles de retroalimentación autopoiética.
 
-**Key Innovation**: Dogfooding - this spec itself uses the architecture it proposes (YAML-LD + KeterDoc format).
+**Innovación Clave**: Dogfooding - esta especificación utiliza la arquitectura que propone (YAML-LD + formato KeterDoc).
 
 ---
 
