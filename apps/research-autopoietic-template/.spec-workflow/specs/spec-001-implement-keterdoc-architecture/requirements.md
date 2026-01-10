@@ -10,6 +10,34 @@
 
 ---
 
+## Requirements Index (Hub-note)
+
+The detailed requirements have been migrated to `010-define/workbooks/` as atomic REQ-XXX.md files following the DAATH-ZEN configurable template pattern.
+
+| ID | Title | Priority | Status | Path |
+|----|-------|----------|--------|------|
+| [REQ-001](workbooks/REQ-001-context-validation.md) | Define YAML-LD @context Vocabulary | Critical | Draft | workbooks/REQ-001-context-validation.md |
+| [REQ-002](workbooks/REQ-002-template-generation.md) | Create Base Template - Concept & Generator | Critical | Draft | workbooks/REQ-002-template-generation.md |
+| [REQ-003](workbooks/REQ-003-metadata-enrichment.md) | Metadata Enrichment for Embeddings and Graphs | High | Draft | workbooks/REQ-003-metadata-enrichment.md |
+| [REQ-004](workbooks/REQ-004-lens-integration.md) | Lens Integration - Lens Variants System | High | Draft | workbooks/REQ-004-lens-integration.md |
+| [REQ-005](workbooks/REQ-005-lesson-tpl.md) | Create Base Template - Lesson Learned | Critical | Draft | workbooks/REQ-005-lesson-tpl.md |
+| [REQ-006](workbooks/REQ-006-output-tpl.md) | Create Base Template - Output Artifact | High | Draft | workbooks/REQ-006-output-tpl.md |
+| [REQ-007](workbooks/REQ-007-implementation-logs.md) | Implementation Logs and Validation Checklist | High | Draft | workbooks/REQ-007-implementation-logs.md |
+| [REQ-008](workbooks/REQ-008-lens-variants.md) | Lens Variants - Practical Guide | Medium | Draft | workbooks/REQ-008-lens-variants.md |
+| [REQ-009](workbooks/REQ-009-validation-scripts.md) | Validation Scripts for Template & Frontmatter | High | Draft | workbooks/REQ-009-validation-scripts.md |
+| [REQ-010](workbooks/REQ-010-neo4j-integration.md) | Neo4j Integration - RDF ingestion and mapping | High | Draft | workbooks/REQ-010-neo4j-integration.md |
+
+> **Note:** Remaining REQ-011..REQ-052 will be migrated into `workbooks/` incrementally. Use the `REQ-template.md` as the canonical template for new REQ artifacts.
+
+## Next Steps and Migration Plan
+
+- [ ] Migrate REQ-011..REQ-020 this week (owner: MORPHEUS)
+- [ ] Add validation scripts (`tools/validate-frontmatter.py`) and integrate into CI (owner: SALOMON)
+- [ ] Request HYPATIA review for the DAATH-ZEN templates (see `review/HYPATIA-REVIEW.md`) and mark templates `stable` or `experimental`
+- [ ] Run JSON-LD validation for REQ-001..REQ-010 examples and record results in `Implementation Logs/`
+
+---
+
 ## Phase 1: Fundamentos (Weeks 1-2)
 
 ### REQ-001: Define YAML-LD @context Vocabulary

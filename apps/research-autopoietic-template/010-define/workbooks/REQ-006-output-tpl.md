@@ -1,0 +1,50 @@
+---
+'@context':
+  '@vocab': 'https://schema.org/'
+  dc: 'http://purl.org/dc/terms/'
+'@type': 'Requirement'
+'@id': 'https://melquisedec.org/requirements/REQ-006-output-tpl'
+dc:title: 'REQ-006: Create Base Template - Output Artifact'
+dc:created: '2026-01-10'
+version: '0.1.0'
+status: 'draft'
+result_type: 'final'
+associated_causes:
+  - 'cause-006-deliverables'
+associated_features:
+  - 'feat-output-artifacts'
+outputs:
+  immediate: 'artifact-templates/by-type/output-tpl.md'
+  intermediate: 'Output examples (datasets, tools)'
+  final: 'Published outputs and documentation'
+generated_from: '_templates/daath-zen-patterns/daath-zen-req-template.md'
+template_root: '_templates/daath-zen-patterns/template-configurable_daath-zen-root.md'
+manifesto_coherence:
+  - file: 'docs/manifiesto/02-arquitectura/03-templates-hkm.md'
+    lines: '380-420'
+    rationale: 'Output template for deliverables.'
+---
+
+# REQ-006: Create Base Template - Output Artifact
+
+**Priority**: High
+**Type**: Template
+**Effort**: 8 hours
+
+## 1. Problem Statement
+
+Deliverable outputs must conform to a template to enable consistent publication, indexing, and ingestion.
+
+## 2. Summary
+
+An output template will standardize metadata and sections for datasets, tools, and papers to make them easier to index and reuse.
+
+## 3. Next Steps
+
+- Create example output artifacts
+- Add guidance on licensing and provenance fields
+- Ensure outputs include `generated_from` and `template_root` for traceability
+
+---
+
+*Generated via daath-zen-req-template (stub).*
