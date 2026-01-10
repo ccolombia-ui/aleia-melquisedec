@@ -147,9 +147,9 @@ sequenceDiagram
 
 ---
 
-## 🔬 Phase 1.5: Research Foundation Architecture
+## 🔬 Phase 2: Research Foundation Architecture
 
-> **Justificación**: Antes de implementar templates (Phase 2), necesitamos comprender formalmente los artefactos de spec-workflow-mcp mediante investigación DDD + IMRAD + ISO. Esta fase fundamenta epistemológicamente el diseño.
+> **Justificación**: Antes de implementar templates (Phase 3), necesitamos comprender formalmente los artefactos de spec-workflow-mcp mediante investigación DDD + IMRAD + ISO. Esta fase fundamenta epistemológicamente el diseño.
 
 ### Architectural Decision: Knowledge-First Design
 
@@ -158,8 +158,8 @@ sequenceDiagram
 **Decision**: Adoptar "Knowledge-First Design" como extensión de "Schema-First Design":
 
 1. **Phase 1** (✅ Complete): Schema-first → crear schemas antes de implementación
-2. **Phase 1.5** (NEW): Knowledge-first → investigar dominio antes de diseñar schemas de templates
-3. **Phase 2**: Template-first → diseñar templates antes de compilación
+2. **Phase 2** (NEW): Knowledge-first → investigar dominio antes de diseñar schemas de templates
+3. **Phase 3**: Template-first → diseñar templates antes de compilación
 
 **Consequences**:
 - ✅ Artifacts fundamentados en investigación formal (DDD, IMRAD, ISO)
@@ -473,7 +473,7 @@ class WorkbookCompiler:
 {% endfor %}
 ```
 
-**Integration with Phase 2**:
+**Integration with Phase 3**:
 
 ```mermaid
 sequenceDiagram
@@ -511,7 +511,7 @@ sequenceDiagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 4: Domain Knowledge (Phase 1.5)                      │
+│ Layer 4: Domain Knowledge (Phase 2)                        │
 ├─────────────────────────────────────────────────────────────┤
 │ - Literature Review (DDD books, ISO specs)                  │
 │ - Bounded Context Analysis (Event Storming)                 │
@@ -530,7 +530,7 @@ sequenceDiagram
                      │ compile_spec_from_workbook.py
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 2: Template Layer (Phase 2)                          │
+│ Layer 2: Template Layer (Phase 3)                          │
 ├─────────────────────────────────────────────────────────────┤
 │ - daath-zen-base.md (with Knowledge Sources section)        │
 │ - Variants: requirements, design, tasks, product, tech      │
@@ -546,7 +546,7 @@ sequenceDiagram
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Technology Stack: Phase 1.5
+### Technology Stack: Phase 2
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|

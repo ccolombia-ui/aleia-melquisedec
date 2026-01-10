@@ -6,14 +6,14 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 
 **Total Estimado**: 5 semanas (100-120 horas de desarrollo)
 - Phase 1: Base Infrastructure - 15 horas ✅ COMPLETADO
-- Phase 1.5: Research Foundation - 26 horas (3 días) - **NUEVA FASE**
-- Phase 2: Template System - 17 horas
-- Phase 3: Compilation Pipeline - 18 horas
-- Phase 4: Validation & Quality - 14 horas
-- Phase 5: Integration & Deployment - 10 horas
-- Phase 6: Documentation & Testing - 20 horas
+- Phase 2: Research Foundation - 26 horas (3 días) - **NUEVA FASE**
+- Phase 3: Template System - 17 horas
+- Phase 4: Compilation Pipeline - 18 horas
+- Phase 5: Validation & Quality - 14 horas
+- Phase 6: Integration & Deployment - 10 horas
+- Phase 7: Documentation & Testing - 20 horas
 
-**Note**: Phase 1.5 es una fase de investigación formal agregada para fundamentar los artefactos desde conocimiento de dominio usando DDD, ingeniería de contextos e ISO para ontologías, en lugar de inventar contenido sin fundamento epistemológico.
+**Note**: Phase 2 es una fase de investigación formal agregada para fundamentar los artefactos desde conocimiento de dominio usando DDD, ingeniería de contextos e ISO para ontologías, en lugar de inventar contenido sin fundamento epistemológico.
 
 **References:**
 - [Requirements](./requirements.md) - Requisitos funcionales y no funcionales
@@ -97,7 +97,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     ```
   - **_Prompt**: Role: Python Developer | Task: Implement TemplateHierarchy class that loads config.yaml-ld, resolves template inheritance (base + variant merge), implements LRU cache, and includes complete type hints | Restrictions: Must use Python 3.10+, cache should improve performance, all public methods must have docstrings | Success: Loads config without errors, resolves inheritance correctly, cache works, 5+ unit tests pass with >80% coverage, mypy passes with no errors
 
-### 1.5. Research Foundation - Domain Knowledge
+### 2. Research Foundation - Domain Knowledge
 
 **Objetivo**: Investigación formal para fundamentar los artefactos de spec-workflow-mcp desde conocimiento de dominio usando DDD, ingeniería de contextos e ISO para gestión de ontologías.
 
@@ -105,7 +105,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 
 **Ubicación**: `apps/R000-autopoietic-template/_melquisedec/domain/`
 
-- [ ] 1.5.1. Investigación de Artefactos spec-workflow-mcp (IMRAD)
+- [ ] 2.1. Investigación de Artefactos spec-workflow-mcp (IMRAD)
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/wb-001-spec-workflow-artifacts/`
   - **Requirements**: REQ-001-02 (nuevo)
   - **Estimación**: 8 horas (1 día)
@@ -131,7 +131,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Mapeo claro entre dominio y artefactos
   - **_Prompt**: Role: Research Investigator + DDD Expert | Task: Conduct formal IMRAD investigation of spec-workflow-mcp artifacts using DDD (bounded contexts, entities, value objects), context engineering, and ISO ontology management to understand what each artifact IS, what concepts it contains, and HOW to populate it from domain knowledge | Research Questions: 1) What sections does dashboard expect in each artifact? 2) What are the core domain concepts in each artifact? 3) How do artifacts map to RBM chain (RF→RI→Rinm→Products)? 4) What is the strategy to populate artifacts from research vs invention? | Methods: Source code analysis of spec-workflow-mcp dashboard, official documentation review, example analysis, DDD bounded context mapping | Restrictions: Must follow IMRAD structure strictly, must identify bounded contexts for each artifact, must provide clear domain-to-artifact mapping, must cite all sources | Success: All research questions answered, bounded contexts mapped, clear strategy documented for populating each artifact from domain knowledge, ISO ontology alignment demonstrated
 
-- [ ] 1.5.2. Mapeo RBM → Artefactos (Domain Model)
+- [ ] 2.2. Mapeo RBM → Artefactos (Domain Model)
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/models/rbm-artifact-mapping.md`
   - **Requirements**: REQ-001-03 (nuevo)
   - **Estimación**: 4 horas (0.5 día)
@@ -155,7 +155,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Bounded contexts claramente definidos
   - **_Prompt**: Role: Domain Modeler + RBM Expert | Task: Create formal domain model mapping RBM chain (Resultado Final → RI → Rinm → Products → Activities) to spec-workflow-mcp artifacts using DDD bounded contexts and C4 architecture diagrams | Deliverables: Complete mapping document showing how each RBM level generates specific artifact content, C4 diagrams (Context + Container levels), bounded context definitions | Restrictions: Must use DDD terminology (bounded contexts, aggregates, entities), must create visual diagrams (Mermaid/PlantUML), must show bidirectional traceability (artifact ← domain → RBM) | Success: RF maps to producto.md clearly, RI maps to features in requirements.md, Rinm maps to components in design.md, Activities map to tasks.md, bounded contexts defined per RBM level, C4 diagrams complete and understandable
 
-- [ ] 1.5.3. Prototipo Workbook Fundamentado (Ejemplo Concreto)
+- [ ] 2.3. Prototipo Workbook Fundamentado (Ejemplo Concreto)
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/examples/wb-rbm-spec-001-prototype/`
   - **Requirements**: REQ-001-04 (nuevo)
   - **Estimación**: 8 horas (1 día)
@@ -180,7 +180,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - producto.md generado es coherente y fundamentado
   - **_Prompt**: Role: Research Workbook Architect | Task: Create prototype RBM workbook for SPEC-001 itself showing how artifacts emerge from domain knowledge, include resultado_final/, ri-XXX/, rinm-XXX/, and PROD-XXX.md files with domain research (literature, atomic analysis, decisions/ADRs), implement compilation script that generates producto.md from workbook | Structure: resultado_final/vision.md, ri-001-base-infrastructure/rinm-001-keter-doc/PROD-001-json-ld-schema.md (includes: domain research, atomic analysis of JSON-LD spec, ADR for vocabulary choices, references), compile-producto.py that aggregates vision + features | Restrictions: Must follow strict RBM hierarchy, each product must cite domain sources (not invented), compilation must be reproducible, output must be valid producto.md for spec-workflow-mcp | Success: Workbook demonstrates knowledge-driven approach, compilation script works, generated producto.md is coherent and well-founded, clear difference between researched vs invented content
 
-- [ ] 1.5.4. Ontología de Conceptos (ISO/IEC 21838 Compliance)
+- [ ] 2.4. Ontología de Conceptos (ISO/IEC 21838 Compliance)
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/ontologies/spec-workflow-ontology.ttl`
   - **Requirements**: REQ-001-05 (nuevo)
   - **Estimación**: 4 horas (0.5 día)
@@ -203,7 +203,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Alineada con vocabularios existentes (Dublin Core, MELQUISEDEC)
   - **_Prompt**: Role: Ontology Engineer | Task: Create formal ontology of spec-workflow-mcp concepts using OWL/Turtle format compliant with ISO/IEC 21838 standard, define classes (Artifact, Requirement, Design, Task, Product, Tech, Structure), properties (hasSection, mapsToRBMLevel, hasContext, fundamentedBy), individuals (requirements.md, design.md, tasks.md instances), align with Dublin Core and MELQUISEDEC vocabularies | Restrictions: Must follow ISO/IEC 21838 guidelines, must validate with reasoner (Pellet/HermiT), must include visual diagram, must be machine-readable (TTL format) | Success: Ontology validates without errors, reasoner finds no inconsistencies, alignment with existing vocabularies demonstrated, concepts clearly defined with descriptions and examples
 
-- [ ] 1.5.5. Actualizar Templates con Domain Insights
+- [ ] 2.5. Actualizar Templates con Domain Insights
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md` (v1.1)
   - **Requirements**: REQ-002-03 (nuevo)
   - **Estimación**: 2 horas (0.25 día)
@@ -226,7 +226,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Changelog documenta razonamiento de cambios
   - **_Prompt**: Role: Template Evolution Engineer | Task: Update base template (v1.0 → v1.1) and config based on insights from Phase 1.5 research, add "Knowledge Sources" section, add placeholders for domain literature references ({{domain_literature_refs}}), bounded context references ({{bounded_context_ref}}), ADR references ({{adr_refs}}), update config.yaml-ld to require domain source citations, add validation that artifacts reference research | Restrictions: Must maintain backward compatibility where possible, must document all changes in changelog with rationale, new placeholders must be clearly documented | Success: Templates enforce knowledge-driven approach, validation checks for domain references, changelog clearly explains evolution from v1.0, updated templates compile without errors
 
-### 2. Template System
+### 3. Template System
 
 - [ ] 2.1. Crear Template daath-zen-requirements.md
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-requirements.md`
@@ -304,7 +304,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     ```
   - **_Prompt**: Role: QA Engineer | Task: Write comprehensive tests for template system - template loading, inheritance resolution, placeholder validation, Markdown format, spec-workflow-mcp compatibility | Restrictions: Must achieve >80% coverage, test all 6 templates, include edge cases | Success: All tests pass, coverage >80%, each template validated, format compatibility confirmed
 
-### 3. Compilation Pipeline
+### 4. Compilation Pipeline
 
 - [ ] 3.1. Implementar Workbook Parser
   - **File**: `packages/daath-toolkit/compilation/workbook_parser.py`, `tests/test_workbook_parser.py`
@@ -386,7 +386,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     ```
   - **_Prompt**: Role: Orchestration Engineer | Task: Implement SpecCompiler orchestrator that coordinates all pipeline components (Parser→Transclusion→Coherence→Renderer), provides clean CLI interface, handles errors gracefully, logs compilation steps | Restrictions: Must be idempotent, provide clear error messages, support all 6 template variants, compilation should be <5s for 50 products | Success: CLI works end-to-end, error messages are actionable, all variants compile, performance targets met, 10+ integration tests pass
 
-### 4. Validation System
+### 5. Validation System
 
 - [ ] 4.1. Implementar Keter-Doc Validator
   - **File**: `packages/daath-toolkit/validation/keter_doc_validator.py`, `tests/test_keter_doc_validator.py`
@@ -446,7 +446,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     - Test: Reporte consolidado de errores
   - **_Prompt**: Role: Integration Test Engineer | Task: Write integration tests that validate the complete validation pipeline - test each validator independently, test error detection capabilities, verify consolidated error reporting, ensure validators work together | Restrictions: Tests must be independent, use fixtures for test data, cover happy path and error cases | Success: All integration tests pass, error detection verified, report consolidation works, coverage >70%
 
-### 5. Documentation & Examples
+### 6. Documentation & Examples
 
 - [ ] 5.1. Crear Guía de Uso de Templates
   - **File**: `apps/R000-autopoietic-template/_melquisedec/docs/GUIA-TEMPLATES.md`
@@ -494,7 +494,7 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
     ```
   - **_Prompt**: Role: Example Developer | Task: Create complete authentication workbook example with 2 RI (login, oauth), 2 Rinm each (email-password, google), 5+ requirements distributed across Rinm, README explaining the example | Restrictions: Must follow RBM methodology, be realistic (not toy example), demonstrate best practices, compile without errors | Success: Workbook compiles successfully, structure is exemplary, README is clear, demonstrates key concepts, can be used as reference
 
-### 6. Testing & Deployment
+### 7. Testing & Deployment
 
 - [ ] 6.1. Integration Tests Completos
   - **File**: `tests/integration/test_full_compilation.py`, `test_template_system_integration.py`

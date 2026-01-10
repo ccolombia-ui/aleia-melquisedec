@@ -347,7 +347,7 @@ dependencies: ["spec-workflow-mcp>=1.0.0", "obsidian>=1.5.0"]
 
 ---
 
-## 🔬 Phase 1.5: Research Foundation (NUEVA FASE)
+## 🔬 Phase 2: Research Foundation (NUEVA FASE)
 
 > **Justificación**: Antes de diseñar templates, necesitamos comprender FORMALMENTE qué son los artefactos de spec-workflow-mcp, qué conceptos contienen, y cómo poblarlos desde conocimiento de dominio usando DDD, IMRAD e ISO/IEC 21838. Esta investigación fundamenta epistemológicamente la generación de artefactos.
 
