@@ -1624,6 +1624,253 @@ def validate_sources(workbook_file):
 
 ---
 
+### ADR-008: Workbooks como Artefactos Autocontenidos (Bounded Contexts)
+
+**Status**: Accepted
+**Date**: 2026-01-10
+**Deciders**: MELQUISEDEC Architecture Team
+
+**Context**:
+Error arquitectónico inicial: Creamos 8 workbooks IMRAD (01-introduction.md, 02-methods.md, ..., 08-references.md) cuando deberían ser 5 workbooks por artefacto (workbook-product-md/, workbook-requirements-md/, etc.). Confundimos **fases IMRAD** con **artefactos del framework spec-workflow-mcp**.
+
+**Problem**:
+- IMRAD es metodología de investigación, NO arquitectura de documentos
+- Cada artefacto (requirements.md, design.md, tasks.md) tiene su propio dominio de conocimiento (bounded context)
+- Mixing IMRAD phases across multiple artifacts violates DDD Bounded Context principle
+
+**Research Findings** (based on LESSON-002):
+- **IMRAD** (Introduction, Methods, Results, Analysis, Discussion) es apropiado para experimentos empíricos ("¿Cómo afecta X a Y?")
+  - Source: Sollaci & Pereira (2004) "IMRAD structure: A fifty-year survey", Wikipedia IMRAD
+- **Scoping Review** (Arksey & O'Malley Framework) es apropiado para descubrimiento de dominio ("¿Qué se sabe sobre X?")
+  - Source: ArXiv paper "Enhancing the role of academic librarians in conducting scoping reviews" (2021)
+- SPEC-001 es **descubrimiento de dominio**, NO experimento → Scoping Review más adecuado que IMRAD puro
+
+**Decision**:
+Cambiar de **8 workbooks IMRAD** (phases) a **5 workbooks por artefacto** (bounded contexts):
+
+```
+ANTES ❌:
+.spec-workflow/specs/spec-001-*/investigation/
+├── 01-introduction.md       # IMRAD phase
+├── 02-methods.md             # IMRAD phase
+├── 03-results.md             # IMRAD phase
+...
+└── 08-references.md          # IMRAD phase
+
+DESPUÉS ✅:
+_melquisedec/domain/workbooks/spec-001-prototype/
+├── workbook-product-md/      # Bounded context: Producto
+├── workbook-requirements-md/ # Bounded context: Requisitos
+├── workbook-design-md/       # Bounded context: Diseño
+├── workbook-tasks-md/        # Bounded context: Planificación
+└── workbook-implementation-log-md/ # Bounded context: Implementación
+```
+
+Cada workbook es **autocontenido** (self-contained) con:
+- Literatura propia (1-literature/)
+- Análisis propio (2-analysis/)
+- Conceptos propios (3-atomics/)
+- Validaciones propias (4-artefact/)
+- Ingesta propia (6-outputs/)
+- Compiler propio (compiler/)
+
+**Consequences**:
+- ✅ Cada workbook tiene bounded context claro (un dominio de conocimiento)
+- ✅ Separación de concerns: product knowledge ≠ requirements knowledge ≠ design knowledge
+- ✅ Cada workbook puede evolucionar independientemente
+- ✅ Compiladores especializados por artefacto (compile-product.py, compile-requirements.py, etc.)
+- ✅ Alineación con DDD: Bounded Contexts a nivel epistemológico
+- ⚠️ Más directorios (5 vs 1), pero con mejor organización
+- ⚠️ Cada compiler/ necesita desarrollo individual
+
+**Alternatives Considered**:
+1. **Keep 8 IMRAD workbooks**: Rechazado - viola bounded context principle, mezcla dominios
+2. **Single giant workbook**: Rechazado - monolito sin separación de concerns
+3. **Hybrid (IMRAD inside each artifact workbook)**: Considerado pero rechazado - Scoping Review más apropiado que IMRAD
+
+**References**:
+- Evans, E. (2003). *Domain-Driven Design: Tackling Complexity in the Heart of Software*, p.335-350 (Bounded Contexts)
+- Sollaci, L. B., & Pereira, M. G. (2004). "The introduction, methods, results, and discussion (IMRAD) structure: a fifty-year survey"
+- Arksey, H., & O'Malley, L. (2005). "Scoping studies: towards a methodological framework"
+
+**Related**:
+- REQ-001-04 (actualizado para workbooks por artefacto)
+- ADR-009 (Scoping Review methodology)
+- ADR-010 (Estructura 1-6 Epistemológica)
+
+---
+
+### ADR-009: Scoping Review vs IMRAD para Descubrimiento de Dominio
+
+**Status**: Accepted
+**Date**: 2026-01-10
+**Deciders**: MELQUISEDEC Research Team
+
+**Context**:
+Inicialmente propusimos estructura IMRAD (Introduction, Methods, Results, Analysis, Discussion) para workbooks de investigación. Sin embargo, SPEC-001 NO es un experimento empírico - es descubrimiento de un dominio existente (spec-workflow-mcp).
+
+**Research Question**:
+¿Cuál metodología de investigación es apropiada para descubrir conocimiento sobre un dominio existente?
+
+**Research Findings** (ArXiv + Brave Web Search):
+
+1. **IMRAD** es para experimentos empíricos:
+   - Pregunta: "¿Cómo afecta X a Y?" (experimental)
+   - Estructura: Fixed linear (intro → methods → results → discussion)
+   - Aplicación: Ciencias experimentales (biología, medicina, física)
+   - Source: Wikipedia IMRAD, NTNU Academic Writing Guide
+
+2. **Scoping Review** (Arksey & O'Malley) es para mapeo de dominios:
+   - Pregunta: "¿Qué se sabe sobre X?" (discovery)
+   - Estructura: Flexible (1. Research Q → 2. Studies → 3. Selection → 4. Charting → 5. Reporting)
+   - Aplicación: Mapeo de campos de conocimiento, identificación de gaps
+   - Source: ArXiv "Enhancing the role of academic librarians in conducting scoping reviews" (2021)
+
+**SPEC-001 Characteristics**:
+- ✅ Descubrimiento: "¿Qué son los artefactos de spec-workflow-mcp?"
+- ✅ Mapeo: Identificar conceptos, patrones, bounded contexts
+- ✅ Flexible: No sabemos de antemano qué encontraremos
+- ❌ NO es experimento: No probamos hipótesis con variable dependiente/independiente
+
+**Decision**:
+Adoptar **Scoping Review** (Arksey & O'Malley Framework) como metodología principal para workbooks, NO IMRAD puro.
+
+**Scoping Review Framework Applied**:
+1. **Research Question** (1-literature/): ¿Qué debe contener este artefacto?
+2. **Study Identification** (1-literature/): Buscar literatura, código, frameworks relevantes
+3. **Study Selection** (2-analysis/): Analizar fuentes y extraer conceptos clave
+4. **Data Charting** (3-atomics/): Atomizar conocimiento en JSON estructurado
+5. **Synthesis** (4-artefact/): Crear tests y contratos de validación
+6. **Reporting** (6-outputs/): Generar ingesta Neo4j + embeddings + artefacto compilado
+
+**Consequences**:
+- ✅ Metodología alineada con tipo de investigación (discovery, NO experiment)
+- ✅ Flexibilidad para ajustar approach según hallazgos
+- ✅ Énfasis en mapeo comprehensivo (no probar hipótesis)
+- ✅ Bibliometric tools apropiados (semantic search, concept mapping)
+- ⚠️ Menos estructura rígida que IMRAD (requiere autodisciplina)
+- ⚠️ No es apropiado para specs futuros que SÍ sean experimentos (mantener IMRAD como option)
+
+**When to Use Each**:
+- **Scoping Review**: Descubriendo dominio nuevo (SPEC-001, SPEC-002 probablemente)
+- **IMRAD**: Experimentos futuros (ej: "SPEC-025: Performance Impact of GraphRAG vs Vector Search")
+
+**References**:
+- Arksey, H., & O'Malley, L. (2005). "Scoping studies: towards a methodological framework", *International Journal of Social Research Methodology*, 8(1), 19-32
+- ArXiv paper (2021): "Enhancing the role of academic librarians in conducting scoping reviews"
+- Wikipedia: "IMRaD"
+- NTNU: "The IMRaD format"
+
+**Related**:
+- ADR-008 (Workbooks por Artefacto)
+- ADR-010 (Estructura 1-6)
+- REQ-001-04 (Metodología de workbooks)
+
+---
+
+### ADR-010: Estructura 1-6 Epistemológica (Flujo de Conocimiento)
+
+**Status**: Accepted
+**Date**: 2026-01-10
+**Deciders**: MELQUISEDEC Knowledge Engineering Team
+
+**Context**:
+Los workbooks necesitan estructura interna que refleje el flujo epistemológico: desde fuentes primarias (entrada) hasta artefacto compilado (salida). La estructura debe ser **autocontenida** (self-contained) - cada workbook con todas sus fuentes, análisis, y validaciones.
+
+**Problem**:
+¿Cómo organizar el contenido interno de cada workbook para que sea reproducible, verificable, y compilable?
+
+**Decision**:
+Adoptar **estructura 1-6 epistemológica** con flujo:
+**ENTRADA → PROCESO → EXTRACCIÓN → VALIDACIÓN → INGESTA → COMPILACIÓN**
+
+```
+workbook-{artefacto}/
+├── 1-literature/           # ENTRADA: Fuentes primarias
+│   ├── book/               # Libros (Evans DDD, Martin Clean Arch)
+│   ├── paper/              # Papers académicos
+│   ├── framework/          # Frameworks (Scrum, RUP)
+│   └── library/            # Code libraries (spec-workflow-mcp repo)
+├── 2-analysis/             # PROCESO: Análisis + síntesis
+│   ├── analysis-001-XXX.md
+│   └── discussion-YYY.md
+├── 3-atomics/              # EXTRACCIÓN: Conocimiento atomizado
+│   └── concept-XXX.json
+├── 4-artefact/             # VALIDACIÓN: Tests, patterns, contracts
+│   ├── test-XXX.md
+│   └── contract-XXX.json
+├── 6-outputs/              # INGESTA: Neo4j + embeddings
+│   ├── cypher-XXX.cypher
+│   └── embeddings-XXX.json
+└── compiler/               # COMPILACIÓN: Genera artefacto final
+    ├── compile-XXX.py
+    └── templates/
+        └── XXX.md.j2
+```
+
+**Rationale for Each Level**:
+
+1. **1-literature/**: Fuentes verificables (NO especulación)
+   - Principio: "Every claim must be traceable to source"
+   - Organización: book/, paper/, framework/, library/ (categorías claras)
+
+2. **2-analysis/**: Síntesis humana + discusiones
+   - Principio: Analysis with citations (no unsourced claims)
+   - Formato: Markdown con inline citations [source-name]
+
+3. **3-atomics/**: Conocimiento estructurado en JSON
+   - Principio: "One concept, one file" (granularidad atómica)
+   - Formato: JSON schema validable
+
+4. **4-artefact/**: Validaciones y contratos
+   - Principio: "Test your knowledge" (verificación)
+   - Contenido: Test specifications, validation contracts
+
+5. **6-outputs/**: Preparación para ingesta
+   - Principio: "Knowledge is queryable" (graph + vector search)
+   - Contenido: Cypher scripts, embeddings JSON, índices
+
+6. **compiler/**: Automatización de generación
+   - Principio: "Artifacts are compiled, not written" (DRY)
+   - Contenido: Script Python + templates Jinja2
+
+**Why NOT 5-xxx/?**:
+Omitimos número 5 intencionalmente para mantener compatibilidad futura con pipeline extendido (ej: 5-review/ para peer review).
+
+**Consequences**:
+- ✅ Flujo epistemológico claro: source → synthesis → atomization → validation → ingestion → compilation
+- ✅ Autocontenido: Cada workbook tiene TODO lo necesario para compilar artefacto
+- ✅ Reproducible: Cualquiera puede verificar sources → outputs
+- ✅ Compilable: compiler/ genera artefacto final automáticamente
+- ✅ Queryable: 6-outputs/ prepara para GraphRAG + embeddings
+- ✅ Testable: 4-artefact/ valida conocimiento antes de compilación
+- ⚠️ Estructura más compleja que flat directory
+- ⚠️ Requiere disciplina para mantener estructura (no shortcuts)
+
+**Validation Rules**:
+1. **1-literature/** NO puede estar vacío (sin sources = invención)
+2. **2-analysis/** DEBE citar 1-literature/ (no unsourced claims)
+3. **3-atomics/** DEBE tener JSON válido (schema compliance)
+4. **4-artefact/** tests DEBEN pasar antes de compilación
+5. **compiler/** DEBE validar structure antes de output
+
+**Alternatives Considered**:
+1. **Flat structure** (all files in root): Rechazado - no refleja flujo epistemológico
+2. **IMRAD structure** (intro/, methods/, results/): Rechazado - no es metodología adecuada (ver ADR-009)
+3. **Custom per workbook**: Rechazado - pierde consistencia entre workbooks
+
+**References**:
+- Davenport, T. H., & Prusak, L. (1998). *Working Knowledge: How Organizations Manage What They Know*
+- Nonaka, I., & Takeuchi, H. (1995). *The Knowledge-Creating Company* (SECI Model: Socialization, Externalization, Combination, Internalization)
+- MELQUISEDEC Principles: P3 (Estructura Fractal), P5 (Rastreo Semántico)
+
+**Related**:
+- ADR-008 (Workbooks por Artefacto)
+- ADR-009 (Scoping Review Methodology)
+- REQ-001-04 (Workbooks structure)
+
+---
+
 ## Component Diagram
 
 ```mermaid

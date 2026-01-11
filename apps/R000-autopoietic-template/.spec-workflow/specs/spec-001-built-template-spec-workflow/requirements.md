@@ -411,92 +411,88 @@ dependencies: ["spec-workflow-mcp>=1.0.0", "obsidian>=1.5.0"]
 
 ---
 
-### REQ-001-04: Investigación IMRAD de Artefactos spec-workflow-mcp
+### REQ-001-04: Workbooks Autocontenidos por Artefacto (Estructura 1-6 Epistemológica)
 
-**Objetivo**: Realizar investigación formal usando estructura IMRAD (Introduction, Methods, Results, Analysis, Discussion) para comprender qué son los artefactos de spec-workflow-mcp (requirements.md, design.md, tasks.md, producto.md, tech.md, structure.md), qué conceptos de dominio contienen, y cómo diligenciarlos desde conocimiento generado vs invención.
+**Objetivo**: Crear 5 workbooks autocontenidos, uno por cada artefacto de spec-workflow-mcp (product.md, requirements.md, design.md, tasks.md, implementation-log.md), cada uno con estructura epistemológica 1-6 completa (entrada → proceso → extracción → validación → ingesta → compilación).
 
-**Preguntas de Investigación**:
+**Bounded Contexts por Artefacto**:
 
-1. **¿Qué secciones espera el dashboard en cada artefacto?**
-   - Analizar código del dashboard (implementación-log-manager.ts, server.ts)
-   - Identificar parsers, validadores, y extractores de metadata
-   - Documentar schema esperado para cada artefacto
+Cada artefacto representa un bounded context con su propio dominio de conocimiento:
 
-2. **¿Cuáles son los conceptos de dominio clave en cada artefacto?**
-   - requirements.md: User Stories, Functional Requirements, Non-Functional Requirements
-   - design.md: ADRs, Architecture Diagrams, Components, Data Models
-   - tasks.md: Task Hierarchy, Estimates, Dependencies, Deliverables
-   - producto.md: Product Vision, Stakeholders, Metrics
-   - tech.md: Technology Stack, Dependencies, Integrations
-   - structure.md: Directory Tree, Module Boundaries, Conventions
+1. **workbook-product-md/**: Dominio de producto (Visión, Stakeholders, Métricas)
+2. **workbook-requirements-md/**: Dominio de requisitos (RBM, User Stories, Functional/Non-Functional)
+3. **workbook-design-md/**: Dominio de diseño (Arquitectura, ADRs, Componentes)
+4. **workbook-tasks-md/**: Dominio de planificación (Tasks, Estimaciones, Dependencias)
+5. **workbook-implementation-log-md/**: Dominio de implementación (Log Entries, Artifacts, Code Stats)
 
-3. **¿Cómo mapean los artefactos a la cadena RBM?**
-   - RF (Resultado Final) → producto.md (visión de producto)
-   - RI (Resultado Intermedio) → requirements.md (features/epics)
-   - Rinm (Resultado Inmediato) → design.md (componentes), tasks.md (deliverables)
-   - Products → tasks.md (productos internos de cada task)
-   - Activities → tasks.md (actividades operativas)
+**Estructura 1-6 Epistemológica** (aplicada a cada workbook):
 
-4. **¿Cuál es la estrategia para poblar artefactos desde investigación?**
-   - DDD Bounded Contexts → tech.md (microservicios/módulos)
-   - IMRAD Literature Review → design.md (ADRs con referencias)
-   - ISO/IEC 21838 Ontology → structure.md (taxonomía formal de conceptos)
-   - Context Engineering → producto.md (stakeholders, contexts of use)
-
-**Metodología IMRAD**:
-
-```markdown
-# Workbook: 01-introduction.md
-- Problema: No sabemos qué son los artefactos formalmente
-- Hipótesis: Los artefactos son proyecciones de dominios bounded contexts
-- Objetivos: Comprender estructura, semántica, y estrategia de población
-
-# Workbook: 02-methods.md
-- Análisis de código del dashboard (AST parsing)
-- Ingeniería reversa de schemas esperados
-- Mapeo RBM → Artefactos (domain modeling)
-- DDD Event Storming de spec-workflow process
-
-# Workbook: 03-results.md
-- Diagramas de estructura esperada (JSON schemas)
-- Bounded contexts identificados (diagrama C4)
-- Tablas de mapeo RBM → Artefactos
-- Ontología preliminar (OWL/Turtle)
-
-# Workbook: 04-analysis.md
-- Patrones comunes entre artefactos
-- Estrategias de compilación workbook → artifact
-- Validación de hipótesis (artefactos = proyecciones de BC)
-
-# Workbook: 05-discussion.md
-- Implicaciones para diseño de templates
-- Limitaciones del approach actual
-- Trabajo futuro (automatización de compilación)
-
-# Workbook: 06-conclusion.md
-- Síntesis de hallazgos
-- Decisiones de diseño fundamentadas
-- Próximos pasos (Phase 2 con conocimiento sólido)
-
-# Workbook: 07-references.md
-- Literatura DDD (Eric Evans, Vaughn Vernon)
-- ISO/IEC 21838 spec
-- Código del dashboard spec-workflow-mcp
+```
+workbook-{artefacto}/
+├── 1-literature/           # ENTRADA: Fuentes primarias
+│   ├── book/               # Libros (Evans DDD, Martin Clean Architecture)
+│   ├── paper/              # Papers académicos (IMRAD, Scoping Review)
+│   ├── framework/          # Frameworks (Scrum, RUP, etc.)
+│   └── library/            # Libraries de código (spec-workflow-mcp repo)
+├── 2-analysis/             # PROCESO: Análisis + síntesis
+│   ├── analysis-001-XXX.md  # Análisis de conceptos
+│   └── discussion-YYY.md    # Discusiones y síntesis
+├── 3-atomics/              # EXTRACCIÓN: Conocimiento atomizado
+│   └── concept-XXX.json     # Conceptos en JSON
+├── 4-artefact/             # VALIDACIÓN: Tests, patterns, contracts
+│   ├── test-XXX.md          # Test specifications
+│   └── contract-XXX.json    # Contratos de validación
+├── 6-outputs/              # INGESTA: Neo4j + embeddings
+│   ├── cypher-XXX.cypher    # Scripts de ingesta Neo4j
+│   └── embeddings-XXX.json  # Embeddings para semantic search
+└── compiler/               # COMPILACIÓN: Genera artefacto final
+    ├── compile-XXX.py       # Script de compilación
+    └── templates/
+        └── XXX.md.j2        # Template Jinja2
 ```
 
+**Metodología por Workbook**:
+
+Cada workbook sigue flujo de **Scoping Review** (no IMRAD, ya que es descubrimiento de dominio, no experimento):
+
+1. **Research Question** (1-literature/): ¿Qué debe contener este artefacto?
+2. **Study Identification** (1-literature/): Buscar fuentes relevantes (books, papers, frameworks, code)
+3. **Study Selection** (2-analysis/): Analizar fuentes y extraer conceptos clave
+4. **Data Charting** (3-atomics/): Atomizar conocimiento en JSON estructurado
+5. **Synthesis** (4-artefact/): Crear tests y contratos de validación
+6. **Reporting** (6-outputs/): Generar ingesta Neo4j + embeddings
+7. **Compilation** (compiler/): Compilar artefacto final desde workbook
+
+**Mapeo RBM → Workbooks**:
+
+- **RF (Resultado Final)** → workbook-product-md/ (visión de producto)
+- **RI (Resultado Intermedio)** → workbook-requirements-md/ (features/epics)
+- **Rinm (Resultado Inmediato)** → workbook-design-md/ (componentes), workbook-tasks-md/ (deliverables)
+- **Products** → workbook-implementation-log-md/ (productos generados por tasks)
+- **Activities** → workbook-tasks-md/ (actividades operativas)
+
 **Entregables**:
-- 7 archivos Markdown en `_melquisedec/domain/workbooks/spec-workflow-artifacts-investigation/`
-- Estructura IMRAD completa con 200+ líneas de análisis por workbook
-- Diagramas embebidos (Mermaid, C4, UML)
-- Referencias bibliográficas formales
+
+- 5 directorios completos en `_melquisedec/domain/workbooks/spec-001-prototype/`:
+  * workbook-product-md/
+  * workbook-requirements-md/
+  * workbook-design-md/
+  * workbook-tasks-md/
+  * workbook-implementation-log-md/
+- Cada workbook con estructura 1-6 completa
+- Cada workbook con README.md explicando su uso
+- Cada compiler/ funcional generando artefacto válido
 
 **Criterios de Validación**:
-- [ ] Cada workbook tiene estructura IMRAD válida (Introduction → Discussion)
-- [ ] Preguntas de investigación respondidas con evidencia (código, literatura)
-- [ ] Diagramas de bounded contexts usando DDD notation
-- [ ] Mapeo RBM → Artefactos con ejemplos concretos
-- [ ] Referencias a código del dashboard con line numbers
-- [ ] Conclusiones fundamentan decisiones de diseño de Phase 2
+
+- [ ] 5 workbooks creados con estructura 1-6 completa
+- [ ] Cada workbook tiene bounded context claro (un dominio de conocimiento)
+- [ ] Literatura colectada en 1-literature/ citada en análisis
+- [ ] Conceptos atomizados en 3-atomics/ con JSON válido
+- [ ] Tests y contratos en 4-artefact/ verificables
+- [ ] Neo4j ingestion scripts en 6-outputs/ ejecutables
+- [ ] Compiler/ genera artefacto compilado válido
+- [ ] Cada workbook es autocontenido (self-contained) con fuentes propias
 
 **Priority**: 🔴 **CRÍTICA** (bloquea Phase 2)
 

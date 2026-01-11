@@ -1,0 +1,1438 @@
+# SPEC-001: Built Template spec-workflow - Tasks
+
+## Metadatos
+
+| Campo | Valor |
+|-------|-------|
+| **Spec ID** | SPEC-001 |
+| **Nombre** | Built Template spec-workflow |
+| **Versión** | 1.0.0 |
+| **Fecha** | 2026-01-10 |
+| **Estado** | Tasks (Pending Approval) |
+| **Autor** | GitHub Copilot (Claude Sonnet 4.5) |
+| **Propósito** | Desglosar implementación del sistema de templates daath-zen |
+
+---
+
+## Overview
+
+Este documento desglosa la implementación de SPEC-001 en tareas específicas, secuenciadas y medibles. Cada tarea incluye: descripción, dependencias, estimación de tiempo, criterios de completitud y archivos a crear/modificar.
+
+**Total Estimado**: 4 semanas (80-100 horas de desarrollo)
+
+---
+
+## Task Organization
+
+Las tareas están organizadas en **5 fases** que corresponden a la estrategia de migración definida en design.md:
+
+1. **Phase 1: Base Infrastructure** (Semana 1) - 15 horas
+2. **Phase 2: Template System** (Semana 1-2) - 20 horas
+3. **Phase 3: Compilation Pipeline** (Semana 2-3) - 25 horas
+4. **Phase 4: Validation System** (Semana 3) - 15 horas
+5. **Phase 5: Documentation & Examples** (Semana 4) - 10 horas
+6. **Phase 6: Testing & Deployment** (Semana 4) - 15 horas
+
+---
+
+## Implementation Tasks
+
+### Phase 1: Base Infrastructure
+
+#### TASK-1.1: Crear Schema JSON-LD Keter-Doc
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 3 horas
+**Dependencias**: Ninguna
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear archivo `keter-doc-protocol-v1.0.0.jsonld` con schema completo de metadata.
+
+**Archivos a Crear**:
+- `packages/core-mcp/schemas/keter-doc-protocol-v1.0.0.jsonld`
+
+**Subtareas**:
+- [ ] Definir @context con vocabularios (Dublin Core, FOAF, Schema.org)
+- [ ] Definir términos de ontología MELQUISEDEC (P1-P10, 5 Rostros)
+- [ ] Definir tipos de documentos (@type: ResearchSpecification, etc.)
+- [ ] Agregar validación de URNs (pattern: urn:melquisedec:*)
+- [ ] Escribir schema JSON Schema Draft 7
+
+**Criterios de Completitud**:
+- [ ] Schema valida contra JSON-LD 1.1 spec
+- [ ] Incluye todos los 10 principios MELQUISEDEC
+- [ ] Incluye 5 Rostros
+- [ ] URNs tienen pattern regex
+- [ ] Fechas requieren formato ISO8601
+
+**Validación**:
+```bash
+# Usar herramienta de validación JSON-LD
+npm install -g jsonld-cli
+jsonld validate keter-doc-protocol-v1.0.0.jsonld
+```
+
+**Referencias**:
+- REQ-001-01
+- [JSON-LD 1.1 Specification](https://www.w3.org/TR/json-ld11/)
+
+---
+
+#### TASK-1.2: Crear Template Base daath-zen-base.md
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-1.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear template base con secciones universales (HKM header, keter-doc, metadata).
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md`
+
+**Subtareas**:
+- [ ] Crear frontmatter YAML con HKM header (REQ-001-02)
+- [ ] Agregar bloque JSON-LD metadata (REQ-001-01)
+- [ ] Crear tabla de metadatos Markdown
+- [ ] Agregar sección Overview con placeholder
+- [ ] Agregar sección Principios Aplicados
+- [ ] Agregar footer de compilación (auto-generated)
+
+**Contenido del Template**:
+```markdown
+---
+# HKM Header v1.0.0
+keter_protocol_version: "{{KETER_VERSION}}"
+document_type: "{{DOCUMENT_TYPE}}"
+document_id: "{{DOCUMENT_ID}}"
+spec_name: "{{SPEC_NAME}}"
+phase: "{{PHASE}}"
+version: "{{VERSION}}"
+created: "{{CREATED}}"
+modified: "{{MODIFIED}}"
+author: "{{AUTHOR}}"
+rostro_primary: "{{ROSTRO}}"
+status: "{{STATUS}}"
+approval_required: {{APPROVAL_REQUIRED}}
+principles: {{PRINCIPLES}}
+dc_title: "{{DC_TITLE}}"
+dc_description: "{{DC_DESCRIPTION}}"
+dc_subject: {{DC_SUBJECT}}
+dc_language: "{{DC_LANGUAGE}}"
+dc_rights: "{{DC_RIGHTS}}"
+parent_issue: "{{PARENT_ISSUE}}"
+related_specs: {{RELATED_SPECS}}
+dependencies: {{DEPENDENCIES}}
+---
+
+# {{DOCUMENT_TITLE}}
+
+## Metadatos
+
+{{METADATA_TABLE}}
+
+---
+
+## Overview
+
+{{OVERVIEW_CONTENT}}
+
+---
+
+## Principios MELQUISEDEC Aplicados
+
+{{PRINCIPLES_LIST}}
+
+---
+
+{{BODY_SECTIONS}}
+
+---
+
+## Referencias
+
+{{REFERENCES}}
+
+---
+
+**Compilado desde**: `{{WORKBOOK_PATH}}`
+**Fecha de compilación**: `{{COMPILATION_TIMESTAMP}}`
+**Versión de compilador**: `{{COMPILER_VERSION}}`
+**⚠️ ADVERTENCIA**: Este archivo es generado. Editar workbook, no este archivo.
+```
+
+**Criterios de Completitud**:
+- [ ] Todos los placeholders documentados
+- [ ] HKM header completo
+- [ ] JSON-LD metadata incluida
+- [ ] Footer de compilación presente
+- [ ] Formato Markdown válido
+
+**Validación**:
+```bash
+# Validar Markdown
+npx markdownlint daath-zen-base.md
+```
+
+**Referencias**:
+- REQ-002-01
+- design.md Section 1
+
+---
+
+#### TASK-1.3: Crear Configuración de Herencia config.yaml-ld
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 3 horas
+**Dependencias**: TASK-1.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear archivo de configuración que define jerarquía de templates (base → variantes).
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/config.yaml-ld`
+
+**Subtareas**:
+- [ ] Definir @context JSON-LD
+- [ ] Definir template base con secciones
+- [ ] Definir 6 variantes (requirements, design, tasks, product, tech, structure)
+- [ ] Configurar secciones adicionales por variante
+- [ ] Configurar source patterns (workbook paths)
+
+**Criterios de Completitud**:
+- [ ] YAML válido
+- [ ] Base template apunta a archivo correcto
+- [ ] 6 variantes definidas, todas extienden base
+- [ ] Path patterns usan glob syntax válida
+- [ ] Todos los placeholders listados
+
+**Validación**:
+```bash
+# Validar YAML
+yamllint config.yaml-ld
+
+# Validar structure con Python
+python -c "import yaml; print(yaml.safe_load(open('config.yaml-ld')))"
+```
+
+**Referencias**:
+- REQ-002-02
+- design.md ADR-003
+
+---
+
+#### TASK-1.4: Implementar TemplateHierarchy Class
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 5 horas
+**Dependencias**: TASK-1.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar clase Python que carga templates con herencia resuelta.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/templates/template_hierarchy.py`
+- `packages/daath-toolkit/templates/__init__.py`
+- `tests/test_template_hierarchy.py`
+
+**Subtareas**:
+- [ ] Implementar `__init__(config_path)` para cargar config
+- [ ] Implementar `load_template(variant)` con merge lógica
+- [ ] Implementar `_merge_templates(base, variant, config)`
+- [ ] Implementar cache LRU para templates cargados
+- [ ] Escribir 5 tests unitarios
+
+**Criterios de Completitud**:
+- [ ] Carga config.yaml-ld sin errores
+- [ ] Resuelve herencia (base + variant)
+- [ ] Cache funciona correctamente
+- [ ] Tests pasan (coverage > 80%)
+- [ ] Type hints completos
+
+**Validación**:
+```bash
+# Run tests
+pytest tests/test_template_hierarchy.py -v --cov
+
+# Type check
+mypy packages/daath-toolkit/templates/template_hierarchy.py
+```
+
+**Referencias**:
+- design.md Section 1
+- REQ-002-01, REQ-002-02
+
+---
+
+### Phase 2: Template System
+
+#### TASK-2.1: Crear Template daath-zen-requirements.md
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-1.4
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear template variante para requirements con secciones RBM (Matriz de Coherencia, User Stories, Functional Requirements).
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-requirements.md`
+
+**Subtareas**:
+- [ ] Extender daath-zen-base
+- [ ] Agregar sección Matriz de Coherencia (Mermaid + tabla)
+- [ ] Agregar sección User Stories
+- [ ] Agregar sección Functional Requirements
+- [ ] Agregar sección Non-Functional Requirements
+- [ ] Agregar sección Dependencies
+- [ ] Configurar placeholders para workbook refs
+
+**Contenido Específico**:
+```markdown
+## Matriz de Coherencia RBM
+
+\```mermaid
+graph TB
+    RF[Resultado Final: {{RF_TITLE}}]
+    {{COHERENCE_MERMAID_NODES}}
+\```
+
+**Cadena Causal**:
+
+{{COHERENCE_MATRIX_TABLE}}
+
+---
+
+## User Stories
+
+{{USER_STORIES_FROM_WORKBOOK}}
+
+---
+
+## Functional Requirements
+
+{{FUNCTIONAL_REQUIREMENTS_FROM_WORKBOOK}}
+
+---
+
+## Non-Functional Requirements
+
+{{NON_FUNCTIONAL_REQUIREMENTS}}
+
+---
+
+## Dependencies
+
+{{DEPENDENCIES}}
+```
+
+**Criterios de Completitud**:
+- [ ] Extiende base correctamente
+- [ ] Secciones RBM presentes
+- [ ] Mermaid syntax válida
+- [ ] Placeholders documentados
+- [ ] Compatible con spec-workflow-mcp
+
+**Validación**:
+```bash
+# Test template rendering
+python -m daath_toolkit.templates.render \
+  --template requirements \
+  --context test-context.yaml
+```
+
+**Referencias**:
+- REQ-002-03
+- design.md Section 1
+
+---
+
+#### TASK-2.2: Crear Template daath-zen-design.md
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 3 horas
+**Dependencias**: TASK-2.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Template variante para design con ADRs, diagramas arquitectónicos, especificación de componentes.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-design.md`
+
+**Subtareas**:
+- [ ] Extender base
+- [ ] Agregar sección Architecture Overview
+- [ ] Agregar sección Component Specifications
+- [ ] Agregar sección ADRs (Architecture Decision Records)
+- [ ] Agregar sección Migration Strategy
+- [ ] Agregar sección Rollback Plan
+
+**Criterios de Completitud**:
+- [ ] Template válido
+- [ ] ADR format documentado
+- [ ] Soporta múltiples diagramas Mermaid
+- [ ] Componentes tienen estructura estándar
+
+**Referencias**:
+- REQ-002-04
+
+---
+
+#### TASK-2.3: Crear Template daath-zen-tasks.md
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 3 horas
+**Dependencias**: TASK-2.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Template variante para tasks con checklist, Gantt chart, métricas.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-tasks.md`
+
+**Subtareas**:
+- [ ] Extender base
+- [ ] Agregar sección Task Organization
+- [ ] Agregar sección Implementation Tasks (checklist)
+- [ ] Agregar Gantt chart con Mermaid
+- [ ] Agregar sección Metrics Definition
+- [ ] Agregar sección Completion Criteria
+
+**Criterios de Completitud**:
+- [ ] Checklist format compatible con spec-workflow-mcp
+- [ ] Gantt chart renderiza
+- [ ] Tasks tienen estructura: ID, Description, Dependencies, Time
+- [ ] Métricas son medibles
+
+**Referencias**:
+- REQ-002-05
+
+---
+
+#### TASK-2.4: Crear Templates de Steering (product, tech, structure)
+
+**Prioridad**: 🟢 BAJA
+**Estimación**: 3 horas
+**Dependencias**: TASK-2.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear 3 templates para steering documents (opcional, no bloqueante).
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-product.md`
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-tech.md`
+- `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-structure.md`
+
+**Subtareas**:
+- [ ] Crear product.md (Visión, Roadmap, Personas)
+- [ ] Crear tech.md (Stack, Convenciones, Herramientas)
+- [ ] Crear structure.md (Organización carpetas, Naming, Workflows)
+
+**Criterios de Completitud**:
+- [ ] 3 templates creados
+- [ ] < 200 líneas cada uno
+- [ ] Secciones alineadas con spec-workflow-mcp
+
+**Referencias**:
+- REQ-002-06, REQ-002-07, REQ-002-08
+
+---
+
+#### TASK-2.5: Tests de Template System
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-2.4
+**Asignado a**: Por asignar
+
+**Descripción**:
+Escribir tests unitarios y de integración para sistema de templates.
+
+**Archivos a Crear**:
+- `tests/templates/test_template_loading.py`
+- `tests/templates/test_template_inheritance.py`
+- `tests/templates/test_template_rendering.py`
+
+**Subtareas**:
+- [ ] Test: Cargar base template
+- [ ] Test: Cargar variant con herencia
+- [ ] Test: Merge de secciones
+- [ ] Test: Cache funciona
+- [ ] Test: Renderizado con placeholders
+
+**Criterios de Completitud**:
+- [ ] 10+ tests escritos
+- [ ] Coverage > 80%
+- [ ] Todos los tests pasan
+- [ ] Tests documentados con docstrings
+
+**Validación**:
+```bash
+pytest tests/templates/ -v --cov --cov-report=html
+```
+
+---
+
+### Phase 3: Compilation Pipeline
+
+#### TASK-3.1: Implementar Workbook Parser
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 6 horas
+**Dependencias**: TASK-2.5
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar `WorkbookParser` que escanea estructura RBM y construye árbol.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/compilation/workbook_parser.py`
+- `packages/daath-toolkit/compilation/models.py` (data classes)
+- `tests/compilation/test_workbook_parser.py`
+
+**Subtareas**:
+- [ ] Crear data classes (Product, ImmediateResult, IntermediateResult, RBMStructure)
+- [ ] Implementar `parse_workbook_structure(workbook_path) -> RBMStructure`
+- [ ] Escanear carpetas ri-*
+- [ ] Escanear carpetas rinm-*
+- [ ] Escanear archivos REQ-*.md
+- [ ] Extraer metadata de cada archivo
+- [ ] Escribir 8 tests unitarios
+
+**Algoritmo**:
+```python
+def parse_workbook_structure(workbook_path: Path) -> RBMStructure:
+    structure = RBMStructure()
+
+    # Parse RF
+    rf_file = workbook_path / "resultado_final.md"
+    if rf_file.exists():
+        structure.resultado_final = parse_document(rf_file)
+
+    # Parse RIs
+    for ri_folder in sorted(workbook_path.glob("ri-*")):
+        ri = parse_ri_folder(ri_folder)
+        structure.intermediate_results.append(ri)
+
+    return structure
+```
+
+**Criterios de Completitud**:
+- [ ] Parser maneja workbooks vacíos
+- [ ] Detecta IDs mal formateados
+- [ ] Preserva orden alfabético
+- [ ] Performance < 1s para 50 productos
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/compilation/test_workbook_parser.py -v
+```
+
+**Referencias**:
+- REQ-003-01
+- design.md Section 2 (Phase 1)
+
+---
+
+#### TASK-3.2: Implementar Transclusion Processor
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-3.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar procesador que resuelve transclusions Obsidian `![[]]`.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/compilation/transclusion_processor.py`
+- `tests/compilation/test_transclusion_processor.py`
+
+**Subtareas**:
+- [ ] Implementar regex para match `![[path]]` y `![[path#section]]`
+- [ ] Resolver paths relativos a workbook
+- [ ] Leer archivos referenciados
+- [ ] Extraer secciones si se especifica #section
+- [ ] Reemplazar transclusions con contenido
+- [ ] Manejar archivos faltantes gracefully
+- [ ] Escribir 6 tests
+
+**Algoritmo**:
+```python
+def process_transclusions(template: str, workbook_path: Path) -> str:
+    import re
+
+    pattern = r'!\[\[([^\]#]+)(?:#([^\]]+))?\]\]'
+
+    def replace_transclusion(match):
+        path = match.group(1)
+        section = match.group(2)
+
+        full_path = workbook_path / f"{path}.md"
+
+        if not full_path.exists():
+            return f"⚠️ Faltante: {path}"
+
+        content = full_path.read_text()
+
+        if section:
+            content = extract_section(content, section)
+
+        return content
+
+    return re.sub(pattern, replace_transclusion, template)
+```
+
+**Criterios de Completitud**:
+- [ ] Resuelve transclusions simples
+- [ ] Resuelve transclusions con sección
+- [ ] Maneja archivos faltantes
+- [ ] No procesa links normales `[[]]`
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/compilation/test_transclusion_processor.py -v
+```
+
+**Referencias**:
+- REQ-003-02
+- design.md Section 2 (Phase 2)
+
+---
+
+#### TASK-3.3: Implementar Coherence Matrix Builder
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 5 horas
+**Dependencias**: TASK-3.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar constructor de matriz de coherencia RBM con detección de orphans y breaks.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/compilation/coherence_builder.py`
+- `tests/compilation/test_coherence_builder.py`
+
+**Subtareas**:
+- [ ] Implementar `build_coherence_matrix(structure) -> CoherenceMatrix`
+- [ ] Construir cadena RF → RI → Rinm → REQ
+- [ ] Detectar REQs huérfanos (sin Rinm)
+- [ ] Detectar Rinm huérfanos (sin RI)
+- [ ] Detectar RI sin RF
+- [ ] Generar tabla Markdown
+- [ ] Generar diagram Mermaid
+- [ ] Escribir 7 tests
+
+**Criterios de Completitud**:
+- [ ] Matriz completa para workbook válido
+- [ ] Detecta todos los tipos de orphans
+- [ ] Genera tabla Markdown formateada
+- [ ] Genera Mermaid válido
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/compilation/test_coherence_builder.py -v
+```
+
+**Referencias**:
+- REQ-003-03
+- design.md Section 2 (Phase 3)
+
+---
+
+#### TASK-3.4: Implementar Template Renderer
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-3.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar renderizador que aplica template con contexto usando Jinja2.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/compilation/renderer.py`
+- `tests/compilation/test_renderer.py`
+
+**Subtareas**:
+- [ ] Implementar `render_template(template, context) -> str`
+- [ ] Configurar Jinja2 environment
+- [ ] Construir contexto con todas las variables
+- [ ] Renderizar template
+- [ ] Validar output es Markdown válido
+- [ ] Escribir 5 tests
+
+**Context Variables**:
+```python
+context = {
+    'DOCUMENT_TITLE': 'Requirements',
+    'METADATA_TABLE': generate_metadata_table(structure),
+    'OVERVIEW_CONTENT': extract_overview(structure),
+    'PRINCIPLES_LIST': format_principles(structure),
+    'COHERENCE_MATRIX': format_coherence_matrix(matrix),
+    'USER_STORIES': collect_user_stories(structure),
+    'FUNCTIONAL_REQUIREMENTS': collect_requirements(structure),
+    'WORKBOOK_PATH': str(workbook_path),
+    'COMPILATION_TIMESTAMP': datetime.now().isoformat(),
+    'COMPILER_VERSION': '1.0.0'
+}
+```
+
+**Criterios de Completitud**:
+- [ ] Renderiza sin errores
+- [ ] Variables undefined generan warning
+- [ ] Output es Markdown válido
+- [ ] Bloques de código preservados
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/compilation/test_renderer.py -v
+```
+
+**Referencias**:
+- REQ-003-04
+- design.md Section 2 (Phase 4)
+
+---
+
+#### TASK-3.5: Implementar SpecCompiler Orchestrator
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 6 horas
+**Dependencias**: TASK-3.4
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar clase principal que orquesta todo el pipeline de compilación.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/compilation/spec_compiler.py`
+- `tools/compile_spec_from_workbook.py` (CLI)
+- `tests/compilation/test_spec_compiler.py`
+
+**Subtareas**:
+- [ ] Implementar `SpecCompiler.__init__(workbook, template_config, output)`
+- [ ] Implementar `compile(variant) -> CompilationResult`
+- [ ] Orquestar 7 fases del pipeline
+- [ ] Implementar logging con rich
+- [ ] Implementar error handling graceful
+- [ ] Implementar reporting detallado
+- [ ] Crear CLI con click
+- [ ] Escribir 8 tests de integración
+
+**Pipeline**:
+```python
+def compile(self, variant: str = "requirements") -> CompilationResult:
+    try:
+        # Phase 1: Parse
+        rbm_structure = self._parse_workbook()
+
+        # Phase 2: Process transclusions
+        template = self.template_hierarchy.load_template(variant)
+        processed = self._process_transclusions(template)
+
+        # Phase 3: Build coherence
+        matrix = self._build_coherence_matrix(rbm_structure)
+
+        # Phase 4: Render
+        context = self._build_context(rbm_structure, matrix)
+        rendered = self._render_template(processed, context)
+
+        # Phase 5: Validate
+        validation = self._validate(rendered, matrix)
+
+        if not validation.is_valid:
+            return CompilationResult(success=False, errors=validation.errors)
+
+        # Phase 6: Write
+        self._write_output(rendered)
+
+        # Phase 7: Sync Neo4j (async)
+        self._sync_to_neo4j_async(rendered, rbm_structure)
+
+        return CompilationResult(success=True, output_path=self.output_path)
+
+    except Exception as e:
+        return CompilationResult(success=False, errors=[str(e)])
+```
+
+**CLI**:
+```bash
+python tools/compile_spec_from_workbook.py \
+  --workbook "020-conceive/03-workbooks/wb-rbm-spec-001" \
+  --template-config "_melquisedec/templates/config.yaml-ld" \
+  --variant "requirements" \
+  --output ".spec-workflow/specs/spec-001/requirements.md"
+```
+
+**Criterios de Completitud**:
+- [ ] Pipeline completo funciona
+- [ ] Logging informativo con rich
+- [ ] Error handling graceful
+- [ ] CLI funcional
+- [ ] Tests de integración pasan
+- [ ] Performance < 5s para 50 productos
+
+**Validación**:
+```bash
+# Integration test
+pytest tests/compilation/test_spec_compiler.py -v
+
+# Manual test
+python tools/compile_spec_from_workbook.py \
+  --workbook tests/fixtures/wb-rbm-example \
+  --variant requirements \
+  --output output/requirements.md
+```
+
+**Referencias**:
+- design.md Section 2 (SpecCompiler)
+- REQ-003-01 a REQ-003-04
+
+---
+
+### Phase 4: Validation System
+
+#### TASK-4.1: Implementar Keter-Doc Validator
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 5 horas
+**Dependencias**: TASK-3.5
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar validador que verifica documentos contra schema keter-doc.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/validation/keter_doc_validator.py`
+- `tests/validation/test_keter_doc_validator.py`
+
+**Subtareas**:
+- [ ] Implementar `KeterDocValidator.__init__(schema_path)`
+- [ ] Implementar `validate(document_path) -> (bool, List[str])`
+- [ ] Extraer frontmatter YAML
+- [ ] Validar contra JSON Schema
+- [ ] Validar URNs (pattern matching)
+- [ ] Validar fechas ISO8601
+- [ ] Validar principios (P1-P10)
+- [ ] Validar rostros (5 válidos)
+- [ ] Escribir 10 tests
+
+**Validaciones**:
+- @context, @type, @id presentes
+- URNs formato: `urn:melquisedec:{type}:{id}`
+- Fechas ISO8601
+- Principios en P1-P10
+- Rostro en {MELQUISEDEC, HYPATIA, SALOMON, MORPHEUS, ALMA}
+
+**Criterios de Completitud**:
+- [ ] Valida documentos válidos sin errores
+- [ ] Detecta todos los errores de schema
+- [ ] Mensajes de error claros
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/validation/test_keter_doc_validator.py -v
+```
+
+**Referencias**:
+- REQ-004-01
+- design.md Section 3 (KeterDocValidator)
+
+---
+
+#### TASK-4.2: Implementar RBM Coherence Validator
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 4 horas
+**Dependencias**: TASK-4.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar validador que verifica coherencia de cadena causal RBM.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/validation/rbm_coherence_validator.py`
+- `tests/validation/test_rbm_coherence_validator.py`
+
+**Subtareas**:
+- [ ] Implementar `RBMCoherenceValidator.validate(matrix) -> (bool, List[str])`
+- [ ] Check: Todos los REQ mapean a Rinm
+- [ ] Check: Todos los Rinm mapean a RI
+- [ ] Check: Todos los RI mapean a RF
+- [ ] Check: IDs tienen formato correcto
+- [ ] Check: No hay ciclos
+- [ ] Escribir 8 tests
+
+**Criterios de Completitud**:
+- [ ] Detecta REQs huérfanos
+- [ ] Detecta Rinm huérfanos
+- [ ] Detecta RI sin RF
+- [ ] Valida formato de IDs
+- [ ] Mensajes incluyen IDs específicos
+- [ ] Tests coverage > 80%
+
+**Validación**:
+```bash
+pytest tests/validation/test_rbm_coherence_validator.py -v
+```
+
+**Referencias**:
+- REQ-004-02
+- design.md Section 3 (RBMCoherenceValidator)
+
+---
+
+#### TASK-4.3: Implementar Neo4j Sync Validator (Opcional)
+
+**Prioridad**: 🟢 BAJA
+**Estimación**: 4 horas
+**Dependencias**: TASK-4.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Implementar validador que verifica sincronización con Neo4j (opcional).
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/validation/neo4j_validator.py`
+- `tests/validation/test_neo4j_validator.py`
+
+**Subtareas**:
+- [ ] Implementar `Neo4jValidator.validate(document) -> (bool, List[str])`
+- [ ] Conectar a Neo4j con neo4j-driver
+- [ ] Verificar nodo Spec existe
+- [ ] Verificar relaciones IMPLEMENTS_PRINCIPLE
+- [ ] Verificar relaciones HAS_INTERMEDIATE_RESULT
+- [ ] Manejar errores de conexión gracefully
+- [ ] Escribir 6 tests
+
+**Criterios de Completitud**:
+- [ ] Valida nodo existe
+- [ ] Valida relaciones correctas
+- [ ] Maneja Neo4j no disponible
+- [ ] Tests usan Neo4j testcontainer
+- [ ] Tests coverage > 70%
+
+**Validación**:
+```bash
+# Requires Neo4j running
+docker run -d --name neo4j-test \
+  -p 7687:7687 \
+  neo4j:5.15
+
+pytest tests/validation/test_neo4j_validator.py -v
+```
+
+**Referencias**:
+- REQ-004-03
+- design.md Section 3 (Neo4jValidator)
+
+---
+
+#### TASK-4.4: Integration Tests para Validation System
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 2 horas
+**Dependencias**: TASK-4.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Tests de integración que validan todo el sistema de validación.
+
+**Archivos a Crear**:
+- `tests/integration/test_validation_pipeline.py`
+
+**Subtareas**:
+- [ ] Test: Validación completa de documento válido
+- [ ] Test: Detección de múltiples errores
+- [ ] Test: Performance de validación
+- [ ] Escribir 5 tests
+
+**Criterios de Completitud**:
+- [ ] 5+ integration tests
+- [ ] Todos los tests pasan
+- [ ] Coverage consolidado > 80%
+
+**Validación**:
+```bash
+pytest tests/integration/test_validation_pipeline.py -v
+```
+
+---
+
+### Phase 5: Documentation & Examples
+
+#### TASK-5.1: Crear Guía de Uso de Templates
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 3 horas
+**Dependencias**: TASK-4.4
+**Asignado a**: Por asignar
+
+**Descripción**:
+Escribir guía completa de cómo usar templates daath-zen.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/guides/template-usage-guide.md`
+
+**Contenido Mínimo**:
+```markdown
+# Guía de Uso de Templates daath-zen
+
+## 1. Elegir Template Apropiado
+## 2. Crear Workbook RBM
+## 3. Compilar Workbook a Spec
+## 4. Validar Antes de Someter
+## 5. Someter para Aprobación
+## 6. Troubleshooting
+```
+
+**Criterios de Completitud**:
+- [ ] Cubre flujo completo end-to-end
+- [ ] Cada paso tiene ejemplo concreto
+- [ ] Troubleshooting section incluida
+- [ ] < 3000 palabras
+- [ ] Screenshots/diagramas si es necesario
+
+**Referencias**:
+- REQ-005-01
+
+---
+
+#### TASK-5.2: Crear Guía de Creación de Workbook
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 3 horas
+**Dependencias**: TASK-5.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Guía detallada de cómo crear workbooks RBM.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/guides/workbook-creation-guide.md`
+
+**Contenido Mínimo**:
+```markdown
+# Guía de Creación de Workbook RBM
+
+## Estructura Recomendada
+## Convenciones de Naming
+## Escribir Resultado Final
+## Escribir Resultados Intermedios
+## Escribir Resultados Inmediatos
+## Definir Métricas
+## Ejemplos
+```
+
+**Criterios de Completitud**:
+- [ ] Jerarquía RBM explicada claramente
+- [ ] Convenciones de naming documentadas
+- [ ] Ejemplos de cada tipo de archivo
+- [ ] Métricas de ejemplo
+
+**Referencias**:
+- REQ-005-02
+
+---
+
+#### TASK-5.3: Crear Workbook de Ejemplo (Autenticación)
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 4 horas
+**Dependencias**: TASK-5.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear workbook completo de ejemplo sobre sistema de autenticación.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/020-conceive/03-workbooks/wb-rbm-example-auth/`
+  - `resultado_final.md`
+  - `ri-001-login/ri-001.md`
+  - `ri-001-login/rinm-001-email-password/overview.md`
+  - `ri-001-login/rinm-001-email-password/REQ-001-01-story-registro.md`
+  - `ri-001-login/rinm-001-email-password/REQ-001-02-story-login.md`
+  - `ri-001-login/rinm-001-email-password/REQ-001-03-rule-validacion.md`
+  - `ri-001-login/rinm-001-email-password/metrics.yaml`
+  - `ri-002-oauth/ri-002.md`
+  - `ri-002-oauth/rinm-001-google/overview.md`
+  - `ri-002-oauth/rinm-001-google/REQ-002-01-story-google.md`
+  - `ri-002-oauth/rinm-001-google/REQ-002-02-contract-oauth.md`
+  - `ri-002-oauth/rinm-001-google/metrics.yaml`
+  - `README.md`
+
+**Criterios de Completitud**:
+- [ ] Workbook compila sin errores
+- [ ] Matriz de coherencia completa
+- [ ] README explica el ejemplo
+- [ ] 2 RI, 2 Rinm, 5 REQ mínimo
+
+**Validación**:
+```bash
+# Compile example
+python tools/compile_spec_from_workbook.py \
+  --workbook "wb-rbm-example-auth" \
+  --variant requirements \
+  --output "output/example-requirements.md"
+```
+
+**Referencias**:
+- REQ-005-03
+
+---
+
+### Phase 6: Testing & Deployment
+
+#### TASK-6.1: Integration Tests Completos
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 5 horas
+**Dependencias**: TASK-5.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Tests de integración end-to-end del sistema completo.
+
+**Archivos a Crear**:
+- `tests/integration/test_full_compilation.py`
+- `tests/integration/test_template_system_integration.py`
+- `tests/integration/test_validation_integration.py`
+
+**Subtareas**:
+- [ ] Test: Compilación workbook ejemplo auth
+- [ ] Test: Compilación con todos los variants
+- [ ] Test: Validación completa pipeline
+- [ ] Test: Error handling en casos edge
+- [ ] Test: Performance benchmarks
+- [ ] Escribir 12 tests de integración
+
+**Criterios de Completitud**:
+- [ ] 12+ integration tests
+- [ ] Todos los tests pasan
+- [ ] Coverage consolidado > 80%
+- [ ] Performance validated
+
+**Validación**:
+```bash
+pytest tests/integration/ -v --cov --cov-report=html
+```
+
+---
+
+#### TASK-6.2: Performance Benchmarks
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 3 horas
+**Dependencias**: TASK-6.1
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear suite de benchmarks para validar performance targets.
+
+**Archivos a Crear**:
+- `tests/benchmarks/test_compilation_performance.py`
+- `tests/benchmarks/test_validation_performance.py`
+
+**Benchmarks**:
+- Compilación workbook (50 productos) < 5s
+- Validación keter-doc < 500ms
+- Validación coherencia RBM < 1s
+- Template loading < 100ms
+
+**Criterios de Completitud**:
+- [ ] Benchmarks para cada componente
+- [ ] Targets cumplidos
+- [ ] Resultados documentados
+
+**Validación**:
+```bash
+pytest tests/benchmarks/ -v --benchmark-only
+```
+
+---
+
+#### TASK-6.3: Documentation Final
+
+**Prioridad**: 🟡 MEDIA
+**Estimación**: 2 horas
+**Dependencias**: TASK-6.2
+**Asignado a**: Por asignar
+
+**Descripción**:
+Crear README principal y documentación de deployment.
+
+**Archivos a Crear**:
+- `apps/R000-autopoietic-template/_melquisedec/README.md`
+- `apps/R000-autopoietic-template/_melquisedec/DEPLOYMENT.md`
+
+**Contenido README**:
+- Overview del sistema
+- Quick start guide
+- Links a guías detalladas
+- Examples
+- Troubleshooting
+
+**Contenido DEPLOYMENT**:
+- Instalación de dependencias
+- Configuración inicial
+- Deployment steps
+- Validación post-deployment
+
+**Criterios de Completitud**:
+- [ ] README completo y claro
+- [ ] DEPLOYMENT con pasos secuenciados
+- [ ] Links a docs funcionan
+- [ ] Ejemplos de uso incluidos
+
+---
+
+#### TASK-6.4: Package y Deployment
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 3 horas
+**Dependencias**: TASK-6.3
+**Asignado a**: Por asignar
+
+**Descripción**:
+Empaquetar código, crear setup.py, deploy a repositorio.
+
+**Archivos a Crear**:
+- `packages/daath-toolkit/setup.py`
+- `packages/daath-toolkit/pyproject.toml`
+- `packages/daath-toolkit/README.md`
+
+**Subtareas**:
+- [ ] Crear setup.py con dependencies
+- [ ] Crear pyproject.toml para build
+- [ ] Crear package README
+- [ ] Validar package builds
+- [ ] Deploy a repo MELQUISEDEC
+
+**Criterios de Completitud**:
+- [ ] Package builds sin errores
+- [ ] Dependencies correctas
+- [ ] README de package completo
+- [ ] Deployado exitosamente
+
+**Validación**:
+```bash
+# Build package
+python -m build
+
+# Install locally
+pip install -e .
+
+# Test import
+python -c "from daath_toolkit.compilation import SpecCompiler"
+```
+
+---
+
+#### TASK-6.5: Validation Post-Deployment
+
+**Prioridad**: 🔴 ALTA
+**Estimación**: 2 horas
+**Dependencias**: TASK-6.4
+**Asignado a**: Por asignar
+
+**Descripción**:
+Validar sistema completo funcionando en ambiente real.
+
+**Checklist**:
+- [ ] Templates disponibles en path correcto
+- [ ] CLI funciona: `compile_spec_from_workbook.py --help`
+- [ ] Compilación workbook ejemplo exitosa
+- [ ] Validación pasa sin errores
+- [ ] Neo4j sync funciona (si disponible)
+- [ ] spec-workflow-mcp acepta specs compilados
+
+**Criterios de Completitud**:
+- [ ] Todos los items del checklist ✅
+- [ ] No hay errores de deployment
+- [ ] Sistema listo para uso en producción
+
+---
+
+## Gantt Chart
+
+```mermaid
+gantt
+    title SPEC-001 Implementation Timeline
+    dateFormat  YYYY-MM-DD
+    section Phase 1: Base Infrastructure
+    TASK-1.1 Schema JSON-LD           :task1-1, 2026-01-13, 3h
+    TASK-1.2 Template Base             :task1-2, after task1-1, 4h
+    TASK-1.3 Config Herencia           :task1-3, after task1-2, 3h
+    TASK-1.4 TemplateHierarchy Class   :task1-4, after task1-3, 5h
+
+    section Phase 2: Template System
+    TASK-2.1 Template Requirements     :task2-1, after task1-4, 4h
+    TASK-2.2 Template Design           :task2-2, after task2-1, 3h
+    TASK-2.3 Template Tasks            :task2-3, after task2-2, 3h
+    TASK-2.4 Templates Steering        :task2-4, after task2-3, 3h
+    TASK-2.5 Tests Template System     :task2-5, after task2-4, 4h
+
+    section Phase 3: Compilation Pipeline
+    TASK-3.1 Workbook Parser           :task3-1, after task2-5, 6h
+    TASK-3.2 Transclusion Processor    :task3-2, after task3-1, 4h
+    TASK-3.3 Coherence Builder         :task3-3, after task3-2, 5h
+    TASK-3.4 Template Renderer         :task3-4, after task3-3, 4h
+    TASK-3.5 SpecCompiler Orchestrator :task3-5, after task3-4, 6h
+
+    section Phase 4: Validation System
+    TASK-4.1 Keter-Doc Validator       :task4-1, after task3-5, 5h
+    TASK-4.2 RBM Coherence Validator   :task4-2, after task4-1, 4h
+    TASK-4.3 Neo4j Validator           :task4-3, after task4-2, 4h
+    TASK-4.4 Validation Integration    :task4-4, after task4-3, 2h
+
+    section Phase 5: Documentation
+    TASK-5.1 Guía Templates            :task5-1, after task4-4, 3h
+    TASK-5.2 Guía Workbook             :task5-2, after task5-1, 3h
+    TASK-5.3 Workbook Ejemplo          :task5-3, after task5-2, 4h
+
+    section Phase 6: Testing & Deployment
+    TASK-6.1 Integration Tests         :task6-1, after task5-3, 5h
+    TASK-6.2 Performance Benchmarks    :task6-2, after task6-1, 3h
+    TASK-6.3 Documentation Final       :task6-3, after task6-2, 2h
+    TASK-6.4 Package y Deployment      :task6-4, after task6-3, 3h
+    TASK-6.5 Validation Post-Deployment:task6-5, after task6-4, 2h
+```
+
+---
+
+## Metrics Definition
+
+### Coverage Metrics
+- Unit tests coverage: **> 80%**
+- Integration tests coverage: **> 70%**
+- Total project coverage: **> 75%**
+
+### Performance Metrics
+- Compilación workbook (50 productos): **< 5 segundos**
+- Validación keter-doc: **< 500ms**
+- Validación coherencia RBM: **< 1 segundo**
+- Template loading (with cache): **< 100ms**
+- Neo4j sync: **< 2 segundos**
+
+### Quality Metrics
+- Tests passing: **100%**
+- Type checking (mypy): **0 errors**
+- Linting (flake8): **0 errors**
+- Documentation coverage: **> 90%**
+
+### Success Metrics
+- Workbook ejemplo compila: **✅**
+- Specs compatibles con spec-workflow-mcp: **✅**
+- Neo4j ingestion exitosa: **✅**
+- Templates usables por usuarios: **✅**
+
+---
+
+## Completion Criteria
+
+### Phase 1: Base Infrastructure ✅
+- [ ] Schema keter-doc válido
+- [ ] Template base creado
+- [ ] Config herencia funcional
+- [ ] TemplateHierarchy class operativa
+- [ ] Tests unitarios > 80% coverage
+
+### Phase 2: Template System ✅
+- [ ] 6 templates creados (base + 5 variantes)
+- [ ] Herencia funciona correctamente
+- [ ] Templates compatibles con spec-workflow-mcp
+- [ ] Tests > 80% coverage
+
+### Phase 3: Compilation Pipeline ✅
+- [ ] Workbook parser funcional
+- [ ] Transclusions resuelven correctamente
+- [ ] Matriz coherencia generada
+- [ ] Renderer produce Markdown válido
+- [ ] CLI funcional
+- [ ] Performance < 5s para 50 productos
+
+### Phase 4: Validation System ✅
+- [ ] 3 validadores operativos
+- [ ] Detección de errores completa
+- [ ] Mensajes claros y accionables
+- [ ] Tests > 80% coverage
+
+### Phase 5: Documentation & Examples ✅
+- [ ] 2 guías escritas
+- [ ] 1 workbook ejemplo compila
+- [ ] README principal completo
+- [ ] < 3000 palabras por guía
+
+### Phase 6: Testing & Deployment ✅
+- [ ] Integration tests pasan
+- [ ] Benchmarks cumplen targets
+- [ ] Package deployado
+- [ ] Sistema validado en producción
+- [ ] SPEC-002 puede usar templates
+
+---
+
+## Risk Management
+
+### Riesgo 1: Complejidad de Herencia
+**Probabilidad**: Media
+**Impacto**: Alto
+**Mitigación**: Tests exhaustivos, documentación clara, validación temprana
+
+### Riesgo 2: Performance de Compilación
+**Probabilidad**: Baja
+**Impacto**: Medio
+**Mitigación**: Benchmarks continuos, optimización incremental, cache
+
+### Riesgo 3: Incompatibilidad con spec-workflow-mcp
+**Probabilidad**: Media
+**Impacto**: Crítico
+**Mitigación**: Validación temprana con spec-workflow-mcp real, mantener compatibilidad
+
+### Riesgo 4: Curva de Aprendizaje Alta
+**Probabilidad**: Alta
+**Impacto**: Medio
+**Mitigación**: Guías detalladas, ejemplos concretos, onboarding paso a paso
+
+---
+
+## Next Steps
+
+1. **Aprobar este documento** vía spec-workflow-mcp dashboard
+2. **Asignar tasks** a desarrolladores
+3. **Comenzar Phase 1** (Base Infrastructure)
+4. **Daily standup** para tracking de progreso
+5. **Sprint retrospectives** cada fase completada
+
+---
+
+## Referencias
+
+- [requirements.md](.spec-workflow/specs/spec-001-built-template-spec-workflow/requirements.md)
+- [design.md](.spec-workflow/specs/spec-001-built-template-spec-workflow/design.md)
+- [ANALISIS-spec-001-mejores-practicas.md](../../../_melquisedec/lessons/ANALISIS-spec-001-mejores-practicas.md)
+- [spec-workflow-mcp Task Format](https://github.com/pimzino/spec-workflow-mcp/docs/TOOLS-REFERENCE.md)
+
+---
+
+**Desglosado por**: GitHub Copilot (Claude Sonnet 4.5)
+**Total Tasks**: 26
+**Total Estimación**: 100 horas (4 semanas)
+**Estado**: Draft for Approval
+**Próxima Fase**: Implementation (comenzar con TASK-1.1)
+**⚠️ Nota**: Este es el último documento de especificación. Próximo paso es aprobar y comenzar implementación.

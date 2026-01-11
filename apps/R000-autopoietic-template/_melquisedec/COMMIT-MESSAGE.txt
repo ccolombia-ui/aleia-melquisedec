@@ -1,0 +1,138 @@
+refactor(spec-001): workbooks por artefacto + estructura 1-6 epistemológica
+
+BREAKING CHANGE: Changed from 8 IMRAD workbooks to 5 artifact-based workbooks
+
+## Summary
+
+Corrección arquitectónica fundamental detectada durante Phase 2:
+- ANTES ❌: 8 workbooks IMRAD (01-introduction, 02-methods, ..., 08-references)
+- DESPUÉS ✅: 5 workbooks por artefacto (workbook-product-md/, workbook-requirements-md/, etc.)
+
+Error identificado: Confusión entre **fases IMRAD** (metodología) y **artefactos spec-workflow** (bounded contexts).
+Cada artefacto (requirements.md, design.md, tasks.md) tiene su propio dominio de conocimiento.
+
+## Key Changes
+
+### 1. Architecture: Workbooks por Artefacto (ADR-008)
+- workbook-product-md/: Dominio de producto
+- workbook-requirements-md/: Dominio de requisitos (RBM)
+- workbook-design-md/: Dominio de diseño (arquitectura, ADRs)
+- workbook-tasks-md/: Dominio de planificación
+- workbook-implementation-log-md/: Dominio de implementación
+
+Cada workbook es autocontenido (self-contained) siguiendo DDD Bounded Context principle.
+
+### 2. Methodology: Scoping Review vs IMRAD (ADR-009)
+- Cambio de IMRAD → Scoping Review (Arksey & O'Malley Framework)
+- Razón: SPEC-001 es descubrimiento de dominio ("¿Qué se sabe sobre X?"), NO experimento empírico ("¿Cómo afecta X a Y?")
+- Research: ArXiv papers, Wikipedia IMRAD, NTNU guidelines confirman distinción
+
+### 3. Structure: Flujo Epistemológico 1-6 (ADR-010)
+Estructura interna de cada workbook:
+- 1-literature/: ENTRADA (book/, paper/, framework/, library/)
+- 2-analysis/: PROCESO (análisis + síntesis con citations)
+- 3-atomics/: EXTRACCIÓN (concept-XXX.json atomizado)
+- 4-artefact/: VALIDACIÓN (tests, contracts)
+- 6-outputs/: INGESTA (cypher/, embeddings/)
+- compiler/: COMPILACIÓN (compile-XXX.py + templates/)
+
+Flujo: source → synthesis → atomization → validation → ingestion → compilation
+
+## Files Changed
+
+### Created
+- ✅ `_melquisedec/lessons/LESSON-002-workbooks-arquitectura.md` (4500+ lines)
+  - Complete architectural learning documentation
+  - Research findings (IMRAD vs Scoping Review)
+  - 3 ADRs documented (ADR-008, ADR-009, ADR-010)
+  - Bibliography with academic + technical sources
+
+- ✅ `_melquisedec/logs/CHATLOG-2026-01-10_202500-spec-001-workbooks-refactor.md`
+  - SmartThinking analysis summary (5 thoughts, 91% confidence)
+  - User feedback and approval
+  - Corrective actions checklist
+
+- ✅ `_melquisedec/REFACTORING-SUMMARY.md`
+  - Quick reference of changes
+  - Before/After comparison
+  - Status tracking
+
+- ✅ `_melquisedec/COMMIT-MESSAGE.txt` (this file)
+
+### Updated
+- ✅ `.spec-workflow/specs/spec-001-*/requirements.md`
+  - REQ-001-04: Changed from "8 IMRAD workbooks" to "5 artifact workbooks with 1-6 structure"
+  - Added Bounded Contexts explanation
+  - Added Scoping Review methodology
+  - Added Epistemological Structure 1-6 documentation
+
+- ✅ `.spec-workflow/specs/spec-001-*/design.md`
+  - ADR-008: Workbooks como Artefactos Autocontenidos (Bounded Contexts)
+  - ADR-009: Scoping Review vs IMRAD para Descubrimiento de Dominio
+  - ADR-010: Estructura 1-6 Epistemológica (Flujo de Conocimiento)
+
+- ✅ `.spec-workflow/specs/spec-001-*/tasks.md`
+  - Phase 2 reindexed: 2.1 HYPATIA → 2.2-2.6 (5 workbooks by artifact) → 2.7-2.9
+  - CRITICAL: Removed sub-numbering (2.2.1, 2.2.2 NOT allowed by spec-workflow-mcp)
+  - Each task 2.2-2.6 creates one workbook with complete 1-6 structure
+  - Task 2.2: workbook-product-md/
+  - Task 2.3: workbook-requirements-md/
+  - Task 2.4: workbook-design-md/
+  - Task 2.5: workbook-tasks-md/
+  - Task 2.6: workbook-implementation-log-md/
+
+## Research Foundation
+
+**SmartThinking Analysis** (5 thoughts, 91% confidence):
+1. Error identification: Confused IMRAD phases with artifacts
+2. Research findings: IMRAD vs Scoping Review distinction (ArXiv + Brave)
+3. Correct structure: 5 workbooks by artifact with 1-6 epistemological flow
+4. Improvements: requirements.md, design.md, tasks.md updated
+5. Conclusion: 3-level architecture (artefactos-conocimiento/ → domain/workbooks/ → spec/)
+
+**Sources**:
+- ArXiv: "Enhancing the role of academic librarians in conducting scoping reviews" (2021)
+- Sollaci & Pereira (2004): "IMRAD structure: A fifty-year survey"
+- Arksey & O'Malley (2005): "Scoping studies: towards a methodological framework"
+- Evans (2003): *Domain-Driven Design*, p.335-350 (Bounded Contexts)
+- Wikipedia: IMRAD, NTNU: Academic Writing Guide
+
+## Impact
+
+### Positive
+- ✅ Separation of Concerns: Each artifact has clear bounded context
+- ✅ Autocontained: Each workbook with all sources, analysis, validation
+- ✅ Compilable: compiler/ generates artifact automatically
+- ✅ Traceable: All claims cited from 1-literature/
+- ✅ Queryable: 6-outputs/ prepares for GraphRAG + embeddings
+- ✅ Methodology alignment: Scoping Review for domain discovery
+- ✅ DDD compliance: Bounded Contexts at epistemological level
+
+### Breaking Changes
+- ⚠️ Structure change: From .spec-workflow/investigation/ to _melquisedec/domain/workbooks/
+- ⚠️ Task numbering: Phase 2 reindexed (2.2 expanded to 2.2-2.6)
+- ⚠️ Methodology: From IMRAD to Scoping Review
+
+## Next Steps
+
+1. ✅ Create 5 workbook directories with 1-6 structure
+2. ✅ Move/archive existing investigation/ files
+3. ✅ Proceed with Phase 2.2: Create workbook-product-md/
+4. ✅ Implement compilers for each workbook
+5. ✅ Validate structure with spec-workflow-mcp compatibility
+
+## Related Issues
+
+- SPEC-001: Built Template spec-workflow
+- Phase 2: Research Foundation (HYPATIA→SALOMÓN Pipeline)
+- User Constraint: "2.2.2 etc. esto en spec-workflow no está permitido" (no sub-numbering)
+
+---
+
+**Type**: refactor
+**Scope**: spec-001
+**Impact**: BREAKING (architectural change)
+**Status**: COMPLETE
+**Date**: 2026-01-10
+
+Co-authored-by: SmartThinking MCP (AI Smithery L) <smartthinking@mcp.ai>

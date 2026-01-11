@@ -161,134 +161,205 @@ Este documento desglosa la implementación de SPEC-001 en tareas específicas y 
 
 ---
 
-- [ ] 2.2. SALOMÓN: IMRAD Investigation (Fundamentada en Knowledge Base)
+- [ ] 2.2. SALOMÓN: Create workbook-product-md/
 
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-workflow-artifacts-investigation/`
-  - **Requirements**: REQ-001-04b (renombrado)
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/workbook-product-md/`
+  - **Requirements**: REQ-001-04b
   - **Estimación**: 8 horas (1 día)
   - **Prioridad**: 🔴 CRÍTICA
-  - **Dependencias**: 2.1 (HYPATIA knowledge base DEBE estar completo)
+  - **Dependencias**: 2.1 (HYPATIA knowledge base)
   - **Subtareas**:
-    - **01-introduction.md**: Query GraphRAG por conceptos relacionados a artifacts + semantic search para contexto
-    - **02-methods.md**: Citar frameworks/ para metodologías (DDD, IMRAD) usadas en investigación
-    - **03-results.md**: Sintetizar hallazgos desde atomic-analysis/ de spec-workflow-mcp code + literature/
-    - **04-analysis.md**: Use GraphRAG para encontrar patrones conceptuales + embeddings para similarity
-    - **05-discussion.md**: Synthesize estrategias desde múltiples fuentes en literature/
-    - **06-conclusions.md**: Decisiones fundamentadas en evidencia del knowledge base
-    - **07-decisiones.md**: ← **NUEVO** - ADRs con justificación completa en literature/ y concepts/
-    - **08-references.md**: Bibliografía completa con todos los sources citados
+    - Crear estructura 1-6 completa (1-literature/, 2-analysis/, 3-atomics/, 4-artefact/, 6-outputs/, compiler/)
+    - **1-literature/**: Coleccionar fuentes sobre product.md (Scrum Product Vision, Lean Canvas, etc.)
+    - **2-analysis/**: Analizar qué debe contener product.md usando HYPATIA knowledge base
+    - **3-atomics/**: Atomizar conceptos (Vision, Stakeholders, Success Criteria) en JSON
+    - **4-artefact/**: Tests y contratos de validación para product.md
+    - **6-outputs/**: Cypher queries + embeddings para Neo4j ingestion
+    - **compiler/**: Script `compile-product.py` + template `product.md.j2`
   - **Entregables**:
-    - `01-introduction.md` - Con citas a concepts/ (ej: "According to [ddd-bounded-context](../artefactos-conocimiento/concepts/ddd-bounded-context.md)...")
-    - `02-methods.md` - Con referencias a frameworks/ (ej: "Following DDD Strategic Design [1]...")
-    - `03-results.md` - Con links a atomic-analysis/ (ej: "Dashboard code analysis shows [2]...")
-    - `04-analysis.md` - Documentar GraphRAG queries usadas (ej: "MATCH (c:Concept)-[:RELATES_TO]->(a:Artifact)...")
-    - `05-discussion.md` - Síntesis de múltiples fuentes con attribution
-    - `06-conclusions.md` - Hallazgos validados contra knowledge base
-    - **07-decisiones.md** - ADRs fundamentados (ej: "ADR-001: Use DDD Bounded Contexts - Based on Evans (2003, p.345)...")
-    - `08-references.md` - Bibliografía COMPLETA en formato académico
+    - Estructura completa 1-6 con todos los subdirectorios
+    - README.md explicando uso del workbook
+    - Compiler funcional que genera product.md
   - **Validación**:
-    - [ ] Cada claim tiene citation a artefactos-conocimiento/ (zero "based on my understanding")
-    - [ ] **07-decisiones.md existe y contiene ADRs fundamentados con sources**
-    - [ ] GraphRAG queries documentadas en 04-analysis.md
-    - [ ] Semantic search usage logged (qué queries, qué resultados)
-    - [ ] Validator automático confirma zero unsourced claims
-    - [ ] 08-references.md contiene ALL sources citados en workbooks
-  - **_Prompt**: Role: SALOMÓN - Synthesis Architect | Task: Conduct IMRAD investigation of spec-workflow-mcp artifacts using HYPATIA knowledge base (from task 2.1), synthesize findings with COMPLETE source attribution ensuring ZERO invented content | Methodology: For each IMRAD section: 1) Query GraphRAG for relevant concepts (MATCH queries on Neo4j), 2) Perform semantic search in embeddings for supporting evidence (Ollama similarity search), 3) Cite atomic-analysis files from literature/spec-workflow-mcp/, 4) Synthesize findings with inline citations [concept-name], 5) Document GraphRAG queries used, 6) Create NEW section 07-decisiones.md with fundamented ADRs (each ADR MUST cite literature source with page number), 7) Generate complete bibliography in 08-references.md | Input Required: artefactos-conocimiento/ knowledge base from task 2.1 MUST be complete | Restrictions: EVERY claim MUST cite source (literature/X, concepts/Y, atomic-analysis/Z), MUST create 07-decisiones.md with ADRs citing page numbers, NO speculation without evidence, NO "based on my understanding" phrases, USE GraphRAG for discovery not invention, DOCUMENT all queries in 04-analysis.md | Deliverables: 8 IMRAD workbooks (01-08) with complete source attribution, 07-decisiones.md with fundamented ADRs, GraphRAG query log in 04-analysis.md, semantic search trace, 08-references.md with academic bibliography | Success Criteria: All 8 workbooks completed with proper IMRAD structure, 07-decisiones.md contains 5+ ADRs each citing specific literature sources with page numbers, every statement has verifiable citation, GraphRAG queries documented and reproducible, semantic search usage traced, automated validator confirms zero unsourced claims, bibliography is complete and properly formatted
+    - [ ] Estructura 1-6 completa
+    - [ ] Todas las fuentes citadas en 1-literature/
+    - [ ] Conceptos atomizados en 3-atomics/
+    - [ ] Compiler genera product.md válido
+  - **_Prompt**: Role: SALOMÓN - Workbook Product Architect | Task: Create complete workbook-product-md/ with 1-6 epistemological structure for product.md artifact, collect literature on product vision frameworks (Scrum Product Vision, Lean Canvas, Business Model Canvas) in 1-literature/, analyze what product.md should contain in 2-analysis/, atomize concepts (Vision, Stakeholders, Success Criteria) as JSON in 3-atomics/, create validation tests in 4-artefact/, generate Neo4j ingestion scripts in 6-outputs/, implement compiler/ with compile-product.py and product.md.j2 template | Restrictions: MUST cite all sources, compiler MUST use Jinja2, all concepts MUST be traceable to 1-literature/, structure MUST be autocontenido (self-contained) | Success: Complete 1-6 structure, compiler generates valid product.md, all sources cited, concepts atomized correctly
 
 ---
 
-- [ ] 2.3. SALOMÓN: Mapeo RBM → Artefactos (Domain Model Fundamentado)
+- [ ] 2.3. SALOMÓN: Create workbook-requirements-md/
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/workbook-requirements-md/`
+  - **Requirements**: REQ-001-04c
+  - **Estimación**: 8 horas (1 día)
+  - **Prioridad**: 🔴 CRÍTICA
+  - **Dependencias**: 2.2
+  - **Subtareas**:
+    - Crear estructura 1-6 completa
+    - **1-literature/**: DDD (Evans, Vernon), RBM (Marco Lógico), ISO requirements standards
+    - **2-analysis/**: Analizar requirements.md usando HYPATIA + GraphRAG
+    - **3-atomics/**: Atomizar (Functional Req, Non-Functional Req, User Story, Acceptance Criteria)
+    - **4-artefact/**: Validation patterns, requirement templates
+    - **6-outputs/**: Cypher + embeddings
+    - **compiler/**: `compile-requirements.py` + `requirements.md.j2`
+  - **Entregables**:
+    - Estructura 1-6 con enfoque en RBM + DDD
+    - Compiler genera requirements.md con Matriz de Coherencia
+  - **Validación**:
+    - [ ] Literatura DDD + RBM colectada
+    - [ ] Análisis cita HYPATIA concepts/
+    - [ ] Compiler genera Matriz de Coherencia Mermaid
+  - **_Prompt**: Role: SALOMÓN - Workbook Requirements Engineer | Task: Create workbook-requirements-md/ with 1-6 structure for requirements.md artifact, collect DDD literature (Evans, Vernon), RBM frameworks (Marco Lógico), ISO requirements standards in 1-literature/, analyze requirements.md structure using HYPATIA GraphRAG in 2-analysis/, atomize requirement types (Functional, Non-Functional, User Story, Acceptance Criteria) in 3-atomics/, create validation patterns in 4-artefact/, generate Neo4j scripts in 6-outputs/, implement compiler with RBM Coherence Matrix generation | Restrictions: MUST cite DDD sources, compiler MUST generate Mermaid diagram, RBM format MUST follow Marco Lógico | Success: Complete 1-6 structure, compiler generates requirements.md with Coherence Matrix, DDD + RBM concepts integrated
+
+---
+
+- [ ] 2.4. SALOMÓN: Create workbook-design-md/
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/workbook-design-md/`
+  - **Requirements**: REQ-001-04d
+  - **Estimación**: 8 horas (1 día)
+  - **Prioridad**: 🔴 CRÍTICA
+  - **Dependencias**: 2.3
+  - **Subtareas**:
+    - Crear estructura 1-6
+    - **1-literature/**: Martin Clean Architecture, C4 Model, ADR templates, DDD patterns
+    - **2-analysis/**: Analizar arquitectura + ADRs usando HYPATIA
+    - **3-atomics/**: Atomizar (Component, Layer, ADR, Design Pattern)
+    - **4-artefact/**: ADR templates, architecture tests
+    - **6-outputs/**: Cypher para component relationships
+    - **compiler/**: `compile-design.py` + `design.md.j2`
+  - **Entregables**:
+    - Estructura 1-6 enfocada en arquitectura
+    - Compiler genera design.md con ADRs
+  - **Validación**:
+    - [ ] Clean Architecture + C4 Model literature presente
+    - [ ] ADR format sigue Michael Nygard template
+    - [ ] Compiler genera architecture diagrams (Mermaid)
+  - **_Prompt**: Role: SALOMÓN - Workbook Design Architect | Task: Create workbook-design-md/ with 1-6 structure for design.md artifact, collect Clean Architecture (Martin), C4 Model (Brown), ADR templates (Nygard) in 1-literature/, analyze architecture decisions using HYPATIA in 2-analysis/, atomize design elements (Component, Layer, ADR, Pattern) in 3-atomics/, create ADR templates and architecture tests in 4-artefact/, generate component relationship Cypher in 6-outputs/, implement compiler with Mermaid diagram generation | Restrictions: ADR format MUST follow Nygard template, diagrams MUST use C4 Model levels, MUST cite Clean Architecture principles | Success: Complete 1-6 structure, compiler generates design.md with ADRs and diagrams, architecture traceable to literature
+
+---
+
+- [ ] 2.5. SALOMÓN: Create workbook-tasks-md/
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/workbook-tasks-md/`
+  - **Requirements**: REQ-001-04e
+  - **Estimación**: 6 horas (0.75 día)
+  - **Prioridad**: 🔴 CRÍTICA
+  - **Dependencias**: 2.4
+  - **Subtareas**:
+    - Crear estructura 1-6
+    - **1-literature/**: Agile methodologies (Scrum, Kanban), WBS, estimation techniques
+    - **2-analysis/**: Analizar task breakdown patterns
+    - **3-atomics/**: Atomizar (Task, Subtask, Dependency, Estimation)
+    - **4-artefact/**: Task templates, validation rules
+    - **6-outputs/**: Gantt chart data
+    - **compiler/**: `compile-tasks.py` + `tasks.md.j2`
+  - **Entregables**:
+    - Estructura 1-6 para task management
+    - Compiler genera tasks.md compatible con spec-workflow-mcp
+  - **Validación**:
+    - [ ] Literature sobre Agile + WBS presente
+    - [ ] Compiler genera formato spec-workflow-mcp correcto
+    - [ ] Task format: `- [ ] X.Y. Title` (con punto después de número)
+  - **_Prompt**: Role: SALOMÓN - Workbook Task Planner | Task: Create workbook-tasks-md/ with 1-6 structure for tasks.md artifact, collect Agile methodologies (Scrum, Kanban), WBS frameworks, estimation techniques in 1-literature/, analyze task breakdown patterns in 2-analysis/, atomize task elements (Task, Subtask, Dependency, Estimation) in 3-atomics/, create task templates and validation rules in 4-artefact/, generate Gantt chart data in 6-outputs/, implement compiler with spec-workflow-mcp format validation | Restrictions: CRITICAL - Task format MUST be `- [ ] X.Y. Title` with dot after number, NO sub-numbering (X.Y.Z not allowed), MUST include _Prompt field, MUST be spec-workflow-mcp compatible | Success: Complete 1-6 structure, compiler generates valid spec-workflow-mcp tasks.md, format validated
+
+---
+
+- [ ] 2.6. SALOMÓN: Create workbook-implementation-log-md/
+
+  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/workbook-implementation-log-md/`
+  - **Requirements**: REQ-001-04f
+  - **Estimación**: 4 horas (0.5 día)
+  - **Prioridad**: 🟡 ALTA
+  - **Dependencias**: 2.5
+  - **Subtareas**:
+    - Crear estructura 1-6
+    - **1-literature/**: Software documentation standards, changelog formats, Git practices
+    - **2-analysis/**: Analizar implementation log patterns
+    - **3-atomics/**: Atomizar (LogEntry, Artifact, CodeStats)
+    - **4-artefact/**: Log templates, validation schemas
+    - **6-outputs/**: Searchable log index
+    - **compiler/**: `compile-implementation-log.py` + `implementation-log.md.j2`
+  - **Entregables**:
+    - Estructura 1-6 para implementation tracking
+    - Compiler genera implementation-log.md
+  - **Validación**:
+    - [ ] Documentation standards literature presente
+    - [ ] Log format compatible con spec-workflow-mcp
+    - [ ] Compiler genera searchable log entries
+  - **_Prompt**: Role: SALOMÓN - Workbook Implementation Logger | Task: Create workbook-implementation-log-md/ with 1-6 structure for implementation-log.md artifact, collect software documentation standards, changelog formats (Keep a Changelog), Git best practices in 1-literature/, analyze implementation logging patterns in 2-analysis/, atomize log elements (LogEntry, Artifact, CodeStats) in 3-atomics/, create log templates and validation schemas in 4-artefact/, generate searchable log index in 6-outputs/, implement compiler with searchable format | Restrictions: Log format MUST be structured (JSON-compatible), MUST support spec-workflow-mcp log-implementation tool, MUST be searchable by task ID and artifact type | Success: Complete 1-6 structure, compiler generates structured implementation-log.md, searchable by criteria
+
+---
+
+- [ ] 2.7. SALOMÓN: Mapeo RBM → Artefactos
 
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/models/rbm-artifacts-mapping.md`
   - **Requirements**: REQ-001-05
   - **Estimación**: 4 horas (0.5 día)
   - **Prioridad**: 🔴 CRÍTICA
-  - **Dependencias**: 2.2 (IMRAD workbooks)
+  - **Dependencias**: 2.6 (todos los workbooks)
   - **Subtareas**:
-    - Query concepts/ para definiciones de RBM (Resultado Final, Resultado Intermedio, Resultado Inmediato)
-    - Mapear RF → producto.md citando concepts/rbm-resultado-final.md
-    - Mapear RI → requirements.md citando DDD bounded contexts
-    - Mapear Rinm → design.md usando concepts/ddd-aggregate.md
-    - Crear diagrama C4 Level 2 (Container) del modelo
-    - Identificar bounded contexts por nivel RBM con citas a Evans (2003)
+    - Query HYPATIA concepts/ para RBM definitions
+    - Mapear RF → product.md citando workbook-product-md/
+    - Mapear RI → requirements.md citando workbook-requirements-md/
+    - Mapear Rinm → design.md + tasks.md citando workbooks respectivos
+    - Crear C4 diagram mostrando bounded contexts
   - **Entregables**:
-    - `rbm-artifacts-mapping.md` - Mapeo completo con citations
-    - Diagrama Mermaid de RBM chain embedded
-    - Bounded contexts table con references
+    - Mapeo completo RBM → 5 artifacts
+    - Diagrama C4 Level 2
+    - Bounded contexts table
   - **Validación**:
-    - [ ] Cada mapeo cita concept relevante en artefactos-conocimiento/
-    - [ ] Diagrama C4 muestra bounded contexts claramente
-    - [ ] Citas a Evans (2003) para DDD patterns
-  - **_Prompt**: Role: SALOMÓN - Domain Modeler | Task: Create formal RBM→Artifacts mapping using concepts from HYPATIA knowledge base, query concepts/ for RBM definitions, map each RBM level to artifacts with citations, create C4 diagram, identify bounded contexts per RBM level citing Evans (2003) | Restrictions: MUST cite concepts/ for all RBM terms, MUST reference DDD literature for bounded context definitions, diagrams MUST be embedded (Mermaid/PlantUML), zero speculation | Success: Complete mapping with all citations traceable, C4 diagram clear, bounded contexts defined with literature references
+    - [ ] Cada mapeo cita workbook correspondiente
+    - [ ] C4 diagram muestra 5 bounded contexts
+    - [ ] Citas a HYPATIA concepts/
+  - **_Prompt**: Role: SALOMÓN - Domain Modeler | Task: Create RBM→Artifacts mapping using HYPATIA concepts, map RF→product.md (citing workbook-product-md/), RI→requirements.md (citing workbook-requirements-md/), Rinm→design.md+tasks.md (citing respective workbooks), create C4 Level 2 diagram showing 5 bounded contexts (one per artifact), document relationships | Restrictions: MUST cite all 5 workbooks, C4 diagram MUST show bounded contexts clearly, MUST reference HYPATIA concepts/ for RBM definitions | Success: Complete mapping with all workbook citations, C4 diagram clear, bounded contexts defined
 
 ---
 
-- [ ] 2.4. SALOMÓN: Prototipo Workbook Fundamentado
-
-  - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/workbooks/spec-001-prototype/`
-  - **Requirements**: REQ-001-06
-  - **Estimación**: 8 horas (1 día)
-  - **Prioridad**: 🟡 ALTA
-  - **Dependencias**: 2.3
-  - **Subtareas**:
-    - Crear workbook prototipo para SPEC-001 con estructura RBM
-    - Cada producto (PROD-XXX.md) DEBE citar artefactos-conocimiento/
-    - Implementar compiler/ script que valida sources antes de compilar
-    - Script DEBE verificar que cada claim tiene citation
-  - **Entregables**:
-    - Workbook completo con source attribution
-    - `compiler/compile.py` - Con source validation
-    - `compiler/tests/test_source_validation.py` - Tests de validator
-  - **Validación**:
-    - [ ] Cada PROD-XXX.md cita sources
-    - [ ] Compiler valida sources antes de output
-    - [ ] Tests de validation pass
-  - **_Prompt**: Role: SALOMÓN - Workbook Architect | Task: Create prototype RBM workbook for SPEC-001 where EVERY product cites artefactos-conocimiento/, implement compiler with source validation that fails if unsourced claims detected | Restrictions: NO product without citations, compiler MUST validate sources, tests MUST verify validation | Success: Workbook demonstrates knowledge-driven approach, compilation validates sources, tests confirm validation works
-
----
-
-- [ ] 2.5. SALOMÓN: Ontología ISO/IEC 21838 (Alineada con ISO Real)
+- [ ] 2.8. SALOMÓN: Ontología ISO/IEC 21838
 
   - **File**: `apps/R000-autopoietic-template/_melquisedec/domain/ontologies/spec-workflow-ontology.ttl`
   - **Requirements**: REQ-001-07
   - **Estimación**: 4 horas (0.5 día)
   - **Prioridad**: 🟡 ALTA
-  - **Dependencias**: 2.2
+  - **Dependencias**: 2.7
   - **Subtareas**:
-    - Usar ISO specs descargados en literature/iso-standards/
-    - Alinear con BFO (Basic Formal Ontology) según ISO/IEC 21838-2
-    - Cada clase DEBE citar ISO spec con section number
+    - Usar ISO specs de HYPATIA literature/iso-standards/
+    - Alinear con BFO según ISO/IEC 21838-2
+    - Cada clase DEBE citar ISO spec section
     - Validar con reasoner (HermiT o Pellet)
   - **Entregables**:
-    - `spec-workflow-ontology.ttl` - Con comments citando ISO sections
-    - `ontology-validation-report.md` - Reasoner output
+    - `spec-workflow-ontology.ttl` con ISO citations
+    - `ontology-validation-report.md`
   - **Validación**:
-    - [ ] Cada clase tiene rdfs:comment citando ISO spec
+    - [ ] Cada clase cita ISO spec section
     - [ ] Reasoner valida sin errores
-    - [ ] Alineación con BFO verificada
-  - **_Prompt**: Role: SALOMÓN - Ontology Engineer | Task: Create ISO/IEC 21838 compliant ontology using downloaded ISO specs from literature/iso-standards/, align with BFO per ISO/IEC 21838-2, cite ISO sections in rdfs:comment for each class, validate with reasoner | Restrictions: MUST cite ISO spec sections, MUST align with BFO, MUST validate with reasoner, NO invented ontology concepts | Success: Ontology cites ISO sections, reasoner validates, BFO alignment clear
+    - [ ] BFO alignment verificado
+  - **_Prompt**: Role: SALOMÓN - Ontology Engineer | Task: Create ISO/IEC 21838 compliant ontology using ISO specs from HYPATIA literature/iso-standards/, align with BFO per ISO/IEC 21838-2, cite ISO sections in rdfs:comment for each class, validate with HermiT reasoner | Restrictions: MUST cite ISO spec sections, MUST align with BFO, MUST validate with reasoner, NO invented ontology concepts | Success: Ontology cites ISO sections, reasoner validates, BFO alignment clear
 
 ---
 
-- [ ] 2.6. SALOMÓN: Actualización de Templates con Trazabilidad
+- [ ] 2.9. SALOMÓN: Actualización Templates con Trazabilidad
 
   - **File**: `apps/R000-autopoietic-template/_melquisedec/templates/daath-zen-base.md` (v1.1)
   - **Requirements**: REQ-001-08
   - **Estimación**: 2 horas (0.25 día)
   - **Prioridad**: 🟡 MEDIA
-  - **Dependencias**: 2.1-2.5
+  - **Dependencias**: 2.1-2.8
   - **Subtareas**:
-    - Agregar sección "🔬 Knowledge Sources" que referencia artefactos-conocimiento/
+    - Agregar sección "🔬 Knowledge Sources" que referencia workbooks/
     - Placeholders: {{WORKBOOK_NAME}}, {{BOUNDED_CONTEXTS}}, {{ONTOLOGY_CLASSES}}
     - Actualizar TemplateValidator para verificar citations
   - **Entregables**:
     - Templates v1.1 con Knowledge Sources section
-    - Validator updated con source checking
+    - Validator con source checking
   - **Validación**:
-    - [ ] Templates incluyen Knowledge Sources section
+    - [ ] Templates incluyen Knowledge Sources
     - [ ] Validator detecta missing citations
-    - [ ] Tests verify citation validation
-  - **_Prompt**: Role: SALOMÓN - Template Engineer | Task: Update templates to include "Knowledge Sources" section pointing to artefactos-conocimiento/, add placeholders for workbook/BC/ontology references, update TemplateValidator to check citations | Restrictions: Templates MUST enforce citations, validator MUST detect unsourced content | Success: Templates have Knowledge Sources, validator works, tests pass
+    - [ ] Tests pass
+  - **_Prompt**: Role: SALOMÓN - Template Engineer | Task: Update templates to include "Knowledge Sources" section pointing to workbooks/, add placeholders for workbook/BC/ontology references, update TemplateValidator to check citations | Restrictions: Templates MUST enforce citations, validator MUST detect unsourced content | Success: Templates have Knowledge Sources, validator works, tests pass
 
 ---
 
