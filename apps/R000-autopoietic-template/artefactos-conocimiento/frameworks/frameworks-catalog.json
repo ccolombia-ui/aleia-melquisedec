@@ -1,0 +1,140 @@
+[
+  {
+    "id": "framework-001",
+    "name": "Domain-Driven Design (DDD)",
+    "description": "Enfoque de diseño de software que prioriza el modelado del dominio del negocio y la colaboración entre expertos técnicos y de dominio.",
+    "key_concepts": [
+      "bounded-context",
+      "ubiquitous-language",
+      "aggregate",
+      "entity",
+      "value-object",
+      "repository"
+    ],
+    "primary_sources": [
+      {
+        "author": "Eric Evans",
+        "year": 2003,
+        "title": "Domain-Driven Design: Tackling Complexity in the Heart of Software",
+        "isbn": "978-0321125217",
+        "status": "pending-download"
+      },
+      {
+        "author": "Vaughn Vernon",
+        "year": 2013,
+        "title": "Implementing Domain-Driven Design",
+        "isbn": "978-0321834577",
+        "status": "pending-download"
+      }
+    ],
+    "application_in_spec001": "Artifact design, context mapping, domain modeling"
+  },
+  {
+    "id": "framework-002",
+    "name": "IMRAD Structure",
+    "description": "Formato estándar para escritura científica: Introduction, Methods, Results, And Discussion. Organiza investigación en secciones lógicas.",
+    "key_concepts": [
+      "introduction",
+      "methods",
+      "results",
+      "discussion",
+      "references"
+    ],
+    "primary_sources": [
+      {
+        "author": "Sollaci & Pereira",
+        "year": 2004,
+        "title": "The introduction, methods, results, and discussion (IMRAD) structure: a fifty-year survey",
+        "journal": "Journal of the Medical Library Association",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC442179/",
+        "status": "available-open-access"
+      }
+    ],
+    "application_in_spec001": "Workbook structure for Phase 2 investigation"
+  },
+  {
+    "id": "framework-003",
+    "name": "Basic Formal Ontology (BFO)",
+    "description": "Ontología de nivel superior (top-level ontology) que provee categorías fundamentales para modelado ontológico formal.",
+    "key_concepts": [
+      "continuant",
+      "occurrent",
+      "temporal-region",
+      "spatial-region",
+      "quality",
+      "role"
+    ],
+    "primary_sources": [
+      {
+        "standard": "ISO/IEC 21838-2:2019",
+        "title": "Information technology — Top-level ontologies (TLO) — Part 2: Basic Formal Ontology (BFO)",
+        "organization": "ISO/IEC JTC 1/SC 32",
+        "status": "pending-acquisition"
+      }
+    ],
+    "application_in_spec001": "Ontological foundations for artifact taxonomy"
+  },
+  {
+    "id": "framework-004",
+    "name": "Model Context Protocol (MCP)",
+    "description": "Protocolo estándar para integración de contexto externo en aplicaciones LLM. Define tools, resources, y prompts.",
+    "key_concepts": [
+      "mcp-server",
+      "mcp-tool",
+      "mcp-resource",
+      "mcp-prompt",
+      "llm-integration"
+    ],
+    "primary_sources": [
+      {
+        "repository": "spec-workflow-mcp",
+        "url": "https://github.com/ccolombia-ui/spec-workflow-mcp",
+        "type": "implementation",
+        "status": "cloned"
+      }
+    ],
+    "application_in_spec001": "Core architecture for specification workflow management"
+  },
+  {
+    "id": "framework-005",
+    "name": "Schema-First Design",
+    "description": "Principio de diseño establecido en SPEC-001 Phase 1 que requiere definición de schemas antes de implementación.",
+    "key_concepts": [
+      "json-schema",
+      "pydantic-models",
+      "validation",
+      "type-safety"
+    ],
+    "primary_sources": [
+      {
+        "project": "SPEC-001",
+        "phase": "Phase 1",
+        "date": "2026-01-08",
+        "status": "implemented"
+      }
+    ],
+    "application_in_spec001": "Foundation for all artifact and workbook structures"
+  },
+  {
+    "id": "framework-006",
+    "name": "HYPATIA→SALOMÓN Pipeline",
+    "description": "Arquitectura de dos fases para investigación fundamentada: HYPATIA (adquisición de conocimiento) → SALOMÓN (síntesis con citas).",
+    "key_concepts": [
+      "knowledge-first-design",
+      "hypatia-pipeline",
+      "salomon-synthesis",
+      "source-validation",
+      "graphrag"
+    ],
+    "primary_sources": [
+      {
+        "project": "SPEC-001",
+        "phase": "Phase 2",
+        "adr": "ADR-007",
+        "date": "2026-01-10",
+        "status": "in-implementation"
+      }
+    ],
+    "application_in_spec001": "Methodology for Phase 2 investigation workbooks"
+  }
+]

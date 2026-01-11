@@ -1,0 +1,144 @@
+[
+  {
+    "id": "concept-manual-001",
+    "name": "Schema-First Design",
+    "type": "design-principle",
+    "definition": "Principio de diseño que establece que los esquemas (schemas) deben definirse antes de la implementación, garantizando consistencia estructural y validación temprana.",
+    "source": {
+      "type": "project",
+      "reference": "SPEC-001 Phase 1",
+      "file": "apps/R000-autopoietic-template/.spec-workflow/schemas/",
+      "date": "2026-01-08"
+    },
+    "framework": "SPEC-001 Architecture",
+    "related_concepts": [
+      "pydantic-models",
+      "json-schema",
+      "validation"
+    ]
+  },
+  {
+    "id": "concept-manual-002",
+    "name": "Knowledge-First Design",
+    "type": "design-principle",
+    "definition": "Extensión epistemológica de Schema-First Design. Establece que la adquisición de conocimiento real (literatura, código, especificaciones) debe preceder a cualquier síntesis o análisis. Previene la generación de contenido inventado sin fundamentación.",
+    "source": {
+      "type": "project",
+      "reference": "SPEC-001 Phase 2, ADR-007",
+      "file": "apps/R000-autopoietic-template/.spec-workflow/specs/spec-001-built-template-spec-workflow/design.md",
+      "date": "2026-01-10"
+    },
+    "framework": "HYPATIA→SALOMÓN Pipeline",
+    "related_concepts": [
+      "schema-first",
+      "hypatia-pipeline",
+      "salomon-synthesis"
+    ]
+  },
+  {
+    "id": "concept-manual-003",
+    "name": "HYPATIA Pipeline",
+    "type": "methodology",
+    "definition": "HYpothesis Pursuit And Traceable Investigation Approach. Fase de adquisición de conocimiento que incluye: (1) descarga de literatura, (2) análisis atómico de conceptos, (3) generación de embeddings semánticos, (4) construcción de GraphRAG.",
+    "source": {
+      "type": "project",
+      "reference": "SPEC-001 Task 2.1",
+      "file": "apps/R000-autopoietic-template/.spec-workflow/specs/spec-001-built-template-spec-workflow/tasks.md",
+      "date": "2026-01-10"
+    },
+    "framework": "HYPATIA→SALOMÓN Pipeline",
+    "related_concepts": [
+      "knowledge-first",
+      "graphrag",
+      "semantic-embeddings"
+    ]
+  },
+  {
+    "id": "concept-manual-004",
+    "name": "SALOMÓN Synthesis",
+    "type": "methodology",
+    "definition": "Source-Attributed Literature-Oriented Methodology for Ontological Notation. Fase de síntesis fundamentada que opera sobre el knowledge base HYPATIA. Requiere citas inline, validación de fuentes, y trazabilidad completa de queries GraphRAG.",
+    "source": {
+      "type": "project",
+      "reference": "SPEC-001 Task 2.2",
+      "file": "apps/R000-autopoietic-template/.spec-workflow/specs/spec-001-built-template-spec-workflow/tasks.md",
+      "date": "2026-01-10"
+    },
+    "framework": "HYPATIA→SALOMÓN Pipeline",
+    "related_concepts": [
+      "knowledge-first",
+      "inline-citations",
+      "source-validation"
+    ]
+  },
+  {
+    "id": "concept-manual-005",
+    "name": "IMRAD Structure",
+    "type": "documentation-format",
+    "definition": "Introduction, Methods, Results, And Discussion. Estructura estándar para escritura científica que organiza investigación en secciones lógicas. Adoptada en SPEC-001 para workbooks de investigación.",
+    "source": {
+      "type": "literature",
+      "reference": "Sollaci & Pereira (2004)",
+      "citation": "Sollaci, L. B., & Pereira, M. G. (2004). The introduction, methods, results, and discussion (IMRAD) structure: a fifty-year survey. Journal of the Medical Library Association, 92(3), 364-367.",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC442179/"
+    },
+    "framework": "Scientific Writing",
+    "related_concepts": [
+      "salomon-synthesis",
+      "workbook-structure"
+    ]
+  },
+  {
+    "id": "concept-manual-006",
+    "name": "Bounded Context",
+    "type": "ddd-pattern",
+    "definition": "Delimitación explícita dentro de la cual un modelo de dominio es aplicable. Define límites lingüísticos y semánticos donde términos tienen significado específico y consistente.",
+    "source": {
+      "type": "literature",
+      "reference": "Evans (2003)",
+      "citation": "Evans, E. (2003). Domain-Driven Design: Tackling Complexity in the Heart of Software. Addison-Wesley Professional. Chapter 14, pp. 335-345.",
+      "note": "Concepto fundamental en DDD, aún no descargado - basado en conocimiento previo"
+    },
+    "framework": "Domain-Driven Design",
+    "related_concepts": [
+      "ubiquitous-language",
+      "context-mapping",
+      "aggregate"
+    ]
+  },
+  {
+    "id": "concept-manual-007",
+    "name": "Model Context Protocol (MCP)",
+    "type": "protocol",
+    "definition": "Protocolo estándar para comunicación entre clientes LLM y servidores de contexto. Define herramientas (tools), recursos (resources) y prompts para extender capacidades de LLMs.",
+    "source": {
+      "type": "code",
+      "reference": "spec-workflow-mcp repository",
+      "file": "README.md",
+      "url": "https://github.com/ccolombia-ui/spec-workflow-mcp"
+    },
+    "framework": "LLM Integration",
+    "related_concepts": [
+      "mcp-server",
+      "mcp-tools",
+      "llm-context"
+    ]
+  },
+  {
+    "id": "concept-manual-008",
+    "name": "GraphRAG",
+    "type": "technology",
+    "definition": "Graph Retrieval-Augmented Generation. Técnica que combina bases de datos de grafos (e.g., Neo4j) con embeddings semánticos para recuperación de información contextual y generación fundamentada.",
+    "source": {
+      "type": "methodology",
+      "reference": "Microsoft Research",
+      "note": "Técnica establecida en investigación de RAG, aplicada en HYPATIA pipeline"
+    },
+    "framework": "Information Retrieval",
+    "related_concepts": [
+      "neo4j",
+      "semantic-embeddings",
+      "rag"
+    ]
+  }
+]
