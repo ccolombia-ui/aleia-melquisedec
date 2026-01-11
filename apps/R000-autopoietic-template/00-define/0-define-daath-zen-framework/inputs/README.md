@@ -32,14 +32,14 @@ inputs/
 │       ├── mcp-server-architecture.md
 │       ├── approval-system-flow.md
 │       └── implementation-log-patterns.md
-├── baseline/                          ← LÍNEA BASE (templates existentes antes de SPEC-000)
-│   └── templates-daath-zen/           → 6 templates base (requirements, design, tasks, etc.)
-│       ├── daath-zen-requirements.md
-│       ├── daath-zen-design.md
-│       ├── daath-zen-tasks.md
-│       ├── daath-zen-product.md
-│       ├── daath-zen-tech.md
-│       └── daath-zen-structure.md
+├── baseline/                          ← LÍNEA BASE (patterns validados antes de SPEC-000)
+│   └── daath-zen-patterns/            → Patterns validados (v1.0.0, confidence >= 0.80)
+│       ├── README.md                  → 225 líneas: Propósito, uso, lifecycle, métricas
+│       ├── template-configurable_daath-zen-root.md  → Root template (gobernanza)
+│       ├── daath-zen-refactoring.md   → Pattern: code refactoring (MELQUISEDEC, MORPHEUS)
+│       ├── daath-zen-git-workflow.md  → Pattern: Git operations (MORPHEUS, ALMA)
+│       ├── daath-zen-req-template.md  → Pattern: Requirements artifacts (YAML-LD)
+│       └── daath-zen-salomon-design-template.md  → Pattern: Design docs (SALOMON)
 └── templates/                         ← TEMPLATES (generados por SPEC-000)
     ├── academic-research-template/    → Metodología Academic Research (5 folders)
     └── imrad-template/                → Metodología IMRAD (7 files)
@@ -235,21 +235,101 @@ inputs/
 
 ## 3. Baseline (Línea Base)
 
-**Concepto**: Templates existentes **antes de SPEC-000** - punto de partida para la investigación.
+**Concepto**: Patterns **validados** existentes **antes de SPEC-000** - punto de partida maduro para la investigación.
 
-### 3.1. Templates Daath-Zen (6 variantes)
+**Principio clave**: Baseline NO es esqueleto vacío, sino **patterns probados en 3+ specs con confidence >= 0.80**.
 
-**Propósito**: Colección de templates base que se usan en el proyecto.
+### 3.1. Daath-Zen Patterns (Validated Patterns Library)
+
+**Ubicación**: `baseline/daath-zen-patterns/`
+**Versión**: v1.0.0
+**Estado**: Validated (usado en 3+ specs exitosamente)
+
+**Características distintivas**:
+- ✅ **README completo** (225 líneas): Propósito, uso, lifecycle, métricas de éxito
+- ✅ **Metadata YAML-LD**: Frontmatter con `@context`, `@type`, `@id`, versioning semántico
+- ✅ **Gobernanza**: Root template (`template-configurable_daath-zen-root.md`) define estructura configurable
+- ✅ **Validación**: Patterns requieren 3+ specs exitosos con confidence >= 0.80
+- ✅ **Manifesto coherence**: Referencias explícitas a manifiesto (file + line ranges)
+- ✅ **MCPs y rostros**: Documentados por pattern (qué rostros + qué MCPs por tarea)
+
+**Lifecycle de patterns**:
+```
+proposed (v0.x.x) → validated (v1.x.x) → consolidated (v2.x.x) → canonical (v3.x.x)
+     1-2 specs         3+ specs            10+ specs              50+ specs
+  confidence<0.70   confidence>=0.80   confidence>=0.90      confidence>=0.95
+```
+
+#### 3.1.1. template-configurable_daath-zen-root.md
+
+**Propósito**: Define gobernanza de templates configurables (versioning, validation, manifesto coherence).
 
 **Contenido**:
-- `daath-zen-requirements.md`: Template para especificación de requisitos
-- `daath-zen-design.md`: Template para decisiones de diseño (ADRs)
-- `daath-zen-tasks.md`: Template para planificación de tareas
-- `daath-zen-product.md`: Template para product thinking
-- `daath-zen-tech.md`: Template para tech stack documentation
-- `daath-zen-structure.md`: Template para estructura de proyecto
+- `applies_to`: Patrón de aplicabilidad (e.g., `daath-zen-{domain}-v{x.y.z}`)
+- `recommended_versions`: Lista de variantes (stable, experimental, legacy)
+- `manifesto_reference`: Punteros a secciones del Manifiesto que justifican estructura
+- `validation_scripts`: Scripts para validar frontmatter, JSON-LD, result mappings
+- Versionado semántico (MAJOR.MINOR.PATCH) con guías de migración
 
-**Uso en SPEC-000**: SALOMON puede referenciar estos templates al analizar qué artefactos deberían generarse en los workbooks.
+**Uso en SPEC-000**: Define cómo SPEC-000 debe estructurar templates configurables para workbooks.
+
+#### 3.1.2. daath-zen-refactoring.md
+
+**Dominio**: Code refactoring, structural improvements
+**Rostros clave**: MELQUISEDEC, MORPHEUS, SALOMON
+**Confidence**: >= 0.80 (validated)
+
+**Casos de uso**:
+- Reorganizar monorepo
+- Fixing broken references
+- Migrating package structure
+
+**Uso en SPEC-000**: Referencia para workbooks sobre restructuring patterns.
+
+#### 3.1.3. daath-zen-git-workflow.md
+
+**Dominio**: Git operations, CI/CD, deployment
+**Rostros clave**: MORPHEUS, ALMA
+**Confidence**: >=daath-zen-patterns/README.md` (patterns library overview)
+7. Read `baseline/daath-zen-patterns/daath-zen-req-template.md` (validated requirements pattern
+
+**Casos de uso**:
+- Push workflows
+- PR creation
+- Release management
+- Branch strategies
+
+**Uso en SPEC-000**: Referencia para workbooks sobre validation strategies.
+
+#### 3.1.4. daath-zen-req-template.md
+
+**Dominio**: Requirements artifacts con YAML-LD metadata
+**Rostros clave**: SALOMON
+**Confidence**: >= 0.80 (validated)
+
+**Contenido**:
+- Frontmatter YAML-LD completo (`@context`, `@type`, `@id`)
+- `result_type`: immediate | intermediate | final
+- `associated_causes`: Lista de IDs de causas
+- `associated_features`: Lista de IDs de features
+- `outputs`: immediate, intermediate, final results
+- `validation`: Link a validation script
+
+**Uso en SPEC-000**: SALOMON puede referenciar al escribir workbook sobre Requirements Specification Patterns.
+
+#### 3.1.5. daath-zen-salomon-design-template.md
+
+**Dominio**: Design documents (Architecture Decision Records)
+**Rostros clave**: SALOMON
+**Confidence**: >= 0.80 (validated)
+
+**Contenido**:
+- ADR structure (Context, Decision, Consequences)
+- Design patterns documentation
+- Component architecture
+- Integration patterns
+
+**Uso en SPEC-000**: SALOMON puede referenciar al escribir workbook sobre DDD patterns & bounded contexts.
 
 ---
 
@@ -273,6 +353,7 @@ inputs/
 
 **Uso**: Template para workbooks de síntesis (ej: DDD patterns, metadata governance).
 
+5. **Baseline validado**: daath-zen-patterns/ son patterns probados (confidence >= 0.80), no esqueletos vacíos
 ---
 
 ## 5. Uso por Agentes
@@ -302,7 +383,7 @@ inputs/
 
 **Workbooks asignados**: IMRAD (3 workbooks)
 - Requirements Specification Patterns
-- Metadata & Dublin Core Governance
+- Metadata & D1.0"  # v2.1.0 = baseline upgraded to validated patterns (daath-zen-patterns/)
 - Project Structure & Organization
 
 **Inputs críticos**:
