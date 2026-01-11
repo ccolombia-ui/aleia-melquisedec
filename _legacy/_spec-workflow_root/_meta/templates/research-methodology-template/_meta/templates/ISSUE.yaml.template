@@ -1,0 +1,207 @@
+---
+# ISSUE Template for Research Methodology Investigation
+# This file is instantiated when initializing a new research
+
+id: 'research-{{research.name}}'
+is_a: 'research/methodology'
+version: '{{research.version}}'
+created: '{{timestamp}}'
+owner: '{{research.owner}}'
+
+# DUBLIN CORE METADATA
+dublin_core:
+  title: 'Research: {{research.full_name}}'
+  creator: ['{{research.owner}}']
+  date: '{{date}}'
+  subject: {{scope.domains}}
+  description: |
+    Investigación formal de {{research.full_name}} aplicando metodología DAATH-ZEN.
+    Research questions:
+    {{#each scope.research_questions}}
+    - {{this}}
+    {{/each}}
+  type: '{{research.type}}'  # formal-review | quick-scan | deep-dive
+  format: 'text/markdown'
+  language: 'es-ES'
+  relation: 'Part of MELQUISEDEC workspace'
+  coverage: 'Temporal: {{date}} onwards; Spatial: Global'
+  rights: 'Internal use - MELQUISEDEC workspace'
+
+# MELQUISEDEC WORKFLOW
+melquisedec:
+  estado: 'in-progress'  # not-started | in-progress | completed | archived
+  cascada_actual: 'MELQUISEDEC'  # MELQUISEDEC | HYPATIA | SALOMON | MORPHEUS | ALMA
+  rostros:
+    - name: 'MELQUISEDEC'
+      role: 'Orquestador'
+      status: 'active'
+      started: '{{timestamp}}'
+      completed: null
+    - name: 'HYPATIA'
+      role: 'Investigadora'
+      status: 'pending'
+      started: null
+      completed: null
+    - name: 'SALOMON'
+      role: 'Arquitecto'
+      status: 'pending'
+      started: null
+      completed: null
+    - name: 'MORPHEUS'
+      role: 'Implementador'
+      status: 'pending'
+      started: null
+      completed: null
+    - name: 'ALMA'
+      role: 'Ejecutora'
+      status: 'pending'
+      started: null
+      completed: null
+
+  checkpoints:
+    - id: 'ck-01-literature'
+      rostro: 'HYPATIA'
+      phase: '01-literature'
+      status: 'pending'  # pending | pass | fail
+      require_approval: true
+      validation_file: '.melquisedec/hypatia_validation.yaml'
+    - id: 'ck-02-analysis'
+      rostro: 'SALOMON'
+      phase: '03-workbook'
+      status: 'pending'
+      require_approval: true
+      validation_file: '.melquisedec/salomon_validation.yaml'
+    - id: 'ck-03-artifacts'
+      rostro: 'MORPHEUS'
+      phase: '04-artifacts'
+      status: 'pending'
+      require_approval: false
+      validation_file: '.melquisedec/morpheus_validation.yaml'
+    - id: 'ck-04-execution'
+      rostro: 'ALMA'
+      phase: '05-evaluate'
+      status: 'pending'
+      require_approval: true
+      validation_file: '.melquisedec/alma_validation.yaml'
+
+# HKM (Hierarchical Knowledge Management)
+hkm:
+  permalink: 'apps/research-{{research.name}}'
+  parent: '.spec-workflow/specs/research-methodology-template'
+  version: '{{research.version}}'
+  tags:
+    - 'research'
+    - 'methodology'
+    {{#each scope.domains}}
+    - '{{this}}'
+    {{/each}}
+
+# RESEARCH SCOPE
+scope:
+  research_questions: {{scope.research_questions}}
+  domains: {{scope.domains}}
+  hypothesis: {{scope.hypothesis}}
+
+  expected_outcomes:
+    - type: 'literature-review'
+      description: 'Comprehensive review with ≥{{quality.metrics.min_sources}} sources'
+      deliverable: '01-literature/sources.yaml'
+    - type: 'atomic-knowledge'
+      description: 'Zettelkasten atomics with ≥{{quality.metrics.min_atomics}} concepts'
+      deliverable: '02-atomics/concepts/*.md'
+    - type: 'semantic-graph'
+      description: 'Neo4j graph with nodes and relationships'
+      deliverable: '02-atomics/graph-ready/*.yaml'
+    - type: 'synthesis'
+      description: 'Final synthesis answering all RQs (≥1500 words)'
+      deliverable: '03-workbook/synthesis/final-synthesis.md'
+    - type: 'solution-spec'
+      description: 'Executable solution specification (≥{{quality.metrics.min_solution_spec_lines}} lines)'
+      deliverable: '04-artifacts/solution-spec.md'
+    - type: 'validation'
+      description: 'Hypothesis validation using Neo4j queries'
+      deliverable: '05-evaluate/hypothesis-validation.md'
+
+# TRIPLE OUTPUT
+outputs:
+  triple_storage: {{outputs.triple_storage}}
+  formats: {{outputs.formats}}
+
+  targets:
+    filesystem:
+      path: 'apps/research-{{research.name}}'
+      format: 'markdown'
+    graph_db:
+      type: 'neo4j'
+      version: '5.15+'
+      connection: 'bolt://localhost:7687'
+      database: '{{outputs.targets.graph_db.database}}'
+    embeddings:
+      model: '{{outputs.targets.embeddings.model}}'
+      dimensions: {{outputs.targets.embeddings.dimensions}}
+      index_type: 'HNSW'
+
+# QUALITY GATES
+quality:
+  metrics: {{quality.metrics}}
+
+  validators:
+    - name: 'yaml-lint'
+      type: 'syntax'
+      target: '**/*.yaml'
+    - name: 'markdown-link-check'
+      type: 'integrity'
+      target: '**/*.md'
+    - name: 'neo4j-schema-validator'
+      type: 'semantic'
+      target: '02-atomics/graph-ready/*.yaml'
+
+  anti_patterns:
+    {{#each quality.anti_patterns}}
+    - '{{this}}'
+    {{/each}}
+
+# TIMELINE
+timeline:
+  estimated_duration: '{{timeline.estimated_duration}}'
+  phases:
+    {{#each timeline.phases}}
+    - name: '{{this.name}}'
+      rostro: '{{this.rostro}}'
+      duration: '{{this.duration}}'
+      started: null
+      completed: null
+    {{/each}}
+
+# DEPENDENCIES
+dependencies:
+  required_mcps: {{required_mcps}}
+
+  external_tools:
+    - Neo4j 5.15+
+    - Ollama (qwen3-embedding model)
+    - Python 3.11+
+
+  libraries:
+    - neo4j-python-driver
+    - PyYAML
+    - langchain
+    - ollama-python
+
+# LESSONS LEARNED (populated at end)
+lessons:
+  hypatia: null
+  salomon: null
+  morpheus: null
+  alma: null
+  summary_file: '06-lessons/summary.yaml'
+
+# METADATA
+metadata:
+  template_version: '{{research.version}}'
+  template_source: '.spec-workflow/specs/research-methodology-template'
+  instantiated_at: '{{timestamp}}'
+  last_updated: '{{timestamp}}'
+  status_log: []
+
+---

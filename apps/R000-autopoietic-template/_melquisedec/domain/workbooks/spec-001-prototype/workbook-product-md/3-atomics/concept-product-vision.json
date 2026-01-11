@@ -1,0 +1,198 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "concept-product-vision",
+  "type": "atomic-concept",
+  "metadata": {
+    "created": "2026-01-11",
+    "analyst": "SALOMÓN",
+    "workbook": "workbook-product-md",
+    "version": "1.0.0"
+  },
+  "concept": {
+    "name": "Product Vision",
+    "category": "product-management",
+    "subcategory": "strategy",
+    "definition": "A clear, inspiring, long-term goal that describes the future state the product aims to create, typically spanning 2-10 years, providing strategic context for daily development decisions.",
+    "purpose": "To inspire and align the team around a common future state, guide strategic decisions, and communicate the product's overarching purpose to stakeholders."
+  },
+  "characteristics": {
+    "timeframe": "2-10 years (long-term)",
+    "length": "1-2 sentences (memorable)",
+    "tone": "Aspirational yet believable",
+    "clarity": "Simple enough for all team members to understand and remember",
+    "stability": "Should remain relatively stable, not change quarterly"
+  },
+  "components": [
+    {
+      "component": "WHO",
+      "description": "Target customer or user group",
+      "example": "developers building specifications"
+    },
+    {
+      "component": "WHAT",
+      "description": "Change or transformation to be created",
+      "example": "10x faster spec creation"
+    },
+    {
+      "component": "HOW",
+      "description": "Key approach or differentiation",
+      "example": "knowledge-driven templates"
+    },
+    {
+      "component": "WHY",
+      "description": "Ultimate benefit or impact",
+      "example": "eliminate manual duplication and errors"
+    }
+  ],
+  "examples": {
+    "good": [
+      {
+        "vision": "Empower developers to create specs 10x faster with knowledge-driven templates",
+        "analysis": "Clear WHO (developers), WHAT (10x faster), HOW (knowledge-driven templates)",
+        "source": "SPEC-001 project"
+      },
+      {
+        "vision": "To be Earth's most customer-centric company",
+        "analysis": "Aspirational, clear focus (customer-centric), long-term scope (Earth)",
+        "source": "Amazon (via Cagan, Inspired, p.38)"
+      },
+      {
+        "vision": "A computer on every desk and in every home",
+        "analysis": "Concrete, measurable, transformative (at the time)",
+        "source": "Microsoft early vision (via Moore, Crossing the Chasm)"
+      }
+    ],
+    "bad": [
+      {
+        "vision": "Build the best product management tool",
+        "problems": [
+          "Vague: 'best' is subjective",
+          "No timeframe",
+          "No target customer specified",
+          "No differentiation (how is it 'best'?)"
+        ]
+      },
+      {
+        "vision": "Increase revenue by 20% next quarter",
+        "problems": [
+          "Too short-term (quarterly goal, not vision)",
+          "Business metric, not customer transformation",
+          "Not inspiring to team"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "type": "book",
+      "ref_id": "inspired-book",
+      "author": "Cagan, Marty",
+      "title": "Inspired: How to Create Tech Products Customers Love",
+      "publisher": "Wiley",
+      "year": 2017,
+      "isbn": "978-1119387503",
+      "pages": [35, 36, 37, 38, 39, 40, 41, 42],
+      "key_quote": "The product vision describes the future we are trying to create, typically 2-10 years out. The purpose is to provide the team with the context for the daily work they're doing.",
+      "page_quote": 37
+    },
+    {
+      "type": "framework",
+      "ref_id": "product-vision-board-framework",
+      "author": "Pichler, Roman",
+      "title": "The Product Vision Board",
+      "organization": "Roman Pichler Consulting",
+      "url": "https://www.romanpichler.com/tools/product-vision-board/",
+      "year": 2016,
+      "description": "Visual framework structuring vision into Vision, Target Group, Needs, Product, and Business Goals"
+    },
+    {
+      "type": "online",
+      "ref_id": "svpg-product-vision",
+      "author": "Cagan, Marty",
+      "title": "Product Vision",
+      "organization": "Silicon Valley Product Group",
+      "url": "https://svpg.com/product-vision/",
+      "year": 2020,
+      "description": "Article on characteristics of effective product visions"
+    }
+  ],
+  "related_concepts": [
+    "concept-target-group",
+    "concept-customer-needs",
+    "concept-differentiation",
+    "concept-success-criteria",
+    "concept-positioning-statement"
+  ],
+  "validation_rules": [
+    {
+      "rule": "length_check",
+      "description": "Vision statement should be 1-2 sentences (max 200 words)",
+      "validation": "length(vision) <= 200 words"
+    },
+    {
+      "rule": "timeframe_check",
+      "description": "Vision should imply long-term timeframe (2-10 years), not quarterly goals",
+      "validation": "no mentions of 'Q1', 'next quarter', 'this year'"
+    },
+    {
+      "rule": "clarity_check",
+      "description": "Vision should be understandable by all team members, not jargon-heavy",
+      "validation": "readability_score >= 60 (Flesch-Kincaid)"
+    },
+    {
+      "rule": "inspiration_check",
+      "description": "Vision should be aspirational (verbs like 'empower', 'transform', 'enable')",
+      "validation": "contains_aspirational_language == true"
+    }
+  ],
+  "anti_patterns": [
+    {
+      "pattern": "feature_list_vision",
+      "description": "Vision is just a list of features ('We will have X, Y, Z')",
+      "problem": "Not inspiring, too tactical, lacks strategic context"
+    },
+    {
+      "pattern": "business_metric_vision",
+      "description": "Vision is just a business metric ('Increase revenue by X%')",
+      "problem": "Doesn't inspire team, focuses on company benefit not customer transformation"
+    },
+    {
+      "pattern": "vague_buzzword_vision",
+      "description": "Vision uses vague buzzwords ('best', 'innovative', 'cutting-edge')",
+      "problem": "Not actionable, subjective, lacks specificity"
+    }
+  ],
+  "implementation_guidelines": {
+    "creation_process": [
+      "1. Understand customer deeply (interviews, research)",
+      "2. Identify the transformation or change product will create",
+      "3. Draft vision statement (WHO, WHAT, HOW, WHY)",
+      "4. Validate with stakeholders (is it inspiring? clear?)",
+      "5. Communicate widely and consistently"
+    ],
+    "communication_tips": [
+      "Repeat vision in every team meeting",
+      "Display vision prominently (wall, wiki, README)",
+      "Connect daily work back to vision ('This task helps us achieve X because...')",
+      "Use vision in hiring (attract people aligned with mission)"
+    ],
+    "evolution": "Vision should evolve slowly (every 2-5 years as market/technology shifts), not change with every pivot or feature release"
+  },
+  "queries": {
+    "neo4j_cypher": {
+      "create_concept": "CREATE (c:Concept:Product {id: 'concept-product-vision', name: 'Product Vision', category: 'product-management', definition: 'A clear, inspiring, long-term goal...'})",
+      "relate_to_sources": "MATCH (c:Concept {id: 'concept-product-vision'}), (s:Source {id: 'inspired-book'}) CREATE (c)-[:CITED_IN {pages: [35, 36, 37, 38, 39, 40, 41, 42]}]->(s)",
+      "find_related": "MATCH (c:Concept {id: 'concept-product-vision'})-[:RELATES_TO]-(related:Concept) RETURN related"
+    },
+    "semantic_search": {
+      "query_text": "Product Vision definition long-term goal customer transformation",
+      "expected_similarity": "> 0.85 (high relevance)"
+    }
+  },
+  "usage_in_product_md": {
+    "section": "## Vision Statement",
+    "template_variable": "{{vision_statement}}",
+    "validation_contract": "contract-product-md-schema.json -> properties.vision_statement",
+    "example_rendering": "Empower developers to create specs 10x faster with knowledge-driven templates, eliminating manual duplication and enabling focus on actual problem-solving."
+  }
+}

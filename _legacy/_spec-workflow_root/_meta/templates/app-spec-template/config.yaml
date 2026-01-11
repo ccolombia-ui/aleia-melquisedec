@@ -1,0 +1,272 @@
+---
+# ============================================================================
+# APP-SPEC TEMPLATE CONFIGURATION
+# ============================================================================
+# Configuración para especificación formal de aplicaciones
+# Parametriza: app_type (HEX, HEX-WF, HEX-WF-MCP)
+# ============================================================================
+
+# RESEARCH METADATA
+research:
+  name: "{{app_name}}"                    # Nombre corto (usado en paths)
+  full_name: "{{app_full_name}}"          # Nombre completo
+  type: "app-spec"                        # Tipo fijo: especificación de app
+  app_type: "{{app_type}}"                # HEX | HEX-WF | HEX-WF-MCP
+  domain: "{{domain}}"                    # Dominio de conocimiento
+  version: "1.0.0"
+  created: "{{date}}"
+  owner: "MELQUISEDEC"
+
+# APP TYPE DEFINITIONS
+app_types:
+  HEX:
+    description: "Arquitectura hexagonal básica"
+    specs_required:
+      - "SPEC-DOMAIN"
+      - "SPEC-PORTS"
+      - "SPEC-ADAPTERS"
+    morpheus_outputs:
+      - "domain/"
+      - "ports/"
+      - "adapters/"
+      - "tests/"
+      - "config/"
+
+  HEX-WF:
+    description: "Hexagonal + Workflows"
+    specs_required:
+      - "SPEC-DOMAIN"
+      - "SPEC-PORTS"
+      - "SPEC-ADAPTERS"
+      - "SPEC-WORKFLOWS"
+    morpheus_outputs:
+      - "domain/"
+      - "ports/"
+      - "adapters/"
+      - "workflows/"
+      - "tests/"
+      - "config/"
+
+  HEX-WF-MCP:
+    description: "Hexagonal + Workflows + MCP Server"
+    specs_required:
+      - "SPEC-DOMAIN"
+      - "SPEC-PORTS"
+      - "SPEC-ADAPTERS"
+      - "SPEC-WORKFLOWS"
+      - "SPEC-MCP"
+    morpheus_outputs:
+      - "domain/"
+      - "ports/"
+      - "adapters/"
+      - "workflows/"
+      - "mcp/"
+      - "tests/"
+      - "config/"
+
+# RESEARCH SCOPE
+scope:
+  # Research Questions - Preguntas que HYPATIA debe responder
+  research_questions:
+    - "¿Qué estándares formales aplican al dominio {{domain}}?"
+    - "¿Qué entidades del dominio están definidas en la literatura?"
+    - "¿Qué interfaces (ports) necesita la arquitectura?"
+    - "¿Qué patrones de implementación recomienda la literatura?"
+
+  # Dominios de conocimiento a investigar
+  domains:
+    - name: "{{domain}}"
+      standards: []              # ISO, CMIS, etc. (HYPATIA completa)
+      frameworks: []             # DDD, Hexagonal, etc. (HYPATIA completa)
+
+  # Hipótesis iniciales (opcional)
+  hypothesis: []
+
+# ROSTROS WORKFLOW
+rostros:
+  - name: "MELQUISEDEC"
+    phase: 0
+    role: "Orquestador"
+    question: "¿Qué tipo de app y qué flujo de conocimiento?"
+    outputs:
+      - "0-inbox/ISSUE.yaml"
+    tasks:
+      - "0.1: Clasificar app_type"
+      - "0.2: Crear estructura de carpetas"
+      - "0.3: Crear ISSUE.yaml"
+
+  - name: "HYPATIA"
+    phase: 1
+    role: "Investigadora"
+    question: "¿Qué dice la literatura canónica?"
+    outputs:
+      - "01-literature/"
+      - "02-atomics/"
+    tasks:
+      - "1.1: Buscar fuentes formales (standards, frameworks)"
+      - "1.2: Documentar contenido relevante"
+      - "1.3: Atomizar conceptos (Zettelkasten)"
+      - "1.4: Mapear relaciones entre conceptos"
+      - "1.5: Checkpoint CK-01"
+
+  - name: "SALOMON"
+    phase: 2
+    role: "Arquitecto de Spec"
+    question: "¿Cómo se especifica esta app según la investigación?"
+    outputs:
+      - "03-workbook/SPEC-DOMAIN.md"
+      - "03-workbook/SPEC-PORTS.md"
+      - "03-workbook/SPEC-ADAPTERS.md"
+      - "03-workbook/SPEC-WORKFLOWS.md"    # Solo si HEX-WF o HEX-WF-MCP
+      - "03-workbook/SPEC-MCP.md"          # Solo si HEX-WF-MCP
+    tasks:
+      - "2.1: Especificar domain (entities, value objects)"
+      - "2.2: Especificar ports (inbound, outbound)"
+      - "2.3: Especificar adapters (implementations)"
+      - "2.4: Especificar workflows (si aplica)"
+      - "2.5: Especificar MCP tools (si aplica)"
+      - "2.6: Validar trazabilidad a 02-atomics/"
+      - "2.7: Checkpoint CK-02"
+
+  - name: "MORPHEUS"
+    phase: 3
+    role: "Implementador"
+    question: "¿Cómo se implementa esta spec?"
+    outputs:
+      - "04-artifacts/src/"
+      - "04-artifacts/tests/"
+      - "04-artifacts/config/"
+    tasks:
+      - "3.1: Implementar domain según SPEC-DOMAIN.md"
+      - "3.2: Implementar ports según SPEC-PORTS.md"
+      - "3.3: Implementar adapters según SPEC-ADAPTERS.md"
+      - "3.4: Implementar workflows según SPEC-WORKFLOWS.md (si aplica)"
+      - "3.5: Implementar MCP tools según SPEC-MCP.md (si aplica)"
+      - "3.6: Crear tests (unit, integration)"
+      - "3.7: Crear configuraciones (schemas, environments)"
+      - "3.8: Checkpoint CK-03"
+
+  - name: "ALMA"
+    phase: 4
+    role: "Instanciador"
+    question: "¿El código es coherente y funciona?"
+    outputs:
+      - "05-outputs/"
+    tasks:
+      - "4.1: Ejecutar tests, validar coverage"
+      - "4.2: Validar trazabilidad completa"
+      - "4.3: Crear package instalable"
+      - "4.4: Generar documentación"
+      - "4.5: Publicar (tag, release)"
+      - "4.6: Checkpoint CK-04"
+
+# CHECKPOINTS
+checkpoints:
+  - id: "CK-01"
+    name: "Literature Complete"
+    rostro: "HYPATIA"
+    phase: "01-literature"
+    criteria:
+      min_formal_sources: 3       # Standards, papers, frameworks
+      min_atomics: 10             # Conceptos atomizados
+      all_atomics_traced: true    # Cada atomic referencia su fuente
+    validation_file: ".melquisedec/hypatia_validation.yaml"
+
+  - id: "CK-02"
+    name: "Specs Complete"
+    rostro: "SALOMON"
+    phase: "03-workbook"
+    criteria:
+      specs_per_app_type: true    # Todas las specs requeridas según app_type
+      all_specs_traced: true      # Cada spec referencia atomics
+      no_invented_concepts: true  # Nada que no esté en 02-atomics/
+    validation_file: ".melquisedec/salomon_validation.yaml"
+
+  - id: "CK-03"
+    name: "Implementation Complete"
+    rostro: "MORPHEUS"
+    phase: "04-artifacts"
+    criteria:
+      code_implements_spec: true  # Todo código traza a una spec
+      tests_coverage: 80          # % mínimo
+      tests_pass: true
+    validation_file: ".melquisedec/morpheus_validation.yaml"
+
+  - id: "CK-04"
+    name: "Package Ready"
+    rostro: "ALMA"
+    phase: "05-outputs"
+    criteria:
+      traceability_complete: true # código → spec → atomic → source
+      package_installable: true
+      docs_generated: true
+    validation_file: ".melquisedec/alma_validation.yaml"
+
+# OUTPUT STRUCTURE
+outputs:
+  structure:
+    - "0-inbox"           # MELQUISEDEC: ISSUE.yaml
+    - "01-literature"     # HYPATIA: Fuentes formales
+    - "02-atomics"        # HYPATIA: Conceptos atómicos
+    - "03-workbook"       # SALOMON: SPEC-*.md
+    - "04-artifacts"      # MORPHEUS: Código
+    - "05-outputs"        # ALMA: Package final
+    - ".melquisedec"      # Checkpoints
+
+  # Triple output (opcional, como research-methodology)
+  triple_storage: false   # true si quieres Neo4j + Vectors
+  formats:
+    - markdown
+    - yaml
+
+# REQUIRED MCPs
+required_mcps:
+  base:
+    - "filesystem"
+    - "sequential-thinking"
+
+  hypatia:
+    - "brave-search"
+    - "context7"
+    - "fetch"
+
+  salomon:
+    - "sequential-thinking"
+
+  morpheus:
+    - "filesystem"
+
+  alma:
+    - "filesystem"
+
+# QUALITY GATES
+quality:
+  metrics:
+    min_formal_sources: 3
+    min_atomics: 10
+    min_specs_traced: 100       # % de specs que trazan a atomics
+    min_code_traced: 100        # % de código que traza a specs
+    min_test_coverage: 80
+
+  anti_patterns:
+    - "Specs sin trazabilidad"
+    - "Conceptos inventados (no en 02-atomics)"
+    - "Código sin spec correspondiente"
+    - "Hardcoding en código"
+
+# METADATA
+metadata:
+  hkm:
+    id: "spec-app-spec-template"
+    is_a: "spec/app-template"
+    version: "1.0.0"
+    permalink: "_templates/app-spec-template/"
+
+  dublin_core:
+    title: "App-Spec Template - MELQUISEDEC"
+    creator: ["MELQUISEDEC"]
+    date: "2026-01-09"
+    subject: ["app-spec", "hexagonal", "trazabilidad"]
+    description: "Template para especificación formal de aplicaciones"
+
+---

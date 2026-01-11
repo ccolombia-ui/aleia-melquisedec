@@ -7,7 +7,7 @@ from R1.3 research findings.
 
 **Test Requirements**:
 - Neo4j 5.15+ running on bolt://localhost:7687
-- Test database with 'melquisedec_embeddings' vector index
+- Test database with 'melquisedec_embeddings' vector indexy
 - 'document_fulltext' fulltext index
 - Ollama running with qwen2.5:latest model
 

@@ -1,0 +1,333 @@
+# SPEC-WORKFLOWS: {{app_name}}
+<!-- Especificación de Workflows - SALOMON -->
+<!-- SOLO PARA: app_type = HEX-WF o HEX-WF-MCP -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **App** | `{{app_name}}` |
+| **Tipo** | `{{app_type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | SALOMON |
+| **Versión** | 1.0.0 |
+
+---
+
+## 1. Visión General de Workflows
+
+### 1.1 Propósito
+
+Los workflows definen **orquestaciones complejas** que involucran múltiples pasos,
+decisiones y posibles interacciones con agentes/LLMs.
+
+### 1.2 Arquitectura de Workflows
+
+```
+                    ┌─────────────────────────────────────────┐
+                    │             WORKFLOW LAYER              │
+                    ├─────────────────────────────────────────┤
+                    │                                         │
+                    │  ┌─────────────────────────────────┐   │
+   Trigger ────────▶│  │         ORCHESTRATOR           │   │
+                    │  │                                 │   │
+                    │  │  ┌────┐  ┌────┐  ┌────┐        │   │
+                    │  │  │Step│─▶│Step│─▶│Step│        │   │
+                    │  │  │ 1  │  │ 2  │  │ 3  │        │   │
+                    │  │  └────┘  └────┘  └────┘        │   │
+                    │  │      │                          │   │
+                    │  │      ▼ (decision)               │   │
+                    │  │  ┌────┐  ┌────┐                 │   │
+                    │  │  │Step│─▶│Step│                 │   │
+                    │  │  │ 4a │  │ 5  │                 │   │
+                    │  │  └────┘  └────┘                 │   │
+                    │  │                                 │   │
+                    │  └─────────────────────────────────┘   │
+                    │              │                         │
+                    │              ▼                         │
+                    │       ┌─────────────┐                  │
+                    │       │   DOMAIN    │                  │
+                    │       │  (Ports)    │                  │
+                    │       └─────────────┘                  │
+                    │                                         │
+                    └─────────────────────────────────────────┘
+```
+
+### 1.3 Resumen de Workflows
+
+| Workflow | Trigger | Steps | Atomic Ref |
+|----------|---------|-------|------------|
+| `{{workflow_1.name}}` | {{workflow_1.trigger}} | {{workflow_1.step_count}} | [{{workflow_1.atomic_ref}}](../../02-atomics/{{workflow_1.atomic_ref}}.md) |
+| `{{workflow_2.name}}` | {{workflow_2.trigger}} | {{workflow_2.step_count}} | [{{workflow_2.atomic_ref}}](../../02-atomics/{{workflow_2.atomic_ref}}.md) |
+
+---
+
+## 2. Workflows
+
+### 2.1 {{workflow_1.name}}
+
+> **Trazabilidad:** [{{workflow_1.atomic_ref}}](../../02-atomics/{{workflow_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{workflow_1.description}}
+
+#### Diagrama de Flujo
+
+```
+┌─────────────┐
+│   START     │
+│  (Trigger)  │
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐     ┌─────────────┐
+│   Step 1    │────▶│   Step 2    │
+│ {{step_1}}  │     │ {{step_2}}  │
+└─────────────┘     └──────┬──────┘
+                          │
+                    ┌─────┴─────┐
+                    │ Decision  │
+                    │ {{cond}}  │
+                    └─────┬─────┘
+               ┌──────────┼──────────┐
+               │          │          │
+               ▼          ▼          ▼
+        ┌──────────┐ ┌──────────┐ ┌──────────┐
+        │ Branch A │ │ Branch B │ │ Branch C │
+        └────┬─────┘ └────┬─────┘ └────┬─────┘
+             │            │            │
+             └────────────┼────────────┘
+                          │
+                          ▼
+                    ┌─────────────┐
+                    │    END      │
+                    │  (Output)   │
+                    └─────────────┘
+```
+
+#### Trigger
+
+| Tipo | Fuente | Condición |
+|------|--------|-----------|
+| {{workflow_1.trigger_type}} | {{workflow_1.trigger_source}} | {{workflow_1.trigger_condition}} |
+
+#### Steps
+
+##### Step 1: {{step_1.name}}
+
+| Campo | Valor |
+|-------|-------|
+| **Acción** | {{step_1.action}} |
+| **Input** | `{{step_1.input}}` |
+| **Output** | `{{step_1.output}}` |
+| **Puerto** | `{{step_1.port}}` |
+| **Timeout** | {{step_1.timeout}} |
+| **Retry** | {{step_1.retry}} |
+
+```python
+# Pseudocódigo
+async def {{step_1.function_name}}(context: WorkflowContext) -> StepResult:
+    """
+    {{step_1.description}}
+    """
+    input_data = context.get("{{step_1.input_key}}")
+    result = await self.{{step_1.port}}.{{step_1.method}}(input_data)
+    return StepResult(
+        output={{step_1.output}},
+        next_step="{{step_1.next_step}}"
+    )
+```
+
+##### Step 2: {{step_2.name}}
+
+| Campo | Valor |
+|-------|-------|
+| **Acción** | {{step_2.action}} |
+| **Input** | `{{step_2.input}}` |
+| **Output** | `{{step_2.output}}` |
+
+##### Decision: {{decision_1.name}}
+
+| Campo | Valor |
+|-------|-------|
+| **Condición** | `{{decision_1.condition}}` |
+| **Branch A** | Si `{{decision_1.branch_a_condition}}` → `{{decision_1.branch_a_next}}` |
+| **Branch B** | Si `{{decision_1.branch_b_condition}}` → `{{decision_1.branch_b_next}}` |
+| **Default** | `{{decision_1.default_next}}` |
+
+#### Context Schema
+
+```yaml
+# Datos que fluyen a través del workflow
+workflow_context:
+  # Input inicial
+  input:
+    {{context_input_1}}: {{type_1}}
+    {{context_input_2}}: {{type_2}}
+
+  # Datos intermedios (set por steps)
+  intermediate:
+    {{context_intermediate_1}}: {{type_3}}
+
+  # Output final
+  output:
+    {{context_output_1}}: {{type_4}}
+    success: bool
+    errors: list[str]
+```
+
+#### Error Handling
+
+| Error | Step | Acción |
+|-------|------|--------|
+| `{{error_1}}` | {{error_1_step}} | {{error_1_action}} |
+| `{{error_2}}` | {{error_2_step}} | {{error_2_action}} |
+| Timeout | Any | {{timeout_action}} |
+
+#### Compensación (Rollback)
+
+En caso de fallo después de Step 2:
+
+```
+┌───────────────────────────────────────┐
+│         COMPENSATION FLOW             │
+├───────────────────────────────────────┤
+│                                       │
+│  Failed at Step 3                     │
+│       │                               │
+│       ▼                               │
+│  Undo Step 2 ─▶ Undo Step 1 ─▶ END   │
+│                                       │
+└───────────────────────────────────────┘
+```
+
+---
+
+### 2.2 {{workflow_2.name}}
+
+> **Trazabilidad:** [{{workflow_2.atomic_ref}}](../../02-atomics/{{workflow_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{workflow_2.description}}
+
+#### Steps
+
+| # | Step | Input | Output | Puerto |
+|---|------|-------|--------|--------|
+| 1 | {{w2_step_1}} | {{w2_input_1}} | {{w2_output_1}} | {{w2_port_1}} |
+| 2 | {{w2_step_2}} | {{w2_input_2}} | {{w2_output_2}} | {{w2_port_2}} |
+
+---
+
+## 3. Patterns Usados
+
+### 3.1 Saga Pattern
+
+> **Trazabilidad:** [ATOMIC-saga-pattern](../../02-atomics/ATOMIC-saga-pattern.md)
+
+Para operaciones distribuidas que requieren compensación:
+
+```python
+class {{workflow_1.name}}Saga:
+    steps = [
+        SagaStep(execute={{step_1}}, compensate={{step_1_compensate}}),
+        SagaStep(execute={{step_2}}, compensate={{step_2_compensate}}),
+    ]
+```
+
+### 3.2 State Machine Pattern
+
+> **Trazabilidad:** [ATOMIC-state-machine](../../02-atomics/ATOMIC-state-machine.md)
+
+Estados del workflow:
+
+```
+PENDING → RUNNING → COMPLETED
+              │
+              └──▶ FAILED → COMPENSATING → ROLLED_BACK
+```
+
+---
+
+## 4. Workflow Engine Interface
+
+### 4.1 Puerto de Workflow
+
+```python
+class WorkflowEngine(ABC):
+    """
+    Puerto para ejecutar workflows.
+    Puede ser implementado con diferentes engines:
+    - In-memory (desarrollo)
+    - Temporal.io (producción)
+    - AWS Step Functions
+    """
+
+    @abstractmethod
+    async def start(
+        self,
+        workflow_id: str,
+        workflow_name: str,
+        input_data: Dict[str, Any]
+    ) -> WorkflowExecution:
+        pass
+
+    @abstractmethod
+    async def get_status(
+        self,
+        execution_id: str
+    ) -> WorkflowStatus:
+        pass
+
+    @abstractmethod
+    async def cancel(
+        self,
+        execution_id: str,
+        reason: str
+    ) -> None:
+        pass
+```
+
+---
+
+## 5. Matriz de Trazabilidad
+
+| Workflow | Atomic Concept | Source |
+|----------|----------------|--------|
+| `{{workflow_1.name}}` | [{{workflow_1.atomic_ref}}](../../02-atomics/{{workflow_1.atomic_ref}}.md) | {{workflow_1.source}} |
+| `{{workflow_2.name}}` | [{{workflow_2.atomic_ref}}](../../02-atomics/{{workflow_2.atomic_ref}}.md) | {{workflow_2.source}} |
+
+---
+
+## 6. Validación
+
+### Criterios CK-02 (parcial)
+
+| Criterio | Estado |
+|----------|--------|
+| Todos los workflows trazan a atomics | [ ] |
+| Steps documentados con I/O | [ ] |
+| Decisiones con todas las branches | [ ] |
+| Error handling definido | [ ] |
+| Compensación documentada | [ ] |
+
+---
+
+## 7. Notas para MORPHEUS
+
+1. Implementar workflows en `workflows/`
+2. Usar interfaces abstractas para el engine
+3. Crear implementación in-memory para tests
+4. Cada step debe ser idempotente
+5. Logging extensivo en cada step
+
+---
+
+## Changelog
+
+| Versión | Fecha | Autor | Cambios |
+|---------|-------|-------|---------|
+| 1.0.0 | {{date}} | SALOMON | Versión inicial |

@@ -1,0 +1,137 @@
+Metadata-Version: 2.4
+Name: daath-toolkit
+Version: 0.1.0
+Summary: DAATH-ZEN Toolkit for research automation, knowledge capture, and autopoiesis workflows
+Author-email: ALEIA-MELQUISEDEC Project <contact@example.com>
+License: MIT
+Project-URL: Homepage, https://github.com/ccolombia-ui/aleia-melquisedec
+Project-URL: Documentation, https://github.com/ccolombia-ui/aleia-melquisedec/tree/main/docs
+Project-URL: Repository, https://github.com/ccolombia-ui/aleia-melquisedec
+Project-URL: Issues, https://github.com/ccolombia-ui/aleia-melquisedec/issues
+Keywords: research,automation,knowledge-management,daath-zen,autopoiesis
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pyyaml>=6.0.0
+Requires-Dist: neo4j>=5.14.0
+Provides-Extra: ai
+Requires-Dist: pinecone-client>=3.0.0; extra == "ai"
+Requires-Dist: openai>=1.0.0; extra == "ai"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: black>=23.12.0; extra == "dev"
+Requires-Dist: isort>=5.13.0; extra == "dev"
+Requires-Dist: flake8>=7.0.0; extra == "dev"
+
+# DAATH Toolkit
+
+**DAATH-ZEN Toolkit** for research automation, knowledge capture, and autopoiesis workflows.
+
+## Overview
+
+DAATH Toolkit provides essential utilities for implementing the DAATH-ZEN methodology in your research and development workflows.
+
+## Features
+
+- **Chatlog Capture**: Automated extraction and structuring of conversation logs
+- **Vector Storage**: Domain-aware vector storage for knowledge graphs
+- **Research Generators**: Templates and automation for research instances
+- **Validators**: Quality assurance for research artifacts
+
+## Installation
+
+```bash
+# From source (development)
+pip install -e packages/daath-toolkit
+
+# With AI dependencies
+pip install -e "packages/daath-toolkit[ai]"
+
+# With development tools
+pip install -e "packages/daath-toolkit[dev]"
+```
+
+## Package Structure
+
+```
+daath-toolkit/
+├── capture/          # Chatlog capture utilities
+│   └── chatlog_capture.py
+├── generators/       # Research instance generators
+│   └── new_research.py
+├── storage/          # Vector storage and knowledge graphs
+│   └── vector_store.py
+├── validators/       # Quality assurance validators
+│   └── validate_research.py
+└── testing/          # Test suite
+```
+
+## Usage
+
+### Chatlog Capture
+
+```python
+from daath_toolkit.capture import chatlog_capture
+
+# Capture conversation data
+capture = chatlog_capture.ChatlogCapture()
+result = capture.process(conversation_data)
+```
+
+### Vector Storage
+
+```python
+from daath_toolkit.storage import vector_store
+
+# Initialize domain-aware vector store
+store = vector_store.DomainAwareVectorStore()
+store.index_documents(documents)
+```
+
+## Development
+
+```bash
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=daath_toolkit --cov-report=term-missing
+
+# Format code
+black daath_toolkit/
+isort daath_toolkit/
+
+# Lint
+flake8 daath_toolkit/
+```
+
+## Dependencies
+
+### Core
+- pyyaml >= 6.0.0
+- neo4j >= 5.14.0
+
+### Optional (AI)
+- pinecone-client >= 3.0.0
+- openai >= 1.0.0
+
+## License
+
+MIT License - See LICENSE file for details
+
+## Project
+
+Part of the [ALEIA-MELQUISEDEC](https://github.com/ccolombia-ui/aleia-melquisedec) monorepo.
+
+**Methodology**: DAATH-ZEN v4.0.0
+**Rostros**: MELQUISEDEC, HYPATIA, SALOMON, MORPHEUS, ALMA

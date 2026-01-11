@@ -1,0 +1,238 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Schema for connection types and validation rules",
+  "connection_types": [
+    {
+      "type": "supports",
+      "description": "Source thought supports/reinforces target thought",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Experimental evidence supports hypothesis",
+        "Concept A validates concept B"
+      ]
+    },
+    {
+      "type": "contradicts",
+      "description": "Source thought contradicts target thought",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Finding X contradicts assumption Y",
+        "Alternative approach challenges current design"
+      ]
+    },
+    {
+      "type": "refines",
+      "description": "Source thought refines/improves target thought",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Version 2 refines version 1 of concept",
+        "Detailed analysis refines initial observation"
+      ]
+    },
+    {
+      "type": "branches",
+      "description": "Source thought branches from target (alternative path)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence", "branch_id"],
+      "examples": [
+        "Alternative architecture branches from main design",
+        "Parallel experiment branches from hypothesis"
+      ]
+    },
+    {
+      "type": "derives",
+      "description": "Source thought derives logically from target",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Conclusion derives from premises",
+        "Implication follows from axiom"
+      ]
+    },
+    {
+      "type": "associates",
+      "description": "Source thought associates with target (lateral connection)",
+      "bidirectional": true,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Concept A relates to concept B (different domains)",
+        "Pattern X similar to pattern Y"
+      ]
+    },
+    {
+      "type": "exemplifies",
+      "description": "Source thought exemplifies target (concrete case)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Implementation X exemplifies pattern Y",
+        "Case study demonstrates principle"
+      ]
+    },
+    {
+      "type": "generalizes",
+      "description": "Source thought generalizes target (abstraction)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Pattern generalizes from specific cases",
+        "Theory abstracts from observations"
+      ]
+    },
+    {
+      "type": "compares",
+      "description": "Source thought compares with target",
+      "bidirectional": true,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence", "comparison_criteria"],
+      "examples": [
+        "Architecture A compared with architecture B",
+        "Method X evaluated against method Y"
+      ]
+    },
+    {
+      "type": "contrasts",
+      "description": "Source thought contrasts with target (highlights differences)",
+      "bidirectional": true,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Approach A differs from approach B in key aspects",
+        "Finding X contrasts with expectation Y"
+      ]
+    },
+    {
+      "type": "questions",
+      "description": "Source thought questions target (critical inquiry)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Critique challenges assumption",
+        "Alternative perspective questions conclusion"
+      ]
+    },
+    {
+      "type": "extends",
+      "description": "Source thought extends target (expansion)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "New feature extends existing functionality",
+        "Additional analysis extends initial study"
+      ]
+    },
+    {
+      "type": "analyzes",
+      "description": "Source thought analyzes target (decomposition)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Detailed examination analyzes phenomenon",
+        "Breakdown analyzes system components"
+      ]
+    },
+    {
+      "type": "synthesizes",
+      "description": "Source thought synthesizes multiple targets (combination)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "targets", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Framework synthesizes theories A, B, C",
+        "Integrated solution combines approaches X, Y"
+      ]
+    },
+    {
+      "type": "applies",
+      "description": "Source thought applies target (practical use)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence"],
+      "examples": [
+        "Implementation applies design pattern",
+        "Case study applies theoretical framework"
+      ]
+    },
+    {
+      "type": "evaluates",
+      "description": "Source thought evaluates target (critical judgment)",
+      "bidirectional": false,
+      "strength_range": [0.0, 1.0],
+      "required_fields": ["source", "target", "type", "strength"],
+      "optional_fields": ["description", "confidence", "evaluation_criteria"],
+      "examples": [
+        "Assessment evaluates solution quality",
+        "Review judges proposal merits"
+      ]
+    }
+  ],
+  "validation": {
+    "strength": {
+      "rule": "Must be between 0.0 and 1.0",
+      "description": "0.0=no connection, 0.5=moderate, 1.0=strong",
+      "recommended_threshold": 0.5
+    },
+    "target": {
+      "rule": "Must exist in thoughts graph",
+      "description": "Target thought ID must be valid node"
+    },
+    "source": {
+      "rule": "Must exist in thoughts graph",
+      "description": "Source thought ID must be valid node"
+    },
+    "description": {
+      "rule": "Recommended for clarity",
+      "description": "Why this connection exists (improves interpretability)"
+    },
+    "confidence": {
+      "rule": "Optional, between 0.0 and 1.0",
+      "description": "Confidence in this connection"
+    },
+    "bidirectional": {
+      "rule": "If true, reverse connection also exists",
+      "description": "Indicates symmetric relationship"
+    }
+  },
+  "usage_guidelines": {
+    "when_to_use_supports": "When evidence confirms hypothesis, or concept reinforces another",
+    "when_to_use_contradicts": "When finding conflicts with expectation, or alternative challenges assumption",
+    "when_to_use_refines": "When improved version of concept emerges",
+    "when_to_use_branches": "When exploring alternative paths (use reasoning-branches MCP)",
+    "when_to_use_synthesizes": "When combining multiple concepts into unified framework (SECI combination)",
+    "strength_calibration": {
+      "0.0_0.3": "Weak connection, speculative",
+      "0.3_0.6": "Moderate connection, some evidence",
+      "0.6_0.8": "Strong connection, solid evidence",
+      "0.8_1.0": "Very strong connection, definitive"
+    }
+  }
+}

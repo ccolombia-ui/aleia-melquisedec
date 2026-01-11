@@ -10,10 +10,10 @@
 				"DO_NOT_TRACK": "1"
 			}
 		},
-		"spec-workflow-keter-migration": {
+		"spec-workflow-R000-autopoietic-template": {
 			"type": "stdio",
 			"command": "npx",
-			"args": ["-y", "@pimzino/spec-workflow-mcp@latest", "c:/proyectos/aleia-melquisedec/apps/research-keter-migration"],
+			"args": ["-y", "@pimzino/spec-workflow-mcp@latest", "C:/proyectos/aleia-melquisedec/apps/R000-autopoietic-template"],
 			"env": {
 				"DISABLE_TELEMETRY": "true",
 				"TELEMETRY_DISABLED": "1",

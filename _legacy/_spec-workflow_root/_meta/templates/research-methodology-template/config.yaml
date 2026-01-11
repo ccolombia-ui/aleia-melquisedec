@@ -1,0 +1,253 @@
+---
+# ============================================================================
+# RESEARCH METHODOLOGY CONFIGURATION
+# ============================================================================
+# Este archivo configura una investigación metodológica siguiendo el enfoque
+# MELQUISEDEC: DSR + gestión documental formal + trazabilidad triple output
+# ============================================================================
+
+# RESEARCH METADATA
+research:
+  name: "DSR"                           # Nombre corto (usado en paths)
+  full_name: "Design Science Research"  # Nombre completo
+  version: "1.0.0"
+  created: "2026-01-09"
+  owner: "MELQUISEDEC"
+
+  # TIPO DE INVESTIGACIÓN (determina qué specs genera SALOMON)
+  type: "academic"                      # academic | application | hybrid
+
+  # Solo si type: application | hybrid
+  architecture:
+    style: null                         # HEX | HEX-WF | HEX-WF-MCP
+    bounded_contexts: []                # Contextos de dominio
+
+  # Profundidad de revisión (para type: academic)
+  depth: "formal-review"                # formal-review | quick-scan | deep-dive
+
+# RESEARCH SCOPE
+scope:
+  # Research Questions (RQs) - Preguntas que guían la investigación
+  research_questions:
+    - "¿Cuáles son las fases y artefactos fundamentales del DSR?"
+    - "¿Cómo se valida un artefacto en el DSR?"
+    - "¿Qué frameworks/bibliotecas implementan DSR de forma robusta?"
+    - "¿Cómo se integra DSR con otras metodologías (Agile, TDD)?"
+
+  # Dominios de conocimiento
+  domains:
+    - "methodology"
+    - "software-engineering"
+    - "research"
+
+  # Hipótesis iniciales (opcional)
+  hypothesis:
+    - "DSR tiene 6 fases: Problem, Design, Build, Evaluate, Communicate, Reflect"
+    - "La validación en DSR requiere métricas cuantitativas y cualitativas"
+    - "Existen frameworks Python/TypeScript para automatizar DSR"
+
+# OUTPUT CONFIGURATION
+outputs:
+  # Triple output: Markdown + Graph + Vectors (P6: Trazabilidad)
+  triple_storage: true
+
+  # Formatos de salida
+  formats:
+    - markdown          # .md con metadata HKM + Dublin Core
+    - yaml-ld          # YAML-LD para Neo4j ingestion
+    - json             # JSON para procesamiento
+    - cypher           # Queries Cypher para Neo4j
+
+  # Targets técnicos
+  targets:
+    graph_db: "Neo4j 5.15+"
+    embeddings: "Ollama qwen3-embedding 1536-dim"
+    vector_index: "HNSW"
+
+  # Estructura de carpetas (relativo a apps/research-{name}/)
+  structure:
+    - "00-problem"           # DSR Phase 1: Problem Identification
+    - "01-literature"        # Gestión formal de fuentes
+    - "02-atomics"          # Conocimiento atómico (Zettelkasten)
+    - "03-workbook"         # Análisis y síntesis
+    - "04-artifacts"        # Solution spec + scripts
+    - "05-evaluate"         # Validación
+    - "06-lessons"          # Lessons learned
+    - ".melquisedec"        # Validaciones de rostros
+    - "references"          # Enlaces externos
+
+# ROSTROS INVOLUCRADOS (DAATH-ZEN)
+rostros:
+  - name: "MELQUISEDEC"
+    role: "Orquestador"
+    responsibilities:
+      - "Inicializar estructura"
+      - "Crear ISSUE.yaml"
+      - "Coordinar checkpoints"
+
+  - name: "HYPATIA"
+    role: "Investigadora"
+    responsibilities:
+      - "Buscar fuentes canónicas"
+      - "Documentar literatura"
+      - "Atomizar conocimiento (Zettelkasten)"
+      - "Mapear relaciones semánticas"
+
+  - name: "SALOMON"
+    role: "Arquitecto"
+    responsibilities:
+      - "Análisis comparativo"
+      - "Identificar patrones"
+      - "Recomendar framework"
+      - "Sintetizar hallazgos"
+
+  - name: "MORPHEUS"
+    role: "Implementador"
+    responsibilities:
+      - "Crear solution spec"
+      - "Implementation plan"
+      - "Scripts de ingesta Neo4j"
+      - "Generar embeddings"
+
+  - name: "ALMA"
+    role: "Ejecutora"
+    responsibilities:
+      - "Cargar datos a Neo4j"
+      - "Validar grafo"
+      - "Generar visualizaciones"
+      - "Validar hipótesis"
+
+# VALIDATION CHECKPOINTS (P5: Validación Continua)
+checkpoints:
+  - id: "ck-01-literature"
+    rostro: "HYPATIA"
+    phase: "01-literature"
+    require_approval: true
+    criteria:
+      min_sources: 5
+      min_atomics: 20
+      relationships_documented: true
+    validation_file: ".melquisedec/hypatia_validation.yaml"
+
+  - id: "ck-02-analysis"
+    rostro: "SALOMON"
+    phase: "03-workbook"
+    require_approval: true
+    criteria:
+      research_questions_answered: true
+      framework_recommended: true
+      min_patterns: 5
+    validation_file: ".melquisedec/salomon_validation.yaml"
+
+  - id: "ck-03-artifacts"
+    rostro: "MORPHEUS"
+    phase: "04-artifacts"
+    require_approval: false  # Auto-validated por tests
+    criteria:
+      solution_spec_lines: 2000
+      scripts_executable: true
+      tests_coverage: 80
+    validation_file: ".melquisedec/morpheus_validation.yaml"
+
+  - id: "ck-04-execution"
+    rostro: "ALMA"
+    phase: "05-evaluate"
+    require_approval: true
+    criteria:
+      graph_populated: true
+      hypothesis_validated: true
+      visualizations_created: true
+    validation_file: ".melquisedec/alma_validation.yaml"
+
+# MCP TOOLS CONFIGURATION
+required_mcps:
+  # Base tools (siempre necesarios)
+  base:
+    - "neo4j"           # Graph database operations
+    - "memory"          # Context management
+    - "filesystem"      # File operations
+
+  # Specialized tools (según tipo de investigación)
+  specialized:
+    - "brave-search"    # Web search para papers
+    - "arxiv"           # Academic papers
+    - "context7"        # Technical documentation
+    - "perplexity"      # Deep research
+    - "firecrawl"       # Web scraping si necesario
+
+  # Optional tools
+  optional:
+    - "github-search"   # Para buscar frameworks en GitHub
+    - "markitdown"      # Convertir PDFs a markdown
+
+# QUALITY GATES
+quality:
+  # Métricas mínimas
+  metrics:
+    min_sources: 5
+    min_peer_reviewed: 3
+    min_atomics: 20
+    min_patterns: 5
+    min_solution_spec_lines: 2000
+    min_test_coverage: 80
+
+  # Validaciones automáticas
+  validators:
+    - "yaml-lint"               # Validar YAML files
+    - "markdown-link-check"     # Verificar links
+    - "neo4j-schema-validator"  # Validar Cypher queries
+
+  # Anti-patterns a evitar
+  anti_patterns:
+    - "Duplicación de información"
+    - "Fuentes no verificadas"
+    - "Atomics sin trazabilidad"
+    - "Scripts no idempotentes"
+
+# TIMELINE (opcional)
+timeline:
+  estimated_duration: "2-3 weeks"
+  phases:
+    - phase: "Literature Review"
+      duration: "3-5 days"
+      rostro: "HYPATIA"
+    - phase: "Analysis"
+      duration: "2-3 days"
+      rostro: "SALOMON"
+    - phase: "Artifacts"
+      duration: "5-7 days"
+      rostro: "MORPHEUS"
+    - phase: "Execution"
+      duration: "2-3 days"
+      rostro: "ALMA"
+
+# METADATA (HKM + Dublin Core)
+metadata:
+  hkm:
+    id: "spec-research-methodology-template"
+    is_a: "spec/research-template"
+    version: "1.0.0"
+    permalink: ".spec-workflow/specs/research-methodology-template/"
+
+  dublin_core:
+    title: "Research Methodology Template - MELQUISEDEC"
+    creator: ["MELQUISEDEC"]
+    date: "2026-01-09"
+    subject: ["research", "methodology", "DSR", "knowledge-management"]
+    description: "Template configurable para investigaciones metodológicas formales"
+    language: "es"
+    format: "text/yaml"
+
+  melquisedec:
+    principles_applied:
+      - "P1: Síntesis Metodológica"
+      - "P2: Autopoiesis"
+      - "P3: Issue-Driven"
+      - "P5: Validación Continua"
+      - "P6: Trazabilidad Explícita"
+      - "P7: Recursión Fractal"
+
+    workflow: "DAATH-ZEN"
+    version: "2.0.0"
+
+---

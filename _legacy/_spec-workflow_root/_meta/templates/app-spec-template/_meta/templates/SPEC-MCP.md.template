@@ -1,0 +1,508 @@
+# SPEC-MCP: {{app_name}}
+<!-- Especificación de MCP Server - SALOMON -->
+<!-- SOLO PARA: app_type = HEX-WF-MCP -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **App** | `{{app_name}}` |
+| **Tipo** | `{{app_type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | SALOMON |
+| **Versión** | 1.0.0 |
+
+---
+
+## 1. Visión General del MCP Server
+
+### 1.1 Propósito
+
+El MCP (Model Context Protocol) Server expone las capacidades del dominio
+como **herramientas (tools)** que pueden ser invocadas por LLMs/Agentes.
+
+### 1.2 Arquitectura
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                            MCP SERVER                                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                         TOOLS LAYER                              │  │
+│  │                                                                  │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐              │  │
+│  │  │   Tool 1    │  │   Tool 2    │  │   Tool 3    │   ...        │  │
+│  │  │ {{tool_1}}  │  │ {{tool_2}}  │  │ {{tool_3}}  │              │  │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘              │  │
+│  │         │                │                │                      │  │
+│  └─────────┼────────────────┼────────────────┼──────────────────────┘  │
+│            │                │                │                         │
+│            ▼                ▼                ▼                         │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │                      DOMAIN LAYER                                │  │
+│  │                      (Ports + Adapters)                          │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+│                                                                         │
+│  Transport: stdio | HTTP                                                │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 1.3 Resumen de Tools
+
+| Tool | Descripción | Puerto | Atomic Ref |
+|------|-------------|--------|------------|
+| `{{tool_1.name}}` | {{tool_1.short_desc}} | `{{tool_1.port}}` | [{{tool_1.atomic_ref}}](../../02-atomics/{{tool_1.atomic_ref}}.md) |
+| `{{tool_2.name}}` | {{tool_2.short_desc}} | `{{tool_2.port}}` | [{{tool_2.atomic_ref}}](../../02-atomics/{{tool_2.atomic_ref}}.md) |
+| `{{tool_3.name}}` | {{tool_3.short_desc}} | `{{tool_3.port}}` | [{{tool_3.atomic_ref}}](../../02-atomics/{{tool_3.atomic_ref}}.md) |
+
+---
+
+## 2. Server Configuration
+
+### 2.1 Manifest (server.json)
+
+```json
+{
+  "name": "{{app_name}}-mcp",
+  "version": "{{version}}",
+  "description": "{{mcp.description}}",
+  "transport": {
+    "type": "stdio"
+  },
+  "tools": [
+    {
+      "name": "{{tool_1.name}}",
+      "description": "{{tool_1.description}}"
+    },
+    {
+      "name": "{{tool_2.name}}",
+      "description": "{{tool_2.description}}"
+    }
+  ],
+  "resources": [],
+  "prompts": []
+}
+```
+
+### 2.2 Environment Variables
+
+| Variable | Descripción | Requerida | Default |
+|----------|-------------|-----------|---------|
+| `{{ENV_VAR_1}}` | {{env_1.description}} | {{env_1.required}} | `{{env_1.default}}` |
+| `{{ENV_VAR_2}}` | {{env_2.description}} | {{env_2.required}} | `{{env_2.default}}` |
+
+---
+
+## 3. Tools Specification
+
+### 3.1 {{tool_1.name}}
+
+> **Trazabilidad:** [{{tool_1.atomic_ref}}](../../02-atomics/{{tool_1.atomic_ref}}.md)
+> **Puerto:** [{{tool_1.port}}](SPEC-PORTS.md#{{tool_1.port_anchor}})
+
+#### Descripción
+
+{{tool_1.description}}
+
+#### Input Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "{{param_1.name}}": {
+      "type": "{{param_1.type}}",
+      "description": "{{param_1.description}}"
+    },
+    "{{param_2.name}}": {
+      "type": "{{param_2.type}}",
+      "description": "{{param_2.description}}",
+      "default": {{param_2.default}}
+    }
+  },
+  "required": ["{{param_1.name}}"]
+}
+```
+
+#### Output Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "{{output_1.name}}": {
+      "type": "{{output_1.type}}",
+      "description": "{{output_1.description}}"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if success is false"
+    }
+  }
+}
+```
+
+#### Ejemplos de Uso
+
+**Request:**
+```json
+{
+  "tool": "{{tool_1.name}}",
+  "arguments": {
+    "{{param_1.name}}": "{{param_1.example}}",
+    "{{param_2.name}}": {{param_2.example}}
+  }
+}
+```
+
+**Response (Success):**
+```json
+{
+  "{{output_1.name}}": "{{output_1.example}}",
+  "success": true
+}
+```
+
+**Response (Error):**
+```json
+{
+  "success": false,
+  "error": "{{tool_1.error_example}}"
+}
+```
+
+#### Implementación Esperada
+
+```python
+from mcp.server import Tool
+from {{app_name}}.ports.inbound import {{tool_1.port}}
+
+class {{tool_1.class_name}}(Tool):
+    """
+    {{tool_1.docstring}}
+
+    Trazabilidad: {{tool_1.atomic_ref}}
+    """
+
+    name = "{{tool_1.name}}"
+    description = "{{tool_1.description}}"
+
+    def __init__(self, use_case: {{tool_1.port}}):
+        self._use_case = use_case
+
+    async def execute(
+        self,
+        {{param_1.name}}: {{param_1.python_type}},
+        {{param_2.name}}: {{param_2.python_type}} = {{param_2.default}}
+    ) -> dict:
+        """
+        {{tool_1.execute_docstring}}
+        """
+        try:
+            result = await self._use_case.{{tool_1.method}}(
+                {{param_1.name}}={{param_1.name}},
+                {{param_2.name}}={{param_2.name}}
+            )
+            return {
+                "{{output_1.name}}": result,
+                "success": True
+            }
+        except {{tool_1.exception}} as e:
+            return {
+                "success": False,
+                "error": str(e)
+            }
+```
+
+---
+
+### 3.2 {{tool_2.name}}
+
+> **Trazabilidad:** [{{tool_2.atomic_ref}}](../../02-atomics/{{tool_2.atomic_ref}}.md)
+> **Puerto:** [{{tool_2.port}}](SPEC-PORTS.md#{{tool_2.port_anchor}})
+
+#### Descripción
+
+{{tool_2.description}}
+
+#### Input Schema
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "{{t2_param_1.name}}": {
+      "type": "{{t2_param_1.type}}",
+      "description": "{{t2_param_1.description}}"
+    }
+  },
+  "required": ["{{t2_param_1.name}}"]
+}
+```
+
+#### Output Schema
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "{{t2_output_1.name}}": {
+      "type": "{{t2_output_1.type}}"
+    },
+    "success": {"type": "boolean"}
+  }
+}
+```
+
+---
+
+### 3.3 {{tool_3.name}}
+
+> **Trazabilidad:** [{{tool_3.atomic_ref}}](../../02-atomics/{{tool_3.atomic_ref}}.md)
+> **Puerto:** [{{tool_3.port}}](SPEC-PORTS.md#{{tool_3.port_anchor}})
+
+#### Descripción
+
+{{tool_3.description}}
+
+_(Documentación completa similar a tool_1)_
+
+---
+
+## 4. Resources (Opcional)
+
+> Resources permiten exponer datos estáticos o semi-estáticos al LLM.
+
+### 4.1 {{resource_1.name}}
+
+```json
+{
+  "uri": "{{resource_1.uri}}",
+  "name": "{{resource_1.name}}",
+  "description": "{{resource_1.description}}",
+  "mimeType": "{{resource_1.mime_type}}"
+}
+```
+
+---
+
+## 5. Prompts (Opcional)
+
+> Prompts pre-definidos que el LLM puede usar.
+
+### 5.1 {{prompt_1.name}}
+
+```json
+{
+  "name": "{{prompt_1.name}}",
+  "description": "{{prompt_1.description}}",
+  "arguments": [
+    {
+      "name": "{{prompt_1.arg_1}}",
+      "description": "{{prompt_1.arg_1_desc}}",
+      "required": true
+    }
+  ]
+}
+```
+
+**Template:**
+```
+{{prompt_1.template}}
+```
+
+---
+
+## 6. Error Handling
+
+### 6.1 Códigos de Error MCP
+
+| Código | Error | Descripción |
+|--------|-------|-------------|
+| -32700 | Parse error | JSON inválido |
+| -32600 | Invalid Request | Request mal formado |
+| -32601 | Method not found | Tool no existe |
+| -32602 | Invalid params | Parámetros inválidos |
+| -32603 | Internal error | Error interno |
+| -32000 | {{custom_error_1}} | {{custom_error_1_desc}} |
+| -32001 | {{custom_error_2}} | {{custom_error_2_desc}} |
+
+### 6.2 Mapping de Excepciones
+
+| Excepción de Dominio | Código MCP | Mensaje |
+|---------------------|------------|---------|
+| `{{exception_1}}` | {{code_1}} | {{message_1}} |
+| `{{exception_2}}` | {{code_2}} | {{message_2}} |
+
+---
+
+## 7. Server Implementation
+
+### 7.1 Estructura de Código
+
+```
+mcp/
+├── __init__.py
+├── server.py              # Entry point
+├── tools/
+│   ├── __init__.py
+│   ├── {{tool_1.name}}.py
+│   ├── {{tool_2.name}}.py
+│   └── {{tool_3.name}}.py
+├── resources/
+│   └── __init__.py
+├── prompts/
+│   └── __init__.py
+└── config/
+    └── settings.py
+```
+
+### 7.2 Server Entry Point
+
+```python
+# mcp/server.py
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+
+from {{app_name}}.mcp.tools import {{tool_1.class_name}}, {{tool_2.class_name}}
+from {{app_name}}.ports.inbound import {{port_1}}, {{port_2}}
+
+class {{app_name.pascal}}MCPServer:
+    """
+    MCP Server para {{app_name}}.
+
+    Expone las capacidades del dominio como tools para LLMs.
+    """
+
+    def __init__(
+        self,
+        {{dep_1}}: {{port_1}},
+        {{dep_2}}: {{port_2}}
+    ):
+        self.server = Server("{{app_name}}-mcp")
+        self._setup_tools({{dep_1}}, {{dep_2}})
+
+    def _setup_tools(self, {{dep_1}}, {{dep_2}}):
+        """Registra tools en el server"""
+
+        @self.server.list_tools()
+        async def list_tools():
+            return [
+                {{tool_1.class_name}}.get_definition(),
+                {{tool_2.class_name}}.get_definition(),
+            ]
+
+        @self.server.call_tool()
+        async def call_tool(name: str, arguments: dict):
+            if name == "{{tool_1.name}}":
+                tool = {{tool_1.class_name}}({{dep_1}})
+                return await tool.execute(**arguments)
+            elif name == "{{tool_2.name}}":
+                tool = {{tool_2.class_name}}({{dep_2}})
+                return await tool.execute(**arguments)
+            else:
+                raise ValueError(f"Unknown tool: {name}")
+
+    async def run(self):
+        """Inicia el server via stdio"""
+        async with stdio_server() as (read_stream, write_stream):
+            await self.server.run(
+                read_stream,
+                write_stream,
+                self.server.create_initialization_options()
+            )
+
+# Entry point
+if __name__ == "__main__":
+    import asyncio
+    from {{app_name}}.container import get_container
+
+    container = get_container()
+    server = {{app_name.pascal}}MCPServer(
+        {{dep_1}}=container.resolve({{port_1}}),
+        {{dep_2}}=container.resolve({{port_2}})
+    )
+    asyncio.run(server.run())
+```
+
+---
+
+## 8. Testing
+
+### 8.1 Test de Tools
+
+```python
+import pytest
+from {{app_name}}.mcp.tools import {{tool_1.class_name}}
+
+class Test{{tool_1.class_name}}:
+
+    @pytest.fixture
+    def mock_use_case(self):
+        # Mock del puerto
+        pass
+
+    async def test_execute_success(self, mock_use_case):
+        tool = {{tool_1.class_name}}(mock_use_case)
+        result = await tool.execute(
+            {{param_1.name}}="{{param_1.test_value}}"
+        )
+        assert result["success"] is True
+        assert "{{output_1.name}}" in result
+
+    async def test_execute_error(self, mock_use_case):
+        tool = {{tool_1.class_name}}(mock_use_case)
+        mock_use_case.{{tool_1.method}}.side_effect = {{tool_1.exception}}("error")
+        result = await tool.execute(...)
+        assert result["success"] is False
+        assert "error" in result
+```
+
+---
+
+## 9. Matriz de Trazabilidad
+
+| Tool | Puerto | Atomic Concept | Source |
+|------|--------|----------------|--------|
+| `{{tool_1.name}}` | `{{tool_1.port}}` | [{{tool_1.atomic_ref}}](../../02-atomics/{{tool_1.atomic_ref}}.md) | {{tool_1.source}} |
+| `{{tool_2.name}}` | `{{tool_2.port}}` | [{{tool_2.atomic_ref}}](../../02-atomics/{{tool_2.atomic_ref}}.md) | {{tool_2.source}} |
+
+---
+
+## 10. Validación
+
+### Criterios CK-02 (parcial)
+
+| Criterio | Estado |
+|----------|--------|
+| Todos los tools trazan a atomics | [ ] |
+| Input schemas definidos | [ ] |
+| Output schemas definidos | [ ] |
+| Ejemplos de uso documentados | [ ] |
+| Error handling especificado | [ ] |
+
+---
+
+## 11. Notas para MORPHEUS
+
+1. Implementar server en `mcp/server.py`
+2. Tools en `mcp/tools/`
+3. Usar `mcp` library de Anthropic
+4. Tests con mocks de puertos
+5. Entry point: `python -m {{app_name}}.mcp`
+
+---
+
+## Changelog
+
+| Versión | Fecha | Autor | Cambios |
+|---------|-------|-------|---------|
+| 1.0.0 | {{date}} | SALOMON | Versión inicial |

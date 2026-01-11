@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "🏠 Root - Monorepo",
+      "path": "."
+    },
+    {
+      "name": "🚀 R000 - Autopoietic Template",
+      "path": "apps/R000-autopoietic-template"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/.pytest_cache": true,
+      "**/node_modules": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/.venv": true,
+      "**/venv": true,
+      "**/htmlcov": true
+    },
+    "chat.mcp.defaultServer": "spec-workflow-R000-autopoietic-template",
+    "telemetry.telemetryLevel": "off"
+  },
+  "extensions": {
+    "recommendations": [
+      "kiranbennyJoseph.contextiq",
+      "moonolgerd.mcp-explorer",
+      "jonathanCarter.thinking-in-code"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": []
+  }
+}

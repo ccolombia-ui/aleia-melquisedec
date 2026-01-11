@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+./__init__.py
+daath_toolkit.egg-info/PKG-INFO
+daath_toolkit.egg-info/SOURCES.txt
+daath_toolkit.egg-info/dependency_links.txt
+daath_toolkit.egg-info/requires.txt
+daath_toolkit.egg-info/top_level.txt

@@ -65,6 +65,7 @@ research-keter-migration/
 ## 🔄 Workflow de Archivos
 
 ### Flujo de Specs
+
 ```
 .spec-workflow/specs/SPEC-XXX.md
     │
@@ -75,6 +76,7 @@ research-keter-migration/
 ```
 
 ### Convenciones de Nombres
+
 ```
 SPEC-{NNN}-{slug}.md        # Specs (ej: SPEC-001-dependency-audit.md)
 ADR-{NNN}-{slug}.md         # Architecture Decision Records
@@ -84,21 +86,21 @@ ADR-{NNN}-{slug}.md         # Architecture Decision Records
 
 ## 🏷️ Estados de Specs
 
-| Estado | Emoji | Significado |
-|--------|-------|-------------|
-| `draft` | 📝 | En redacción |
-| `pending-review` | 🔍 | Esperando revisión |
-| `approved` | ✅ | Aprobado por rostro |
-| `in-progress` | 🚧 | En implementación |
-| `blocked` | 🚫 | Bloqueado |
-| `completed` | ✔️ | Completado |
-| `archived` | 📦 | Archivado |
+| Estado             | Emoji | Significado         |
+| ------------------ | ----- | ------------------- |
+| `draft`          | 📝    | En redacción       |
+| `pending-review` | 🔍    | Esperando revisión |
+| `approved`       | ✅    | Aprobado por rostro |
+| `in-progress`    | 🚧    | En implementación  |
+| `blocked`        | 🚫    | Bloqueado           |
+| `completed`      | ✔️  | Completado          |
+| `archived`       | 📦    | Archivado           |
 
 ## 🔗 Relaciones entre Documentos
 
 ```mermaid
 graph LR
-    SW[.spec-workflow/specs/] --> P[00-problem/]
+    SW[".spec-workflow/specs/"] --> P[00-problem/]
     SW --> D[01-design/]
     D --> B[02-build/]
     B --> E[03-evaluate/]

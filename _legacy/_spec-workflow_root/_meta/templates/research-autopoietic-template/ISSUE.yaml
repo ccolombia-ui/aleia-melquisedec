@@ -1,0 +1,140 @@
+# ============================================================================
+# ISSUE METADATA (EPIC-LEVEL)
+# HKM Type: epic (https://docs.melquisedec.org/hkm-standard#types)
+# ============================================================================
+
+metadata:
+  # --- Identidad de la Épica ---
+  title: "[TÍTULO_ÉPICA]"
+  type: research  # research | app | social-project
+  status: active  # active | paused | completed | archived
+  version: "1.0.0"
+
+  # --- HKM Standard Integration ---
+  hkm:
+    issue_type: epic
+    epistemic_level: source  # source: Entrada original, observación, referencia externa
+    doc_path: ""  # Se asigna automáticamente por sync-hkm-to-neo4j.py
+    graph_synced: false  # Actualizado por scripts/sync-hkm-to-neo4j.py
+    last_sync: null  # ISO 8601 timestamp
+
+  # --- Trazabilidad y Procedencia ---
+  created_at: "YYYY-MM-DD"
+  updated_at: "YYYY-MM-DD"
+  created_by: "[AUTOR]"
+  tags: [research, daath-zen, autopoietic]
+
+  # --- Contexto y Motivación ---
+  problem_statement: |
+    [Descripción del problema o pregunta de investigación que motiva esta épica.
+    Debe ser específico, medible y alineado con los objetivos del monorepo.]
+
+  success_criteria:
+    - "[Criterio de éxito 1]"
+    - "[Criterio de éxito 2]"
+    - "[Criterio de éxito 3]"
+
+  # --- Checkpoint Strategy (P5: Validación Continua) ---
+  checkpoints:
+    CK-01:  # MELQUISEDEC (Problema)
+      completed: false
+      validation_date: null
+      artifacts: []
+    CK-02:  # HYPATIA (Investigación)
+      completed: false
+      validation_date: null
+      artifacts: []
+    CK-03:  # SALOMON (Análisis) - Research-specific
+      completed: false
+      validation_date: null
+      artifacts: []
+    CK-04:  # MORPHEUS+ALMA (Implementación+Publicación) - Research-specific
+      completed: false
+      validation_date: null
+      artifacts: []
+
+# ============================================================================
+# WORKFLOW CONFIGURATION (Divergent by Type)
+# ============================================================================
+
+workflow:
+  # --- Gestión con spec-workflow-mcp ---
+  spec_workflow:
+    enabled: true
+    approval_required: false  # Activar si se requiere aprobación manual
+    steering_guide_used: false  # true si se usó mcp_spec-workflow2_steering-guide
+
+  # --- Autopoiesis: Context & Memory Management ---
+  autopoiesis:
+    # Thinking modes activados en diferentes fases
+    thinking_modes:
+      sequential_thinking: true   # Para análisis paso a paso (problema, diseño)
+      smart_thinking: true        # Para síntesis y conexión de conceptos (atomics, workbook)
+      reasoning_branches: false   # Solo si se requieren alternativas paralelas
+
+    # Memory/Context strategies
+    context_management:
+      session_id: ""  # Asignado por smart-thinking MCP
+      memory_enabled: true
+      context_persistence: .spec-workflow/context/
+      lessons_feedback: true  # P2: Autopoiesis activada
+
+    # MCP Orchestration (Estrategia de activación)
+    mcp_strategy: references/mcp-orchestrator-strategy.md
+
+# ============================================================================
+# REFERENCES & LINKS
+# ============================================================================
+
+references:
+  # --- Documentación Fundacional ---
+  hkm_standard: docs/manifiesto/02-arquitectura/03-templates-hkm.md
+  daath_zen_format: archive/tasks.md  # DAATH-ZEN Advanced (95% coherence)
+  comparative_analysis: apps/research-neo4j-llamaindex-architecture/01-design/comparative-analysis.md
+  llamaindex_integration: references/llamaindex.md#chapter-10
+
+  # --- Principios P1-P7 ---
+  principles: docs/manifiesto/01-fundamentos/
+
+  # --- Architecture ---
+  hybrid_stack: apps/research-neo4j-llamaindex-architecture/01-design/arquitectura-hibrida.md
+  triple_persistence: docs/architecture/ADR-003-triple-persistence.md
+
+# ============================================================================
+# AUTOPOIETIC FEEDBACK LOOP (P2)
+# ============================================================================
+
+autopoietic_feedback:
+  # Lessons learned desde 06-lessons/ → mejoran template
+  lessons_integrated: []  # IDs de lessons que refinaron este proceso
+  template_version_history:
+    - v1.0.0: "Template base con HKM + DAATH-ZEN + autogestión"
+  next_iteration_improvements: []
+
+# ============================================================================
+# NOTAS INTERNAS
+# ============================================================================
+
+notes: |
+  ## Uso de este Template
+
+  1. Reemplazar [PLACEHOLDERS] con valores reales
+  2. Definir problema_statement y success_criteria específicos
+  3. Ajustar checkpoints según tipo de proyecto (research/app/social-project)
+  4. Activar/desactivar thinking_modes según complejidad
+  5. Completar references/ con documentación relevante
+
+  ## Principios DAATH-ZEN
+
+  - **P1 (Síntesis)**: Combina DSR + Zettelkasten + SECI
+  - **P2 (Autopoiesis)**: Lessons → mejoran template
+  - **P3 (Issue-Driven)**: ISSUE.yaml + HKM metadata
+  - **P5 (Validación)**: 4 checkpoints CK-01 a CK-04
+  - **P6 (Trazabilidad)**: MD ↔ Graph ↔ Vector (sync scripts)
+  - **P7 (Recursión Fractal)**: Patrón repetible en multinivel
+
+  ## Sync Scripts (P6)
+
+  - `sync-hkm-to-neo4j.py`: MD → Graph
+  - `validate-triple-coherence.py`: MD ↔ Graph ↔ Vector
+  - `archive-epic.sh`: Git tag + Cypher soft delete

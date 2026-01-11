@@ -1,0 +1,371 @@
+# SPEC-ADAPTERS: {{app_name}}
+<!-- Especificación de Adaptadores - SALOMON -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **App** | `{{app_name}}` |
+| **Tipo** | `{{app_type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | SALOMON |
+| **Versión** | 1.0.0 |
+
+---
+
+## 1. Visión General de Adaptadores
+
+### 1.1 Arquitectura
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           ADAPTERS LAYER                                │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  PRIMARY ADAPTERS (Inbound)          SECONDARY ADAPTERS (Outbound)      │
+│  ─────────────────────────           ───────────────────────────────    │
+│                                                                         │
+│  ┌─────────────┐                                    ┌─────────────┐     │
+│  │    REST     │──┐                            ┌───▶│  Database   │     │
+│  │  Controller │  │                            │    │  Repository │     │
+│  └─────────────┘  │    ┌─────────────────┐     │    └─────────────┘     │
+│                   │    │                 │     │                        │
+│  ┌─────────────┐  ├───▶│   APPLICATION  │─────┤    ┌─────────────┐     │
+│  │     CLI     │  │    │    (Ports)     │     │    │  External   │     │
+│  │   Adapter   │──┤    │                 │     └───▶│   API       │     │
+│  └─────────────┘  │    └─────────────────┘          └─────────────┘     │
+│                   │                                                     │
+│  ┌─────────────┐  │                                 ┌─────────────┐     │
+│  │   GraphQL   │──┘                            ┌───▶│   Message   │     │
+│  │  Resolver   │                               │    │   Queue     │     │
+│  └─────────────┘                               │    └─────────────┘     │
+│                                                │                        │
+└────────────────────────────────────────────────┴────────────────────────┘
+```
+
+### 1.2 Resumen de Adaptadores
+
+| Adaptador | Tipo | Puerto que Implementa | Tecnología |
+|-----------|------|----------------------|------------|
+| `{{adapter_1.name}}` | Primary | `{{adapter_1.port}}` | {{adapter_1.tech}} |
+| `{{adapter_2.name}}` | Primary | `{{adapter_2.port}}` | {{adapter_2.tech}} |
+| `{{adapter_3.name}}` | Secondary | `{{adapter_3.port}}` | {{adapter_3.tech}} |
+| `{{adapter_4.name}}` | Secondary | `{{adapter_4.port}}` | {{adapter_4.tech}} |
+
+---
+
+## 2. Adaptadores Primarios (Inbound)
+
+> Adaptadores que reciben requests del mundo exterior y los traducen a llamadas al dominio.
+
+### 2.1 {{adapter_primary_1.name}}
+
+> **Implementa Puerto:** [{{adapter_primary_1.port}}](SPEC-PORTS.md#{{adapter_primary_1.port_anchor}})
+> **Trazabilidad:** [{{adapter_primary_1.atomic_ref}}](../../02-atomics/{{adapter_primary_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{adapter_primary_1.description}}
+
+#### Tecnología
+
+- **Framework:** {{adapter_primary_1.framework}}
+- **Protocolo:** {{adapter_primary_1.protocol}}
+- **Formato:** {{adapter_primary_1.format}}
+
+#### Endpoints / Comandos
+
+| Endpoint/Comando | Método | Operación del Puerto | Descripción |
+|------------------|--------|---------------------|-------------|
+| `{{endpoint_1.path}}` | `{{endpoint_1.method}}` | `{{endpoint_1.port_method}}` | {{endpoint_1.description}} |
+| `{{endpoint_2.path}}` | `{{endpoint_2.method}}` | `{{endpoint_2.port_method}}` | {{endpoint_2.description}} |
+
+#### Especificación de Endpoint
+
+##### {{endpoint_1.method}} {{endpoint_1.path}}
+
+**Request:**
+```json
+{
+  "{{field_1}}": "{{type_1}}",
+  "{{field_2}}": "{{type_2}}"
+}
+```
+
+**Response (200):**
+```json
+{
+  "data": {
+    "{{response_field_1}}": "{{response_type_1}}"
+  },
+  "success": true
+}
+```
+
+**Response (Error):**
+```json
+{
+  "error": {
+    "code": "{{error_code}}",
+    "message": "{{error_message}}"
+  },
+  "success": false
+}
+```
+
+#### Implementación Esperada
+
+```python
+from {{app_name}}.ports.inbound import {{adapter_primary_1.port}}
+from {{app_name}}.ports.dtos import {{adapter_primary_1.request_dto}}, {{adapter_primary_1.response_dto}}
+
+class {{adapter_primary_1.name}}:
+    """
+    {{adapter_primary_1.docstring}}
+
+    Trazabilidad: {{adapter_primary_1.atomic_ref}}
+    """
+
+    def __init__(self, use_case: {{adapter_primary_1.port}}):
+        self._use_case = use_case
+
+    async def {{method_1.name}}(
+        self,
+        request: {{adapter_primary_1.request_dto}}
+    ) -> {{adapter_primary_1.response_dto}}:
+        """
+        {{method_1.description}}
+
+        Mapea: {{endpoint_1.path}} -> {{endpoint_1.port_method}}
+        """
+        # 1. Validar request (framework-specific)
+        # 2. Convertir a DTO del dominio
+        # 3. Llamar al puerto
+        # 4. Mapear respuesta
+        result = await self._use_case.{{endpoint_1.port_method}}(...)
+        return self._map_response(result)
+```
+
+---
+
+### 2.2 {{adapter_primary_2.name}}
+
+> **Implementa Puerto:** [{{adapter_primary_2.port}}](SPEC-PORTS.md#{{adapter_primary_2.port_anchor}})
+> **Trazabilidad:** [{{adapter_primary_2.atomic_ref}}](../../02-atomics/{{adapter_primary_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{adapter_primary_2.description}}
+
+#### Tecnología
+
+- **Framework:** {{adapter_primary_2.framework}}
+- **Tipo:** {{adapter_primary_2.type}}
+
+#### Comandos
+
+| Comando | Argumentos | Operación del Puerto |
+|---------|------------|---------------------|
+| `{{command_1}}` | `{{args_1}}` | `{{port_method_1}}` |
+| `{{command_2}}` | `{{args_2}}` | `{{port_method_2}}` |
+
+---
+
+## 3. Adaptadores Secundarios (Outbound)
+
+> Adaptadores que implementan puertos outbound para conectar con sistemas externos.
+
+### 3.1 {{adapter_secondary_1.name}}
+
+> **Implementa Puerto:** [{{adapter_secondary_1.port}}](SPEC-PORTS.md#{{adapter_secondary_1.port_anchor}})
+> **Trazabilidad:** [{{adapter_secondary_1.atomic_ref}}](../../02-atomics/{{adapter_secondary_1.atomic_ref}}.md)
+
+#### Descripción
+
+{{adapter_secondary_1.description}}
+
+#### Tecnología
+
+- **Base de Datos:** {{adapter_secondary_1.database}}
+- **ORM/Driver:** {{adapter_secondary_1.orm}}
+- **Patrón:** {{adapter_secondary_1.pattern}}
+
+#### Mapping Entidad → Tabla
+
+| Entidad | Tabla | Columnas |
+|---------|-------|----------|
+| `{{entity_1}}` | `{{table_1}}` | `{{columns_1}}` |
+| `{{entity_2}}` | `{{table_2}}` | `{{columns_2}}` |
+
+#### Implementación Esperada
+
+```python
+from {{app_name}}.ports.outbound import {{adapter_secondary_1.port}}
+from {{app_name}}.domain.entities import {{adapter_secondary_1.entity}}
+
+class {{adapter_secondary_1.name}}({{adapter_secondary_1.port}}):
+    """
+    {{adapter_secondary_1.docstring}}
+
+    Implementa: {{adapter_secondary_1.port}}
+    Trazabilidad: {{adapter_secondary_1.atomic_ref}}
+    """
+
+    def __init__(self, session_factory):
+        self._session_factory = session_factory
+
+    async def {{method_1.name}}(
+        self,
+        {{method_1.params}}
+    ) -> {{method_1.return_type}}:
+        """{{method_1.description}}"""
+        async with self._session_factory() as session:
+            # Implementación específica de DB
+            pass
+
+    def _to_entity(self, model: {{adapter_secondary_1.model}}) -> {{adapter_secondary_1.entity}}:
+        """Convierte modelo de DB a entidad de dominio"""
+        pass
+
+    def _to_model(self, entity: {{adapter_secondary_1.entity}}) -> {{adapter_secondary_1.model}}:
+        """Convierte entidad de dominio a modelo de DB"""
+        pass
+```
+
+#### Variante para Testing
+
+```python
+class {{adapter_secondary_1.name}}InMemory({{adapter_secondary_1.port}}):
+    """Implementación in-memory para testing"""
+
+    def __init__(self):
+        self._data: Dict[str, {{adapter_secondary_1.entity}}] = {}
+
+    async def {{method_1.name}}(self, {{method_1.params}}) -> {{method_1.return_type}}:
+        # Implementación simple para tests
+        pass
+```
+
+---
+
+### 3.2 {{adapter_secondary_2.name}}
+
+> **Implementa Puerto:** [{{adapter_secondary_2.port}}](SPEC-PORTS.md#{{adapter_secondary_2.port_anchor}})
+> **Trazabilidad:** [{{adapter_secondary_2.atomic_ref}}](../../02-atomics/{{adapter_secondary_2.atomic_ref}}.md)
+
+#### Descripción
+
+{{adapter_secondary_2.description}}
+
+#### Tecnología
+
+- **Servicio:** {{adapter_secondary_2.service}}
+- **Protocolo:** {{adapter_secondary_2.protocol}}
+- **Autenticación:** {{adapter_secondary_2.auth}}
+
+#### Endpoints Externos
+
+| Operación | Endpoint Externo | Método |
+|-----------|-----------------|--------|
+| `{{op_1}}` | `{{external_endpoint_1}}` | `{{http_method_1}}` |
+| `{{op_2}}` | `{{external_endpoint_2}}` | `{{http_method_2}}` |
+
+#### Manejo de Errores
+
+| Error Externo | Mapeo a Excepción |
+|---------------|-------------------|
+| `{{external_error_1}}` | `{{domain_exception_1}}` |
+| `{{external_error_2}}` | `{{domain_exception_2}}` |
+| Timeout | `ExternalServiceError` |
+
+---
+
+## 4. Configuración
+
+### 4.1 Dependencias de Adapters
+
+```yaml
+# config/adapters.yaml
+adapters:
+  primary:
+    rest:
+      enabled: {{adapter_primary_1.enabled}}
+      host: "{{adapter_primary_1.host}}"
+      port: {{adapter_primary_1.port_number}}
+
+    cli:
+      enabled: {{adapter_primary_2.enabled}}
+
+  secondary:
+    database:
+      type: "{{adapter_secondary_1.database}}"
+      connection_string: "${DATABASE_URL}"
+      pool_size: {{adapter_secondary_1.pool_size}}
+
+    external_api:
+      base_url: "${EXTERNAL_API_URL}"
+      timeout: {{adapter_secondary_2.timeout}}
+      retry_count: {{adapter_secondary_2.retry_count}}
+```
+
+### 4.2 Inyección de Dependencias
+
+```python
+# Configuración de DI container
+def configure_dependencies(container):
+    # Outbound adapters (secundarios)
+    container.register(
+        {{adapter_secondary_1.port}},
+        {{adapter_secondary_1.name}},
+        singleton=True
+    )
+
+    # Inbound adapters (primarios) reciben use cases
+    container.register(
+        {{adapter_primary_1.name}},
+        factory=lambda: {{adapter_primary_1.name}}(
+            use_case=container.resolve({{adapter_primary_1.port}})
+        )
+    )
+```
+
+---
+
+## 5. Matriz de Trazabilidad
+
+| Adaptador | Tipo | Puerto | Atomic Concept | Source |
+|-----------|------|--------|----------------|--------|
+| `{{adapter_primary_1.name}}` | Primary | `{{adapter_primary_1.port}}` | [{{adapter_primary_1.atomic_ref}}](../../02-atomics/{{adapter_primary_1.atomic_ref}}.md) | {{adapter_primary_1.source}} |
+| `{{adapter_secondary_1.name}}` | Secondary | `{{adapter_secondary_1.port}}` | [{{adapter_secondary_1.atomic_ref}}](../../02-atomics/{{adapter_secondary_1.atomic_ref}}.md) | {{adapter_secondary_1.source}} |
+
+---
+
+## 6. Validación
+
+### Criterios CK-02 (parcial)
+
+| Criterio | Estado |
+|----------|--------|
+| Todos los adapters trazan a atomics | [ ] |
+| Cada puerto tiene al menos un adapter | [ ] |
+| Adapters in-memory para testing | [ ] |
+| Configuración documentada | [ ] |
+
+---
+
+## 7. Notas para MORPHEUS
+
+1. Primary adapters en `adapters/inbound/`
+2. Secondary adapters en `adapters/outbound/`
+3. Modelos de DB en `adapters/outbound/models/`
+4. Crear versiones in-memory para tests
+5. Config en `config/adapters.yaml`
+
+---
+
+## Changelog
+
+| Versión | Fecha | Autor | Cambios |
+|---------|-------|-------|---------|
+| 1.0.0 | {{date}} | SALOMON | Versión inicial |

@@ -1,0 +1,91 @@
+# {{atomic.name}}
+<!-- Concepto atómico - HYPATIA -->
+
+## Metadata
+
+| Campo | Valor |
+|-------|-------|
+| **ID** | `{{atomic.id}}` |
+| **Tipo** | `{{atomic.type}}` |
+| **Dominio** | `{{domain}}` |
+| **Fuente** | `{{atomic.source_ref}}` |
+| **Fecha** | `{{date}}` |
+| **Rostro** | HYPATIA |
+
+## Definición
+
+> {{atomic.definition}}
+>
+> — *{{atomic.source_citation}}*
+
+## Descripción
+
+{{atomic.description}}
+
+## Contexto de Uso
+
+{{atomic.context}}
+
+## Ejemplos
+
+{{atomic.examples}}
+
+## Relaciones
+
+### Depende de
+{{#atomic.depends_on}}
+- [{{.}}]({{.}}.md)
+{{/atomic.depends_on}}
+{{^atomic.depends_on}}
+_Ninguna dependencia_
+{{/atomic.depends_on}}
+
+### Relacionado con
+{{#atomic.relates_to}}
+- [{{.}}]({{.}}.md)
+{{/atomic.relates_to}}
+{{^atomic.relates_to}}
+_Sin relaciones_
+{{/atomic.relates_to}}
+
+### Contradice
+{{#atomic.contradicts}}
+- [{{.}}]({{.}}.md) - {{contradiction_reason}}
+{{/atomic.contradicts}}
+{{^atomic.contradicts}}
+_Sin contradicciones_
+{{/atomic.contradicts}}
+
+## Trazabilidad
+
+```
+Fuente formal:     {{atomic.source_ref}}
+  └─> Este atomic: {{atomic.id}}
+       └─> Usado en specs: {{#atomic.used_in_specs}}{{.}}, {{/atomic.used_in_specs}}
+```
+
+## Notas
+
+{{atomic.notes}}
+
+---
+
+## YAML Frontmatter
+
+```yaml
+---
+id: "{{atomic.id}}"
+name: "{{atomic.name}}"
+type: "{{atomic.type}}"
+domain: "{{domain}}"
+source_ref: "{{atomic.source_ref}}"
+source_citation: "{{atomic.source_citation}}"
+created: "{{date}}"
+created_by: "HYPATIA"
+relations:
+  depends_on: {{atomic.depends_on}}
+  relates_to: {{atomic.relates_to}}
+  contradicts: {{atomic.contradicts}}
+used_in_specs: {{atomic.used_in_specs}}
+---
+```
