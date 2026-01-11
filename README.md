@@ -105,6 +105,7 @@ code PROPOSITO.md
 ```
 
 La estructura crece orgánicamente:
+
 - `0-inbox/` → Issues y requests
 - `1-literature/` → Fuentes cuando se necesiten
 - `2-atomic/` → Conceptos destilados
@@ -134,13 +135,17 @@ docker mcp secret set <server> <key> <value>
 ## 🧠 Componentes Principales
 
 ### Core MCP
+
 Núcleo de conectividad con servicios de IA:
+
 - **Neo4j 5.15**: Grafos de conocimiento
 - **Ollama**: Embeddings (nomic-embed-text)
 - **19 MCP Servers**: arxiv, brave, filesystem, neo4j, perplexity, etc.
 
 ### DAATH Toolkit
+
 Herramientas para gestión del monorepo:
+
 - Validadores de estructura
 - Generadores de apps
 - Framework de testing
@@ -149,13 +154,13 @@ Herramientas para gestión del monorepo:
 
 ## 🎭 Los 5 Rostros de MELQUISEDEC
 
-| Rostro | Función | Uso |
-|--------|---------|-----|
-| **MELQUISEDEC** | Orquestador | Define arquitectura y flujos |
-| **HYPATIA** | Investigadora | Busca fuentes y analiza literatura |
-| **SALOMON** | Sintetizador | Destila conocimiento atómico |
-| **MORPHEUS** | Transformador | Genera datasets y estructuras |
-| **ALMA** | Narrador | Crea outputs finales |
+| Rostro                | Función      | Uso                                |
+| --------------------- | ------------- | ---------------------------------- |
+| **MELQUISEDEC** | Orquestador   | Define arquitectura y flujos       |
+| **HYPATIA**     | Investigadora | Busca fuentes y analiza literatura |
+| **SALOMON**     | Sintetizador  | Destila conocimiento atómico      |
+| **MORPHEUS**    | Transformador | Genera datasets y estructuras      |
+| **ALMA**        | Narrador      | Crea outputs finales               |
 
 ---
 
@@ -196,6 +201,7 @@ El proyecto ha sido reorganizado siguiendo mejores prácticas de monorepo:
 - ✅ **100% validado**: Todos los tests pasan, estructura verificada
 
 Ver detalles completos:
+
 - [[reorganizacion-completa]]
 - [[estructura-visual]]
 - [[quick-reference]]
@@ -228,6 +234,7 @@ MIT License - Ver [LICENSE](LICENSE) para detalles.
 ## 🙏 Reconocimientos
 
 Inspirado por:
+
 - **Zettelkasten**: Niklas Luhmann
 - **Building a Second Brain**: Tiago Forte
 - **Autopoiesis**: Humberto Maturana & Francisco Varela
@@ -236,21 +243,23 @@ Inspirado por:
 ---
 
 **"En el principio era el Verbo... y el Verbo se hizo código"** - Bereshit MELQUISEDEC v3.0.0
-   ```bash
+
+```bash
    git clone <tu-repo>
    cd aleia-melquisedec
-   ```
+```
 
 2. **Los MCP Servers ya están configurados:**
 
    Los MCPs están configurados globalmente en VS Code (`User Settings`) y se cargan automáticamente al iniciar GitHub Copilot Chat.
 
    **Verificar configuración actual:**
+
    - Presiona `Ctrl+Shift+P`
    - Ejecuta: `Preferences: Open User Settings (JSON)`
    - Busca la sección `"mcp.servers"`
-
 3. **Requisitos:**
+
    - Node.js (v16+) y npm - Para MCPs de Filesystem y Memory
    - Python 3.10+ y uv - Para MCP de Fetch
 
@@ -276,11 +285,13 @@ Los MCPs configurados en `settings.json` **no aparecerán como herramientas pers
 - ✅ Pylance MCP
 
 Los MCPs locales (filesystem, fetch, memory) que configuraste funcionarán en:
+
 - **Claude Desktop** (app nativa de Anthropic)
 - **Cline** (extensión alternativa)
 - Otros clientes MCP que soporten configuración local
 
 **Para verificar logs de MCP en VS Code:**
+
 1. `View` → `Output`
 2. Selecciona `"MCP Servers"` en el dropdown
 
@@ -327,12 +338,14 @@ La configuración en `.vscode/settings.json` aplica solo a este workspace y tien
 ### ¿Qué incluir en el repositorio (main)?
 
 **✅ SÍ incluir:**
+
 - `.vscode/extensions.json` - Extensiones recomendadas
 - `.vscode/settings.example.json` - Plantilla de configuración
 - `README.md` - Documentación
 - `.gitignore` - Exclusiones de Git
 
 **❌ NO incluir:**
+
 - `.vscode/settings.json` - Configuración personal (paths absolutos)
 - `node_modules/` - Dependencias
 - `data/*.db` - Bases de datos locales
@@ -341,21 +354,25 @@ La configuración en `.vscode/settings.json` aplica solo a este workspace y tien
 ## 🛠️ Uso de MCPs
 
 ### Filesystem MCP
+
 ```
 "Lee todos los archivos .ts del directorio src/"
 ```
 
 ### Fetch MCP
+
 ```
 "Haz una petición GET a https://api.ejemplo.com/datos"
 ```
 
 ### Memory MCP
+
 ```
 "Recuerda que usamos TypeScript estricto en este proyecto"
 ```
 
 ### Python MCP
+
 ```
 "Ejecuta este script de análisis de datos: [código]"
 ```
