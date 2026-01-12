@@ -1,0 +1,177 @@
+# ============================================
+# OTTR Prefixes - Centralized Namespace Declarations
+# ============================================
+# Version: 0.1.0
+# Purpose: Single source of truth for all namespace prefixes
+# Usage: Import this file in all .ottr and .ottrinst files
+# Last Updated: 2026-01-11
+# ============================================
+
+# ============================================
+# 1. Core RDF/OWL Standards
+# ============================================
+
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================
+# 2. W3C Vocabularies (Reused Ontologies)
+# ============================================
+
+# SKOS - Simple Knowledge Organization System (95% coverage)
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+
+# DCTERMS - Dublin Core Terms (85% coverage)
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dc:      <http://purl.org/dc/elements/1.1/> .
+
+# FOAF - Friend of a Friend (75% coverage)
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+
+# ============================================
+# 3. Domain-Specific External Ontologies
+# ============================================
+
+# BIBO - Bibliographic Ontology (80% coverage)
+@prefix bibo:    <http://purl.org/ontology/bibo/> .
+
+# Schema.org - General purpose vocabulary (90% coverage - partial)
+@prefix schema:  <https://schema.org/> .
+
+# OWL-Time - Temporal concepts (considered, not used in POC)
+# @prefix time:    <http://www.w3.org/2006/time#> .
+
+# ============================================
+# 4. OTTR Framework
+# ============================================
+
+# OTTR - Reasonable Ontology Templates (official namespace)
+@prefix ottr:    <http://ns.ottr.xyz/0.4/> .
+
+# stOTTR - OTTR Surface Syntax (instance format)
+# Note: stOTTR uses ottr: prefix for triple constructors
+
+# ============================================
+# 5. Project-Specific Namespaces
+# ============================================
+
+# Biblioteca POC - Main namespace for library domain
+@prefix lib:     <http://example.org/library/> .
+
+# Biblioteca Catalog Module (DDD Bounded Context)
+@prefix lib-cat: <http://example.org/library/catalog/> .
+
+# Biblioteca Loans Module (DDD Bounded Context)
+@prefix lib-loan: <http://example.org/library/loans/> .
+
+# Biblioteca Users Module (DDD Bounded Context)
+@prefix lib-user: <http://example.org/library/users/> .
+
+# Example instances (used in OTTR instantiations)
+@prefix ex:      <http://example.org/library/instances/> .
+
+# ============================================
+# 6. Daath Toolkit (Internal Framework)
+# ============================================
+
+# Daath - Project-specific vocabulary extensions
+@prefix daath:   <http://keter.ai/vocab/daath#> .
+
+# Keter - Organizational namespace
+@prefix keter:   <http://keter.ai/vocab/> .
+
+# ============================================
+# 7. Validation & Constraints
+# ============================================
+
+# SHACL - Shapes Constraint Language
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+
+# ============================================
+# 8. Provenance & Metadata
+# ============================================
+
+# PROV-O - Provenance Ontology
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+
+# ============================================
+# USAGE EXAMPLES
+# ============================================
+
+# Example 1: In OTTR template files (.ottr)
+# -------------------------------------------
+# @prefix-include: <prefixes.ttl>  # Import this file
+#
+# Template: lib:ConceptTemplate(?id, ?label_en, ?label_es, ?uri) :: {
+#   ottr:Triple(?uri, rdf:type, owl:Class),
+#   ottr:Triple(?uri, rdfs:label, ?label_en),
+#   ottr:Triple(?uri, skos:prefLabel, ?label_en)
+# } .
+
+# Example 2: In OTTR instantiation files (.ottrinst)
+# -------------------------------------------
+# @prefix-include: <prefixes.ttl>  # Import this file
+#
+# ex:ConceptTemplate("libro", "Book"@en, "Libro"@es, lib:Libro) .
+
+# Example 3: In generated TTL output
+# -------------------------------------------
+# # All prefixes automatically available after Lutra expansion
+# lib:Libro rdf:type owl:Class ;
+#     rdfs:label "Book"@en, "Libro"@es ;
+#     skos:prefLabel "Book"@en ;
+#     dcterms:identifier "libro" .
+
+# ============================================
+# LUTRA COMMAND
+# ============================================
+#
+# Command to expand OTTR templates with these prefixes:
+#
+#   lutra \
+#     --prefixes prefixes.ttl \
+#     --library ottr-templates/ \
+#     --input instances/*.ottrinst \
+#     --output output/library-ontology.ttl
+#
+# ============================================
+
+# ============================================
+# MAINTENANCE NOTES
+# ============================================
+#
+# 1. **Adding new prefixes**:
+#    - Add to appropriate section (1-8)
+#    - Document coverage % if external ontology
+#    - Update all .ottr and .ottrinst files
+#
+# 2. **Modularization**:
+#    - Keep lib-cat:, lib-loan:, lib-user: separate
+#    - Aligns with DDD Bounded Contexts (GAP-006)
+#
+# 3. **Version control**:
+#    - Commit this file to version control
+#    - Track changes in git history
+#    - Document rationale in commit messages
+#
+# 4. **Validation**:
+#    - Run ROBOT report on generated TTL
+#    - Check for undeclared prefixes warnings
+#    - Ensure all URIs resolve correctly
+#
+# ============================================
+
+# ============================================
+# RELATED DOCUMENTATION
+# ============================================
+#
+# - README-HITO2.md: Overview of HITO 2 products
+# - concept-template.ottr: Uses these prefixes
+# - biblioteca-concepts.ottrinst: Uses these prefixes
+# - reuse-assessment.md: Justification for external ontologies
+#
+# ============================================
+
+# END OF PREFIXES FILE
