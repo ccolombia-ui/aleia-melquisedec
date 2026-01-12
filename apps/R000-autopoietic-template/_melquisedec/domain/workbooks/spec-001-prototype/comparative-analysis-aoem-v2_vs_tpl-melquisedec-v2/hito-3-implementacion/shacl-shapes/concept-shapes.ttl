@@ -1,0 +1,155 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix lib: <http://example.org/library/> .
+
+# ============================================
+# SHACL Shapes for Concept Validation
+# ============================================
+
+# Shape 1: All OWL Classes must have labels
+lib:ClassLabelShape
+    a sh:NodeShape ;
+    sh:targetClass owl:Class ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 2 ;  # At least 2 labels (es + en)
+        sh:message "Every class must have at least 2 labels (Spanish and English)" ;
+    ] .
+
+# Shape 2: SKOS Concepts must have prefLabel and definition
+lib:SKOSConceptShape
+    a sh:NodeShape ;
+    sh:targetClass skos:Concept ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:minCount 2 ;
+        sh:message "SKOS Concept must have at least 2 prefLabels (es + en)" ;
+    ] ;
+    sh:property [
+        sh:path skos:definition ;
+        sh:minCount 1 ;
+        sh:message "SKOS Concept must have at least 1 definition" ;
+    ] .
+
+# Shape 3: Libro (Book) validation
+lib:LibroShape
+    a sh:NodeShape ;
+    sh:targetClass lib:Libro ;
+    sh:property [
+        sh:path lib:hasAutor ;
+        sh:minCount 1 ;
+        sh:class lib:Autor ;
+        sh:message "Libro must have at least one Autor" ;
+    ] ;
+    sh:property [
+        sh:path lib:hasISBN ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[0-9]{13}$" ;
+        sh:message "Libro must have exactly 1 ISBN (13 digits)" ;
+    ] ;
+    sh:property [
+        sh:path lib:hasCategoria ;
+        sh:minCount 1 ;
+        sh:class lib:Categoria ;
+        sh:message "Libro must have at least one Categoria" ;
+    ] .
+
+# Shape 4: Autor (Author) validation
+lib:AutorShape
+    a sh:NodeShape ;
+    sh:targetClass lib:Autor ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:message "Autor must have at least one label" ;
+    ] ;
+    sh:property [
+        sh:path lib:authorOf ;
+        sh:minCount 1 ;
+        sh:class lib:Libro ;
+        sh:message "Autor must have written at least one Libro" ;
+    ] .
+
+# Shape 5: Prestamo (Loan) validation
+lib:PrestamoShape
+    a sh:NodeShape ;
+    sh:targetClass lib:Prestamo ;
+    sh:property [
+        sh:path lib:borrowedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class lib:Usuario ;
+        sh:message "Prestamo must be borrowed by exactly one Usuario" ;
+    ] ;
+    sh:property [
+        sh:path lib:borrowedItem ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class lib:Libro ;
+        sh:message "Prestamo must have exactly one borrowed Libro" ;
+    ] ;
+    sh:property [
+        sh:path lib:startDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "Prestamo must have exactly one startDate" ;
+    ] ;
+    sh:property [
+        sh:path lib:endDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message "Prestamo must have exactly one endDate" ;
+    ] ;
+    sh:sparql [
+        sh:message "Prestamo endDate must be after startDate" ;
+        sh:select """
+            PREFIX lib: <http://example.org/library/>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            SELECT $this
+            WHERE {
+                $this lib:startDate ?start .
+                $this lib:endDate ?end .
+                FILTER (?end <= ?start)
+            }
+        """ ;
+    ] .
+
+# Shape 6: Usuario (User) validation
+lib:UsuarioShape
+    a sh:NodeShape ;
+    sh:targetClass lib:Usuario ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:message "Usuario must have at least one label" ;
+    ] ;
+    sh:property [
+        sh:path lib:hasBorrowed ;
+        sh:class lib:Libro ;
+        sh:message "If Usuario has borrowed items, they must be Libro instances" ;
+    ] .
+
+# Shape 7: Categoria (Category) validation
+lib:CategoriaShape
+    a sh:NodeShape ;
+    sh:targetClass lib:Categoria ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 2 ;
+        sh:message "Categoria must have at least 2 labels (es + en)" ;
+    ] ;
+    sh:property [
+        sh:path lib:subCategoryOf ;
+        sh:maxCount 1 ;
+        sh:class lib:Categoria ;
+        sh:message "Categoria can have at most one parent (subCategoryOf)" ;
+    ] .

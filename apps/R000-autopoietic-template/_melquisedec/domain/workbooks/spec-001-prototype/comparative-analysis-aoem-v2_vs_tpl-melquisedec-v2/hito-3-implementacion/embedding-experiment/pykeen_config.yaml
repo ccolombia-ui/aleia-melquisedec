@@ -1,0 +1,83 @@
+# PyKEEN Configuration for Library Ontology Embeddings
+# Model: TransE (Translation-based embeddings)
+# Purpose: Learn vector representations of concepts and relations
+
+metadata:
+  title: "Library Ontology Embedding Experiment"
+  version: "0.1.0"
+  description: "POC for semantic similarity and link prediction in biblioteca domain"
+
+pipeline:
+  # Dataset configuration
+  dataset: custom
+  dataset_kwargs:
+    training_path: "training_triples.tsv"
+    testing_path: "testing_triples.tsv"
+    validation_path: "validation_triples.tsv"
+    create_inverse_triples: true
+  
+  # Model selection: TransE
+  model: TransE
+  model_kwargs:
+    embedding_dim: 100
+    scoring_fct_norm: 2  # L2 norm
+  
+  # Training configuration
+  training_loop: sLCWA  # stochastic local closed world assumption
+  training_kwargs:
+    num_epochs: 500
+    batch_size: 128
+    label_smoothing: 0.1
+  
+  # Optimizer
+  optimizer: Adam
+  optimizer_kwargs:
+    lr: 0.001
+  
+  # Loss function
+  loss: MarginRankingLoss
+  loss_kwargs:
+    margin: 1.0
+  
+  # Evaluation
+  evaluator: RankBasedEvaluator
+  evaluator_kwargs:
+    filtered: true
+  
+  # Negative sampling
+  negative_sampler: BasicNegativeSampler
+  negative_sampler_kwargs:
+    num_negs_per_pos: 10
+  
+  # Early stopping
+  stopper: early
+  stopper_kwargs:
+    patience: 50
+    relative_delta: 0.01
+    metric: hits_at_10
+
+# Evaluation metrics
+evaluation:
+  metrics:
+    - hits_at_1
+    - hits_at_3
+    - hits_at_10
+    - mean_rank
+    - mean_reciprocal_rank
+  
+  # Filtering during evaluation
+  filtered: true
+
+# Output configuration
+output:
+  save_model: true
+  model_path: "results/model.pkl"
+  embeddings_path: "results/embeddings.tsv"
+  evaluation_path: "results/evaluation.json"
+  plot_losses: true
+  
+# Random seed for reproducibility
+random_seed: 42
+
+# Hardware
+device: cpu  # Change to 'cuda' if GPU available
